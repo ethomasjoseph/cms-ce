@@ -108,6 +108,7 @@
         <property name="interceptors">
             <list>
                 <ref bean="basicAuthInterceptor"/>
+                <ref bean="xTraceInterceptor"/>
             </list>
         </property>
     </bean>
@@ -125,6 +126,7 @@
     <bean id="resourceFileController" class="com.enonic.cms.portal.mvc.controller.ResourceFileController"
           parent="abstractSiteController"/>
 
+    <bean id="xTraceInterceptor" class="com.enonic.cms.portal.mvc.controller.XTraceInterceptor"/>
 
     <!--bean id="abstractSiteCommandController" class="com.enonic.cms.portal.mvc.controller.AbstractSiteCommandController"
           abstract="true">
