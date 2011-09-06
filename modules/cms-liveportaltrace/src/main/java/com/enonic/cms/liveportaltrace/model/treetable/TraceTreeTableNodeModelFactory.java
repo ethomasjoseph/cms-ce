@@ -67,6 +67,7 @@ public class TraceTreeTableNodeModelFactory
         imageRequestNode.setText( "Image request" );
         imageRequestNode.setDuration( DurationModel.create( trace.getDuration() ) );
         imageRequestNode.setLeaf( true );
+        imageRequestNode.setUsedCachedResult( String.valueOf( trace.getUsedCachedResult() ) );
         return imageRequestNode;
     }
 
@@ -85,6 +86,7 @@ public class TraceTreeTableNodeModelFactory
         pageRenderingNode.setText( "Page rendering: " );
         pageRenderingNode.setDuration( DurationModel.create( trace.getDuration() ) );
         pageRenderingNode.setExpanded( true );
+        pageRenderingNode.setUsedCachedResult( String.valueOf( trace.isUsedCachedResult() ) );
 
         List<WindowRenderingTrace> windowRenderingTraceList = trace.getWindowRenderingTraces();
         for( WindowRenderingTrace windowRenderingTrace : windowRenderingTraceList )
@@ -101,6 +103,7 @@ public class TraceTreeTableNodeModelFactory
         windowRenderingNode.setText( "Window rendering: " + trace.getPortletName() );
         windowRenderingNode.setDuration( DurationModel.create( trace.getDuration() ) );
         windowRenderingNode.setLeaf( true );
+        windowRenderingNode.setUsedCachedResult( String.valueOf( trace.isUsedCachedResult() ) );
         return windowRenderingNode;
     }
 }

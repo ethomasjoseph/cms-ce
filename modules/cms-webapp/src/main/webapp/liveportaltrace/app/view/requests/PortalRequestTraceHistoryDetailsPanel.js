@@ -2,36 +2,45 @@ Ext.define( 'LPT.view.requests.PortalRequestTraceHistoryDetailsPanel', {
     extend: 'Ext.tree.Panel',
     alias : 'widget.portalRequestTraceHistoryDetailsPanel',
 
-    layout: 'fit',
-
     title: 'Details',
 
-    collapsible: true,
-    useArrows: true,
-    rootVisible: false,
     store: 'PortalRequestTraceHistoryDetailsStore',
-    multiSelect: false,
-    singleExpand: false,
 
-    // The 'columns' property is now 'headers'
-    columns: [{
-        xtype: 'treecolumn', //this is so we know which column will show the tree
-        text: 'Trace',
-        flex: 2,
-        sortable: true,
-        dataIndex: 'text'
-    },
+    //collapsible: false,
+    //useArrows: true,
+    rootVisible: false,
+    //multiSelect: false,
+    //singleExpand: false,
+    //lines: true,
+
+    displayField: 'text',
+
+    initComponent: function()
     {
-        text: 'Duration',
-        dataIndex: 'duration.humanReadable',
-        sortable: false,
-        align: 'right'
+
+        this.columns = [
+            {
+                xtype: 'treecolumn',
+                text: 'Trace',
+                flex: 2,
+                sortable: false,
+                dataIndex: 'text'
+            },
+            {
+                text: 'Used cached result',
+                dataIndex: 'usedCachedResult',
+                sortable: false,
+                align: 'right'
+            },
+            {
+                text: 'Duration',
+                dataIndex: 'duration.humanReadable',
+                sortable: false,
+                align: 'right'
+            }
+        ];
+
+        this.callParent( arguments );
     }
-    ],
 
-    initComponent: function() {
-
-        this.callParent(arguments);
-    }
-
-});
+} );

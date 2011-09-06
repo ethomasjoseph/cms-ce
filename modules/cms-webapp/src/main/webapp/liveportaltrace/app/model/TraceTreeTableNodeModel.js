@@ -2,10 +2,8 @@ Ext.define( 'LPT.model.TraceTreeTableNodeModel', {
     extend: 'Ext.data.Model',
 
     fields: [
-     //   'id',
-        'text',
-        'duration.startTime',
-        'duration.milliseconds',
-        'duration.humanReadable'
+        {name: 'text', type: 'string'},
+        {name: 'usedCachedResult', type: 'string'},
+        {name: 'duration.humanReadable', type: 'string'}
     ]
 } );

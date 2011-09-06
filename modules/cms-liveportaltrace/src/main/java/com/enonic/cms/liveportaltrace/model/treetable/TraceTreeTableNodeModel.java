@@ -22,6 +22,8 @@ public class TraceTreeTableNodeModel
 
     private DurationModel duration;
 
+    private String usedCachedResult;
+
     void setId( String id )
     {
         this.id = id;
@@ -62,6 +64,11 @@ public class TraceTreeTableNodeModel
         this.duration = duration;
     }
 
+    public void setUsedCachedResult( String usedCachedResult )
+    {
+        this.usedCachedResult = usedCachedResult;
+    }
+
     public String getId()
     {
         return id;
@@ -87,13 +94,18 @@ public class TraceTreeTableNodeModel
         return iconCls;
     }
 
-    public List<TraceTreeTableNodeModel> getChildren()
-    {
-        return children;
-    }
-
     public DurationModel getDuration()
     {
         return duration;
+    }
+
+    public String getUsedCachedResult()
+    {
+        return usedCachedResult;
+    }
+
+    public List<TraceTreeTableNodeModel> getChildren()
+    {
+        return children;
     }
 }

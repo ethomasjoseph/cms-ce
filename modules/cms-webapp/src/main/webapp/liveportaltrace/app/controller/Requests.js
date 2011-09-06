@@ -74,11 +74,7 @@ Ext.define('LPT.controller.Requests', {
 
     showRequestDetails: function (selectedRequest) {
 
-        console.log( selectedRequest.data.id );
-
         var detailsTab = this.getPortalRequestTraceHistoryDetailsPanel();
-
-        console.log( "detailsTab", detailsTab );
 
         detailsTab.setVisible(true);
 
