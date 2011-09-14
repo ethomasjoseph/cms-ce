@@ -33,7 +33,8 @@ public class TraceTreeTableNodeModelFactory
 
         TraceTreeTableNodeModel portalTraceNode = new TraceTreeTableNodeModel();
         portalTraceNode.setDuration( DurationModel.create( portalRequestTrace.getDuration() ) );
-        portalTraceNode.setText( "Portal request: " + portalRequestTrace.getSiteLocalUrl() );
+        //portalTraceNode.setText( "Portal request: " + portalRequestTrace.getSiteLocalUrl() );
+        portalTraceNode.setText( "Portal request" );
         portalTraceNode.setExpanded( true );
         rootNode.addChild( portalTraceNode );
 

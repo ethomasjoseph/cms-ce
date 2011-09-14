@@ -2,7 +2,7 @@ Ext.define( 'LPT.view.requests.PortalRequestTraceHistoryDetailsPanel', {
     extend: 'Ext.tree.Panel',
     alias : 'widget.portalRequestTraceHistoryDetailsPanel',
 
-    title: 'Details',
+    title: 'Details of Request #?',
 
     store: 'PortalRequestTraceHistoryDetailsStore',
 

@@ -77,8 +77,14 @@ Ext.define('LPT.controller.Requests', {
         var detailsTab = this.getPortalRequestTraceHistoryDetailsPanel();
 
         detailsTab.setVisible(true);
+        detailsTab.setTitle( "Details of Request #" + selectedRequest.data.id );
 
         detailsTab.store.setRootNode( {id: selectedRequest.data.id});
+
+        //var path = "Portal request: " + selectedRequest.data["url.siteLocalUrl"];
+        var path = "/Portal request";
+
+        // TODO: detailsTab.store.selectPath( path, "text" );
     },
 
     startAutoRefreshTimer: function () {
@@ -98,7 +104,7 @@ Ext.define('LPT.controller.Requests', {
                     controller.getRequestTable().getView().refresh();
                 }
             },
-            10000);
+            3000);
     },
 
     stopAutoRefreshTimer: function () {
