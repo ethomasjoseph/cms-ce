@@ -1,12 +1,12 @@
 Ext.define('LPT.store.PortalRequestTraceHistoryDetailsStore', {
     extend: 'Ext.data.TreeStore',
 
-    model: 'LPT.model.TraceTreeTableNodeModel',
     storeId: 'PortalRequestTraceHistoryDetailsStore',
 
     nodeParam: 'id',
 
     folderSort: false,
+    defaultRootId: '-1',
 
     proxy: {
         type: 'ajax',
@@ -14,6 +14,11 @@ Ext.define('LPT.store.PortalRequestTraceHistoryDetailsStore', {
         reader: {
             type: 'json'
         }
-    }
+    },
+    fields: [
+        {name: 'text', type: 'string'},
+        {name: 'usedCachedResult', type: 'string'},
+        {name: 'duration.humanReadable', type: 'auto'}
+    ]
 
 } );
