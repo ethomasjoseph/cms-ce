@@ -71,6 +71,9 @@ public interface SecurityService
 
     List<GroupEntity> getGroups( GroupQuery spec );
 
+    void authenticateUser( final QualifiedUsername qualifiedUsername, final String password )
+            throws InvalidCredentialsException;
+
     void loginPortalUser( final QualifiedUsername qualifiedUsername, final String password );
 
     void loginClientApiUser( final QualifiedUsername qualifiedUsername, final String password );

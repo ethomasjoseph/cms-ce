@@ -81,6 +81,7 @@
                 <!--prop key="/site/*/page">pageRedirectController</prop-->
                 <prop key="/site/**/_attachment/**">attachmentController</prop>
                 <prop key="/site/**/_image/**">imageController</prop>
+                <prop key="/site/**/_xtrace/**">xTraceController</prop>
             </props>
         </property>
         <property name="interceptors">
@@ -127,6 +128,8 @@
           parent="abstractSiteController"/>
 
     <bean id="xTraceInterceptor" class="com.enonic.cms.portal.mvc.controller.XTraceInterceptor"/>
+
+    <bean id="xTraceController" class="com.enonic.cms.portal.mvc.controller.XTraceController"/>
 
     <!--bean id="abstractSiteCommandController" class="com.enonic.cms.portal.mvc.controller.AbstractSiteCommandController"
           abstract="true">

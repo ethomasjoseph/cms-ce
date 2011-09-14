@@ -32,7 +32,7 @@ import com.enonic.cms.store.dao.UserDao;
 import com.enonic.cms.store.dao.UserStoreDao;
 
 public class SecurityServiceImpl
-    implements SecurityService
+        implements SecurityService
 {
 
     @Inject
@@ -155,8 +155,7 @@ public class SecurityServiceImpl
         if ( qname.isGlobal() )
         {
             return groupDao.findGlobalGroupByName( qname.getGroupname(), false );
-        }
-        else
+        } else
         {
             return groupDao.findSingleUndeletedByUserStoreKeyAndGroupname( qname.getUserStoreKey(), qname.getGroupname() );
         }
@@ -210,6 +209,36 @@ public class SecurityServiceImpl
         return doGetOldUserObject( doGetUserKeyForPortalExecutor() );
     }
 
+    public void authenticateUser( QualifiedUsername qualifiedUsername, String password )
+            throws InvalidCredentialsException
+    {
+        final String uid = qualifiedUsername.getUsername();
+
+        if ( UserEntity.isBuiltInUser( uid ) )
+        {
+            authenticateBuiltInUser( uid, password, true );
+        }
+        else
+        {
+            UserStoreEntity userStore;
+            if ( qualifiedUsername.hasUserStoreSet() )
+            {
+                userStore = doResolveUserStore( qualifiedUsername );
+            }
+            else
+            {
+                userStore = doGetDefaultUserStore();
+            }
+
+            if ( userStore == null )
+            {
+                throw new InvalidCredentialsException( qualifiedUsername );
+            }
+
+            userStoreService.authenticateUser( userStore.getKey(), uid, password );
+        }
+    }
+
     public void loginPortalUser( final QualifiedUsername qualifiedUsername, final String password )
     {
         doLoginPortalUser( qualifiedUsername, password, true );
@@ -233,16 +262,14 @@ public class SecurityServiceImpl
         {
             UserKey userKey = authenticateBuiltInUser( uid, password, verifyPassword );
             SecurityHolder.setUser( userKey );
-        }
-        else
+        } else
         {
 
             UserStoreEntity userStore;
             if ( qualifiedUsername.hasUserStoreSet() )
             {
                 userStore = doResolveUserStore( qualifiedUsername );
-            }
-            else
+            } else
             {
                 userStore = doGetDefaultUserStore();
             }
@@ -296,8 +323,7 @@ public class SecurityServiceImpl
         if ( user == null )
         {
             throw new IllegalStateException( "User to impersonate not found." );
-        }
-        else
+        } else
         {
             SecurityHolder.setRunAsUser( user.getKey() );
         }
