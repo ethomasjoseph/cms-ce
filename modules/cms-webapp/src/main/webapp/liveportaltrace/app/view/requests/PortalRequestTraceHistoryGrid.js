@@ -57,7 +57,7 @@ Ext.define( 'LPT.view.requests.PortalRequestTraceHistoryGrid', {
                 align: 'right'
             },
             {
-                text: 'Requester',
+                text: 'Client IP',
                 dataIndex: 'remoteAddress',
                 sortable: true
             }
