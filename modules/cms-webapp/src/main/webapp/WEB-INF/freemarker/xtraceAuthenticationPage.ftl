@@ -6,7 +6,6 @@
     <title>Enonic CMS - Authentication</title>
 </head>
 <body>
-
 [#if authenticationFailed = true]
     <p style="font-weight: bold">
         Username or password is wrong
@@ -17,18 +16,39 @@
     <form action="." method="post">
         <div>
             <input type="hidden" name="_xtrace_authentication" value="true"/>
+            <table>
+                <tr>
+                    <td>
+                        <label for="userstore">Userstore:</label>
+                    </td>
+                    <td>
+                        <select name="_xtrace_userstore" id="userstore">
+                            [#list userStores?keys?sort as key]
+                                <option value="${key}">${userStores[key]}</option>
+                            [/#list]
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="username">Username:</label>
+                    </td>
+                    <td>
+                        <input type="text" name="_xtrace_username" id="username"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="password">Password:</label>
 
-            <!-- TODO: Add userstore dropdown -->
-
-            <label for="username">Username:</label>
+                    </td>
+                    <td>
+                        <input type="password" name="_xtrace_password" id="password"/>
+                    </td>
+                </tr>
+            </table>
             <br/>
-            <input type="text" name="_xtrace_username" id="username"/>
-            <br/>
-            <label for="password">Password:</label>
-            <br/>
-            <input type="password" name="_xtrace_password" id="password"/>
-            <br/>
-            <input type="submit" value="Authenticate"/>
+                <input type="submit" value="Authenticate &gt;&gt;"/>
         </div>
     </form>
 </div>

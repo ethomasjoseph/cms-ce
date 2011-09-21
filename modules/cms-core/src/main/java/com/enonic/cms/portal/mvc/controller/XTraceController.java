@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class XTraceController extends AbstractController
@@ -28,7 +29,6 @@ public class XTraceController extends AbstractController
     protected ModelAndView handleRequestInternal( HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         final String path = request.getRequestURI();
-
         if ( path.matches( ".+/resources/.+" ) )
         {
             handleResource( request, response );
@@ -62,20 +62,21 @@ public class XTraceController extends AbstractController
             }
         }
 
+        model.put( "userStores", createUserStoreMap() );
+
         return new ModelAndView( "xtraceAuthenticationPage", model );
     }
 
     private void authenticateUser( HttpServletRequest request )
             throws InvalidCredentialsException
     {
-        String userName = request.getParameter( "_xtrace_username" );
-        String password = request.getParameter( "_xtrace_password" );
+        final String userName = request.getParameter( "_xtrace_username" );
+        final String password = request.getParameter( "_xtrace_password" );
+        final String userStore = request.getParameter( "_xtrace_userstore" );
 
-        // TODO: Get user store key from url parameter
-        UserStoreKey userStoreKey = new UserStoreKey( 3 );
-        UserStoreEntity systemUserStore = userStoreService.getUserStore( userStoreKey );
-
-        QualifiedUsername qname = new QualifiedUsername( systemUserStore.getKey(), userName );
+        final UserStoreKey userStoreKey = new UserStoreKey( Integer.parseInt( userStore ) );
+        final UserStoreEntity systemUserStore = userStoreService.getUserStore( userStoreKey );
+        final QualifiedUsername qname = new QualifiedUsername( systemUserStore.getKey(), userName );
 
         securityService.authenticateUser( qname, password );
     }
@@ -93,6 +94,19 @@ public class XTraceController extends AbstractController
             return true;
         }
         return false;
+    }
+
+    private HashMap<String, String> createUserStoreMap()
+    {
+        final HashMap<String, String> userStoreMap = new HashMap<String, String>();
+
+        final List<UserStoreEntity> userStoreList = userStoreService.findAll();
+        for ( UserStoreEntity userStore : userStoreList )
+        {
+            userStoreMap.put( userStore.getKey().integerValue().toString(), userStore.getName() );
+        }
+
+        return userStoreMap;
     }
 
     private void handleResource( HttpServletRequest request, HttpServletResponse response )

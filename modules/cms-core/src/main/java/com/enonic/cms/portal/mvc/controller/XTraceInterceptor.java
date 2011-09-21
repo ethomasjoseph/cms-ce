@@ -56,20 +56,20 @@ public class XTraceInterceptor
     // TODO: Make this functionality more testable?
     private void setResponseHeaders( HttpServletResponse response, String traceInfo )
     {
-        Integer charsPrHeader = 1000;
-        int traceInfoCharLength = traceInfo.length();
+        final Integer charsPrHeader = 1000;
+        final int traceInfoCharLength = traceInfo.length();
 
-        double numberOfHeadersAsDouble = Math.ceil( traceInfoCharLength / charsPrHeader.doubleValue() );
-        int numberOfHeaders = (int) ( numberOfHeadersAsDouble );
+        final double numberOfHeadersAsDouble = Math.ceil( traceInfoCharLength / charsPrHeader.doubleValue() );
+        final int numberOfHeaders = (int) ( numberOfHeadersAsDouble );
 
         for ( int i = 0; i < numberOfHeaders; i++ )
         {
-            int beginIndex = charsPrHeader * i;
+            final int beginIndex = charsPrHeader * i;
             int endIndex = beginIndex + charsPrHeader;
             if ( endIndex >= traceInfoCharLength )
                 endIndex = beginIndex + ( traceInfoCharLength - beginIndex );
 
-            String headerValue = traceInfo.substring( beginIndex, endIndex );
+            final String headerValue = traceInfo.substring( beginIndex, endIndex );
 
             response.setHeader( "X-Trace-Info-" + i, headerValue );
         }
