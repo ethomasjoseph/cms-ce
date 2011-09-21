@@ -29,7 +29,6 @@ public class XTraceController extends AbstractController
     {
         final String path = request.getRequestURI();
 
-        // Request .+/resources/.+ -> serve resources (http://www.enonic.com/en/community/_xtrace/resources/main.css
         if ( path.matches( ".+/resources/.+" ) )
         {
             handleResource( request, response );
@@ -51,7 +50,7 @@ public class XTraceController extends AbstractController
             {
                 authenticateUser( request );
                 HttpSession httpSession = request.getSession( true );
-                httpSession.setAttribute( "serverTracingIsEnabled", "true" );
+                httpSession.setAttribute( "X-Trace-Server-Enabled", "true" );
 
                 response.sendRedirect( (String) request.getAttribute( "xtrace.originalUrl" ) );
 
@@ -63,7 +62,7 @@ public class XTraceController extends AbstractController
             }
         }
 
-        return new ModelAndView( "xtraceLogin", model );
+        return new ModelAndView( "xtraceAuthenticationPage", model );
     }
 
     private void authenticateUser( HttpServletRequest request )
