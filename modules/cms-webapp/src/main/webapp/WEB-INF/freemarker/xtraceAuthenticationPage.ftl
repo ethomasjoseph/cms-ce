@@ -7,7 +7,7 @@
 </head>
 <body>
 
-[#if loginFailed = true]
+[#if authenticationFailed = true]
     <p style="font-weight: bold">
         Username or password is wrong
     </p>
@@ -28,7 +28,7 @@
             <br/>
             <input type="password" name="_xtrace_password" id="password"/>
             <br/>
-            <input type="submit" value="Log in"/>
+            <input type="submit" value="Authenticate"/>
         </div>
     </form>
 </div>

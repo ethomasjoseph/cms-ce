@@ -42,7 +42,7 @@ public class XTraceController extends AbstractController
             throws Exception
     {
         final Map<String, Object> model = new HashMap<String, Object>();
-        model.put( "loginFailed", false );
+        model.put( "authenticationFailed", false );
 
         if ( isAuthenticationFormSubmitted( request ) )
         {
@@ -58,7 +58,7 @@ public class XTraceController extends AbstractController
             }
             catch ( InvalidCredentialsException ice )
             {
-                model.put( "loginFailed", true );
+                model.put( "authenticationFailed", true );
             }
         }
 
