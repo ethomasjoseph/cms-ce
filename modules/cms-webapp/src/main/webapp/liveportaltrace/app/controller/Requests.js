@@ -101,7 +101,7 @@ Ext.define('LPT.controller.Requests', {
                 if (selected) {
                     // restore selected item
                     grid.getSelectionModel().select(idx[0].index, false, false);
-                    controller.getRequestTable().getView().refresh();
+                    controller.getPortalRequestTraceHistoryGrid().getView().refresh();
                 }
             },
             3000);

@@ -4,6 +4,8 @@ var Places = {
     NewYork: new OpenLayers.LonLat(-73.9739, 40.7555)
 };
 
+var MinimumZoomDistance = 1000*1000;
+
 Ext.define('LPT.view.GeoMapPanel', {
 	extend: 'Ext.panel.Panel',
     requires: [
@@ -17,14 +19,27 @@ Ext.define('LPT.view.GeoMapPanel', {
     width: '100%',
 
 	initComponent: function() {
-     this.callParent(arguments);
-		 this.on('afterrender', this.afterRender, this);
+        this.callParent(arguments);
+        this.on('afterrender', this.afterRender, this);
+        this.on('activate', this.activate, this);
 	},
 
     firstTimeRender: true,
     lastRequestId: 0,
 
+    activate: function() {
+        // set map size to container panel size
+        var size = this.getSize();
+        if ( (this.map.size.w === size.width) && (this.map.size.h === size.height) ) {
+            return;
+        }
+
+        this.map.updateSize();
+    },
+
 	afterRender: function() {
+        var thisObj = this;
+
         if (!this.firstTimeRender) {
             return;
         }
@@ -34,13 +49,24 @@ Ext.define('LPT.view.GeoMapPanel', {
 		Ext.applyIf(this, wh);
 		this.callParent(arguments);
 
-		this.map = new OpenLayers.Map(this.body.dom.id);
+        var panzoombar = new OpenLayers.Control.PanZoomBar();
+        panzoombar.zoomBarDrag = function() {
+            thisObj.userChangedZoom = true;
+        }
+
+		this.map = new OpenLayers.Map(this.body.dom.id, {
+                    controls: [
+                        panzoombar,
+                        new OpenLayers.Control.Navigation(),
+                        new OpenLayers.Control.KeyboardDefaults()
+                    ],
+                    numZoomLevels: 6
+        });
 
         // Open Street Map
         this.layer = new OpenLayers.Layer.OSM('OSM Map');
 		this.layer.setIsBaseLayer(true);
         this.layer.attribution = '';
-//        this.layer.maxExtent = new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34);
 		this.map.addLayer(this.layer);
 
 
@@ -66,9 +92,11 @@ Ext.define('LPT.view.GeoMapPanel', {
         });
         this.map.addLayer(this.pointsLayer);
 
-        this.map.setCenter(Places.Oslo, 3);
+        // Ensure that center is not set
+        if (!this.map.getCenter()) {
+            this.map.setCenter(Places.Oslo, 3);
+        }
 
-        var thisObj = this;
         // start point animation
         setInterval(function() {
                 var that = thisObj;
@@ -113,9 +141,6 @@ Ext.define('LPT.view.GeoMapPanel', {
     },
 
     autoRefreshLocations: function() {
-        var i = 0;
-        console.log('Refreshing geolocation data');
-
         this.loadLocations( this.lastRequestId );
     },
 
@@ -130,16 +155,18 @@ Ext.define('LPT.view.GeoMapPanel', {
                 var resp = Ext.decode(response.responseText);
 
                 that.lastRequestId = resp.lastId;
-                var locationList = resp.locationList;
+                var locationList = resp.locations;
 
-                console.log('Geolocation data refreshed');
                 for (i = 0; i < locationList.length; i++) {
                     var location = locationList[i];
                     var lonlat = new OpenLayers.LonLat(location.longitude, location.latitude);
                     that.pointsLayer.addFeatures([that.createFeaturePoint(lonlat)]);
                 }
 
-                that.zoomToFeatures();
+                if (! that.userChangedZoom) {
+                    that.zoomToFeatures();
+                }
+                that.pointsLayer.redraw(true);
             },
             failure: function( response, opts )
             {
@@ -151,13 +178,29 @@ Ext.define('LPT.view.GeoMapPanel', {
 
     zoomToFeatures: function() {
         var features = this.pointsLayer.features;
-        if (features && features.length > 1) {
-            var bounds = features[0].geometry.getBounds().clone();
+        var bounds;
+        if (! features || features.length === 0) {
+            return;
+        }
+
+        if (features.length === 1) {
+            bounds = features[0].geometry.getBounds().clone();
+        } else {
+            bounds = features[0].geometry.getBounds().clone();
             for (var i = 1; i < features.length; i++) {
                 bounds.extend(features[i].geometry.getBounds());
             }
-            this.map.zoomToExtent(bounds,false);
         }
+        if (bounds.getWidth() < MinimumZoomDistance) {
+            bounds.left = bounds.left - (MinimumZoomDistance/2);
+            bounds.right = bounds.right + (MinimumZoomDistance/2);
+        }
+        if (bounds.getHeight() < MinimumZoomDistance) {
+            bounds.top = bounds.top - (MinimumZoomDistance/2);
+            bounds.bottom = bounds.bottom + (MinimumZoomDistance/2);
+        }
+
+        this.map.zoomToExtent(bounds, false);
     },
 
     markFeature: function(place) {
