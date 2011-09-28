@@ -4,9 +4,10 @@ Ext.define('LPT.store.PortalRequestTraceHistoryListStore', {
     model: 'LPT.model.PortalRequestTraceModel',
 
     pageSize: 100,
-    autoLoad: true,
+    autoLoad: false,
 
-    proxy: Ext.create('LPT.store.PortalRequestTraceHistoryListProxy', {
+    proxy: {
+        type: 'ajax',
         url: '/liveportaltrace/rest/portal-request-trace-history/list',
         reader: {
             type: 'json',
@@ -14,7 +15,7 @@ Ext.define('LPT.store.PortalRequestTraceHistoryListStore', {
             totalProperty : 'total'
         },
         startParam: 'lastId'
-    }),
+    },
 
     sorters: [{
         property : 'id',
@@ -22,26 +23,26 @@ Ext.define('LPT.store.PortalRequestTraceHistoryListStore', {
        }
     ],
 
-    lastRequestId: 0,
+    lastRequestId: 0
 
-    listeners:{
-        load: function(store, records, successful, operation) {
-            var i, req;
-            if (records) {
-                // keep last request-id
-                for (i = 0; i < records.length; i ++) {
-                    req = records[i].data;
-                    if (req.id > store.lastRequestId) {
-                        store.lastRequestId = req.id;
-                    }
-                }
-            }
-        },
-
-        beforeload: function(store, operation) {
-            // ask for requests starting after the last request-id
-            operation.start = store.lastRequestId;
-        }
-    }
+//    listeners:{
+//        load: function(store, records, successful, operation) {
+//            var i, req;
+//            if (records) {
+//                // keep last request-id
+//                for (i = 0; i < records.length; i ++) {
+//                    req = records[i].data;
+//                    if (req.id > store.lastRequestId) {
+//                        store.lastRequestId = req.id;
+//                    }
+//                }
+//            }
+//        },
+//
+//        beforeload: function(store, operation) {
+//            // ask for requests starting after the last request-id
+//            operation.start = store.lastRequestId;
+//        }
+//    }
 
 });

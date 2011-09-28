@@ -1,3 +1,5 @@
+var REQUESTS_REFRESH_TIME = 1000;
+
 Ext.define('LPT.controller.Requests', {
     extend: 'Ext.app.Controller',
 
@@ -89,47 +91,58 @@ Ext.define('LPT.controller.Requests', {
 
     startAutoRefreshTimer: function () {
         var controller = this;
-        this.autoRefreshIntervalId = setInterval(
-            function() {
-                // find selected item before refreshing
-                var grid = controller.getPortalRequestTraceHistoryGrid();
-                var idx = grid.getSelectionModel().getSelection();
-                var selected = idx.length > 0;
-                var requestJson, requestObject, r;
+        setTimeout( function() {
+            controller.loadPortalRequests();
+        }, REQUESTS_REFRESH_TIME);
+    },
 
+    loadPortalRequests: function () {
+        var controller = this;
+        var store = this.getPortalRequestTraceHistoryGrid().getView().getStore();
+        Ext.Ajax.request( {
+            url: '/liveportaltrace/rest/portal-request-trace-history/list',
+            method: 'GET',
+            params: {lastId: store.lastRequestId},
+            success: function( response ) {
+                var requestJson = Ext.JSON.decode( response.responseText );
+                var requestObject, r, requestId, requestArray;
 
-                controller.getPortalRequestTraceHistoryGrid().getView().getStore().load();
+                requestJson = requestJson && requestJson.requests;
+                if (requestJson && (requestJson.length > 0)) {
+                    // add new requests to grid panel
+                    requestArray = [];
+                    for (r = 0; r < requestJson.length; r++) {
+                        requestObject = controller.requestJsonToModel(requestJson[r]);
+                        requestId = requestObject.get('id');
 
-//                var store = controller.getPortalRequestTraceHistoryGrid().getView().getStore();
-//                Ext.Ajax.request( {
-//                    url: '/liveportaltrace/rest/portal-request-trace-history/list',
-//                    method: 'GET',
-//                    //params: {key: user.get('key')},
-//                    success: function( response ){
-//                        requestJson = Ext.JSON.decode( response.responseText );
-//                        if (requestJson && requestJson.requests) {
-//                            requestJson = requestJson.requests;
-//                            for (r = 0; r < requestJson.length; r++) {
-//                                requestObject = new LPT.model.PortalRequestTraceModel(requestJson[r]);
-//                                store.insert(0, [requestObject]);
-//                            }
-//                        }
-//                      }
-//                });
-
-                if (selected) {
-                    // restore selected item
-                    grid.getSelectionModel().select(idx[0].index, false, false);
-                    controller.getPortalRequestTraceHistoryGrid().getView().refresh();
+                        if (requestId > store.lastRequestId) {
+                            store.lastRequestId = requestId;
+                        }
+                        requestArray.push(requestObject);
+                    }
+                    store.insert(0, requestArray);
                 }
+
+                controller.startAutoRefreshTimer(); // restart timer
             },
-            3000);
+            failure: function() {
+                controller.startAutoRefreshTimer(); // restart timer
+            }
+        });
     },
 
-    stopAutoRefreshTimer: function () {
-        clearInterval(this.autoRefreshIntervalId);
-    },
-
-    autoRefreshIntervalId: null
+    requestJsonToModel: function(requestJson) {
+        var requestObject = Ext.create('LPT.model.PortalRequestTraceModel', requestJson);
+        requestObject.set('url.originalURL', requestJson.url.originalURL);
+        requestObject.set('url.siteLocalUrl', requestJson.url.siteLocalUrl);
+        requestObject.set('url.internalURL', requestJson.url.internalURL);
+        requestObject.set('site.key', requestJson.site.key);
+        requestObject.set('site.name', requestJson.site.name);
+        requestObject.set('duration.startTime', requestJson.duration.startTime);
+        requestObject.set('duration.milliseconds', requestJson.duration.milliseconds);
+        requestObject.set('duration.humanReadable', requestJson.duration.humanReadable);
+        requestObject.commit(true);
+        return requestObject;
+    }
 
 });
