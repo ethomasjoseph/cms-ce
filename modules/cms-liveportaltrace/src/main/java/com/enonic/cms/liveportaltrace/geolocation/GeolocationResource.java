@@ -77,17 +77,7 @@ public final class GeolocationResource
     private List<PastPortalRequestTrace> getLastRequests( final long lastId )
     {
         // TODO replace this with a listener for portal-trace events
-        final List<PastPortalRequestTrace> pastPortalRequestTraceList = livePortalTraceService.getHistoryOfPortalRequests();
-
-        final List<PastPortalRequestTrace> newRequestsSinceLast = new ArrayList<PastPortalRequestTrace>();
-        for ( PastPortalRequestTrace req : pastPortalRequestTraceList )
-        {
-            if ( req.getHistoryRecordNumber() > lastId )
-            {
-                newRequestsSinceLast.add( req );
-            }
-        }
-
+        final List<PastPortalRequestTrace> newRequestsSinceLast = livePortalTraceService.getHistorySince( lastId );
         return newRequestsSinceLast;
     }
 

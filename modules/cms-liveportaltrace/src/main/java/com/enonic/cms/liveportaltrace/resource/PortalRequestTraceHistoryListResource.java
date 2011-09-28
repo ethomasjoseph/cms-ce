@@ -1,6 +1,5 @@
 package com.enonic.cms.liveportaltrace.resource;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -36,51 +35,31 @@ public final class PortalRequestTraceHistoryListResource
     @Path("list")
     public PortalRequestTraceListModel getNewRequestsFromHistory( @DefaultValue("0") @QueryParam("lastId") final long lastId )
     {
-        final List<PastPortalRequestTrace> pastPortalRequestTraceList = livePortalTraceService.getHistoryOfPortalRequests();
+        final List<PastPortalRequestTrace> pastPortalRequestTraceList = livePortalTraceService.getHistorySince( lastId );
 
-        final List<PastPortalRequestTrace> newSinceLast = new ArrayList<PastPortalRequestTrace>();
-        for ( PastPortalRequestTrace pastPortalRequestTrace : pastPortalRequestTraceList )
+        // register for single access later
+        for ( PastPortalRequestTrace trace : pastPortalRequestTraceList )
         {
-            if ( pastPortalRequestTrace.getHistoryRecordNumber() > lastId )
-            {
-                newSinceLast.add( pastPortalRequestTrace );
-                history.put( pastPortalRequestTrace.getHistoryRecordNumber(), pastPortalRequestTrace );
-            }
+            history.put( trace.getHistoryRecordNumber(), trace );
         }
 
-        return PortalRequestTraceModelFactory.createListModel( newSinceLast );
+        return PortalRequestTraceModelFactory.createListModel( pastPortalRequestTraceList );
     }
 
     @GET
     @Path("detail")
     public TraceTreeTableNodeModel getRequest( @QueryParam("id") final String id )
     {
+        final Long historyId = new Long( id );
 
-        Long historyId = new Long( id );
-
-        final List<PastPortalRequestTrace> pastPortalRequestTraceList = livePortalTraceService.getHistoryOfPortalRequests();
-
-        for( PastPortalRequestTrace trace : pastPortalRequestTraceList )
-        {
-            if( historyId.equals( trace.getHistoryRecordNumber() ) )
-            {
-                TraceTreeTableNodeModel model = TraceTreeTableNodeModelFactory.create( trace );
-                System.out.println("returning root node for: " + trace.getHistoryRecordNumber());
-                return model;
-            }
-        }
-
-        return TraceTreeTableNodeModelFactory.createEmpty();
-
-        /*
-        PastPortalRequestTrace pastPortalRequestTrace = history.get( historyId );
+        final PastPortalRequestTrace pastPortalRequestTrace = history.get( historyId );
         if ( pastPortalRequestTrace != null )
         {
-            return PortalRequestTraceTreeTableModelFactory.createModel( pastPortalRequestTrace );
+            return TraceTreeTableNodeModelFactory.create( pastPortalRequestTrace );
         }
         else
         {
-            return null;
-        } */
+            return TraceTreeTableNodeModelFactory.createEmpty();
+        }
     }
 }
