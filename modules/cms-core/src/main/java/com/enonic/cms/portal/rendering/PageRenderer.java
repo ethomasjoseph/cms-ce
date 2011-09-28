@@ -53,6 +53,7 @@ import com.enonic.cms.portal.rendering.viewtransformer.TemplateParameterTransfor
 import com.enonic.cms.portal.rendering.viewtransformer.TransformationParameterOrigin;
 import com.enonic.cms.portal.rendering.viewtransformer.TransformationParams;
 import com.enonic.cms.portal.rendering.viewtransformer.ViewTransformationResult;
+import com.enonic.cms.portal.xtrace.XTraceHelper;
 
 import com.enonic.cms.domain.CacheObjectSettings;
 import com.enonic.cms.domain.CacheSettings;
@@ -137,6 +138,7 @@ public class PageRenderer
         }
         finally
         {
+            XTraceHelper.setCurrentTrace( pageRenderingTrace );
             PageRenderingTracer.stopTracing( pageRenderingTrace, livePortalTraceService );
         }
     }

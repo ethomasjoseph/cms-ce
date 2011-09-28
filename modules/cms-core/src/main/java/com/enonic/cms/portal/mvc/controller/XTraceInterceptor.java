@@ -1,27 +1,23 @@
 package com.enonic.cms.portal.mvc.controller;
 
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.enonic.cms.portal.livetrace.LivePortalTraceService;
-import com.enonic.cms.portal.livetrace.PortalRequestTrace;
+import com.enonic.cms.portal.livetrace.PageRenderingTrace;
 import com.enonic.cms.portal.xtrace.JsonSerializer;
+import com.enonic.cms.portal.xtrace.XTraceHelper;
 
 public class XTraceInterceptor
         extends HandlerInterceptorAdapter
 {
-    @Autowired
-    LivePortalTraceService livePortalTraceService;
-
     @Override
     public boolean preHandle( HttpServletRequest request, HttpServletResponse response, Object handler ) throws Exception
     {
-        if ( !clientIsEnabled( request ) )
+        if ( !XTraceHelper.clientIsEnabled( request ) )
         {
             return true;
         }
@@ -34,11 +30,6 @@ public class XTraceInterceptor
         forwardToAuthenticationForm( request, response );
 
         return false;
-    }
-
-    private boolean clientIsEnabled( HttpServletRequest request )
-    {
-        return "true".equals( request.getHeader( "X-Trace-Client-Enabled" ) );
     }
 
     private boolean clientIsAuthenticated( HttpServletRequest request )
@@ -56,10 +47,21 @@ public class XTraceInterceptor
     public void postHandle( HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView )
         throws Exception
     {
-        PortalRequestTrace requestTrace = livePortalTraceService.getCurrentPortalRequestTrace();
+        final PageRenderingTrace currentPageRenderingTrace = XTraceHelper.getCurrentPageRenderingTrace();
 
-        final String traceInfo = new JsonSerializer().serialize( requestTrace );
+        if ( !XTraceHelper.clientIsEnabled( request ) )
+        {
+            return;
+        }
+
+        if ( currentPageRenderingTrace == null )
+        {
+            return;
+        }
+
+        final String traceInfo = new JsonSerializer().serialize( currentPageRenderingTrace );
         final String traceInfoEncoded = new String( Base64.encodeBase64( traceInfo.getBytes() ) );
+
         setResponseHeaders( response, traceInfoEncoded );
     }
 
