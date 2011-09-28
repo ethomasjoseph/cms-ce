@@ -65,7 +65,16 @@ public class PortalRequestTracer
     {
         if ( trace != null && httpRequest != null )
         {
-            trace.setHttpRequestRemoteAddress( httpRequest.getRemoteAddr() );
+            // Hack for testing with simulated remote ip addresses. See http://en.wikipedia.org/wiki/X-Forwarded-For
+            String remoteAddressFromHeader = httpRequest.getHeader( "X-Forwarded-For" );
+            if ( remoteAddressFromHeader != null )
+            {
+                trace.setHttpRequestRemoteAddress( remoteAddressFromHeader );
+            }
+            else
+            {
+                trace.setHttpRequestRemoteAddress( httpRequest.getRemoteAddr() );
+            }
             trace.setHttpRequestCharacterEncoding( httpRequest.getCharacterEncoding() );
             trace.setHttpRequestContentType( httpRequest.getContentType() );
             trace.setHttpRequestUserAgent( httpRequest.getHeader( "User-Agent" ) );

@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.enonic.cms.core.content.ContentHandlerName;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.junit.Before;
@@ -17,6 +16,7 @@ import org.junit.Test;
 
 import com.enonic.cms.framework.util.JDOMUtil;
 
+import com.enonic.cms.core.content.ContentHandlerName;
 import com.enonic.cms.core.content.contentdata.custom.stringbased.SelectorDataEntry;
 import com.enonic.cms.core.content.contentdata.custom.stringbased.TextAreaDataEntry;
 import com.enonic.cms.core.content.contentdata.custom.stringbased.TextDataEntry;
@@ -226,16 +226,6 @@ public class CustomContentDataTest
         ContentTypeConfig config = ContentTypeConfigParser.parse( ContentHandlerName.CUSTOM, standardConfigEl );
 
         CustomContentData contentData = new CustomContentData( config );
-        // Test for B-01293
-//        try
-//        {
-//            contentData.add( new SelectorDataEntry( config.getInputConfig( "myRadiobutton" ), "Choice2" ) );
-//            fail( "Choice2 is not a valid choice for this radiobutton" );
-//        }
-//        catch ( Exception e )
-//        {
-//            // Just continue;
-//        }
         contentData.add( new SelectorDataEntry( config.getInputConfig( "myRadiobutton" ), "10" ) );
         SelectorDataEntry dataEntry = (SelectorDataEntry) contentData.getEntry( "myRadiobutton" );
         assertNotNull( dataEntry );
@@ -313,7 +303,7 @@ public class CustomContentDataTest
         ctyBuilder.addInput( "myGroupEntryRequiredField2", "text", "my-group-entry-field-2", "myGroupEntryRequiredField2", false );
         ctyBuilder.endBlock();
 
-        Element configEl = JDOMUtil.parseDocument( ctyBuilder.toString() ).getRootElement();
+        Element configEl = JDOMUtil.parseDocument( ctyBuilder.toString() ).getRootElement().getChild( "config" );
         ContentTypeConfig config = ContentTypeConfigParser.parse( ContentHandlerName.CUSTOM, configEl );
 
         CustomContentData contentData = new CustomContentData( config );

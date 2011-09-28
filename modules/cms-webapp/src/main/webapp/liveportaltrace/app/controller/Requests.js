@@ -95,8 +95,27 @@ Ext.define('LPT.controller.Requests', {
                 var grid = controller.getPortalRequestTraceHistoryGrid();
                 var idx = grid.getSelectionModel().getSelection();
                 var selected = idx.length > 0;
+                var requestJson, requestObject, r;
 
-                controller.getPortalRequestTraceHistoryGrid().getView().getStore().load();
+
+//                controller.getPortalRequestTraceHistoryGrid().getView().getStore().load();
+
+                var store = controller.getPortalRequestTraceHistoryGrid().getView().getStore();
+                Ext.Ajax.request( {
+                    url: '/liveportaltrace/rest/portal-request-trace-history/list',
+                    method: 'GET',
+                    //params: {key: user.get('key')},
+                    success: function( response ){
+                        requestJson = Ext.JSON.decode( response.responseText );
+                        if (requestJson && requestJson.requests) {
+                            requestJson = requestJson.requests;
+                            for (r = 0; r < requestJson.length; r++) {
+                                requestObject = new LPT.model.PortalRequestTraceModel(requestJson[r]);
+                                store.insert(0, [requestObject]);
+                            }
+                        }
+                      }
+                });
 
                 if (selected) {
                     // restore selected item
@@ -105,6 +124,10 @@ Ext.define('LPT.controller.Requests', {
                 }
             },
             3000);
+    },
+
+    function parsejsonRequest() {
+
     },
 
     stopAutoRefreshTimer: function () {
