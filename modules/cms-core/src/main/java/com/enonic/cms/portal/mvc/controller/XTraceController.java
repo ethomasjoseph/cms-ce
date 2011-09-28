@@ -1,28 +1,41 @@
 package com.enonic.cms.portal.mvc.controller;
 
+import com.enonic.cms.api.Version;
+import com.enonic.cms.core.resolver.MimeTypeResolver;
 import com.enonic.cms.core.security.InvalidCredentialsException;
 import com.enonic.cms.core.security.SecurityService;
 import com.enonic.cms.core.security.user.QualifiedUsername;
 import com.enonic.cms.core.security.userstore.UserStoreEntity;
 import com.enonic.cms.core.security.userstore.UserStoreKey;
 import com.enonic.cms.core.security.userstore.UserStoreService;
+
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
-import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.io.ByteStreams;
+
 public class XTraceController extends AbstractController
 {
-    @Resource
+    @Autowired
+    protected ResourceLoader resourceLoader;
+
+    @Autowired
     protected SecurityService securityService;
 
-    @Resource
+    @Autowired
     protected UserStoreService userStoreService;
 
     @Override
@@ -63,6 +76,7 @@ public class XTraceController extends AbstractController
         }
 
         model.put( "userStores", createUserStoreMap() );
+        model.put( "version", Version.getVersion() );
 
         return new ModelAndView( "xtraceAuthenticationPage", model );
     }
@@ -112,5 +126,13 @@ public class XTraceController extends AbstractController
     private void handleResource( HttpServletRequest request, HttpServletResponse response )
             throws Exception
     {
+        final String fileName = FilenameUtils.getName( request.getRequestURI() );
+        final String mimeType = MimeTypeResolver.getInstance().getMimeType( fileName );
+        final InputStream inputStream = this.resourceLoader.getResource( "WEB-INF/xtrace/" + fileName ).getInputStream();
+        final ServletOutputStream outputStream = response.getOutputStream();
+
+        ByteStreams.copy( inputStream, outputStream );
+
+        response.setContentType( mimeType );
     }
 }

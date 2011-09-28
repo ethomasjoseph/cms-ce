@@ -4,54 +4,72 @@
 <head>
     <meta charset="utf-8">
     <title>Enonic CMS - Authentication</title>
+    <link rel="stylesheet" href="_xtrace/resources/authentication-page.css" type="text/css" />
+    <link rel="stylesheet" href="_xtrace/resources/authentication-page-ie.css" type="text/css" />
 </head>
 <body>
-[#if authenticationFailed = true]
-    <p style="font-weight: bold">
-        Username or password is wrong
-    </p>
-[/#if]
 
-<div>
-    <form action="." method="post">
-        <div>
-            <input type="hidden" name="_xtrace_authentication" value="true"/>
-            <table>
-                <tr>
-                    <td>
-                        <label for="userstore">Userstore:</label>
-                    </td>
-                    <td>
-                        <select name="_xtrace_userstore" id="userstore">
-                            [#list userStores?keys?sort as key]
-                                <option value="${key}">${userStores[key]}</option>
-                            [/#list]
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label for="username">Username:</label>
-                    </td>
-                    <td>
-                        <input type="text" name="_xtrace_username" id="username"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label for="password">Password:</label>
+<table cellpadding="0" cellspacing="0" border="0" id="wrapper">
+    <tr>
+        <td>
+            [#if authenticationFailed = true]
+                <p class="cms-error">Wrong username or password</p>
+            [/#if]
 
-                    </td>
-                    <td>
-                        <input type="password" name="_xtrace_password" id="password"/>
-                    </td>
-                </tr>
-            </table>
-            <br/>
-                <input type="submit" value="Authenticate &gt;&gt;"/>
-        </div>
-    </form>
-</div>
+            <div id="inner">
+                <h1>Authenticate</h1>
+                <div id="form-container">
+                    <form action="." method="post">
+                        <input type="hidden" name="_xtrace_authentication" value="true"/>
+                        <table cellspacing="0" cellpadding="0" border="0">
+                            <tr>
+                                <td class="label-container">
+                                    <label for="userstore">Userstore</label>
+                                </td>
+                                <td class="input-container">
+                                    <select name="_xtrace_userstore" id="userstore">
+                                        [#list userStores?keys?sort as key]
+                                            <option value="${key}">${userStores[key]}</option>
+                                        [/#list]
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-container">
+                                    <label for="username">Username</label>
+                                </td>
+                                <td class="input-container">
+                                    <input type="text" id="username" name="_xtrace_username" value="" />
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td class="label-container">
+                                    <label for="password">Password</label>
+                                </td>
+                                <td class="input-container">
+                                    <input type="password" id="password" name="_xtrace_password" value="" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-container">
+                                    <br />
+                                </td>
+                                <td class="input-container">
+                                    <input type="submit" style="cursor: pointer;" class="button_text" name="login" value="Authenticate" id="login"/>
+
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <p class="version">
+                CMS ${version}
+            </p>
+        </td>
+    </tr>
+</table>
 
 <script>
     document.getElementById( 'username' ).focus();
