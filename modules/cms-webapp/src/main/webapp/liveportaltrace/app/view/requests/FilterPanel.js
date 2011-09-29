@@ -38,53 +38,28 @@ Ext.define( 'LPT.view.requests.FilterPanel', {
             ]
         },
         {
-            id: 'pageFilterButton',
+            id: 'filterIncludePageRequestsCheckbox',
             xtype: 'checkbox',
             checked: true,
-            boxLabel: 'Page requests',
-            listeners: {
-                change: function()
-                {
-                    return this.ownerCt.applyFilters( this );
-                }
-            }
+            boxLabel: 'Page requests'
         },
         {
-            id: 'windowFilterButton',
+            id: 'filterIncludeWindowRequestsCheckbox',
             xtype: 'checkbox',
             checked: true,
-            boxLabel: 'Window requests',
-            listeners: {
-                change: function()
-                {
-                    return this.ownerCt.applyFilters( this );
-                }
-            }
-
+            boxLabel: 'Window requests'
         },
         {
-            id: 'imageFilterButton',
+            id: 'filterIncludeImageRequestsCheckbox',
             xtype: 'checkbox',
             checked: true,
-            boxLabel: 'Image requests',
-            listeners: {
-                change: function()
-                {
-                    return this.ownerCt.applyFilters( this );
-                }
-            }
+            boxLabel: 'Image requests'
         },
         {
-            id: 'attachmentFilterButton',
+            id: 'filterIncludeAttachmentRequestsCheckbox',
             xtype: 'checkbox',
             checked: true,
-            boxLabel: 'Attachment requests',
-            listeners: {
-                change: function()
-                {
-                    return this.ownerCt.applyFilters( this );
-                }
-            }
+            boxLabel: 'Attachment requests'
         }
     ],
 
@@ -93,61 +68,12 @@ Ext.define( 'LPT.view.requests.FilterPanel', {
         this.callParent( arguments );
     },
 
-    applyFilters: function( button )
+    updateFacetStatistics: function(facetStatistics)
     {
-        var store = Ext.data.StoreManager.lookup( 'PortalRequestTraceHistoryListStore' );
-
-        var pageFilterButton = this.getComponent( 'pageFilterButton' );
-        var windowFilterButton = this.getComponent( 'windowFilterButton' );
-        var attachmentFilterButton = this.getComponent( 'attachmentFilterButton' );
-        var imageFilterButton = this.getComponent( 'imageFilterButton' );
-
-        var requestTypeFilter = new Ext.util.Filter( {
-                                                         filterFn: function( item )
-                                                         {
-                                                             var dontAccept = false;
-                                                             if ( !pageFilterButton.getValue() )
-                                                             {
-                                                                 dontAccept = item.data.requestType === 'Page';
-                                                             }
-                                                             if ( dontAccept )
-                                                             {
-                                                                 return false;
-                                                             }
-
-                                                             if ( !windowFilterButton.getValue() )
-                                                             {
-                                                                 dontAccept = item.data.requestType === 'Window';
-                                                             }
-                                                             if ( dontAccept )
-                                                             {
-                                                                 return false;
-                                                             }
-
-                                                             if ( !attachmentFilterButton.getValue() )
-                                                             {
-                                                                 dontAccept = item.data.requestType === 'Attachment';
-                                                             }
-                                                             if ( dontAccept )
-                                                             {
-                                                                 return false;
-                                                             }
-
-                                                             if ( !imageFilterButton.getValue() )
-                                                             {
-                                                                 dontAccept = item.data.requestType === 'Image';
-                                                             }
-                                                             if ( dontAccept )
-                                                             {
-                                                                 return false;
-                                                             }
-
-                                                             return true;
-                                                         }
-                                                     } );
-
-        store.clearFilter();
-        store.filter( requestTypeFilter );
+        Ext.getCmp( "filterIncludePageRequestsCheckbox" ).boxLabelEl.update( "Page requests (" + facetStatistics.numberOfPageRequests + ")" );
+        Ext.getCmp( "filterIncludeWindowRequestsCheckbox" ).boxLabelEl.update( "Window requests (" + facetStatistics.numberOfWindowRequests + ")" );
+        Ext.getCmp( "filterIncludeImageRequestsCheckbox" ).boxLabelEl.update( "Image requests (" + facetStatistics.numberOfImageRequests + ")" );
+        Ext.getCmp( "filterIncludeAttachmentRequestsCheckbox" ).boxLabelEl.update( "Attachment requests (" + facetStatistics.numberOfAttachmentRequests + ")" );
     }
 
 } );

@@ -24,6 +24,7 @@ Ext.define('LPT.controller.Requests', {
 
     refs: [
         {ref: 'portalRequestTraceHistoryGrid', selector: 'portalRequestTraceHistoryGrid'},
+        {ref: 'filterPanel', selector: 'requestsFilterPanel'},
         {ref: 'mainTabPanel', selector: 'mainTabPanel'},
         {ref: 'portalRequestTraceHistoryDetailsPanel', selector: 'portalRequestTraceHistoryDetailsPanel', xtype: 'portalRequestTraceHistoryDetailsPanel'},
         {ref: 'requestContextMenu', selector: 'requestContextMenu', autoCreate: true, xtype: 'requestContextMenu'}
@@ -37,13 +38,30 @@ Ext.define('LPT.controller.Requests', {
             },
             'portalRequestTraceHistoryGrid > tableview': {
             },
-            '*[action=details]': {
-                click: this.onContextMenuDetails
+                         '*[action=details]': {
+                             click: this.onContextMenuDetails
+            },
+            '#filterIncludePageRequestsCheckbox': {
+                change: this.applyFilterForCmpletedRequests
+            },
+            '#filterIncludeWindowRequestsCheckbox': {
+                change: this.applyFilterForCmpletedRequests
             }
+            ,
+            '#filterIncludeImageRequestsCheckbox': {
+                change: this.applyFilterForCmpletedRequests
+            }
+            ,
+            '#filterIncludeAttachmentRequestsCheckbox': {
+                change: this.applyFilterForCmpletedRequests
+            }
+
         });
 
         this.startAutoRefreshTimer();
     },
+
+    totalFacetStatistics: new FacetStatistics(),
 
     showRequestInfo: function( view, modelItem, htmlEl, idx, e )
     {
@@ -110,6 +128,7 @@ Ext.define('LPT.controller.Requests', {
                 requestJson = requestJson && requestJson.requests;
                 if (requestJson && (requestJson.length > 0)) {
                     // add new requests to grid panel
+                    console.log("Parsing requests in json format...");
                     requestArray = [];
                     for (r = 0; r < requestJson.length; r++) {
                         requestObject = controller.requestJsonToModel(requestJson[r]);
@@ -120,7 +139,30 @@ Ext.define('LPT.controller.Requests', {
                         }
                         requestArray.push(requestObject);
                     }
+                    console.log("Inserting requests...");
                     store.insert(0, requestArray);
+                    console.log("Loaded " + requestArray.length + " new requests");
+
+                    Ext.Array.each( requestArray, function( item )
+                    {
+                        var trace = item.data;
+                        if ( trace.requestType === "Page" )
+                        {
+                            controller.totalFacetStatistics.numberOfPageRequests++;
+                        } else if ( trace.requestType === "Window" )
+                        {
+                            controller.totalFacetStatistics.numberOfWindowRequests++;
+                        } else if ( trace.requestType === "Image" )
+                        {
+                            controller.totalFacetStatistics.numberOfImageRequests++;
+                        } else if ( trace.requestType === "Attachment" )
+                        {
+                            controller.totalFacetStatistics.numberOfAttachmentRequests++;
+                        }
+                    }, this );
+
+                    // update gui
+                    controller.getFilterPanel().updateFacetStatistics( controller.totalFacetStatistics );
                 }
 
                 controller.startAutoRefreshTimer(); // restart timer
@@ -129,6 +171,93 @@ Ext.define('LPT.controller.Requests', {
                 controller.startAutoRefreshTimer(); // restart timer
             }
         });
+    },
+
+    applyFilterForCmpletedRequests: function()
+    {
+        var store = Ext.data.StoreManager.lookup( 'PortalRequestTraceHistoryListStore' );
+
+        var filterIncludePageRequestsCheckbox = Ext.getCmp( 'filterIncludePageRequestsCheckbox' );
+        var filterIncludeWindowRequestsCheckbox = Ext.getCmp( 'filterIncludeWindowRequestsCheckbox' );
+        var filterIncludeAttachmentRequestsCheckbox = Ext.getCmp( 'filterIncludeAttachmentRequestsCheckbox' );
+        var filterIncludeImageRequestsCheckbox = Ext.getCmp( 'filterIncludeImageRequestsCheckbox' );
+
+        var requestTypeFilter = new Ext.util.Filter( {
+                                                         filterFn: function( item )
+                                                         {
+                                                             var dontAccept = false;
+                                                             if ( !filterIncludePageRequestsCheckbox.getValue() )
+                                                             {
+                                                                 dontAccept = item.data.requestType === 'Page';
+                                                             }
+                                                             if ( dontAccept )
+                                                             {
+                                                                 return false;
+                                                             }
+
+                                                             if ( !filterIncludeWindowRequestsCheckbox.getValue() )
+                                                             {
+                                                                 dontAccept = item.data.requestType === 'Window';
+                                                             }
+                                                             if ( dontAccept )
+                                                             {
+                                                                 return false;
+                                                             }
+
+                                                             if ( !filterIncludeAttachmentRequestsCheckbox.getValue() )
+                                                             {
+                                                                 dontAccept = item.data.requestType === 'Attachment';
+                                                             }
+                                                             if ( dontAccept )
+                                                             {
+                                                                 return false;
+                                                             }
+
+                                                             if ( !filterIncludeImageRequestsCheckbox.getValue() )
+                                                             {
+                                                                 dontAccept = item.data.requestType === 'Image';
+                                                             }
+                                                             if ( dontAccept )
+                                                             {
+                                                                 return false;
+                                                             }
+
+                                                             return true;
+                                                         }
+                                                     } );
+
+        store.clearFilter();
+        store.filter( requestTypeFilter );
+
+        this.getFilterPanel().updateFacetStatistics( this.countFacets() );
+    },
+
+    countFacets: function()
+    {
+        var store = this.getPortalRequestTraceHistoryGrid().getView().getStore();
+        var facetStatistics = new FacetStatistics();
+        Ext.Array.each( store.data.items, function(item) {
+
+            var trace = item.data;
+            if( trace.requestType === "Page" )
+            {
+                facetStatistics.numberOfPageRequests++;
+            }
+            else if( trace.requestType === "Window" )
+            {
+                facetStatistics.numberOfWindowRequests++;
+            }
+            else if( trace.requestType === "Image" )
+            {
+                facetStatistics.numberOfImageRequests++;
+            }
+            else if( trace.requestType === "Attachment" )
+            {
+                facetStatistics.numberOfAttachmentRequests++;
+            }
+        }, this);
+
+        return facetStatistics;
     },
 
     requestJsonToModel: function(requestJson) {
@@ -146,3 +275,10 @@ Ext.define('LPT.controller.Requests', {
     }
 
 });
+
+function FacetStatistics() {
+    this.numberOfPageRequests =  0;
+    this.numberOfWindowRequests = 0;
+    this.numberOfImageRequests = 0;
+    this.numberOfAttachmentRequests = 0;
+};
