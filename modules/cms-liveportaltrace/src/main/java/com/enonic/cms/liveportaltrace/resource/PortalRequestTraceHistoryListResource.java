@@ -12,7 +12,6 @@ import javax.ws.rs.QueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.enonic.cms.core.spring.PrototypeScope;
 import com.enonic.cms.liveportaltrace.model.PortalRequestTraceListModel;
 import com.enonic.cms.liveportaltrace.model.PortalRequestTraceModelFactory;
 import com.enonic.cms.liveportaltrace.model.treetable.TraceTreeTableNodeModel;
@@ -21,7 +20,6 @@ import com.enonic.cms.portal.livetrace.LivePortalTraceService;
 import com.enonic.cms.portal.livetrace.PastPortalRequestTrace;
 
 @Path("/liveportaltrace/rest/portal-request-trace-history")
-@PrototypeScope
 @Component
 @Produces("application/json")
 public final class PortalRequestTraceHistoryListResource
