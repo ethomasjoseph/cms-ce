@@ -126,4 +126,14 @@ public class Duration
         s.append( "executionTimeInMilliseconds: " ).append( executionTimeInMilliseconds ).append( "\n" );
         return s.toString();
     }
+
+    public static Duration createEmpty()
+    {
+        Duration duration = new Duration();
+        duration.startTime = new DateTime( 2000, 1, 1, 0, 0, 0, 0 );
+        duration.stopTime = new DateTime( 2000, 1, 1, 0, 0, 0, 0 );
+        duration.executionTimeInMilliseconds = 0;
+        duration.executionTimeAsHRFormat = "";
+        return duration;
+    }
 }

@@ -2,6 +2,7 @@ package com.enonic.cms.portal.livetrace;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -93,5 +94,53 @@ public class DatasourceExecutionTrace
     public List<DatasourceMethodArgument> getDatasourceMethodArguments()
     {
         return datasourceMethodArgumentList;
+    }
+
+    public static Duration resolveDurationOfDatasourceExecutions( final Collection<DatasourceExecutionTrace> datasourceExecutionTraces)
+    {
+        if( datasourceExecutionTraces == null || datasourceExecutionTraces.isEmpty() )
+        {
+            return Duration.createEmpty();
+        }
+
+        DateTime earliestStartTime = null;
+        DateTime latestStopTime = null;
+
+        for ( DatasourceExecutionTrace datasourceExecutionTrace : datasourceExecutionTraces )
+        {
+            final DateTime currentStartTime =
+                datasourceExecutionTrace.getDuration() != null ? datasourceExecutionTrace.getDuration().getStartTime() : null;
+
+            if ( earliestStartTime == null )
+            {
+                earliestStartTime = currentStartTime;
+            }
+            else if ( currentStartTime != null )
+            {
+                if ( currentStartTime.isBefore( earliestStartTime ) )
+                {
+                    earliestStartTime = currentStartTime;
+                }
+            }
+
+            final DateTime currentStopTime =
+                datasourceExecutionTrace.getDuration() != null ? datasourceExecutionTrace.getDuration().getStopTime() : null;
+
+            if ( latestStopTime == null )
+            {
+                latestStopTime = currentStopTime;
+            }
+            else if ( currentStopTime != null )
+            {
+                if ( currentStopTime.isAfter( latestStopTime ) )
+                {
+                    latestStopTime = currentStopTime;
+                }
+            }
+        }
+        Duration duration = new Duration();
+        duration.setStartTime( earliestStartTime );
+        duration.setStopTime( latestStopTime );
+        return duration;
     }
 }

@@ -18,6 +18,7 @@ Ext.define('LPT.store.PortalRequestTraceHistoryDetailsStore', {
     fields: [
         {name: 'text', type: 'string'},
         {name: 'usedCachedResult', type: 'string'},
+        {name: 'executor', type: 'executor'},
         {name: 'duration.humanReadable', type: 'auto'}
     ]
 

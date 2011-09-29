@@ -30,6 +30,14 @@ Ext.define( 'LPT.view.requests.PortalRequestTraceHistoryDetailsPanel', {
             margin: '0 0 0 3'
         },
         {
+            text: 'Executor',
+            dataIndex: 'executor',
+            sortable: false,
+            flex: 1,
+            align: 'right',
+            margin: '0 0 0 3'
+        },
+        {
             text: 'Duration',
             dataIndex: 'duration.humanReadable',
             sortable: false,
