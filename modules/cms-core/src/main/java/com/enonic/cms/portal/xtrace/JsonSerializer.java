@@ -7,7 +7,7 @@ import com.google.gson.*;
 
 import java.util.List;
 
-// TODO: Calculate the start times and end times
+// TODO: Calculate accurate start times and end times
 public class JsonSerializer
 {
     public String serialize( PageRenderingTrace pageRenderingTrace )
@@ -59,90 +59,116 @@ public class JsonSerializer
         String userStoreName = "";
         if ( pageRenderingTrace.getRenderer().getUserStoreName() != null )
         {
-            userStoreName = pageRenderingTrace.getRenderer().getUserStoreName();
+            userStoreName = pageRenderingTrace.getRenderer().getUserStoreName() + "\\";
         }
 
-        String qualifiedName = userStoreName + "\\" + pageRenderingTrace.getRenderer().getUsername();
+        String qualifiedName = userStoreName + pageRenderingTrace.getRenderer().getUsername();
 
         page.addProperty( "run_as_user", qualifiedName );
 
-        appendPageDatasources( page, pageRenderingTrace );
-        appendWindows( page, pageRenderingTrace );
+        appendPageDatasources( page, pageRenderingTrace, 0 );
+
+        long dataSourcesTotalExecutionTime = calculatePageDatasourcesExecutionTimesMS( pageRenderingTrace.getDatasourceExecutionTraces() );
+        appendWindows( page, pageRenderingTrace, dataSourcesTotalExecutionTime );
 
         return page;
     }
 
-    private void appendPageDatasources( JsonObject page, PageRenderingTrace pageRenderingTrace )
+    private void appendPageDatasources( JsonObject page, PageRenderingTrace pageRenderingTrace, long startTime )
     {
-        page.add( "datasources", createDatasources( pageRenderingTrace.getDatasourceExecutionTraces() ) );
+        page.add( "datasources", createDatasources( pageRenderingTrace.getDatasourceExecutionTraces(), startTime ) );
     }
 
-    private void appendWindows( JsonObject page, PageRenderingTrace pageRenderingTrace )
+    private void appendWindows( JsonObject page, PageRenderingTrace pageRenderingTrace, long startTime )
     {
-        page.add( "windows", createWindows( pageRenderingTrace.getWindowRenderingTraces() ) );
+        page.add( "windows", createWindows( pageRenderingTrace.getWindowRenderingTraces(), startTime ) );
     }
 
-    private JsonArray createWindows( List<WindowRenderingTrace> windows )
+    private JsonArray createWindows( List<WindowRenderingTrace> windows, long startTime )
     {
         JsonArray windowsArray = new JsonArray();
 
+        long tempStartTime = startTime;
         for ( WindowRenderingTrace window : windows )
         {
-            createWindow( windowsArray, window );
+            createWindow( windowsArray, window, tempStartTime );
+            tempStartTime = tempStartTime + window.getDuration().getExecutionTimeInMilliseconds();
         }
 
         return windowsArray;
     }
 
-    private void createWindow( JsonArray windowsArray, WindowRenderingTrace window )
+    private void createWindow( JsonArray windowsArray, WindowRenderingTrace window, long startTime )
     {
         JsonObject windowObject = new JsonObject();
         windowObject.addProperty( "key", "TODO" );
         windowObject.addProperty( "name", window.getPortletName() );
         windowObject.addProperty( "cacheable", "TODO" );
         windowObject.addProperty( "cache_hit", window.isUsedCachedResult() );
-        windowObject.addProperty( "start_time", window.getDuration().getStartTime().toString() );
-        windowObject.addProperty( "end_time", window.getDuration().getStopTime().toString() );
+        windowObject.addProperty( "start_time", startTime );
+
+        windowObject.addProperty( "end_time", startTime + window.getDuration().getExecutionTimeInMilliseconds() );
         windowObject.addProperty( "total_time", window.getDuration().getExecutionTimeInMilliseconds() );
 
         JsonObject xsltObject = new JsonObject();
         xsltObject.addProperty( "processing_time", window.getInstructionPostProcessingTrace().getDuration().getExecutionTimeInMilliseconds() );
         windowObject.add( "xslt", xsltObject );
 
-        windowObject.addProperty( "run_as_user", window.getRenderer().getUsername() );
+        String userStoreName = "";
+        if ( window.getRenderer().getUserStoreName() != null )
+        {
+            userStoreName = window.getRenderer().getUserStoreName() + "\\";
+        }
 
-        appendWindowDatasources( windowObject, window );
+        String qualifiedName = userStoreName + window.getRenderer().getUsername();
+
+        windowObject.addProperty( "run_as_user", qualifiedName );
+
+        appendWindowDatasources( windowObject, window, startTime );
 
         windowsArray.add( windowObject );
     }
 
-    private void appendWindowDatasources( JsonObject windowObject, WindowRenderingTrace window )
+    private void appendWindowDatasources( JsonObject windowObject, WindowRenderingTrace window, long startTime )
     {
-        windowObject.add( "datasources", createDatasources( window.getDatasourceExecutionTraces() ) );
+        windowObject.add( "datasources", createDatasources( window.getDatasourceExecutionTraces(), startTime ) );
     }
 
 
-    private JsonArray createDatasources( List<DatasourceExecutionTrace> datasources )
+    private JsonArray createDatasources( List<DatasourceExecutionTrace> datasources, long startTime )
     {
         JsonArray datasourceArray = new JsonArray();
 
+        long tempStartTime = startTime;
         for ( DatasourceExecutionTrace datasource : datasources )
         {
-            createDatasource( datasourceArray, datasource );
+            createDatasource( datasourceArray, datasource, tempStartTime );
+            tempStartTime = tempStartTime + datasource.getDuration().getExecutionTimeInMilliseconds();
         }
 
         return datasourceArray;
     }
 
-    private void createDatasource( JsonArray jsonArray, DatasourceExecutionTrace datasource )
+    private void createDatasource( JsonArray jsonArray, DatasourceExecutionTrace datasource, long startTime )
     {
         JsonObject datasourceObject = new JsonObject();
         datasourceObject.addProperty( "name", datasource.getMethodName() );
-        datasourceObject.addProperty( "start_time", datasource.getDuration().getStartTime().toString() );
-        datasourceObject.addProperty( "end_time", datasource.getDuration().getStopTime().toString() );
+        datasourceObject.addProperty( "start_time", startTime );
+        datasourceObject.addProperty( "end_time", startTime + datasource.getDuration().getExecutionTimeInMilliseconds() );
         datasourceObject.addProperty( "time", datasource.getDuration().getExecutionTimeInMilliseconds() );
 
         jsonArray.add( datasourceObject );
+    }
+
+    private long calculatePageDatasourcesExecutionTimesMS( List<DatasourceExecutionTrace> datasources )
+    {
+        long total = 0;
+        for ( DatasourceExecutionTrace datasource : datasources )
+        {
+            total += datasource.getDuration().getExecutionTimeInMilliseconds();
+        }
+
+        return total;
     }
 
 }

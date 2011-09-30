@@ -67,6 +67,7 @@ public class XTraceInterceptor
 
     private void setResponseHeaders( HttpServletResponse response, String traceInfo )
     {
+        /*
         final Integer charsPrHeader = 1000;
         final int traceInfoCharLength = traceInfo.length();
 
@@ -84,6 +85,9 @@ public class XTraceInterceptor
 
             response.setHeader( "X-Trace-Info-" + i, headerValue );
         }
+        */
+        response.setHeader( "X-Trace-Info-", traceInfo );
+
     }
 
 }
