@@ -1,5 +1,5 @@
 html, body, #wrapper {
-    height:98%;
+    height:97%;
     margin: 0;
     padding: 0;
     border: none;
@@ -71,10 +71,11 @@ form {margin: 0; padding: 0}
 
 #inner
 {
-    background-image: url(_xtrace/resources/cms-login.jpg);
+    background: #141414 url(_xtrace/resources/cms-authenticate.jpg) no-repeat;
+    border: 1px solid #141414;
     background-repeat: no-repeat;
-    width: 370px;
-    height: 260px;
+    width: 320px;
+    height: 230px;
     text-align: left;
     margin: auto;
 }
@@ -89,7 +90,7 @@ form {margin: 0; padding: 0}
 {
     width: 147px;
     color: #fff;
-    margin: 0 0 10px 221px;
+    margin: 0 0 7px 170px;
     padding: 65px 0 0 0;;
     height: 16px;
 }
@@ -137,4 +138,8 @@ select {
     background-color: #FFFFFF;
     border: 1px solid #B3C3C3;
     padding: 2px;
+}
+
+.cms-error {
+    color: #8A1F11;
 }
