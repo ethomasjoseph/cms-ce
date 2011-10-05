@@ -38,30 +38,37 @@ Ext.define('LPT.controller.Requests', {
             },
             'portalRequestTraceHistoryGrid > tableview': {
             },
-                         '*[action=details]': {
+            '*[action=details]': {
                              click: this.onContextMenuDetails
             },
             '#filterIncludePageRequestsCheckbox': {
-                change: this.applyFilterForCmpletedRequests
+                change: this.applyFilterForCompletedRequests
             },
             '#filterIncludeWindowRequestsCheckbox': {
-                change: this.applyFilterForCmpletedRequests
+                change: this.applyFilterForCompletedRequests
             }
             ,
             '#filterIncludeImageRequestsCheckbox': {
-                change: this.applyFilterForCmpletedRequests
+                change: this.applyFilterForCompletedRequests
             }
             ,
             '#filterIncludeAttachmentRequestsCheckbox': {
-                change: this.applyFilterForCmpletedRequests
+                change: this.applyFilterForCompletedRequests
+            },
+            '*[action=stopAutoRefresh]': {
+                click: this.onStopAutoRefresh
+            },
+            '*[action=startAutoRefresh]': {
+                click: this.onStartAutoRefresh
             }
-
         });
 
         this.startAutoRefreshTimer();
     },
 
     totalFacetStatistics: new FacetStatistics(),
+
+    autoRefreshOn: true,
 
     showRequestInfo: function( view, modelItem, htmlEl, idx, e )
     {
@@ -70,15 +77,6 @@ Ext.define('LPT.controller.Requests', {
         {
             this.showRequestDetails(req);
         }
-    },
-
-    getRequestTitleForTab: function(reqData) {
-//        var title = reqData.id +' - ';
-//        var p = reqData.url.lastIndexOf('/');
-//        var url = (p > 0)? '...'+reqData.url.substr(p) : reqData.url;
-//        title += url;
-//        return title;
-        return reqData.url;
     },
 
     popupMenu: function(view, rec, node, index, e) {
@@ -115,6 +113,10 @@ Ext.define('LPT.controller.Requests', {
     },
 
     loadPortalRequests: function () {
+        if (!this.autoRefreshOn) {
+            this.startAutoRefreshTimer(); // restart timer
+            return;
+        }
         var controller = this;
         var store = this.getPortalRequestTraceHistoryGrid().getView().getStore();
         Ext.Ajax.request( {
@@ -173,7 +175,7 @@ Ext.define('LPT.controller.Requests', {
         });
     },
 
-    applyFilterForCmpletedRequests: function()
+    applyFilterForCompletedRequests: function()
     {
         var store = Ext.data.StoreManager.lookup( 'PortalRequestTraceHistoryListStore' );
 
@@ -258,6 +260,22 @@ Ext.define('LPT.controller.Requests', {
         }, this);
 
         return facetStatistics;
+    },
+
+    onStopAutoRefresh: function() {
+        var stopButton = Ext.getCmp( 'stopAutoRefreshButton' );
+        var startButton = Ext.getCmp( 'startAutoRefreshButton' );
+        stopButton.hide();
+        startButton.show();
+        this.autoRefreshOn = false;
+    },
+
+    onStartAutoRefresh: function() {
+        var stopButton = Ext.getCmp( 'stopAutoRefreshButton' );
+        var startButton = Ext.getCmp( 'startAutoRefreshButton' );
+        startButton.hide();
+        stopButton.show();
+        this.autoRefreshOn = true;
     },
 
     requestJsonToModel: function(requestJson) {

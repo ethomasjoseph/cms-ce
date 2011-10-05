@@ -61,3 +61,13 @@
 .request-info dl dd {
 
 }
+
+.x-btn .autorefresh-stop, .autorefresh-stop
+{
+    background-image: url("../images/cancel.png");
+}
+
+.x-btn .autorefresh-start, .autorefresh-start
+{
+    background-image: url("../images/arrow_refresh.png");
+}

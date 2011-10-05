@@ -63,12 +63,33 @@ Ext.define( 'LPT.view.requests.PortalRequestTraceHistoryGrid', {
             }
         ];
 
-        this.bbar = {
-            xtype: 'pagingtoolbar',
-            store: this.store,
-            displayInfo: true,
-            displayMsg: 'Displaying portal requests {0} - {1} of {2}',
-            emptyMsg: 'No portal requests to display'
+//        this.bbar = {
+//            xtype: 'pagingtoolbar',
+//            store: this.store,
+//            displayInfo: true,
+//            displayMsg: 'Displaying portal requests {0} - {1} of {2}',
+//            emptyMsg: 'No portal requests to display'
+//        };
+
+        this.tbar = {
+            xtype: 'toolbar',
+            border: false,
+            padding: 5,
+            items: [
+                {
+                    text: 'Freeze updates',
+                    iconCls: 'autorefresh-stop',
+                    action: 'stopAutoRefresh',
+                    id: 'stopAutoRefreshButton'
+                },
+                {
+                    text: 'Auto-refresh',
+                    iconCls: 'autorefresh-start',
+                    action: 'startAutoRefresh',
+                    id: 'startAutoRefreshButton',
+                    hidden: true
+                }
+            ]
         };
 
         this.viewConfig = {

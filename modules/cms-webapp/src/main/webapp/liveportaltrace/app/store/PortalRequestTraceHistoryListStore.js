@@ -24,25 +24,4 @@ Ext.define('LPT.store.PortalRequestTraceHistoryListStore', {
     ],
 
     lastRequestId: 0
-
-//    listeners:{
-//        load: function(store, records, successful, operation) {
-//            var i, req;
-//            if (records) {
-//                // keep last request-id
-//                for (i = 0; i < records.length; i ++) {
-//                    req = records[i].data;
-//                    if (req.id > store.lastRequestId) {
-//                        store.lastRequestId = req.id;
-//                    }
-//                }
-//            }
-//        },
-//
-//        beforeload: function(store, operation) {
-//            // ask for requests starting after the last request-id
-//            operation.start = store.lastRequestId;
-//        }
-//    }
-
 });
