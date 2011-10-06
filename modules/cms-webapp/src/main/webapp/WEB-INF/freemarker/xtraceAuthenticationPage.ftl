@@ -19,7 +19,7 @@
             <div id="inner">
                 <h1>Authenticate</h1>
                 <div id="form-container">
-                    <form action="." method="post">
+                    <form action="" method="post">
                         <input type="hidden" name="_xtrace_authentication" value="true"/>
                         <table cellspacing="0" cellpadding="0" border="0">
                             <tr>
