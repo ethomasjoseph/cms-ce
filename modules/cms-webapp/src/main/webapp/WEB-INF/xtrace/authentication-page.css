@@ -71,6 +71,7 @@ form {margin: 0; padding: 0}
 
 #inner
 {
+    border-radius: 5px;
     background: #141414 url(_xtrace/resources/cms-authenticate.jpg) no-repeat;
     border: 1px solid #141414;
     background-repeat: no-repeat;
@@ -83,13 +84,13 @@ form {margin: 0; padding: 0}
 #inner, #inner td
 {
     font-size: 10px;
-    color: #fff;
+    color: #B6B0AB;
 }
 
 #inner h1
 {
     width: 147px;
-    color: #fff;
+    color: #B6B0AB;
     margin: 0 0 7px 170px;
     padding: 65px 0 0 0;;
     height: 16px;
