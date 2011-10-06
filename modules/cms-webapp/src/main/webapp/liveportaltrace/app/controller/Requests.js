@@ -68,6 +68,8 @@ Ext.define('LPT.controller.Requests', {
 
     totalFacetStatistics: new FacetStatistics(),
 
+    siteNames: {},
+    
     autoRefreshOn: true,
 
     showRequestInfo: function( view, modelItem, htmlEl, idx, e )
@@ -130,7 +132,6 @@ Ext.define('LPT.controller.Requests', {
                 requestJson = requestJson && requestJson.requests;
                 if (requestJson && (requestJson.length > 0)) {
                     // add new requests to grid panel
-                    console.log("Parsing requests in json format...");
                     requestArray = [];
                     for (r = 0; r < requestJson.length; r++) {
                         requestObject = controller.requestJsonToModel(requestJson[r]);
@@ -141,10 +142,9 @@ Ext.define('LPT.controller.Requests', {
                         }
                         requestArray.push(requestObject);
                     }
-                    console.log("Inserting requests...");
                     store.insert(0, requestArray);
-                    console.log("Loaded " + requestArray.length + " new requests");
 
+                    // collecting statistics
                     Ext.Array.each( requestArray, function( item )
                     {
                         var trace = item.data;
@@ -161,9 +161,22 @@ Ext.define('LPT.controller.Requests', {
                         {
                             controller.totalFacetStatistics.numberOfAttachmentRequests++;
                         }
+
+                        var siteName = trace.site.name;
+                        var siteKey = siteName.replace( / /g, "_" );
+                        var siteInfo = controller.totalFacetStatistics.siteStatsByKey[siteKey];
+                        if( siteInfo == null )
+                        {
+                            controller.totalFacetStatistics.siteStatsByKey[siteKey] = { name: siteName, count: 1 };
+                        }
+                        else
+                        {
+                            siteInfo.count = siteInfo.count + 1;
+                        }
+
                     }, this );
 
-                    // update gui
+                    // update gui with collected statistics
                     controller.getFilterPanel().updateFacetStatistics( controller.totalFacetStatistics );
                 }
 
@@ -183,6 +196,7 @@ Ext.define('LPT.controller.Requests', {
         var filterIncludeWindowRequestsCheckbox = Ext.getCmp( 'filterIncludeWindowRequestsCheckbox' );
         var filterIncludeAttachmentRequestsCheckbox = Ext.getCmp( 'filterIncludeAttachmentRequestsCheckbox' );
         var filterIncludeImageRequestsCheckbox = Ext.getCmp( 'filterIncludeImageRequestsCheckbox' );
+        var filterSite = Ext.getCmp( 'filterSite' );
 
         var requestTypeFilter = new Ext.util.Filter( {
                                                          filterFn: function( item )
@@ -223,6 +237,18 @@ Ext.define('LPT.controller.Requests', {
                                                              {
                                                                  return false;
                                                              }
+
+                                                             if ( filterSite.getValue().length > 0 )
+                                                             {
+                                                                 console.log( "filterSite.getValue(): " + filterSite.getValue() +":" );
+                                                                 console.log( "item.data.site.name  : " + item.data.site.name + ":" );
+                                                                 if( item.data.site.name !== filterSite.getValue() )
+                                                                 {
+                                                                     return false;
+                                                                 }
+                                                             }
+
+
 
                                                              return true;
                                                          }
@@ -299,4 +325,5 @@ function FacetStatistics() {
     this.numberOfWindowRequests = 0;
     this.numberOfImageRequests = 0;
     this.numberOfAttachmentRequests = 0;
+    this.siteStatsByKey = {};
 };
