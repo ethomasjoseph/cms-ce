@@ -699,7 +699,7 @@ div.userstore:hover {
     color: #5e5e5e;
     text-decoration: none !important;
     outline: none;
-    cursor: default;
+    cursor: pointer;
 }
 
 .cms-wizard-steps a.current {
