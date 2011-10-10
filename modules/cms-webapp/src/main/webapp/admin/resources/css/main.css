@@ -740,7 +740,11 @@ div.userstore:hover {
     border-bottom: 15px solid #eee;
 }
 
-.cms-wizard .x-panel-body {
+.cms-wizard>div>.x-panel-body {
+    border: 0 none;
+}
+
+.cms-wizard>.x-panel-body {
     border: 0 none;
 }
 
