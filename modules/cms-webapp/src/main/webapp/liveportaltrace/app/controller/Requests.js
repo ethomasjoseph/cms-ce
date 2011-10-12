@@ -19,7 +19,8 @@ Ext.define('LPT.controller.Requests', {
         'requests.FilterPanel',
         'requests.PortalRequestTraceHistoryPanel',
         'requests.PortalRequestTraceHistoryDetailsPanel',
-        'requests.ContextMenu'
+        'requests.ContextMenu',
+        'requests.GaugePanel'
     ],
 
     refs: [
@@ -27,7 +28,8 @@ Ext.define('LPT.controller.Requests', {
         {ref: 'filterPanel', selector: 'requestsFilterPanel'},
         {ref: 'mainTabPanel', selector: 'mainTabPanel'},
         {ref: 'portalRequestTraceHistoryDetailsPanel', selector: 'portalRequestTraceHistoryDetailsPanel', xtype: 'portalRequestTraceHistoryDetailsPanel'},
-        {ref: 'requestContextMenu', selector: 'requestContextMenu', autoCreate: true, xtype: 'requestContextMenu'}
+        {ref: 'requestContextMenu', selector: 'requestContextMenu', autoCreate: true, xtype: 'requestContextMenu'},
+        {ref: 'requestsPerformancePanel', selector: 'requestsPerformancePanel', xtype: 'requestsPerformancePanel'}
     ],
 
     init: function() {
@@ -143,6 +145,7 @@ Ext.define('LPT.controller.Requests', {
                         requestArray.push(requestObject);
                     }
                     store.insert(0, requestArray);
+                    controller.showRequestsPerSecond(requestArray.length);
 
                     // collecting statistics
                     Ext.Array.each( requestArray, function( item )
@@ -178,6 +181,8 @@ Ext.define('LPT.controller.Requests', {
 
                     // update gui with collected statistics
                     controller.getFilterPanel().updateFacetStatistics( controller.totalFacetStatistics );
+                } else {
+                    controller.showRequestsPerSecond(0);
                 }
 
                 controller.startAutoRefreshTimer(); // restart timer
@@ -316,6 +321,14 @@ Ext.define('LPT.controller.Requests', {
         requestObject.set('duration.humanReadable', requestJson.duration.humanReadable);
         requestObject.commit(true);
         return requestObject;
+    },
+
+    showRequestsPerSecond: function (value) {
+        var performancePanel = this.getRequestsPerformancePanel();
+        performancePanel.updateData( [{
+            name: 'requests',
+            data: ( value )
+        }] );
     }
 
 });

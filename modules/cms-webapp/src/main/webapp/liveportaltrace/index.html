@@ -23,7 +23,8 @@
             requires: [
                 'LPT.view.requests.PortalRequestTraceHistoryPanel',
                 'LPT.view.requests.FilterPanel',
-                'LPT.view.MainTabPanel'
+                'LPT.view.MainTabPanel',
+                'LPT.view.requests.GaugePanel'
             ],
 
             launch: function() {
@@ -40,6 +41,11 @@
                             region: 'west',
                             width: 225,
                             xtype: 'requestsFilterPanel'
+                        },
+                        {
+                            region: 'east',
+                            width: 225,
+                            xtype: 'requestsPerformancePanel'
                         }
                     ]
                 });
