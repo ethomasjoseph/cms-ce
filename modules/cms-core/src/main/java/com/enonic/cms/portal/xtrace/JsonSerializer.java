@@ -68,7 +68,7 @@ public class JsonSerializer
 
         appendPageDatasources( page, pageRenderingTrace, 0 );
 
-        long dataSourcesTotalExecutionTime = calculatePageDatasourcesExecutionTimesMS( pageRenderingTrace.getDatasourceExecutionTraces() );
+        long dataSourcesTotalExecutionTime = calculateTotalExecutionTimeForDatasources( pageRenderingTrace.getDatasourceExecutionTraces() );
         appendWindows( page, pageRenderingTrace, dataSourcesTotalExecutionTime );
 
         return page;
@@ -160,7 +160,18 @@ public class JsonSerializer
         jsonArray.add( datasourceObject );
     }
 
-    private long calculatePageDatasourcesExecutionTimesMS( List<DatasourceExecutionTrace> datasources )
+    private long calculateTotalExecutionTimeForWindows( List<WindowRenderingTrace> windows )
+    {
+        long total = 0;
+        for ( WindowRenderingTrace window : windows )
+        {
+            total += window.getDuration().getExecutionTimeInMilliseconds();
+        }
+
+        return total;
+    }
+
+    private long calculateTotalExecutionTimeForDatasources( List<DatasourceExecutionTrace> datasources )
     {
         long total = 0;
         for ( DatasourceExecutionTrace datasource : datasources )
