@@ -77,13 +77,13 @@ Ext.define( 'LPT.view.requests.PortalRequestTraceHistoryGrid', {
             padding: 5,
             items: [
                 {
-                    text: 'Freeze updates',
+                    text: 'Stop',
                     iconCls: 'autorefresh-stop',
                     action: 'stopAutoRefresh',
                     id: 'stopAutoRefreshButton'
                 },
                 {
-                    text: 'Auto-refresh',
+                    text: 'Start',
                     iconCls: 'autorefresh-start',
                     action: 'startAutoRefresh',
                     id: 'startAutoRefreshButton',

@@ -28,6 +28,7 @@ Ext.define( 'LPT.view.MainTabPanel', {
             {
                 region: 'center',
                 xtype: 'geomap',
+                id: 'geomapPanel',
                 title: 'Location Map',
                 closable: false
             }/*,
@@ -40,5 +41,9 @@ Ext.define( 'LPT.view.MainTabPanel', {
         ];
 
         this.callParent(arguments);
+
+        if (window.location.hash === '#map') {
+            this.setActiveTab(1);
+        }
     }
 });
