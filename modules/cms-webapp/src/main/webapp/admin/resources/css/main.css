@@ -797,3 +797,7 @@ div.userstore:hover {
 .cms-edited-field{
     color: black !important;
 }
+
+.cms-activity-stream-background {
+    background-color: #eee;
+}
