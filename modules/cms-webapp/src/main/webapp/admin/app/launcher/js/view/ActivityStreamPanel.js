@@ -1,6 +1,6 @@
 Ext.define('App.view.ActivityStreamPanel', {
     extend: 'Ext.panel.Panel',
-    alias : 'widget.activityStream',
+    alias : 'widget.activityStreamPanel',
     title: 'Activity Stream',
     tools:[
         {

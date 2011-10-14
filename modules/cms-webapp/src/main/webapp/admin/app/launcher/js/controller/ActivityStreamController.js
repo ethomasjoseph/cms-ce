@@ -6,7 +6,7 @@ Ext.define('App.controller.ActivityStreamController', {
     init: function() {
         this.control(
         {
-            'activityStream': {
+            'activityStreamPanel': {
                 'afterrender': this.renderMessages
             }
         });
