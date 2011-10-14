@@ -794,10 +794,91 @@ div.userstore:hover {
     color: gray;
 }
 
-.cms-edited-field{
+.cms-edited-field {
     color: black !important;
 }
 
-.cms-activity-stream-background {
+/* Activity stream */
+
+.cms-activity-stream-panel-body {
     background-color: #eee;
+    padding: 0;
 }
+
+.cms-activity-stream-panel-body a {
+    text-decoration: none;
+}
+
+.cms-activity-stream-panel-body a:hover {
+    text-decoration: underline;
+}
+
+#cms-activity-stream-message-container {
+}
+
+.cms-activity-stream-message {
+    border-top: 1px solid #ccc;
+    padding: 8px 10px 10px 10px;
+}
+
+.cms-activity-stream-message,
+.cms-activity-stream-message td {
+    font-size: 10px;
+}
+
+.cms-activity-stream-message:hover {
+    background-color: #dfe8f6;
+}
+
+.cms-activity-stream-message .photo-container {
+    padding-right: 7px;
+}
+
+.cms-activity-stream-message .message-container {
+    width: 200px;
+}
+
+.cms-activity-stream-message .photo {
+    width: 32px;
+    height: 32px;
+}
+
+.cms-activity-stream-message .display-name-location {
+    margin-bottom: 2px;
+}
+
+.cms-activity-stream-message .display-name-location,
+.cms-activity-stream-message .date-links table .pretty-date
+{
+    color: #555;
+}
+
+.cms-activity-stream-message .date-links
+{
+    margin-top: 4px;
+}
+
+.cms-activity-stream-message .date-links table {
+    width: 100%;
+}
+
+.cms-activity-stream-message .date-links a {
+    display: block;
+}
+
+.cms-activity-stream-message .date-links a.favorite {
+    background: url(../../resources/images/favorite.png) no-repeat scroll 0 -1px TRANSPARENT;
+    padding-left: 18px;
+}
+
+.cms-activity-stream-message .date-links a.comment {
+    background: url(../../resources/images/reply.png) no-repeat scroll 0 1px TRANSPARENT;
+    padding-left: 15px;
+}
+
+.cms-activity-stream-message .date-links a.more {
+    background: url(../../resources/images/more.png) no-repeat scroll 0 1px TRANSPARENT;
+    width: 18px;
+    height: 18px;
+}
+
