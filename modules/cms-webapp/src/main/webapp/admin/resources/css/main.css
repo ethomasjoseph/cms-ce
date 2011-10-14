@@ -909,12 +909,16 @@ div.userstore:hover {
 
 .cms-activity-stream-message .date-links a.favorite {
     background: url(../../resources/images/favorite.png) no-repeat scroll 0 -1px TRANSPARENT;
-    padding-left: 18px;
+    padding-left: 19px;
+}
+
+.cms-activity-stream-message .date-links a.favorited {
+    background: url(../../resources/images/favorite-favorited.png) no-repeat scroll 0 -1px TRANSPARENT;
 }
 
 .cms-activity-stream-message .date-links a.comment {
     background: url(../../resources/images/reply.png) no-repeat scroll 0 1px TRANSPARENT;
-    padding-left: 15px;
+    padding-left: 16px;
 }
 
 .cms-activity-stream-message .date-links a.more {
