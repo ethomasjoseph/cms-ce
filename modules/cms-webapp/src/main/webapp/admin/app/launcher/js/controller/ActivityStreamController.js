@@ -36,6 +36,9 @@ Ext.define('App.controller.ActivityStreamController', {
                 },
                 'itemmouseleave':  {
                     fn: this.onMessageMouseLeave
+                },
+                'itemclick':  {
+                    fn: this.onMessageClick
                 }
             }
         });
@@ -65,6 +68,19 @@ Ext.define('App.controller.ActivityStreamController', {
         favorite.style.visibility = 'hidden';
         comment.style.visibility = 'hidden';
         more.style.visibility = 'hidden';
+    },
+
+    onMessageClick: function( view, record, item, index, event, eOpts )
+    {
+        var target = event.target;
+        if (target.className.indexOf('favorited') === -1)
+        {
+            target.className += ' favorited';
+        }
+        else
+        {
+            target.className = target.className.replace(/ favorited/, '');
+        }
     },
 
     appendSpeakOutPanel: function()
