@@ -29,7 +29,7 @@ Templates.launcher = {
                         '</td>' +
                         '<td valign="top">' +
                             '<div class="display-name-location"><a href="javascript:;">' +
-                            '<tpl if="birthday"><img src="resources/images/cake.png" title="Birthday"/> </tpl>' +
+                            '<tpl if="birthday"><img src="resources/images/cake.png" title="{displayName} has Birthday today"/> </tpl>' +
                             '{displayName}</a> via {location}</div>' +
                             '<div>{action}: <a href="javascript:;">{description}</a></div>' +
                         '</td>' +
