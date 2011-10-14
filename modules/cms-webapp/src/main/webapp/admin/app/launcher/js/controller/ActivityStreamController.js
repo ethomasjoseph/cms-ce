@@ -1,8 +1,8 @@
 Ext.define('App.controller.ActivityStreamController', {
     extend: 'Ext.app.Controller',
 
-    stores: ['ActivityStreamStore'],
     models: ['ActivityStreamModel'],
+    stores: ['ActivityStreamStore'],
     views: ['ActivityStreamPanel'],
 
     init: function() {
