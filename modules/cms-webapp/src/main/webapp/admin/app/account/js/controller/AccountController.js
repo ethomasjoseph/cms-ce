@@ -425,7 +425,7 @@ Ext.define( 'App.controller.UserController', {
     {
         var tabPanel = button.up( '#addressContainer' );
         var newTab = this.getEditUserFormPanel().generateAddressPanel( tabPanel.sourceField, true );
-        newTab = tabPanel.insert( 0 , newTab );
+        newTab = tabPanel.down('addressColumn').insert( 0 , newTab );
     },
 
     updateTabTitle: function ( field, event )
