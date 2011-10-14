@@ -79,7 +79,7 @@ Ext.define('App.controller.ActivityStreamController', {
 
     appendSpeakOutTextField: function()
     {
-        return new Ext.form.TextField(
+        new Ext.form.TextField(
             {
                 renderTo: 'activity-stream-speak-out-text-input',
                 width: 228
@@ -89,7 +89,7 @@ Ext.define('App.controller.ActivityStreamController', {
 
     appendSpeakOutSendButton: function()
     {
-        return new Ext.button.Button(
+        new Ext.button.Button(
             {
                 renderTo: 'activity-stream-speak-out-send-button',
                 text: 'Send'
