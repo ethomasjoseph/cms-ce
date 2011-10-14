@@ -875,6 +875,10 @@ div.userstore:hover {
     padding-right: 7px;
 }
 
+.cms-activity-stream-message .photo-container img {
+    border-radius: 3px;
+}
+
 .cms-activity-stream-message .message-container {
     width: 200px;
 }
