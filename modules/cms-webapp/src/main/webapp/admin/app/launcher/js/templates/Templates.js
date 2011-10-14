@@ -27,7 +27,9 @@ Templates.launcher = {
                         '<img class="photo" src="{photo}"/>' +
                     '</td>' +
                     '<td valign="top">' +
-                        '<div class="display-name-location"><a href="javascript:;"><tpl if="birthday"><img src="resources/images/cake.png" title="Birthday"/> </tpl>{displayName}</a> via {location}</div>' +
+                        '<div class="display-name-location"><a href="javascript:;">' +
+                        '<tpl if="birthday"><img src="resources/images/cake.png" title="Birthday"/> </tpl>' +
+                        '{displayName}</a> via {location}</div>' +
                         '<div>{action}: <a href="javascript:;">{description}</a></div>' +
                     '</td>' +
                 '</tr>' +
@@ -50,5 +52,16 @@ Templates.launcher = {
                     '</tr>' +
                 '</table>' +
            '</div>' +
+        '</div>',
+
+    speakOutPanel:
+        '<div>' +
+            '<h1>What\'s happening?</h1>' +
+            '<div id="activity-stream-speak-out-text-input"></div>' +
+            '<div class="clearfix">' +
+                '<!--div id="activity-stream-speak-out-url-shortener">[°]</div-->' +
+                '<!--div id="activity-stream-speak-out-letters-left">120</div-->' +
+                '<div id="activity-stream-speak-out-send-button"></div>' +
+            '</div>' +
         '</div>'
 };

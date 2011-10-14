@@ -15,7 +15,7 @@ Ext.define('App.view.ActivityStreamPanel', {
     minWidth: 200,
     maxWidth: 270,
     autoScroll: true,
-    html: '<div id="cms-activity-stream-message-container"><!-- --></div>',
+    html: '<div id="cms-activity-stream-speak-out-box"><!-- --></div><div id="cms-activity-stream-message-container"><!-- --></div>',
     bodyCls: 'cms-activity-stream-panel-body',
     listeners: {
         afterrender: function() {
@@ -45,6 +45,8 @@ Ext.define('App.view.ActivityStreamPanel', {
             birthday: true
         };
 
+        this.appendChatBox();
+
         this.appendMessage(message);
         this.appendMessage(message2);
         this.appendMessage(message);
@@ -62,10 +64,10 @@ Ext.define('App.view.ActivityStreamPanel', {
         var messageContainer = Ext.DomQuery.select( '#cms-activity-stream-message-container' )[0];
         var messageElement = tpl.append( messageContainer, message);
 
-        this.postProcessMessageElement(messageElement);
+        this.postProcessMessage(messageElement);
     },
 
-    postProcessMessageElement: function(messageElement)
+    postProcessMessage: function(messageElement)
     {
         var dom = Ext.DomQuery;
         var eventManager = Ext.EventManager;
@@ -84,6 +86,34 @@ Ext.define('App.view.ActivityStreamPanel', {
             comment.style.visibility = 'hidden';
             more.style.visibility = 'hidden';
         }, this);
+    },
+
+    appendChatBox: function()
+    {
+        var tpl = new Ext.XTemplate(Templates.launcher.speakOutPanel);
+        var container = Ext.DomQuery.select( '#cms-activity-stream-speak-out-box' )[0];
+        var chatBox = tpl.append( container, {});
+
+        this.appendSpeakOutTextField();
+        this.appendSpeakOutSendButton();
+    },
+
+    appendSpeakOutTextField: function()
+    {
+        var dom = Ext.DomQuery;
+        return new Ext.form.TextField({
+            renderTo: dom.selectNode('#activity-stream-speak-out-text-input'),
+            width: 228
+        });
+    },
+
+    appendSpeakOutSendButton: function()
+    {
+        var dom = Ext.DomQuery;
+        return new Ext.button.Button({
+            renderTo: dom.selectNode('#activity-stream-speak-out-send-button'),
+            text: 'Send'
+        });
     },
 
     initComponent: function()
