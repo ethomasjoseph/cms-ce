@@ -31,7 +31,8 @@ Ext.define('App.view.ActivityStreamPanel', {
             location: 'Admin',
             action: 'Created article',
             description: '99 Luftballons',
-            prettyDate: '2 minutes ago'
+            prettyDate: '2 minutes ago',
+            birthday: false
         };
 
         var message2 = {
@@ -40,7 +41,8 @@ Ext.define('App.view.ActivityStreamPanel', {
             location: 'Admin',
             action: 'Created article',
             description: '99 Luftballons gnafl gnafl gnafl gnaflgnafl gnafl gnaflgnafl gnafl gnaflgnafl gnafl gnafl',
-            prettyDate: '2 minutes ago'
+            prettyDate: '2 minutes ago',
+            birthday: true
         };
 
         this.appendMessage(message);
@@ -56,7 +58,7 @@ Ext.define('App.view.ActivityStreamPanel', {
 
     appendMessage: function(message)
     {
-        var tpl = new Ext.Template(Templates.launcher.activityStreamItem);
+        var tpl = new Ext.XTemplate(Templates.launcher.activityStreamItem);
         var messageContainer = Ext.DomQuery.select( '#cms-activity-stream-message-container' )[0];
         var messageElement = tpl.append( messageContainer, message);
 

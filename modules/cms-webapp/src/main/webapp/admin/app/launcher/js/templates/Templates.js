@@ -27,7 +27,7 @@ Templates.launcher = {
                         '<img class="photo" src="{photo}"/>' +
                     '</td>' +
                     '<td valign="top">' +
-                        '<div class="display-name-location"><a href="javascript:;">{displayName}</a> via {location}</div>' +
+                        '<div class="display-name-location"><a href="javascript:;"><tpl if="birthday"><img src="resources/images/cake.png" title="Birthday"/> </tpl>{displayName}</a> via {location}</div>' +
                         '<div>{action}: <a href="javascript:;">{description}</a></div>' +
                     '</td>' +
                 '</tr>' +
