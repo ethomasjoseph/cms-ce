@@ -814,12 +814,42 @@ div.cms-userstore:hover {
 
 /* Activity stream */
 
+#cms-activity-stream-speak-out-box {
+    padding: 10px;
+}
+
+#cms-activity-stream-speak-out-box h1 {
+    font-size: 16px;
+    font-weight: normal;
+    color: #777777;
+    margin-bottom: 10px;
+}
+
+#activity-stream-speak-out-url-shortener {
+    float: left;
+}
+
+#activity-stream-speak-out-letters-left {
+    float: left;
+}
+
+#activity-stream-speak-out-send-button {
+    float: left;
+}
+
+#activity-stream-speak-out-text-input {
+}
+
+#cms-activity-stream-message-container {
+}
+
 .cms-activity-stream-panel-body {
     background-color: #eee;
     padding: 0;
 }
 
 .cms-activity-stream-panel-body a {
+    color: #576cd5;
     text-decoration: none;
 }
 
@@ -827,17 +857,14 @@ div.cms-userstore:hover {
     text-decoration: underline;
 }
 
-#cms-activity-stream-message-container {
-}
-
 .cms-activity-stream-message {
     border-top: 1px solid #ccc;
-    padding: 8px 10px 10px 10px;
+    padding: 9px 10px 9px 10px;
 }
 
 .cms-activity-stream-message,
 .cms-activity-stream-message td {
-    font-size: 10px;
+    font-size: 11px;
 }
 
 .cms-activity-stream-message:hover {
