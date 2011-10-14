@@ -26,13 +26,18 @@ Ext.define('App.controller.ActivityStreamController', {
             {
                 scope: this,
                 callback: function(records, operation, success) {
-                    for ( var i = 0; i < records.length; i++)
-                    {
-                        this.appendMessage(records[i].data);
-                    }
+                    this.renderMessages();
                 }
             }
         );
+    },
+
+    renderMessages: function(messages)
+    {
+        for ( var i = 0; i < messages.length; i++)
+        {
+            this.appendMessage(messages[i].data);
+        }
     },
 
     appendMessage: function(message)
