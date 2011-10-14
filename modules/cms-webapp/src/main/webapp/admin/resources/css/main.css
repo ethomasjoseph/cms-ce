@@ -814,11 +814,11 @@ div.cms-userstore:hover {
 
 /* Activity stream */
 
-#cms-activity-stream-speak-out-container {
+#cms-activity-stream-speak-out-panel-container {
     padding: 10px;
 }
 
-#cms-activity-stream-speak-out-container h1 {
+#cms-activity-stream-speak-out-panel-container h1 {
     font-size: 16px;
     font-weight: normal;
     color: #777777;
@@ -885,7 +885,7 @@ div.cms-userstore:hover {
 }
 
 .cms-activity-stream-message .display-name-location {
-    margin-bottom: 2px;
+    margin-bottom: 1px;
 }
 
 .cms-activity-stream-message .display-name-location,
