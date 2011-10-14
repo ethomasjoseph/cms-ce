@@ -17,57 +17,54 @@ Ext.define('App.controller.ActivityStreamController', {
     onPanelRender: function()
     {
         this.appendSpeakOutPanel();
-        this.loadMessages();
+        this.createDataView();
     },
 
-    loadMessages: function() {
+    createDataView: function()
+    {
         var store = this.getStore('ActivityStreamStore');
-        store.load(
-            {
-                scope: this,
-                callback: function(records, operation, success) {
-                    this.renderMessages();
+        var template = new Ext.XTemplate(Templates.launcher.activityStream);
+
+        Ext.create('Ext.view.View', {
+            store: store,
+            tpl: template,
+            itemSelector: 'div.cms-activity-stream-message',
+            renderTo: 'cms-activity-stream-message-container',
+            listeners: {
+                'itemmouseenter':  {
+                    fn: this.onMessageMouseEnter
+                },
+                'itemmouseleave':  {
+                    fn: this.onMessageMouseLeave
                 }
             }
-        );
+        });
     },
 
-    renderMessages: function(messages)
-    {
-        for ( var i = 0; i < messages.length; i++)
-        {
-            this.appendMessage(messages[i].data);
-        }
-    },
-
-    appendMessage: function(message)
-    {
-        var template = new Ext.XTemplate(Templates.launcher.activityStreamItem);
-        var messagesContainer = Ext.DomQuery.select( '#cms-activity-stream-message-container' )[0];
-        var messageElement = template.append( messagesContainer, message);
-
-        this.postProcessMessage(messageElement);
-    },
-
-    postProcessMessage: function(messageElement)
+    onMessageMouseEnter: function(view, record, item, index, event, eOpts )
     {
         var dom = Ext.DomQuery;
         var eventManager = Ext.EventManager;
-        var favorite = dom.selectNode('.favorite', messageElement);
-        var comment = dom.selectNode('.comment', messageElement);
-        var more = dom.selectNode('.more', messageElement);
+        var favorite = dom.selectNode('.favorite', item);
+        var comment = dom.selectNode('.comment', item);
+        var more = dom.selectNode('.more', item);
 
-        eventManager.addListener(messageElement, 'mouseenter', function(event, target) {
-            favorite.style.visibility = 'visible';
-            comment.style.visibility = 'visible';
-            more.style.visibility = 'visible';
-        }, this);
+        favorite.style.visibility = 'visible';
+        comment.style.visibility = 'visible';
+        more.style.visibility = 'visible';
+    },
 
-        eventManager.addListener(messageElement, 'mouseleave', function(event, target) {
-            favorite.style.visibility = 'hidden';
-            comment.style.visibility = 'hidden';
-            more.style.visibility = 'hidden';
-        }, this);
+    onMessageMouseLeave: function(view, record, item, index, event, eOpts )
+    {
+        var dom = Ext.DomQuery;
+        var eventManager = Ext.EventManager;
+        var favorite = dom.selectNode('.favorite', item);
+        var comment = dom.selectNode('.comment', item);
+        var more = dom.selectNode('.more', item);
+
+        favorite.style.visibility = 'hidden';
+        comment.style.visibility = 'hidden';
+        more.style.visibility = 'hidden';
     },
 
     appendSpeakOutPanel: function()
