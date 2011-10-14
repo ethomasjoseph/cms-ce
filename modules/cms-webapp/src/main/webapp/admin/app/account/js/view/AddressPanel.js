@@ -4,15 +4,15 @@ Ext.define( 'App.view.AddressPanel', {
 
     xtype: 'form',
     draggable: true,
+    frame: true,
     layout: 'anchor',
     bodyPadding: 10,
     defaults: {
         anchor: '100%'
     },
+    cls: 'address',
 
     closeAction: 'hide',
-
-    padding: 10,
 
     initComponent: function()
     {
