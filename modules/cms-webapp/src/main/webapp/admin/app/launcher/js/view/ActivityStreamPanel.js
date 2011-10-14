@@ -15,7 +15,7 @@ Ext.define('App.view.ActivityStreamPanel', {
     minWidth: 200,
     maxWidth: 270,
     autoScroll: true,
-    html: '<div id="cms-activity-stream-speak-out-box"><!-- --></div><div id="cms-activity-stream-message-container"><!-- --></div>',
+    html: '<div id="cms-activity-stream-speak-out-container"><!-- --></div><div id="cms-activity-stream-message-container"><!-- --></div>',
     bodyCls: 'cms-activity-stream-panel-body',
     listeners: {
         afterrender: function() {
@@ -45,7 +45,7 @@ Ext.define('App.view.ActivityStreamPanel', {
             birthday: true
         };
 
-        this.appendChatBox();
+        this.appendSpeakOutContainer();
 
         this.appendMessage(message);
         this.appendMessage(message2);
@@ -61,8 +61,8 @@ Ext.define('App.view.ActivityStreamPanel', {
     appendMessage: function(message)
     {
         var tpl = new Ext.XTemplate(Templates.launcher.activityStreamItem);
-        var messageContainer = Ext.DomQuery.select( '#cms-activity-stream-message-container' )[0];
-        var messageElement = tpl.append( messageContainer, message);
+        var messagesContainer = Ext.DomQuery.select( '#cms-activity-stream-message-container' )[0];
+        var messageElement = tpl.append( messagesContainer, message);
 
         this.postProcessMessage(messageElement);
     },
@@ -88,11 +88,11 @@ Ext.define('App.view.ActivityStreamPanel', {
         }, this);
     },
 
-    appendChatBox: function()
+    appendSpeakOutContainer: function()
     {
         var tpl = new Ext.XTemplate(Templates.launcher.speakOutPanel);
-        var container = Ext.DomQuery.select( '#cms-activity-stream-speak-out-box' )[0];
-        var chatBox = tpl.append( container, {});
+        var container = Ext.DomQuery.select( '#cms-activity-stream-speak-out-container' )[0];
+        tpl.append( container, {});
 
         this.appendSpeakOutTextField();
         this.appendSpeakOutSendButton();
