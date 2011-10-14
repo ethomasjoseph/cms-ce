@@ -33,9 +33,9 @@ Ext.define('App.view.LoggedInUserButton', {
     createPopup: function() {
         var user = {
             uid: 'abcdef012345',
-            displayName: 'Joe Doe',
-            qualifiedName: 'local\\joe',
-            email: 'joe@doe.com'
+            displayName: 'Morten Eriksen',
+            qualifiedName: 'local\\mer',
+            email: 'mer@enonic.com'
         };
 
         this.popup = Ext.create('Ext.Component', {
