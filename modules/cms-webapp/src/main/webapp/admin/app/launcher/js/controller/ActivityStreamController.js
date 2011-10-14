@@ -1,50 +1,38 @@
 Ext.define('App.controller.ActivityStreamController', {
     extend: 'Ext.app.Controller',
 
+    stores: ['ActivityStreamStore'],
+    models: ['ActivityStreamModel'],
     views: ['ActivityStreamPanel'],
 
     init: function() {
         this.control(
         {
             'activityStreamPanel': {
-                'afterrender': this.renderMessages
+                'afterrender': this.onPanelRender
             }
         });
     },
 
-    renderMessages: function()
+    onPanelRender: function()
     {
-        var message = {
-            displayName:'Morten Eriksen',
-            photo: 'resources/images/x-user.png',
-            location: 'Admin',
-            action: 'Created article',
-            description: '99 Luftballons',
-            prettyDate: '2 minutes ago',
-            birthday: false
-        };
-
-        var message2 = {
-            displayName:'Morten Eriksen',
-            photo: 'resources/images/x-user.png',
-            location: 'Admin',
-            action: 'Created article',
-            description: '99 Luftballons gnafl gnafl gnafl gnaflgnafl gnafl gnaflgnafl gnafl gnaflgnafl gnafl gnafl',
-            prettyDate: '2 minutes ago',
-            birthday: true
-        };
-
         this.appendSpeakOutPanel();
+        this.loadMessages();
+    },
 
-        this.appendMessage(message);
-        this.appendMessage(message2);
-        this.appendMessage(message);
-        this.appendMessage(message);
-        this.appendMessage(message);
-        this.appendMessage(message);
-        this.appendMessage(message);
-        this.appendMessage(message);
-        this.appendMessage(message);
+    loadMessages: function() {
+        var store = this.getStore('ActivityStreamStore');
+        store.load(
+            {
+                scope: this,
+                callback: function(records, operation, success) {
+                    for ( var i = 0; i < records.length; i++)
+                    {
+                        this.appendMessage(records[i].data);
+                    }
+                }
+            }
+        );
     },
 
     appendMessage: function(message)
