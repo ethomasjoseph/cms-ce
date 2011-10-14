@@ -9,12 +9,12 @@ Ext.define('App.controller.ActivityStreamController', {
         this.control(
         {
             'activityStreamPanel': {
-                'afterrender': this.onPanelRender
+                'afterrender': this.afterPanelRender
             }
         });
     },
 
-    onPanelRender: function()
+    afterPanelRender: function()
     {
         this.appendSpeakOutPanel();
         this.createDataView();
