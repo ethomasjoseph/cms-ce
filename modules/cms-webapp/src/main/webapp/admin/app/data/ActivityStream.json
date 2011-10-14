@@ -33,7 +33,7 @@
             "photo": "resources/images/x-user.png",
             "location": "Admin",
             "action": "Said",
-            "description": "The balloon articles are soon ready. Wait for it!",
+            "description": "The balloon articles are soon ready. Wait for it...",
             "prettyDate": "1 hour ago",
             "birthday": false
         },
