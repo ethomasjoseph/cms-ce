@@ -14,13 +14,13 @@ Ext.define('App.view.ActivityStreamPanel', {
     width: 270,
     minWidth: 200,
     maxWidth: 270,
-    autoScroll: true,
+    autoScroll: false,
     bodyCls: 'cms-activity-stream-panel-body',
 
     initComponent: function()
     {
         this.html = '<div id="cms-activity-stream-speak-out-panel-container"><!-- --></div>' +
-                    '<div id="cms-activity-stream-message-container"><!-- --></div>';
+                    '<div id="cms-activity-stream-messages-container"><!-- --></div>';
 
         this.callParent(arguments);
     }
