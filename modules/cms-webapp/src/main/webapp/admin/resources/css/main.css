@@ -383,6 +383,9 @@ img.photo {
     background: url("../../ext/resources/themes/images/default/shared/icon-question.gif") no-repeat;
 }
 
+.icon-link {
+    background: url("../images/link.png") no-repeat;
+}
 
 /*-----  Dashboard  -----*/
 
@@ -813,6 +816,20 @@ div.userstore:hover {
 }
 
 /* Activity stream */
+.cms-activity-stream-panel-body {
+    background-color: #eee;
+    padding: 0;
+}
+
+.cms-activity-stream-panel-body a {
+    font-weight: bold;
+    text-decoration: none;
+    color: #576cd5;
+}
+
+.cms-activity-stream-panel-body a:hover {
+    text-decoration: underline;
+}
 
 #cms-activity-stream-speak-out-panel-container {
     padding: 10px;
@@ -825,36 +842,11 @@ div.userstore:hover {
     margin-bottom: 10px;
 }
 
-#activity-stream-speak-out-url-shortener {
-    float: left;
-}
-
-#activity-stream-speak-out-letters-left {
-    float: left;
-}
-
-#activity-stream-speak-out-send-button {
-    float: left;
-}
-
-#activity-stream-speak-out-text-input {
+#activity-stream-speak-out-letters-left-container {
+    margin: 5px 10px 0 0;
 }
 
 #cms-activity-stream-message-container {
-}
-
-.cms-activity-stream-panel-body {
-    background-color: #eee;
-    padding: 0;
-}
-
-.cms-activity-stream-panel-body a {
-    color: #576cd5;
-    text-decoration: none;
-}
-
-.cms-activity-stream-panel-body a:hover {
-    text-decoration: underline;
 }
 
 .cms-activity-stream-message {
@@ -868,7 +860,14 @@ div.userstore:hover {
 }
 
 .cms-activity-stream-message:hover {
-    background-color: #dfe8f6;
+    background: #dbeeff;
+    background: -moz-linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #dbeeff), color-stop(100%, #bbd2f0));
+    background: -webkit-linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
+    background: -o-linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
+    background: -ms-linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#dbeeff', endColorstr = '#bbd2f0', GradientType = 0);
+    background: linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
 }
 
 .cms-activity-stream-message .photo-container {
@@ -893,14 +892,15 @@ div.userstore:hover {
 }
 
 .cms-activity-stream-message .display-name-location,
-.cms-activity-stream-message .date-links table .pretty-date
+.cms-activity-stream-message .date-links table .pretty-date,
+#activity-stream-speak-out-letters-left-container
 {
     color: #555;
 }
 
 .cms-activity-stream-message .date-links
 {
-    margin-top: 4px;
+    margin-top: 7px;
 }
 
 .cms-activity-stream-message .date-links table {

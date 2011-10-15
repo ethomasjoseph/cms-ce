@@ -39,6 +39,12 @@ Ext.define('App.controller.ActivityStreamController', {
                 },
                 'itemclick':  {
                     fn: this.onMessageClick
+                },
+                'itemadd': {
+                    fn: function(records, index, node, eOpts) {
+                        // TODO: ExtJS view itemadd bug? param node is not the node.
+                        // http://www.sencha.com/forum/showthread.php?142914-Ext.view.View-itemadd-event-bug
+                    }
                 }
             }
         });
@@ -47,7 +53,6 @@ Ext.define('App.controller.ActivityStreamController', {
     onMessageMouseEnter: function(view, record, item, index, event, eOpts )
     {
         var dom = Ext.DomQuery;
-        var eventManager = Ext.EventManager;
         var favorite = dom.selectNode('.favorite', item);
         var comment = dom.selectNode('.comment', item);
         var more = dom.selectNode('.more', item);
@@ -60,7 +65,6 @@ Ext.define('App.controller.ActivityStreamController', {
     onMessageMouseLeave: function(view, record, item, index, event, eOpts )
     {
         var dom = Ext.DomQuery;
-        var eventManager = Ext.EventManager;
         var favorite = dom.selectNode('.favorite', item);
         var comment = dom.selectNode('.comment', item);
         var more = dom.selectNode('.more', item);
@@ -90,6 +94,7 @@ Ext.define('App.controller.ActivityStreamController', {
         template.append( container, {});
 
         this.appendSpeakOutTextField();
+        this.appendUrlShortenerButton();
         this.appendSpeakOutSendButton();
     },
 
@@ -97,20 +102,107 @@ Ext.define('App.controller.ActivityStreamController', {
     {
         new Ext.form.TextField(
             {
+                itemId: 'speakOutTextField',
                 renderTo: 'activity-stream-speak-out-text-input',
-                width: 228
+                enforceMaxLength: true,
+                maxLength: 140,
+                width: 228,
+                enableKeyEvents: true,
+                listeners: {
+                    'keyup':  {
+                        fn: this.speakOutTextFieldHandleKeyUp,
+                        scope: this
+                    }
+                }
+            }
+        );
+    },
+
+    appendUrlShortenerButton: function()
+    {
+        new Ext.button.Button(
+            {
+                renderTo: 'activity-stream-speak-out-url-shortener-button-container',
+                iconCls: 'icon-link',
+                handler: function() {
+                }
             }
         );
     },
 
     appendSpeakOutSendButton: function()
     {
+        var me = this;
+
         new Ext.button.Button(
             {
-                renderTo: 'activity-stream-speak-out-send-button',
-                text: 'Send'
+                renderTo: 'activity-stream-speak-out-send-button-container',
+                text: 'Send',
+                handler: function() {
+                    me.postMessage(me.getSpeakOutTextField().getValue());
+                    me.resetSpeakOutTextField();
+                }
             }
         );
+    },
+
+    postMessage: function(message)
+    {
+        if (message.length === 0)
+        {
+            return;
+        }
+
+        var store = this.getStore('ActivityStreamStore');
+        store.insert( 0, [
+            {
+                "displayName":"Pavel Milkevich",
+                "photo": "resources/images/pavel.jpeg",
+                "location": "Admin",
+                "action": "Said",
+                "description": message,
+                "prettyDate": "just now",
+                "birthday": false
+            }
+        ]);
+    },
+
+    updateTextLeftContainer: function()
+    {
+        var textField = this.getSpeakOutTextField();
+        var textLeftContainer = Ext.DomQuery.select( '#activity-stream-speak-out-letters-left-container' )[0];
+        var textFieldMaxTextLength = textField.maxLength;
+        var textFieldTextLength = textField.getValue().length;
+
+        if (textFieldTextLength <= textFieldMaxTextLength)
+        {
+            textLeftContainer.innerHTML = String((textFieldMaxTextLength - textFieldTextLength));
+        }
+    },
+
+    speakOutTextFieldHandleKeyUp: function(textField, event, eOpts) {
+        var isEnterKey = event.button === 12;
+        if ( isEnterKey )
+        {
+            this.postMessage(textField.getValue());
+            this.resetSpeakOutTextField();
+        }
+
+        this.updateTextLeftContainer();
+    },
+
+    resetSpeakOutTextField: function()
+    {
+        var textField = this.getSpeakOutTextField();
+        textField.setValue('');
+        textField.focus();
+    },
+
+    getSpeakOutTextField: function()
+    {
+        return Ext.ComponentQuery.query( 'textfield[itemId=speakOutTextField]' )[0];
     }
+
+
 
 });

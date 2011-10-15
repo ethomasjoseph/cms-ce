@@ -29,9 +29,12 @@ Templates.launcher = {
                         '</td>' +
                         '<td valign="top">' +
                             '<div class="display-name-location"><a href="javascript:;">' +
-                            '<tpl if="birthday"><img src="resources/images/cake.png" title="{displayName} has Birthday today"/> </tpl>' +
+                            '<tpl if="birthday"><img src="resources/images/cake.png" style="width:11px; height:8px" title="{displayName} has Birthday today"/> </tpl>' +
                             '{displayName}</a> via {location}</div>' +
-                            '<div>{action}: <a href="javascript:;">{description}</a></div>' +
+                            '<div>{action}: ' +
+                                '<tpl if="action == \'Said\'">{description}</tpl>' +
+                                '<tpl if="action != \'Said\'"><a href="javascript:;">{description}</a></tpl>' +
+                             '</div>' +
                         '</td>' +
                     '</tr>' +
                 '</table>' +
@@ -47,7 +50,7 @@ Templates.launcher = {
                             '<td>' +
                                 '<a href="javascript:;" class="comment" style="visibility:hidden">Comment</a>' +
                             '</td>' +
-                            '<td>' +
+                            '<td style="text-align:right">' +
                                 '<a href="javascript:;" class="more" style="visibility:hidden"><!-- --></a>' +
                             '</td>' +
                         '</tr>' +
@@ -59,11 +62,17 @@ Templates.launcher = {
     speakOutPanel:
         '<div>' +
             '<h1>What\'s happening?</h1>' +
-            '<div id="activity-stream-speak-out-text-input"></div>' +
+            '<div id="activity-stream-speak-out-text-input"><!-- --></div>' +
             '<div class="clearfix">' +
-                '<!--div id="activity-stream-speak-out-url-shortener">[°]</div-->' +
-                '<!--div id="activity-stream-speak-out-letters-left">120</div-->' +
-                '<div id="activity-stream-speak-out-send-button"></div>' +
+                '<div class="clearfix">'+
+                    '<div class="cms-left">'+
+                        '<div id="activity-stream-speak-out-url-shortener-button-container"><!-- --></div>' +
+                    '</div>' +
+                    '<div class="cms-right">'+
+                        '<div id="activity-stream-speak-out-letters-left-container" class="cms-left">140</div>' +
+                        '<div id="activity-stream-speak-out-send-button-container" class="cms-left"><!-- --></div>' +
+                    '</div>' +
+                '</div>' +
             '</div>' +
         '</div>'
 };
