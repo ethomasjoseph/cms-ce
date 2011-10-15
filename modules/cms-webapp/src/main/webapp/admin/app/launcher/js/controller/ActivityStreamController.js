@@ -29,7 +29,8 @@ Ext.define('App.controller.ActivityStreamController', {
             store: store,
             tpl: template,
             itemSelector: 'div.cms-activity-stream-message',
-            renderTo: 'cms-activity-stream-message-container',
+            renderTo: 'cms-activity-stream-messages-container',
+            emptyText: 'No messages',
             listeners: {
                 'itemmouseenter':  {
                     fn: this.onMessageMouseEnter
@@ -39,12 +40,6 @@ Ext.define('App.controller.ActivityStreamController', {
                 },
                 'itemclick':  {
                     fn: this.onMessageClick
-                },
-                'itemadd': {
-                    fn: function(records, index, node, eOpts) {
-                        // TODO: ExtJS view itemadd bug? param node is not the node.
-                        // http://www.sencha.com/forum/showthread.php?142914-Ext.view.View-itemadd-event-bug
-                    }
                 }
             }
         });
@@ -106,11 +101,11 @@ Ext.define('App.controller.ActivityStreamController', {
                 renderTo: 'activity-stream-speak-out-text-input',
                 enforceMaxLength: true,
                 maxLength: 140,
-                width: 228,
+                width: 247,
                 enableKeyEvents: true,
                 listeners: {
                     'keyup':  {
-                        fn: this.speakOutTextFieldHandleKeyUp,
+                        fn: this.onSpeakOutTextFieldKeyUp,
                         scope: this
                     }
                 }
@@ -156,8 +151,8 @@ Ext.define('App.controller.ActivityStreamController', {
         var store = this.getStore('ActivityStreamStore');
         store.insert( 0, [
             {
-                "displayName":"Pavel Milkevich",
-                "photo": "resources/images/pavel.jpeg",
+                "displayName":"Morten Eriksen",
+                "photo": "resources/images/x-user.png",
                 "location": "Admin",
                 "action": "Said",
                 "description": message,
@@ -180,7 +175,7 @@ Ext.define('App.controller.ActivityStreamController', {
         }
     },
 
-    speakOutTextFieldHandleKeyUp: function(textField, event, eOpts) {
+    onSpeakOutTextFieldKeyUp: function(textField, event, eOpts) {
         var isEnterKey = event.button === 12;
         if ( isEnterKey )
         {
@@ -202,7 +197,5 @@ Ext.define('App.controller.ActivityStreamController', {
     {
         return Ext.ComponentQuery.query( 'textfield[itemId=speakOutTextField]' )[0];
     }
-
-
 
 });

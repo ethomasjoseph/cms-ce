@@ -6,7 +6,7 @@ Ext.define('App.store.ActivityStreamStore', {
 
     proxy: {
         type: 'ajax',
-        url: 'app/data/ActivityStream.json',
+        url: 'app/launcher/data/ActivityStream.json',
         reader: {
             type: 'json',
             root: 'activitystreams'
