@@ -834,6 +834,11 @@ div.cms-userstore:hover {
 .cms-image-upload-button-container:hover {
     border: 1px solid #99BCE8;
 }
+
+.cms-image-upload-button-container-dragover {
+    border: 1px solid orange;
+}
+
 .cms-image-upload-button-container .cms-image-upload-button-image {
 }
 

@@ -13,10 +13,26 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
             '</div>'),
 
     onRender: function() {
+        var me = this;
         this.callParent(arguments); // call the superclass onRender method
         var id = Ext.id(null, 'image-upload-button-');
         this.update({id: id});
         this.uploadButtonId = id;
+    },
+
+    afterRender: function() {
+        var photoElement = Ext.select('#' + this.uploadButtonId + ' .cms-image-upload-button-image');
+        photoElement.on('dragover', function(e) {
+            Ext.get(e.target.parentNode).addCls('cms-image-upload-button-container-dragover');
+        });
+
+        photoElement.on('dragleave', function(e) {
+            Ext.get(e.target.parentNode).removeCls('cms-image-upload-button-container-dragover');
+        });
+
+        photoElement.on('drop', function(e) {
+            Ext.get(e.target.parentNode).removeCls('cms-image-upload-button-container-dragover');
+        });
     },
 
     initComponent: function()
@@ -25,6 +41,7 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
         {
             alert('ImageUploadButton requires Plupload!');
         }
+
         var me = this;
 
         var buttonId = this.getId();
