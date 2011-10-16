@@ -1,0 +1,53 @@
+<html>
+<head>
+    <title>Enonic CMS Admin</title>
+    <link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/main.css">
+    <script type="text/javascript" src="common/js/fileupload/plupload/js/plupload.full.js"></script>
+    <script type="text/javascript" src="ext/ext-all.js"></script>
+    <script type="text/javascript">
+        Ext.Loader.setConfig({
+            enabled: true,
+            paths: {
+                'Common' : 'common/js'
+            }
+        });
+
+        Ext.application({
+            name: 'App',
+
+            controllers: [
+            ],
+
+            requires: [
+                'Common.fileupload.SimpleImageUploadButton'
+            ],
+
+            launch: function() {
+                Ext.create('Ext.container.Viewport', {
+                    layout: 'border',
+                    padding: 5,
+                    items: [
+                        {
+                            region: 'center',
+                            xtype: 'panel',
+                            bodyPadding: 10,
+                            items: [
+                                {
+                                    xtype: 'simpleImageUploadButton',
+                                    text: 'Upload'
+                                }
+                            ]
+                        }
+                    ]
+                });
+            }
+        });
+
+    </script>
+
+</head>
+<body>
+
+</body>
+</html>
