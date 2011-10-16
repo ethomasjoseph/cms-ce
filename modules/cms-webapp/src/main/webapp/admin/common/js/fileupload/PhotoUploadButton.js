@@ -1,6 +1,6 @@
-Ext.define( 'Common.fileupload.SimpleImageUploadButton', {
+Ext.define( 'Common.fileupload.PhotoUploadButton', {
     extend: 'Ext.Component',
-    alias: 'widget.simpleImageUploadButton',
+    alias: 'widget.photoUploadButton',
     width: 100,
     height: 100,
 
