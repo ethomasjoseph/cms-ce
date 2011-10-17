@@ -14,25 +14,32 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
 
     onRender: function() {
         var me = this;
-        this.callParent(arguments); // call the superclass onRender method
+        this.callParent(arguments);
         var id = Ext.id(null, 'image-upload-button-');
         this.update({id: id});
         this.uploadButtonId = id;
     },
 
     afterRender: function() {
-        var photoElement = Ext.select('#' + this.uploadButtonId + ' .cms-image-upload-button-image');
-        photoElement.on('dragover', function(e) {
-            Ext.get(e.target.parentNode).addCls('cms-image-upload-button-container-dragover');
+        var body = Ext.getBody();
+        var buttonContainer =  Ext.get(this.uploadButtonId);
+
+        body.on('dragover', function(event) {
+            buttonContainer.addCls('cms-image-upload-button-container-dragover');
         });
 
-        photoElement.on('dragleave', function(e) {
-            Ext.get(e.target.parentNode).removeCls('cms-image-upload-button-container-dragover');
+        body.on('dragleave', function(event) {
+            buttonContainer.removeCls('cms-image-upload-button-container-dragover');
         });
 
-        photoElement.on('drop', function(e) {
-            Ext.get(e.target.parentNode).removeCls('cms-image-upload-button-container-dragover');
+        body.on('drop', function(event) {
+            buttonContainer.removeCls('cms-image-upload-button-container-dragover');
         });
+
+        body.on('dragend', function(event) {
+            buttonContainer.removeCls('cms-image-upload-button-container-dragover');
+        });
+
     },
 
     initComponent: function()
@@ -48,17 +55,14 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
 
         var uploader = new plupload.Uploader(
             {
-                runtimes : 'html5',
-                //runtimes : 'html5,flash,silverlight',
+                runtimes : 'html5,flash,silverlight',
                 multi_selection:false,
-                // Attach listener to this button.
                 browse_button : buttonId,
                 url : 'data/user/photo',
                 multipart: true,
-                //container: buttonId,
                 drop_element: buttonId,
-                //flash_swf_url : 'common/js/fileupload/plupload/js/plupload.flash.swf',
-                //silverlight_xap_url : 'common/js/fileupload/plupload/js/plupload.silverlight.xap',
+                flash_swf_url : 'common/js/fileupload/plupload/js/plupload.flash.swf',
+                silverlight_xap_url : 'common/js/fileupload/plupload/js/plupload.silverlight.xap',
                 filters : [
                     {title : 'Image files', extensions : 'jpg,gif,png'}
                 ]
@@ -69,7 +73,7 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
         });
 
         uploader.bind('FilesAdded', function(up, files) {
-            uploader.start();
+            // uploader.start();
             me.fakeUpload();
         });
 
@@ -136,4 +140,4 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
         return Ext.DomQuery.select('#'+ this.uploadButtonId + ' .cms-image-upload-button-progress-bar')[0];
     }
 
-} );
+});
