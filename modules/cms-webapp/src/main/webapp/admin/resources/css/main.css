@@ -851,9 +851,8 @@ div.cms-userstore:hover {
     visibility: hidden;
     position: absolute;
     /*background-color: #99BCE8;*/
-    border: 1px solid #99BCE8;
-    background: #99BCE8;
-    background: -moz-linear-gradient(top, #99BCE8 0%, #bbd2f0 100%);
+    border: 1px solid #555;
+    background-color: #555;
     width: 120px;
     bottom: 4px;
     left: 5px;
