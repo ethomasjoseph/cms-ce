@@ -11,19 +11,19 @@ ul.cms-wizard-navigation li {
 }
 
 ul.cms-wizard-navigation li {
-    background: TRANSPARENT url(../images/arrow.png) no-repeat top right;
+    background: TRANSPARENT url(../images/wizard-navigation-arrow.png) no-repeat top right;
 }
 
 ul.cms-wizard-navigation li.active {
-    background: TRANSPARENT url(../images/arrow-active.png) no-repeat top right;
+    background-image: url(../images/wizard-navigation-arrow-active.png);
 }
 
 ul.cms-wizard-navigation li.previous {
-    background: TRANSPARENT url(../images/arrow-previous.png) no-repeat top right;
+    background-image: url(../images/wizard-navigation-arrow-previous.png);
 }
 
 ul.cms-wizard-navigation li.last {
-    background: TRANSPARENT url(../images/arrow-last.png) no-repeat top right;
+    background-image: url(../images/wizard-navigation-arrow-last.png);
 }
 
 ul.cms-wizard-navigation li a {
