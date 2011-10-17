@@ -22,9 +22,11 @@ Ext.define( 'App.view.AddressContainer', {
             action: 'addNewTab',
             currentUser: this.currentUser
         };
+        var addresses =  this.items;
         this.items = [
             {
-                xtype: 'addressColumn'
+                xtype: 'addressColumn',
+                items: addresses
             },
             button
         ];

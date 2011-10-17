@@ -129,7 +129,6 @@ Ext.define( 'App.view.EditUserFormPanel', {
                     return {
                         sourceField: field,
                         xtype: 'addressContainer',
-                        itemId: 'addressContainer',
                         items: tabs
                     };
                 }else{
@@ -137,7 +136,6 @@ Ext.define( 'App.view.EditUserFormPanel', {
                     return {
                         sourceField: field,
                         xtype: 'addressContainer',
-                        itemId: 'addressContainer',
                         items: [tabItem]
                     };
                 }
