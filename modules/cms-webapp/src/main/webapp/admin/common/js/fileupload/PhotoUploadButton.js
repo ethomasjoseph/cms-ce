@@ -70,7 +70,6 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
             removeDragOverCls();
             cancelEvent(event);
         });
-
     },
 
     initComponent: function()
@@ -137,11 +136,6 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
 
             percent++;
         }, 5);
-    },
-
-    postProcess: function()
-    {
-
     },
 
     updateImage: function()
