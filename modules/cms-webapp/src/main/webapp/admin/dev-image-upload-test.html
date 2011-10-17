@@ -31,11 +31,32 @@
                         {
                             region: 'center',
                             xtype: 'panel',
+                            layout: {
+                                type: 'hbox'
+                            },
+                            defaults: {
+                                margin: '0 5 0 0'
+                            },
                             bodyPadding: 10,
+                            html: '<h1 style="font-size: 22px;">File Upload/Photo Upload Button</h1><div style="margin: 1em 0">Click on photo or drag a file over the button component</div>',
                             items: [
                                 {
                                     xtype: 'photoUploadButton',
-                                    text: 'Upload'
+                                    width: 128,
+                                    height: 128,
+                                    progressBarHeight: 7
+                                },
+                                {
+                                    xtype: 'photoUploadButton',
+                                    width: 64,
+                                    height: 64,
+                                    progressBarHeight: 6
+                                },
+                                {
+                                    xtype: 'photoUploadButton',
+                                    width: 32,
+                                    height: 32,
+                                    progressBarHeight: 2
                                 }
                             ]
                         }
