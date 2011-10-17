@@ -6,6 +6,12 @@ Ext.define( 'App.view.EditUserFormPanel', {
         bodyPadding: 10
     },
 
+    requires: [
+        'App.view.AddressContainer',
+        'App.view.AddressPanel',
+        'App.view.UserFormField'
+    ],
+
     autoScroll: true,
 
     measureWidth: true,

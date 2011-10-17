@@ -4,6 +4,10 @@ Ext.define( 'App.view.UserPreferencesPanel', {
 
     layout: 'accordion',
 
+    requires: [
+        'App.view.GroupDetailButton'
+    ],
+
     initComponent: function()
     {
         var groupPanel = this.generateGroupPanel( this.userFields );

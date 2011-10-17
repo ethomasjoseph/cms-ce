@@ -1,8 +1,16 @@
 Ext.define( 'App.controller.UserWizardController', {
     extend: 'Ext.app.Controller',
 
-    stores: ['UserstoreConfigStore'],
-    models: ['UserstoreConfigModel'],
+    stores: [
+        'UserstoreConfigStore',
+        'CountryStore',
+        'RegionStore'
+    ],
+    models: [
+        'UserstoreConfigModel',
+        'CountryModel',
+        'RegionModel'
+    ],
     views: [],
 
     init: function()

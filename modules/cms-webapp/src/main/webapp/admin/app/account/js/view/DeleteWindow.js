@@ -47,7 +47,7 @@ Ext.define( 'App.view.DeleteWindow', {
 
         if ( this.selectionLength === 1 )
         {
-            this.modelData = persistedSelection[0].data;
+            this.modelData = persistedSelection.getSelection()[0].data;
         }
 
         this.show();

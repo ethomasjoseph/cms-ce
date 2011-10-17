@@ -2,6 +2,11 @@ Ext.define( 'App.view.ShowPanel', {
     extend: 'Ext.panel.Panel',
     alias : 'widget.accountShow',
 
+    requires: [
+        'App.view.GridPanel',
+        'App.view.DetailPanel'
+    ],
+
     layout: 'border',
     border: false,
     padding: 5,
