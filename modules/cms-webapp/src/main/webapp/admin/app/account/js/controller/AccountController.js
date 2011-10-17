@@ -427,9 +427,9 @@ Ext.define( 'App.controller.AccountController', {
 
     addNewTab: function( button, event )
     {
-        var tabPanel = button.up( '#addressContainer' );
+        var tabPanel = button.up( 'addressContainer' );
         var newTab = this.getEditUserFormPanel().generateAddressPanel( tabPanel.sourceField, true );
-        newTab = tabPanel.insert( 0 , newTab );
+        newTab = tabPanel.down('addressColumn').insert( 0 , newTab );
     },
 
     updateTabTitle: function ( field, event )
@@ -533,7 +533,7 @@ Ext.define( 'App.controller.AccountController', {
                         : editUserForm.defaultUserStoreName,
                 userInfo: formValues
             };
-            var tabPanel = editUserForm.down( '#addressContainer' );
+            var tabPanel = editUserForm.down( 'addressContainer' );
             var tabs = tabPanel.query( 'form' );
             var addresses = [];
             for ( var index in tabs )
