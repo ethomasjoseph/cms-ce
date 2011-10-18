@@ -20,9 +20,9 @@ If you are unsure which license is appropriate for your use, please contact the 
 * Create a new ItemSelector
 * @param {Object} config Configuration options
 */
-Ext.define('Common.SlidingPager', {
+Ext.define('Common.SlidingPagerPlugin', {
     extend: 'Object',
-    alias : 'plugin.slidingPager',
+    alias : 'plugin.slidingPagerPlugin',
     requires: [
         'Ext.slider.Single',
         'Ext.slider.Tip'
@@ -57,15 +57,9 @@ Ext.define('Common.SlidingPager', {
             }
         });
 
-        var total = Ext.create('Ext.toolbar.TextItem', {
-            cls: 'sliding-pager-text'
-        });
-
+        var total = Ext.create('Ext.toolbar.TextItem', {});
         var tbFill = Ext.create('Ext.toolbar.Fill', {});
-
-        var displayInfo = Ext.create('Ext.toolbar.TextItem', {
-            cls: 'sliding-pager-text'
-        });
+        var displayInfo = Ext.create('Ext.toolbar.TextItem', {});
 
         function getIndexOfPBarFirstButton() {
             return pbar.items.indexOf(pbar.child("#first"));
@@ -80,7 +74,7 @@ Ext.define('Common.SlidingPager', {
             change: function(paging, pageData) {
                 // TODO: Configuration for internationalization.
                 if (pageData.total) {
-                    total.setText(pageData.total + ' Total');
+                    total.setText(pageData.total + ' Accounts Total');
                     displayInfo.setText('Displaying ' + pageData.fromRecord + '-' + pageData.toRecord);
                 }
                 slider.setMaxValue(pageData.pageCount);
