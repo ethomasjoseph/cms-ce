@@ -37,13 +37,20 @@ Ext.define( 'App.view.EditUserPanel', {
             margin: 5,
             flex: 0.2
         };
-        var headerPanelTpl = Ext.Template( Templates.account.editUserPanelHeader );
+        var headerPanelTpl = Templates.account.editUserPanelHeader;
         var headerPanel = {
             xtype: 'panel',
             tpl: headerPanelTpl,
             border: 0,
             region: 'north',
             styleHtmlContent: true,
+            listeners: {
+                click: {
+                    element: 'body',
+                    fn: this.toggleDisplayNameField,
+                    data: me.currentUser
+                }
+            },
             data: me.currentUser
         };
         if ( this.userFields != null )
@@ -53,6 +60,20 @@ Ext.define( 'App.view.EditUserPanel', {
         me.items = [ editUserFormPanel, prefPanel, headerPanel ];
         this.callParent( arguments );
 
+    },
+
+    toggleDisplayNameField: function(e, t){
+        var className = t.attributes.getNamedItem('class').nodeValue;
+        if (className == 'edit-button'){
+            var displayNameField = Ext.get('display-name');
+            var readonly = displayNameField.getAttribute('readonly');
+            if (readonly){
+                displayNameField.dom.removeAttribute('readonly');
+            }else{
+                displayNameField.set({readonly: true});
+            }
+            displayNameField.toggleCls('cms-display-name-editable');
+        }
     }
 
 } );

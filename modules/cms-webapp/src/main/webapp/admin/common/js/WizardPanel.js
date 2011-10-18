@@ -58,8 +58,42 @@ Ext.define( 'Common.WizardPanel', {
             margin: 0,
             tpl: new Ext.XTemplate( Templates.common.wizardPanelSteps, {
                 isCurrent: function( index ) {
-                    return wizard.getLayout().getActiveItem()
-                            == wizard.getComponent( index );
+                    return wizard.getLayout().getActiveItem().stepNumber == index;
+                },
+
+                isPrevious: function( index ) {
+                    return wizard.getLayout().getActiveItem().stepNumber -1 == index;
+                },
+
+                isNext: function( index ) {
+                    return wizard.getLayout().getActiveItem().stepNumber < index;
+                },
+
+                resolveClsName: function(index, total) {
+                    var clsName = '';
+                    if (this.isPrevious(index)) {
+                        clsName = 'previous'
+                    }
+
+                    if (this.isCurrent(index)) {
+                        clsName = 'current'
+                    }
+
+                    if (this.isNext(index)) {
+                        clsName = 'next'
+                    }
+
+                    var isLast = !this.isCurrent(index) && index == total;
+                    if (isLast) {
+                        clsName = 'last'
+                    }
+
+                    var isLastAndCurrent = this.isCurrent(index) && index == total;
+                    if (isLastAndCurrent) {
+                        clsName = 'current-last'
+                    }
+
+                    return clsName;
                 }
             })
         }];

@@ -1,6 +1,6 @@
 Ext.define('App.view.DetailPanel', {
     extend: 'Ext.panel.Panel',
-    alias: 'widget.userDetail',
+    alias: 'widget.accountDetail',
     split: true,
     autoScroll: true,
     layout: 'card',

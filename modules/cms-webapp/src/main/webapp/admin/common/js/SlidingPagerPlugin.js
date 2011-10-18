@@ -48,7 +48,7 @@ Ext.define('Common.SlidingPagerPlugin', {
             maxValue: 1,
             hideLabel: true,
             tipText: function(thumb) {
-                return Ext.String.format('Page <b>{0}</b> of <b>{1}</b>', thumb.value, thumb.slider.maxValue);
+                return Ext.String.format('Page <strong>{0}</strong> of <strong>{1}</strong>', thumb.value, thumb.slider.maxValue);
             },
             listeners: {
                 changecomplete: function(s, v){

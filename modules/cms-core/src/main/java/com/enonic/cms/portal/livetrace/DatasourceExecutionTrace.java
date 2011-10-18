@@ -2,12 +2,12 @@ package com.enonic.cms.portal.livetrace;
 
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.joda.time.DateTime;
 
 public class DatasourceExecutionTrace
+    implements ContentIndexQuerier, Trace
 {
     private String methodName;
 
@@ -20,6 +20,10 @@ public class DatasourceExecutionTrace
     private boolean isCacheUsed = false;
 
     private List<DatasourceMethodArgument> datasourceMethodArgumentList = new ArrayList<DatasourceMethodArgument>();
+
+    private Traces<ClientMethodExecutionTrace> clientMethodExecutionTraceTraces = new Traces<ClientMethodExecutionTrace>();
+
+    private Traces<ContentIndexQueryTrace> contentIndexQueryTraces = new Traces<ContentIndexQueryTrace>();
 
     public DatasourceExecutionTrace( String methodName )
     {
@@ -81,7 +85,7 @@ public class DatasourceExecutionTrace
         return datasourceMethodArgumentList;
     }
 
-    public void setDatasourceMethodArgumentList( List<DatasourceMethodArgument> datasourceMethodArgumentList )
+    void setDatasourceMethodArgumentList( List<DatasourceMethodArgument> datasourceMethodArgumentList )
     {
         this.datasourceMethodArgumentList = datasourceMethodArgumentList;
     }
@@ -96,51 +100,43 @@ public class DatasourceExecutionTrace
         return datasourceMethodArgumentList;
     }
 
-    public static Duration resolveDurationOfDatasourceExecutions( final Collection<DatasourceExecutionTrace> datasourceExecutionTraces)
+    public void addClientMethodExecutionTrace( ClientMethodExecutionTrace trace )
     {
-        if( datasourceExecutionTraces == null || datasourceExecutionTraces.isEmpty() )
-        {
-            return Duration.createEmpty();
-        }
+        clientMethodExecutionTraceTraces.add( trace );
+    }
 
-        DateTime earliestStartTime = null;
-        DateTime latestStopTime = null;
+    public boolean hasClientMethodExecutionTrace()
+    {
+        return clientMethodExecutionTraceTraces.hasTraces();
+    }
 
-        for ( DatasourceExecutionTrace datasourceExecutionTrace : datasourceExecutionTraces )
-        {
-            final DateTime currentStartTime =
-                datasourceExecutionTrace.getDuration() != null ? datasourceExecutionTrace.getDuration().getStartTime() : null;
+    public String getDurationOfClientMethodExecutionTracesInHRFormat()
+    {
+        return clientMethodExecutionTraceTraces.getTotalPeriodInHRFormat();
+    }
 
-            if ( earliestStartTime == null )
-            {
-                earliestStartTime = currentStartTime;
-            }
-            else if ( currentStartTime != null )
-            {
-                if ( currentStartTime.isBefore( earliestStartTime ) )
-                {
-                    earliestStartTime = currentStartTime;
-                }
-            }
+    public List<ClientMethodExecutionTrace> getClientMethodExecutionTraces()
+    {
+        return clientMethodExecutionTraceTraces.getList();
+    }
 
-            final DateTime currentStopTime =
-                datasourceExecutionTrace.getDuration() != null ? datasourceExecutionTrace.getDuration().getStopTime() : null;
+    public void addContentIndexQueryTrace( ContentIndexQueryTrace trace )
+    {
+        contentIndexQueryTraces.add( trace );
+    }
 
-            if ( latestStopTime == null )
-            {
-                latestStopTime = currentStopTime;
-            }
-            else if ( currentStopTime != null )
-            {
-                if ( currentStopTime.isAfter( latestStopTime ) )
-                {
-                    latestStopTime = currentStopTime;
-                }
-            }
-        }
-        Duration duration = new Duration();
-        duration.setStartTime( earliestStartTime );
-        duration.setStopTime( latestStopTime );
-        return duration;
+    public boolean hasContentIndexQueryTraces()
+    {
+        return contentIndexQueryTraces.hasTraces();
+    }
+
+    public String getDurationOfContentIndexQueryTracesInHRFormat()
+    {
+        return contentIndexQueryTraces.getTotalPeriodInHRFormat();
+    }
+
+    public List<ContentIndexQueryTrace> getContentIndexQueryTraces()
+    {
+        return contentIndexQueryTraces.getList();
     }
 }
