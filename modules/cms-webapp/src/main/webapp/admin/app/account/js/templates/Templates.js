@@ -21,7 +21,7 @@ Templates.account = {
     ,gridPanelNameRenderer:
         '<div style="float:left"><img src="data/user/photo?key={0}&thumb=true" class="cms-thumbnail"></div>' +
         '<div style="float:left;padding-top: 5px"><div class="cms-grid-title">{1}</div>' +
-        '<div class="cms-grid-description"><span class="cms-emphasis">{2}</span> in user store {3}</div>'
+        '<div class="cms-grid-description">{3}\\{2}</div>'
 
     ,editUserPanelHeader:
         '<div class="cms-edit-form-header clearfix">' +
