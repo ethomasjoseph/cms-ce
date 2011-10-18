@@ -23,7 +23,7 @@
     font-style: italic;
 }
 
-/* ----- Overrides ext-all.css ----- */
+/*----- Overrides ext-all.css -----*/
 
 body,
 .x-body,
@@ -45,7 +45,7 @@ body,
     margin: 0
 }
 
-/* ----- Launcher ----- */
+/*----- Launcher -----*/
 
 #launcher-toolbar {
     border-top: none;
@@ -94,7 +94,7 @@ body,
 }
 
 
-/* ----- Logged in user popup -----*/
+/*----- Logged in user popup -----*/
 
 .cms-logged-in-user-popup {
     background-color: #fff;
@@ -123,7 +123,7 @@ body,
 .cms-logged-in-user-popup-log-out {
 }
 
-/* ----- Accounts -----*/
+/*----- Accounts -----*/
 
 img.cms-thumbnail {
     width: 40px;
@@ -135,7 +135,8 @@ img.photo {
     height: 100px;
 }
 
-/* ----- Accounts Grid -----*/
+/*----- Accounts Grid -----*/
+
 .cms-grid-title {
     font-weight: bold;
 }
@@ -148,7 +149,7 @@ img.photo {
     margin-right: 6px
 }
 
-/* ----- Accounts Details Panel ----- */
+/*----- Accounts Details Panel ----- */
 
 .detail-info {
     padding: 10px;
@@ -200,7 +201,7 @@ img.photo {
     padding: 0 10px;
 }
 
-/* ----- Accounts Filter Panel ----- */
+/*----- Accounts Filter Panel -----*/
 
 .facet-header {
     font-weight: bold;
@@ -220,7 +221,7 @@ img.photo {
     font-weight: bold;
 }
 
-/* ------ Accounts Edit User Form ------ */
+/*------ Accounts Edit User Form ------*/
 .addresses .x-panel-dd-spacer {
     border: 2px dashed #99bbe8;
     background: #f6f6f6;
@@ -234,7 +235,7 @@ img.photo {
     padding: 1px;
 }
 
-/* ----- Cycle Button Menu Items -----*/
+/*----- Cycle Button Menu Items -----*/
 
 .x-menu-item img.icon-details-bottom, .icon-details-bottom {
     background-image: url("../images/details_bottom.gif");
@@ -248,7 +249,7 @@ img.photo {
     background-image: url("../images/details_hide.gif");
 }
 
-/* ----- Icons -----*/
+/*----- Icons -----*/
 
 .icon-user {
     background-image: url("../images/user.png");
@@ -444,7 +445,7 @@ img.photo {
     float: left;
 }
 
-/*------ Userstore ---------*/
+/*----- Userstore -----*/
 
 .cms-userstore-info .cms-thumbnail {
     float: left;
@@ -474,7 +475,7 @@ img.photo {
     cursor: auto !important;
 }
 
-/*------ Cache ---------*/
+/*----- Cache -----*/
 
 .cms-cache-info h1 {
     margin: 0;
@@ -488,7 +489,7 @@ img.photo {
 
 /*------------------------------------------- */
 
-/* Generic */
+/*----- Generic -----*/
 .cms-selected-item-box {
     float: left;
     display: inline-block;
@@ -516,7 +517,7 @@ img.photo {
     float: left;
 }
 
-/* Large */
+/*----- Large -----*/
 .cms-selected-item-box.large {
     padding: 3px;
     margin: 0 10px 10px 0;
@@ -559,7 +560,7 @@ img.photo {
 }
 
 
-/* Small */
+/*----- Small -----*/
 .cms-selected-item-box.small {
     padding: 2px;
     margin: 0 10px 10px 0;
@@ -600,7 +601,7 @@ img.photo {
     background: transparent url(../../resources/images/cross-sm.png) no-repeat 1px;
 }
 
-/* Edit Form Header */
+/*----- Edit Form Header -----*/
 .cms-edit-form-header {
     background-color: #eee;
     padding: 10px;
@@ -630,7 +631,6 @@ img.photo {
     padding: 3px;
     border: 1px solid TRANSPARENT;
     background: TRANSPARENT url(../../resources/images/pencil.png) no-repeat;
-    float: left;
     width: 16px;
     height: 16px;
     float: right;
@@ -651,13 +651,9 @@ img.photo {
 .cms-display-name {
     border: none;
     font-weight: bold;
-    /*font-size: 35px;*/
     text-align: left;
     background: none;
 }
-/*-----------------------*/
-
-
 
 .cms-user-info .cms-user-photo {
     margin-right: 10px;
@@ -669,7 +665,6 @@ img.photo {
     -moz-border-radius: 4px;
     border-radius: 4px;
 }
-
 
 .cms-userstore-block{
     display: inline-block;
@@ -713,7 +708,8 @@ div.cms-userstore:hover {
     vertical-align: middle;
 }
 
-/*New form*/
+/*----- New form -----*/
+
 .cms-new-user-header {
     margin-bottom: 1em;
 }
@@ -722,8 +718,8 @@ div.cms-userstore:hover {
     margin: 0 !important;
 }
 
-/* Wizard navigation */
-/* Wizard navigation */
+/*----- Wizard navigation -----*/
+
 ul.cms-wizard-navigation {
     list-style-type: none !important;
     background-color: #ccc;
@@ -793,10 +789,6 @@ ul.cms-wizard-navigation a.last-current {
     color: #acacac;
 }
 
-
-
-
-
 .cms-wizard>div>.x-panel-body {
     border: 0 none;
 }
@@ -805,21 +797,13 @@ ul.cms-wizard-navigation a.last-current {
     border: 0 none;
 }
 
+/*----- Wizard header -----*/
+
 .cms-wizard-header {
-    padding: 10px;
 }
 
 .cms-wizard-header p {
-    clear: both;
-}
-
-.cms-wizard-header .right {
-    float: left;
-}
-
-.cms-wizard-header .right h1 {
-    font-size: 18px;
-    float: left;
+    margin: 0;
 }
 
 .cms-wizard-header .edit-button {
@@ -828,27 +812,31 @@ ul.cms-wizard-navigation a.last-current {
     padding: 3px;
     border: 1px solid TRANSPARENT;
     background: url(../../resources/images/pencil.png) no-repeat scroll 2px 2px TRANSPARENT;
-    float: left;
     width: 22px;
     height: 22px;
-    float: right;
 }
 
 .cms-wizard-header .edit-button:hover {
     border-color: #c0c0c0;
 }
 
-.cms-wizard-header input{
-    font-size: 32px;
-    color: gray;
+.cms-wizard-header input {
+    width: 100%;
+    border: 1px solid TRANSPARENT;
+    font-size: 22px;
+    color: #ccc;
+}
+
+.cms-wizard-header input:hover {
+    border: 1px solid #ccc;
 }
 
 .cms-edited-field {
-    color: black !important;
+    color: #000 !important;
 }
 
+/*----- Image Upload Button -----*/
 
-/* Image Upload Button */
 .cms-image-upload-button-container {
     position: relative;
     padding: 1px;

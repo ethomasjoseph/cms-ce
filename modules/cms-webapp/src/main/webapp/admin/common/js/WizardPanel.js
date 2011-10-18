@@ -7,7 +7,7 @@ Ext.define( 'Common.WizardPanel', {
     autoScroll: true,
     defaults: {
         border: false,
-        padding: 10
+        padding: '10 0'
     },
     externalControls: undefined,
     showControls: true,

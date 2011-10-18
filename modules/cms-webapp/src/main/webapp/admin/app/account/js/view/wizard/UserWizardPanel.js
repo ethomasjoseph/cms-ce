@@ -32,6 +32,8 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
             var readonly = displayNameField.getAttribute('readonly');
             if (readonly){
                 displayNameField.dom.removeAttribute('readonly');
+                displayNameField.dom.focus();
+                displayNameField.dom.select();
             }else{
                 displayNameField.set({readonly: true});
             }
@@ -39,12 +41,12 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         }
     },
 
-    toggleEditButton: function(e, t){
+    onMouseOverHeader: function(event, target){
         var editButton = Ext.get('edit-button');
-        if (e.type == 'mouseover'){
+        if (event.type == 'mouseover'){
             editButton.show();
         }
-        if (e.type == 'mouseout'){
+        if (event.type == 'mouseout'){
             editButton.hide();
         }
     },
@@ -166,17 +168,26 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                             },
                             mouseover: {
                                 element: 'body',
-                                fn: me.toggleEditButton
+                                fn: me.onMouseOverHeader
                             },
                             mouseout: {
                                 element: 'body',
-                                fn: me.toggleEditButton
+                                fn: me.onMouseOverHeader
                             }
                         },
-                        html: '<div class="cms-wizard-header clearfix">' +
-                                '<div class="right">' +
-                                '<h1><input id="display-name" type="text" value="New User" readonly="true" class="cms-display-name"/></h1><a href="javascript:;" id="edit-button" class="edit-button"></a>' +
-                                '<p >-User Wizard: <span id="q-userstore"></span><span id="q-username"></span></p></div></div>'
+                        // TODO: Move to templates
+                        html: '<div class="cms-wizard-header">' +
+                            '<div class="clearfix">' +
+                                '<div class="cms-left">' +
+                                    '<input id="display-name" type="text" value="New User" readonly="true" class="cms-display-name"/>' +
+                                '</div>' +
+                                '<div class="cms-right">' +
+                                    '<a href="javascript:;" id="edit-button" class="edit-button"></a>' +
+                                '</div>' +
+                            '</div>' +
+                            '<p class="clearfix">-User Wizard: <span id="q-userstore"></span><span id="q-username"></span></p>' +
+                        '</div>'
+
                     },
                     {
                         flex: 1,
