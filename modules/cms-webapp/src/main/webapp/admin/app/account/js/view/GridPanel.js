@@ -10,8 +10,6 @@ Ext.define( 'App.view.GridPanel', {
     columnLines: true,
     frame: false,
     store: 'UserStore',
-    /*verticalScrollerType: 'paginggridscroller',
-    invalidateScrollerOnRefresh: false,*/
 
     initComponent: function()
     {
