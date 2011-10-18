@@ -184,24 +184,29 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                         showControls: false,
                         items: [
                             {
+                                stepNumber: 1,
                                 stepTitle: 'Userstore',
                                 xtype: 'userStoreListPanel'
                             },
                             {
+                                stepNumber: 2,
                                 stepTitle: "Profile",
                                 itemId: 'userForm',
                                 xtype: 'editUserFormPanel',
                                 enableToolbar: false
                             },
                             {
+                                stepNumber: 3,
                                 stepTitle: "Login",
                                 xtype: 'wizardStepLoginInfoPanel'
                             },
                             {
+                                stepNumber: 4,
                                 stepTitle: "Memberships",
                                 xtype: 'wizardStepMembershipPanel'
                             },
                             {
+                                stepNumber: 5,
                                 stepTitle: "Finalize",
                                 xtype: 'wizardStepFinalizePanel'
                             }

@@ -5,16 +5,12 @@ if ( !Templates )
 
 Templates.common = {
     wizardPanelSteps:
-        '<ol class="cms-wizard-steps clearfix">' +
+        '<ul class="cms-wizard-navigation clearfix">' +
             '<tpl for=".">' +
-                '<li>' +
-                    '<a wizardStep="{[xindex]}" href="javascript:;" class="step {[ this.isCurrent( xindex - 1 ) ? \" current\" : \"\" ]}" >' +
-                        '<span class="text">{[xindex]}. {[  (values.stepTitle || values.title) ]}<span>' +
-                        '<span class="arrow"></span>' +
-                    '</a>' +
-                '</li>' +
+                '<li class="{[ this.resolveClsName( xindex, xcount ) ]}">' +
+                '<a wizardStep="{[xindex]}" href="#" class="step {[ this.resolveClsName( xindex, xcount ) ]}">{[xindex]}. {[  (values.stepTitle || values.title) ]}</a></li>' +
             '</tpl>' +
-        '</ol>'
+        '</ul>'
 
     ,userInfo:
         '<div>' +
