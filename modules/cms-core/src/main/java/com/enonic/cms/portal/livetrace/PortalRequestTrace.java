@@ -17,6 +17,7 @@ import com.enonic.cms.domain.SitePath;
  * Oct 6, 2010
  */
 public class PortalRequestTrace
+    implements Trace
 {
     private long requestNumber;
 
