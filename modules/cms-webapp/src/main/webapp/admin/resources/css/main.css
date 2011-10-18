@@ -722,16 +722,16 @@ div.cms-userstore:hover {
 
 ul.cms-wizard-navigation {
     list-style-type: none !important;
-    background-color: #ccc;
     margin: 0;
     padding: 1px;
+    background-color: #ccc;
 }
 
 ul.cms-wizard-navigation li {
     float: left;
-    padding-right: 14px;
-    margin: 0;
     list-style: none;
+    margin: 0;
+    padding-right: 14px;
 }
 
 ul.cms-wizard-navigation li {
@@ -759,11 +759,11 @@ ul.cms-wizard-navigation li.last-current {
 
 ul.cms-wizard-navigation li a {
     display: block;
-    padding: 8px 15px 8px 15px;
     margin-right: 2px;
+    padding: 8px 15px 8px 15px;
+    color: #222;
     text-decoration: none !important;
     background-color: #eee;
-    color: #222;
 }
 
 ul.cms-wizard-navigation li a.previous {
@@ -771,10 +771,10 @@ ul.cms-wizard-navigation li a.previous {
 
 ul.cms-wizard-navigation li a.current,
 ul.cms-wizard-navigation li a.current-last {
+    padding-right: 86px;
     color: #000;
     font-weight: bold;
     background-color: #fff;
-    padding-right: 150px;
 }
 
 ul.cms-wizard-navigation a.next {
@@ -799,36 +799,47 @@ ul.cms-wizard-navigation a.last-current {
 
 /*----- Wizard header -----*/
 
-.cms-wizard-header {
+.cms-wizard-header-container {
+    margin-bottom: -1px;
 }
 
-.cms-wizard-header p {
+.cms-wizard-header-container p {
     margin: 0;
 }
 
-.cms-wizard-header .edit-button {
-    display: none;
-    margin: 2px 0 0 5px;
+.cms-wizard-header-container .cms-wizard-header {
+    position: relative;
+    border: 1px solid TRANSPARENT;
+    padding: 4px 0;
+}
+
+.cms-wizard-header-container .cms-wizard-header:hover {
+    border: 1px solid #ccc;
+}
+
+
+.cms-wizard-header-container .edit-button {
+    position: absolute;
+    right: 0;
+    visibility: hidden;
+    width: 22px;
+    height: 22px;
+    margin: 4px 8px 0 8px;
     padding: 3px;
     border: 1px solid TRANSPARENT;
     background: url(../../resources/images/pencil.png) no-repeat scroll 2px 2px TRANSPARENT;
-    width: 22px;
-    height: 22px;
 }
 
-.cms-wizard-header .edit-button:hover {
+.cms-wizard-header-container .edit-button:hover {
     border-color: #c0c0c0;
 }
 
-.cms-wizard-header input {
+.cms-wizard-header-container input {
     width: 100%;
     border: 1px solid TRANSPARENT;
+    padding-right: 32px;
     font-size: 22px;
     color: #ccc;
-}
-
-.cms-wizard-header input:hover {
-    border: 1px solid #ccc;
 }
 
 .cms-edited-field {

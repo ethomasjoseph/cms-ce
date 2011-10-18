@@ -25,43 +25,6 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         xtype: 'userWizardToolbar'
     },
 
-    toggleDisplayNameField: function(event, target){
-        var className = target.className;
-        if (className && className === 'edit-button'){
-            var displayNameField = Ext.get('display-name');
-            var readonly = displayNameField.getAttribute('readonly');
-            if (readonly){
-                displayNameField.dom.removeAttribute('readonly');
-                displayNameField.dom.focus();
-                displayNameField.dom.select();
-            }else{
-                displayNameField.set({readonly: true});
-            }
-            displayNameField.addCls('cms-edited-field');
-        }
-    },
-
-    onMouseOverHeader: function(event, target){
-        var editButton = Ext.get('edit-button');
-        if (event.type == 'mouseover'){
-            editButton.show();
-        }
-        if (event.type == 'mouseout'){
-            editButton.hide();
-        }
-    },
-
-    resizeFileUpload: function( file ) {
-        file.el.down( 'input[type=file]' ).setStyle( {
-            width: file.getWidth(),
-            height: file.getHeight()
-        } );
-    },
-
-    setFileUploadDisabled: function( disable ) {
-        this.uploadForm.setDisabled( disable );
-    },
-
     initComponent: function()
     {
         var me = this;
@@ -162,9 +125,14 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                         cls: 'cms-new-user-header',
                         styleHtmlContent: true,
                         listeners: {
-                            click: {
-                                element: 'body',
-                                fn: me.toggleDisplayNameField
+                            afterrender: {
+                                fn: function() {
+                                    var me = this;
+                                    Ext.getBody().addListener('click', function(event, target, eOpts) {
+                                       me.toggleDisplayNameField(event, target);
+                                    });
+                                },
+                                scope: this
                             },
                             mouseover: {
                                 element: 'body',
@@ -176,16 +144,13 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                             }
                         },
                         // TODO: Move to templates
-                        html: '<div class="cms-wizard-header">' +
-                            '<div class="clearfix">' +
-                                '<div class="cms-left">' +
-                                    '<input id="display-name" type="text" value="New User" readonly="true" class="cms-display-name"/>' +
-                                '</div>' +
-                                '<div class="cms-right">' +
-                                    '<a href="javascript:;" id="edit-button" class="edit-button"></a>' +
-                                '</div>' +
+                        html: '<div class="cms-wizard-header-container">' +
+                            '<div class="cms-wizard-header clearfix">' +
+                                '<input id="display-name" type="text" value="New User" readonly="true" class="cms-display-name"/>' +
+                                '<a href="javascript:;" id="edit-button" class="edit-button"></a>' +
+
                             '</div>' +
-                            '<p class="clearfix">-User Wizard: <span id="q-userstore"></span><span id="q-username"></span></p>' +
+                            '<div class="clearfix">- User Wizard: <span id="q-userstore"></span><span id="q-username"></span></div>' +
                         '</div>'
 
                     },
@@ -227,6 +192,50 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
             }
         ];
         this.callParent( arguments );
+    },
+
+    toggleDisplayNameField: function(event, target){
+
+        var element = new Ext.Element(target);
+        var parent = element.findParent('.cms-wizard-header');
+        var displayNameField = Ext.get('display-name');
+        var readonly = displayNameField.getAttribute('readonly');
+
+        if (parent)
+        {
+            displayNameField.dom.removeAttribute('readonly');
+            displayNameField.addCls('cms-edited-field');
+        }
+        else
+        {
+            displayNameField.set({readonly: true});
+            displayNameField.removeCls('cms-edited-field');
+        }
+    },
+
+    onMouseOverHeader: function(event, target){
+        var element = new Ext.Element(target);
+        var parent = element.findParent('.cms-wizard-header');
+        if (parent) {
+            var editButton = Ext.DomQuery.select('#edit-button')[0];
+            if (event.type == 'mouseover'){
+                editButton.style.visibility = 'visible';
+            }
+            if (event.type == 'mouseout'){
+                editButton.style.visibility = 'hidden';
+            }
+        }
+    },
+
+    resizeFileUpload: function( file ) {
+        file.el.down( 'input[type=file]' ).setStyle( {
+            width: file.getWidth(),
+            height: file.getHeight()
+        } );
+    },
+
+    setFileUploadDisabled: function( disable ) {
+        this.uploadForm.setDisabled( disable );
     }
 
-} );
+});
