@@ -64,7 +64,12 @@ Ext.define('App.controller.ActivityStreamController', {
         var comment = dom.selectNode('.comment', item);
         var more = dom.selectNode('.more', item);
 
-        favorite.style.visibility = 'hidden';
+        var messageIsFavorited = favorite.className.indexOf('favorited') === -1;
+        if (messageIsFavorited)
+        {
+            favorite.style.visibility = 'hidden';
+        }
+
         comment.style.visibility = 'hidden';
         more.style.visibility = 'hidden';
     },
