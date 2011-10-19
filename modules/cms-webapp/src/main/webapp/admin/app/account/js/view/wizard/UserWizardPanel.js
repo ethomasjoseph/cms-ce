@@ -135,14 +135,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                                 scope: this
                             }
                         },
-                        // TODO: Move to templates
-                        html: '<div class="cms-wizard-header-container">' +
-                            '<div class="cms-wizard-header clearfix">' +
-                                '<input id="display-name" type="text" value="New User" readonly="true" class="cms-display-name"/>' +
-                            '</div>' +
-                            '<div class="clearfix">- User Wizard: <span id="q-userstore"></span><span id="q-username"></span></div>' +
-                        '</div>'
-
+                        html: Templates.account.newUserPanelHeader
                     },
                     {
                         flex: 1,
@@ -184,8 +177,8 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         this.callParent( arguments );
     },
 
-    toggleDisplayNameField: function(event, target){
-
+    toggleDisplayNameField: function(event, target)
+    {
         var element = new Ext.Element(target);
         var parent = element.findParent('.cms-wizard-header');
         var displayNameField = Ext.get('display-name');
@@ -203,7 +196,8 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         }
     },
 
-    resizeFileUpload: function( file ) {
+    resizeFileUpload: function( file )
+    {
         file.el.down( 'input[type=file]' ).setStyle( {
             width: file.getWidth(),
             height: file.getHeight()
