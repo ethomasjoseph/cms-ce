@@ -8,7 +8,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         'App.view.EditUserFormPanel',
         'App.view.wizard.WizardStepLoginInfoPanel',
         'App.view.wizard.WizardStepMembershipPanel',
-        'App.view.wizard.WizardStepFinalizePanel'
+        'App.view.wizard.WizardStepSummaryPanel'
     ],
 
     layout: {
@@ -166,8 +166,8 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                             },
                             {
                                 stepNumber: 5,
-                                stepTitle: "Finalize",
-                                xtype: 'wizardStepFinalizePanel'
+                                stepTitle: "Summary",
+                                xtype: 'wizardStepSummaryPanel'
                             }
                         ]
                     }
