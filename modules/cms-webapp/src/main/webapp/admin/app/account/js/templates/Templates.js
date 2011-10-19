@@ -42,7 +42,7 @@ Templates.account = {
                 '</div>' +
                 '<div class="center">' +
                     '<h2>{displayName}</h2>' +
-                    '<p>{userStore}/{name}</p>' +
+                    '<p>{userStore}\{name}</p>' +
                 '</div>' +
                 '<div class="right">' +
                     ' <a id="remove-from-selection-button-{key}" class="remove-selection" href="javascript:;"></a>' +
