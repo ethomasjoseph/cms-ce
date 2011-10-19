@@ -6,7 +6,6 @@ Ext.define( 'App.view.UserFormField', {
         type: 'hbox'
     },
 
-    height: '100%',
     actionName: undefined,
     //anchor: '50%',
 

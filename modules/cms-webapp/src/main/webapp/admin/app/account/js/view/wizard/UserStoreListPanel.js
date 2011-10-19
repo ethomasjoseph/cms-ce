@@ -2,8 +2,9 @@ Ext.define('App.view.wizard.UserStoreListPanel', {
     extend: 'Ext.view.View',
     alias : 'widget.userStoreListPanel',
     border: false,
-    padding: 0,
     store: 'UserstoreConfigStore',
+
+    autoScroll: false,
 
     initComponent: function() {
         var tpl = Templates.account.userstoreRadioButton;
