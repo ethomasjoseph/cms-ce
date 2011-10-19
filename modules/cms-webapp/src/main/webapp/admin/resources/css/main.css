@@ -637,7 +637,7 @@ img.photo {
 }
 
 .cms-edit-form-header .edit-button:hover {
-    border-color: #c0c0c0;
+    border-color: #ccc;
 }
 
 .cms-edit-form-header .right p {
@@ -842,13 +842,12 @@ ul.cms-wizard-navigation a.last-current {
     border-radius: 3px;
 }
 
-
-.cms-image-upload-button-container:hover {
-    border: 1px solid #99BCE8;
-}
-
+.cms-image-upload-button-container:hover,
 .cms-image-upload-button-container-dragover {
     border: 1px solid orange;
+    -webkit-box-shadow:0 0 2px orange;
+    -moz-box-shadow: 0 0 2px orange;
+    box-shadow:0 0 2px orange;
 }
 
 .cms-image-upload-button-container .cms-image-upload-button-image {
