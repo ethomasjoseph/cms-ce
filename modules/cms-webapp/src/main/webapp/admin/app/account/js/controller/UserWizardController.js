@@ -22,6 +22,9 @@ Ext.define( 'App.controller.UserWizardController', {
                           'userStoreListPanel': {
                               itemclick: this.userStoreSelected,
                               afterrender: this.userStoreAfterRender
+                          },
+                          'addressPanel textfield[name=label]': {
+                              keyup: this.updateTabTitle
                           }
                       } );
     },
@@ -127,6 +130,12 @@ Ext.define( 'App.controller.UserWizardController', {
             displayName.dom.value = Ext.String.trim( displayNameValue );
             displayName.addCls('cms-edited-field');
         }
+    },
+
+    updateTabTitle: function ( field, event )
+    {
+        var addressPanel = field.up( 'addressPanel' );
+        addressPanel.setTitle( field.getValue() );
     },
 
     userImageClicked: function()
