@@ -133,22 +133,12 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                                     });
                                 },
                                 scope: this
-                            },
-                            mouseover: {
-                                element: 'body',
-                                fn: me.onMouseOverHeader
-                            },
-                            mouseout: {
-                                element: 'body',
-                                fn: me.onMouseOverHeader
                             }
                         },
                         // TODO: Move to templates
                         html: '<div class="cms-wizard-header-container">' +
                             '<div class="cms-wizard-header clearfix">' +
                                 '<input id="display-name" type="text" value="New User" readonly="true" class="cms-display-name"/>' +
-                                '<a href="javascript:;" id="edit-button" class="edit-button"></a>' +
-
                             '</div>' +
                             '<div class="clearfix">- User Wizard: <span id="q-userstore"></span><span id="q-username"></span></div>' +
                         '</div>'
@@ -210,20 +200,6 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         {
             displayNameField.set({readonly: true});
             displayNameField.removeCls('cms-edited-field');
-        }
-    },
-
-    onMouseOverHeader: function(event, target){
-        var element = new Ext.Element(target);
-        var parent = element.findParent('.cms-wizard-header');
-        if (parent) {
-            var editButton = Ext.DomQuery.select('#edit-button')[0];
-            if (event.type == 'mouseover'){
-                editButton.style.visibility = 'visible';
-            }
-            if (event.type == 'mouseout'){
-                editButton.style.visibility = 'hidden';
-            }
         }
     },
 

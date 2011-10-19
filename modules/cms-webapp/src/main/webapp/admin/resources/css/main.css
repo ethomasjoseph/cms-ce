@@ -625,21 +625,6 @@ img.photo {
     float: left;
 }
 
-.cms-edit-form-header .edit-button {
-    display: block;
-    margin: 2px 0 0 5px;
-    padding: 3px;
-    border: 1px solid TRANSPARENT;
-    background: TRANSPARENT url(../../resources/images/pencil.png) no-repeat;
-    width: 16px;
-    height: 16px;
-    float: right;
-}
-
-.cms-edit-form-header .edit-button:hover {
-    border-color: #c0c0c0;
-}
-
 .cms-edit-form-header .right p {
     margin: 5px 0 0 0;
 }
