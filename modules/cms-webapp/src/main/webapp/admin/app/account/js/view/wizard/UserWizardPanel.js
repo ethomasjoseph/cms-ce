@@ -17,6 +17,8 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         padding: 10
     },
 
+    border: 0,
+
     defaults: {
         border: false
     },
