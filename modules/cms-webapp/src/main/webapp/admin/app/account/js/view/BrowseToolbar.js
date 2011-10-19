@@ -26,8 +26,8 @@ Ext.define( 'App.view.BrowseToolbar', {
                         cls: 'x-btn-as-arrow',
                         menu: new Ext.menu.Menu({
                             items: [
-                                {text: 'User', iconCls: '', action: 'newUser'},
-                                {text: 'Group', iconCls: '', action: 'newGroup'}
+                                {text: 'User', iconCls: 'icon-new-user', action: 'newUser'},
+                                {text: 'Group', iconCls: 'icon-new-group', action: 'newGroup'}
                             ]
                         })
                     }

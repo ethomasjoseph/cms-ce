@@ -158,7 +158,7 @@ Ext.define( 'App.controller.AccountController', {
             {
                 title: 'New Group',
                 html: 'New Group Form',
-                iconCls: 'icon-group-add'
+                iconCls: 'icon-new-group'
             }
         );
     },
@@ -308,7 +308,7 @@ Ext.define( 'App.controller.AccountController', {
             var tab = {
                 id: Ext.id(null, 'new-user-'),
                 title: 'New User',
-                iconCls: 'icon-user-add',
+                iconCls: 'icon-new-user',
                 closable: true,
                 autoScroll: true,
                 layout: 'fit',
