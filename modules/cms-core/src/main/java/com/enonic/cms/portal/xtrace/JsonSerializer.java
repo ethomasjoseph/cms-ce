@@ -1,22 +1,35 @@
 package com.enonic.cms.portal.xtrace;
 
+import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import com.enonic.cms.core.security.user.QualifiedUsername;
 import com.enonic.cms.portal.livetrace.DatasourceExecutionTrace;
+import com.enonic.cms.portal.livetrace.InstructionPostProcessingTrace;
 import com.enonic.cms.portal.livetrace.PageRenderingTrace;
 import com.enonic.cms.portal.livetrace.WindowRenderingTrace;
-import com.google.gson.*;
-
-import java.util.List;
 
 // TODO: Calculate accurate start times and end times
 public class JsonSerializer
 {
+    private PageRenderingTrace pageTrace;
+
+    private long timeZero = 0;
+
     public String serialize( PageRenderingTrace pageRenderingTrace )
     {
+        this.pageTrace = pageRenderingTrace;
+        this.timeZero = pageRenderingTrace.getDuration().getStartTime().getMillis();
+
         JsonObject wrapper = new JsonObject();
 
         JsonObject xtrace = new JsonObject();
         appendVersion( xtrace );
-        appendPage( xtrace, pageRenderingTrace );
+        appendPage( xtrace );
 
         wrapper.add( "xtrace", xtrace );
 
@@ -33,131 +46,179 @@ public class JsonSerializer
         xtrace.addProperty( "version", "1.0" );
     }
 
-    private void appendPage( JsonObject xtrace, PageRenderingTrace pageRenderingTrace )
+    private void appendPage( JsonObject xtrace )
     {
-        xtrace.add( "page", createPage( pageRenderingTrace ) );
+        xtrace.add( "page", createPage() );
     }
 
-    private JsonObject createPage( PageRenderingTrace pageRenderingTrace )
+    private JsonObject createPage()
     {
-        JsonObject page = new JsonObject();
+        JsonObject pageObject = new JsonObject();
 
-        page.addProperty( "key", "TODO" );
-        page.addProperty( "name", pageRenderingTrace.getPortalRequestTrace().getUrl() );
-        page.addProperty( "cacheable", "TODO" );
-        page.addProperty( "cache_hit", pageRenderingTrace.isUsedCachedResult() );
-        page.addProperty( "page_template_name", "TODO" );
-        page.addProperty( "start_time", 0 );
-        page.addProperty( "end_time", pageRenderingTrace.getDuration().getExecutionTimeInMilliseconds() );
+        pageObject.addProperty( "key", "TODO" );
+        pageObject.addProperty( "name", pageTrace.getPortalRequestTrace().getUrl() );
+        pageObject.addProperty( "cacheable", "TODO" );
+        pageObject.addProperty( "cache_hit", pageTrace.isUsedCachedResult() );
+        pageObject.addProperty( "page_template_name", "TODO" );
+        pageObject.addProperty( "start_time", 0 );
+        pageObject.addProperty( "stop_time", pageTrace.getDuration().getStopTime().getMillis() - timeZero );
+        pageObject.addProperty( "total_time", pageTrace.getDuration().getExecutionTimeInMilliseconds() );
+        pageObject.addProperty( "run_as_user", resolveQualifiedUsernameAsString( pageTrace.getRenderer() ) );
 
-        JsonObject xsltObj = new JsonObject();
-        xsltObj.addProperty( "processing_time", pageRenderingTrace.getInstructionPostProcessingTrace().getDuration().getExecutionTimeInMilliseconds() );
-        page.add( "xslt", xsltObj );
+        appendPageDatasources( pageObject );
+        appendXsltTransformingObjectForPage( pageObject );
+        appendWindows( pageObject );
 
-        page.addProperty( "total_time", pageRenderingTrace.getDuration().getExecutionTimeInMilliseconds() );
+        pageObject.add( "instruction_post_processing",
+                        createInstructionPostProcessingObject( pageTrace.getInstructionPostProcessingTrace() ) );
 
-        String userStoreName = "";
-        if ( pageRenderingTrace.getRenderer().getUserStoreName() != null )
+        return pageObject;
+    }
+
+    private void appendPageDatasources( JsonObject page )
+    {
+        if ( pageTrace.isUsedCachedResult() )
         {
-            userStoreName = pageRenderingTrace.getRenderer().getUserStoreName() + "\\";
+            page.add( "datasources", new JsonArray() );
         }
-
-        String qualifiedName = userStoreName + pageRenderingTrace.getRenderer().getUsername();
-
-        page.addProperty( "run_as_user", qualifiedName );
-
-        appendPageDatasources( page, pageRenderingTrace, 0 );
-
-        long dataSourcesTotalExecutionTime = calculateTotalExecutionTimeForDatasources( pageRenderingTrace.getDatasourceExecutionTraces() );
-        appendWindows( page, pageRenderingTrace, dataSourcesTotalExecutionTime );
-
-        return page;
+        else
+        {
+            page.add( "datasources", createDatasources( pageTrace.getDatasourceExecutionTraces() ) );
+        }
     }
 
-    private void appendPageDatasources( JsonObject page, PageRenderingTrace pageRenderingTrace, long startTime )
+    private void appendWindows( JsonObject page )
     {
-        page.add( "datasources", createDatasources( pageRenderingTrace.getDatasourceExecutionTraces(), startTime ) );
+        page.add( "windows", createWindows( pageTrace.getWindowRenderingTraces() ) );
     }
 
-    private void appendWindows( JsonObject page, PageRenderingTrace pageRenderingTrace, long startTime )
-    {
-        page.add( "windows", createWindows( pageRenderingTrace.getWindowRenderingTraces(), startTime ) );
-    }
-
-    private JsonArray createWindows( List<WindowRenderingTrace> windows, long startTime )
+    private JsonArray createWindows( List<WindowRenderingTrace> windows )
     {
         JsonArray windowsArray = new JsonArray();
-
-        long tempStartTime = startTime;
         for ( WindowRenderingTrace window : windows )
         {
-            createWindow( windowsArray, window, tempStartTime );
-            tempStartTime = tempStartTime + window.getDuration().getExecutionTimeInMilliseconds();
+            createWindow( windowsArray, window );
         }
-
         return windowsArray;
     }
 
-    private void createWindow( JsonArray windowsArray, WindowRenderingTrace window, long startTime )
+    private void createWindow( JsonArray windowsArray, WindowRenderingTrace windowTrace )
     {
         JsonObject windowObject = new JsonObject();
         windowObject.addProperty( "key", "TODO" );
-        windowObject.addProperty( "name", window.getPortletName() );
+        windowObject.addProperty( "name", windowTrace.getPortletName() );
         windowObject.addProperty( "cacheable", "TODO" );
-        windowObject.addProperty( "cache_hit", window.isUsedCachedResult() );
-        windowObject.addProperty( "start_time", startTime );
+        windowObject.addProperty( "cache_hit", windowTrace.isUsedCachedResult() );
+        windowObject.addProperty( "start_time", windowTrace.getDuration().getStartTime().getMillis() - timeZero );
+        windowObject.addProperty( "stop_time", windowTrace.getDuration().getStopTime().getMillis() - timeZero );
+        windowObject.addProperty( "total_time", windowTrace.getDuration().getExecutionTimeInMilliseconds() );
+        windowObject.addProperty( "run_as_user", resolveQualifiedUsernameAsString( windowTrace.getRenderer() ) );
 
-        windowObject.addProperty( "end_time", startTime + window.getDuration().getExecutionTimeInMilliseconds() );
-        windowObject.addProperty( "total_time", window.getDuration().getExecutionTimeInMilliseconds() );
+        appendWindowDatasources( windowObject, windowTrace );
+        appendXsltTransformingObjectForWindow( windowObject, windowTrace );
 
-        JsonObject xsltObject = new JsonObject();
-        xsltObject.addProperty( "processing_time", window.getInstructionPostProcessingTrace().getDuration().getExecutionTimeInMilliseconds() );
-        windowObject.add( "xslt", xsltObject );
-
-        String userStoreName = "";
-        if ( window.getRenderer().getUserStoreName() != null )
-        {
-            userStoreName = window.getRenderer().getUserStoreName() + "\\";
-        }
-
-        String qualifiedName = userStoreName + window.getRenderer().getUsername();
-
-        windowObject.addProperty( "run_as_user", qualifiedName );
-
-        appendWindowDatasources( windowObject, window, startTime );
+        windowObject.add( "instruction_post_processing",
+                          createInstructionPostProcessingObject( windowTrace.getInstructionPostProcessingTrace() ) );
 
         windowsArray.add( windowObject );
     }
 
-    private void appendWindowDatasources( JsonObject windowObject, WindowRenderingTrace window, long startTime )
+    private void appendXsltTransformingObjectForPage( JsonObject pageObject )
     {
-        windowObject.add( "datasources", createDatasources( window.getDatasourceExecutionTraces(), startTime ) );
+        if ( !pageTrace.isUsedCachedResult() )
+        {
+            long startTime = pageTrace.hasDatasourceExecutionTraces() ? pageTrace.getDatasourceExecutionTraces().get(
+                pageTrace.getDatasourceExecutionTraces().size() - 1 ).getDuration().getStopTime().getMillis() - timeZero : 0;
+
+            long endTime = pageTrace.getInstructionPostProcessingTrace().getDuration().getStartTime().getMillis() - timeZero;
+
+            JsonObject xsltTransformingObject = new JsonObject();
+            xsltTransformingObject.addProperty( "start_time", startTime );
+            xsltTransformingObject.addProperty( "stop_time", endTime );
+            xsltTransformingObject.addProperty( "total_time", endTime - startTime );
+            pageObject.add( "xslt_transforming", xsltTransformingObject );
+        }
+        else
+        {
+            pageObject.add( "xslt_transforming", new JsonObject() );
+        }
     }
 
+    private void appendXsltTransformingObjectForWindow( JsonObject windowObject, WindowRenderingTrace windowTrace )
+    {
+        if ( !windowTrace.isUsedCachedResult() )
+        {
+            long startTime = windowTrace.hasDatasourceExecutionTraces() ? windowTrace.getDatasourceExecutionTraces().get(
+                windowTrace.getDatasourceExecutionTraces().size() - 1 ).getDuration().getStopTime().getMillis() - timeZero
+                : windowTrace.getDuration().getStartTime().getMillis() - timeZero;
 
-    private JsonArray createDatasources( List<DatasourceExecutionTrace> datasources, long startTime )
+            long endTime = windowTrace.getInstructionPostProcessingTrace().getDuration().getStartTime().getMillis() - timeZero;
+
+            JsonObject xsltTransformingObject = new JsonObject();
+            xsltTransformingObject.addProperty( "start_time", startTime );
+            xsltTransformingObject.addProperty( "stop_time", endTime );
+            xsltTransformingObject.addProperty( "total_time", endTime - startTime );
+            windowObject.add( "xslt_transforming", xsltTransformingObject );
+        }
+        else
+        {
+            windowObject.add( "xslt_transforming", new JsonObject() );
+        }
+    }
+
+    private JsonObject createInstructionPostProcessingObject( InstructionPostProcessingTrace trace )
+    {
+        JsonObject object = new JsonObject();
+        object.addProperty( "total_time", trace.getDuration().getExecutionTimeInMilliseconds() );
+        object.addProperty( "start_time", trace.getDuration().getStartTime().getMillis() - timeZero );
+        object.addProperty( "stop_time", trace.getDuration().getStopTime().getMillis() - timeZero );
+        return object;
+    }
+
+    private void appendWindowDatasources( JsonObject windowObject, WindowRenderingTrace window )
+    {
+        if ( window.isUsedCachedResult() )
+        {
+            windowObject.add( "datasources", new JsonArray() );
+        }
+        else
+        {
+            windowObject.add( "datasources", createDatasources( window.getDatasourceExecutionTraces() ) );
+        }
+    }
+
+    private JsonArray createDatasources( List<DatasourceExecutionTrace> datasources )
     {
         JsonArray datasourceArray = new JsonArray();
 
-        long tempStartTime = startTime;
         for ( DatasourceExecutionTrace datasource : datasources )
         {
-            createDatasource( datasourceArray, datasource, tempStartTime );
-            tempStartTime = tempStartTime + datasource.getDuration().getExecutionTimeInMilliseconds();
+            createDatasource( datasourceArray, datasource );
         }
 
         return datasourceArray;
     }
 
-    private void createDatasource( JsonArray jsonArray, DatasourceExecutionTrace datasource, long startTime )
+    private void createDatasource( JsonArray jsonArray, DatasourceExecutionTrace datasource )
     {
         JsonObject datasourceObject = new JsonObject();
         datasourceObject.addProperty( "name", datasource.getMethodName() );
-        datasourceObject.addProperty( "start_time", startTime );
-        datasourceObject.addProperty( "end_time", startTime + datasource.getDuration().getExecutionTimeInMilliseconds() );
-        datasourceObject.addProperty( "time", datasource.getDuration().getExecutionTimeInMilliseconds() );
+        datasourceObject.addProperty( "start_time", datasource.getDuration().getStartTime().getMillis() - timeZero );
+        datasourceObject.addProperty( "stop_time", datasource.getDuration().getStopTime().getMillis() - timeZero );
+        datasourceObject.addProperty( "total_time", datasource.getDuration().getExecutionTimeInMilliseconds() );
 
         jsonArray.add( datasourceObject );
+    }
+
+    private String resolveQualifiedUsernameAsString( QualifiedUsername qualifiedUsername )
+    {
+        String userStoreName = "";
+        if ( qualifiedUsername.getUserStoreName() != null )
+        {
+            userStoreName = qualifiedUsername.getUserStoreName() + "\\";
+        }
+
+        return userStoreName + qualifiedUsername.getUsername();
     }
 
     private long calculateTotalExecutionTimeForWindows( List<WindowRenderingTrace> windows )
