@@ -64,7 +64,12 @@ Ext.define('App.controller.ActivityStreamController', {
         var comment = dom.selectNode('.comment', item);
         var more = dom.selectNode('.more', item);
 
-        favorite.style.visibility = 'hidden';
+        var messageIsFavorited = favorite.className.indexOf('favorited') === -1;
+        if (messageIsFavorited)
+        {
+            favorite.style.visibility = 'hidden';
+        }
+
         comment.style.visibility = 'hidden';
         more.style.visibility = 'hidden';
     },
@@ -162,16 +167,16 @@ Ext.define('App.controller.ActivityStreamController', {
         ]);
     },
 
-    updateTextLeftContainer: function()
+    updateLettersLeftContainer: function()
     {
-        var textField = this.getSpeakOutTextField();
-        var textLeftContainer = Ext.DomQuery.select( '#activity-stream-speak-out-letters-left-container' )[0];
-        var textFieldMaxTextLength = textField.maxLength;
-        var textFieldTextLength = textField.getValue().length;
+        var speakOutTextField = this.getSpeakOutTextField();
+        var lettersLeftContainer = Ext.DomQuery.select( '#activity-stream-speak-out-letters-left-container' )[0];
+        var textFieldMaxTextLength = speakOutTextField.maxLength;
+        var textFieldTextLength = speakOutTextField.getValue().length;
 
         if (textFieldTextLength <= textFieldMaxTextLength)
         {
-            textLeftContainer.innerHTML = String((textFieldMaxTextLength - textFieldTextLength));
+            lettersLeftContainer.innerHTML = String((textFieldMaxTextLength - textFieldTextLength));
         }
     },
 
@@ -183,7 +188,7 @@ Ext.define('App.controller.ActivityStreamController', {
             this.resetSpeakOutTextField();
         }
 
-        this.updateTextLeftContainer();
+        this.updateLettersLeftContainer();
     },
 
     resetSpeakOutTextField: function()

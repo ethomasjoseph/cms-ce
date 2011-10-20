@@ -31,6 +31,14 @@ Templates.account = {
             '<h1><input id="display-name" type="text" value="{displayName}" readonly="true" class="cms-display-name"/></h1><a href="javascript:;" class="edit-button"></a>' +
             '<p>{qualifiedName}</p></div></div>'
 
+    ,newUserPanelHeader:
+        '<div class="cms-wizard-header-container">' +
+            '<div class="cms-wizard-header clearfix">' +
+                '<input id="display-name" type="text" value="New User" readonly="true" class="cms-display-name"/>' +
+            '</div>' +
+            '<div class="clearfix">- User Wizard: <span id="q-userstore"></span><span id="q-username"></span></div>' +
+        '</div>'
+
     ,noUserSelected:
         '<div>No user selected</div>'
 
@@ -42,7 +50,7 @@ Templates.account = {
                 '</div>' +
                 '<div class="center">' +
                     '<h2>{displayName}</h2>' +
-                    '<p>{userStore}/{name}</p>' +
+                    '<p>{userStore}\{name}</p>' +
                 '</div>' +
                 '<div class="right">' +
                     ' <a id="remove-from-selection-button-{key}" class="remove-selection" href="javascript:;"></a>' +

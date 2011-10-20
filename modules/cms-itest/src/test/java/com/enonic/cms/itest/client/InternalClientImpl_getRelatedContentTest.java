@@ -4,6 +4,27 @@
  */
 package com.enonic.cms.itest.client;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.jdom.Document;
+import org.jdom.Element;
+import org.joda.time.DateTime;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.enonic.cms.framework.time.MockTimeService;
+import com.enonic.cms.framework.xml.XMLDocumentFactory;
+
 import com.enonic.cms.api.client.model.GetRelatedContentsParams;
 import com.enonic.cms.core.client.InternalClientImpl;
 import com.enonic.cms.core.content.ContentEntity;
@@ -24,33 +45,14 @@ import com.enonic.cms.core.security.SecurityHolder;
 import com.enonic.cms.core.security.SecurityService;
 import com.enonic.cms.core.security.user.User;
 import com.enonic.cms.core.servlet.ServletRequestAccessor;
-import com.enonic.cms.framework.time.MockTimeService;
-import com.enonic.cms.framework.xml.XMLDocumentFactory;
 import com.enonic.cms.itest.DomainFactory;
 import com.enonic.cms.itest.DomainFixture;
+import com.enonic.cms.portal.livetrace.LivePortalTraceService;
 import com.enonic.cms.store.dao.ContentDao;
 import com.enonic.cms.store.dao.UserDao;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.joda.time.DateTime;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import static com.enonic.cms.itest.test.AssertTool.assertXPathEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
@@ -85,6 +87,9 @@ public class InternalClientImpl_getRelatedContentTest
     @Autowired
     private PreviewService previewService;
 
+    @Autowired
+    private LivePortalTraceService livePortalTraceService;
+
     private ContentKey[] departments = new ContentKey[3];
 
 
@@ -109,7 +114,7 @@ public class InternalClientImpl_getRelatedContentTest
         personCtyConf.startBlock( "Person" );
         personCtyConf.addInput( "name", "text", "contentdata/name", "Name", true );
         personCtyConf.endBlock();
-        Document personConfigDocument = XMLDocumentFactory.create(personCtyConf.toString());
+        Document personConfigDocument = XMLDocumentFactory.create( personCtyConf.toString() );
         fixture.save( factory.createContentType( "Person", ContentHandlerName.CUSTOM.getHandlerClassShortName(), personConfigDocument ) );
 
         ContentTypeConfigBuilder deptCtyConf = new ContentTypeConfigBuilder( "Department", "name" );
@@ -117,7 +122,7 @@ public class InternalClientImpl_getRelatedContentTest
         deptCtyConf.addInput( "name", "text", "contentdata/name", "Name", true );
         deptCtyConf.addRelatedContentInput( "employee", "contentdata/employee", "Employee", false, true, "Person" );
         deptCtyConf.endBlock();
-        Document deptConfigDocument = XMLDocumentFactory.create(deptCtyConf.toString());
+        Document deptConfigDocument = XMLDocumentFactory.create( deptCtyConf.toString() );
         fixture.save( factory.createContentType( "Department", ContentHandlerName.CUSTOM.getHandlerClassShortName(), deptConfigDocument ) );
 
         // setup archive: Company Unit with 2 categories: Employees and Departments.
@@ -144,13 +149,15 @@ public class InternalClientImpl_getRelatedContentTest
         ContentKey empGreteKey = createAndStorePersonContent( "Grete" );
         ContentKey empHanneKey = createAndStorePersonContent( "Hanne" );
 
-        departments[0] = createAndStoreDepartmentContent( "dept A", empAnneKey, empBirgerKey, empCecilieKey, empDanielKey, empEvenKey, empFrankKey );
-        departments[1] = createAndStoreDepartmentContent( "dept B", empAnneKey, empBirgerKey, empCecilieKey, empEvenKey, empFrankKey, empHanneKey );
+        departments[0] =
+            createAndStoreDepartmentContent( "dept A", empAnneKey, empBirgerKey, empCecilieKey, empDanielKey, empEvenKey, empFrankKey );
+        departments[1] =
+            createAndStoreDepartmentContent( "dept B", empAnneKey, empBirgerKey, empCecilieKey, empEvenKey, empFrankKey, empHanneKey );
         departments[2] = createAndStoreDepartmentContent( "dept C", empAnneKey, empCecilieKey, empEvenKey, empGreteKey );
 
         fixture.flushAndClearHibernateSesssion();
 
-        SecurityHolder.setUser(fixture.findUserByName("content-querier").getKey());
+        SecurityHolder.setUser( fixture.findUserByName( "content-querier" ).getKey() );
         SecurityHolder.setRunAsUser( fixture.findUserByName( "content-querier" ).getKey() );
 
         internalClient = new InternalClientImpl();
@@ -160,7 +167,7 @@ public class InternalClientImpl_getRelatedContentTest
         internalClient.setContentDao( contentDao );
         internalClient.setUserDao( userDao );
         internalClient.setTimeService( new MockTimeService( DATE_TIME_2010_07_01_12_00_00_0 ) );
-
+        internalClient.setLivePortalTraceService( livePortalTraceService );
 
     }
 
@@ -170,7 +177,7 @@ public class InternalClientImpl_getRelatedContentTest
         ContentEntity greteEntity = fixture.findContentByName( "Grete" );
 
         GetRelatedContentsParams params = new GetRelatedContentsParams();
-        params.contentKeys = new int[]{ greteEntity.getKey().toInt() };
+        params.contentKeys = new int[]{greteEntity.getKey().toInt()};
         params.relation = -1;
         params.requireAll = false;
 
@@ -184,7 +191,7 @@ public class InternalClientImpl_getRelatedContentTest
     public void get_all_eight_related_children()
     {
         GetRelatedContentsParams params = new GetRelatedContentsParams();
-        params.contentKeys = new int[]{ departments[0].toInt(), departments[1].toInt(), departments[2].toInt() };
+        params.contentKeys = new int[]{departments[0].toInt(), departments[1].toInt(), departments[2].toInt()};
         params.relation = 1;
         params.requireAll = false;
 
@@ -199,7 +206,7 @@ public class InternalClientImpl_getRelatedContentTest
     public void get_three_out_of_eight_related_children_requireAll()
     {
         GetRelatedContentsParams params = new GetRelatedContentsParams();
-        params.contentKeys = new int[]{ departments[0].toInt(), departments[1].toInt(), departments[2].toInt() };
+        params.contentKeys = new int[]{departments[0].toInt(), departments[1].toInt(), departments[2].toInt()};
         params.relation = 1;
         params.requireAll = true;
 
@@ -230,8 +237,8 @@ public class InternalClientImpl_getRelatedContentTest
         ContentEntity frankEntity = fixture.findContentByName( "Frank" );
 
         GetRelatedContentsParams params = new GetRelatedContentsParams();
-        params.contentKeys = new int[]{ birgerEntity.getKey().toInt(), cecilieEntity.getKey().toInt(),
-                                        evenEntity.getKey().toInt(), frankEntity.getKey().toInt() };
+        params.contentKeys = new int[]{birgerEntity.getKey().toInt(), cecilieEntity.getKey().toInt(), evenEntity.getKey().toInt(),
+            frankEntity.getKey().toInt()};
         params.relation = -1;
         params.requireAll = false;
 
@@ -250,8 +257,8 @@ public class InternalClientImpl_getRelatedContentTest
         ContentEntity frankEntity = fixture.findContentByName( "Frank" );
 
         GetRelatedContentsParams params = new GetRelatedContentsParams();
-        params.contentKeys = new int[]{ birgerEntity.getKey().toInt(), cecilieEntity.getKey().toInt(),
-                                        evenEntity.getKey().toInt(), frankEntity.getKey().toInt() };
+        params.contentKeys = new int[]{birgerEntity.getKey().toInt(), cecilieEntity.getKey().toInt(), evenEntity.getKey().toInt(),
+            frankEntity.getKey().toInt()};
         params.relation = -1;
         params.requireAll = true;
 
@@ -272,7 +279,7 @@ public class InternalClientImpl_getRelatedContentTest
     }
 
 
-    private ContentKey createAndStoreDepartmentContent( String name, ContentKey ... employeeKeys )
+    private ContentKey createAndStoreDepartmentContent( String name, ContentKey... employeeKeys )
     {
         CustomContentData deptContentData = new CustomContentData( fixture.findContentTypeByName( "Department" ).getContentTypeConfig() );
         DataEntryConfig nameInputConfig = deptContentData.getInputConfig( "name" );
@@ -283,13 +290,14 @@ public class InternalClientImpl_getRelatedContentTest
             relatedEmployeeList.add( new RelatedContentDataEntry( deptContentData.getInputConfig( "employee" ), employeeKey ) );
         }
         deptContentData.add( relatedEmployeeList );
-        return contentService.createContent( createDepartmentCreateContentCommand( "content-creator", ContentStatus.APPROVED, name,
-                                                                                   deptContentData, DATE_TIME_2010_01_01, null ) );
+        return contentService.createContent(
+            createDepartmentCreateContentCommand( "content-creator", ContentStatus.APPROVED, name, deptContentData, DATE_TIME_2010_01_01,
+                                                  null ) );
     }
 
-    private CreateContentCommand createDepartmentCreateContentCommand( String creatorUid, ContentStatus contentStatus,
-                                                                       String contentName, CustomContentData contentData,
-                                                                       DateTime availableFrom, DateTime availableTo )
+    private CreateContentCommand createDepartmentCreateContentCommand( String creatorUid, ContentStatus contentStatus, String contentName,
+                                                                       CustomContentData contentData, DateTime availableFrom,
+                                                                       DateTime availableTo )
     {
         CreateContentCommand createContentCommand = new CreateContentCommand();
         createContentCommand.setCategory( fixture.findCategoryByName( "Departments" ) );
@@ -316,13 +324,13 @@ public class InternalClientImpl_getRelatedContentTest
     {
         CustomContentData empContentData = new CustomContentData( fixture.findContentTypeByName( "Person" ).getContentTypeConfig() );
         empContentData.add( new TextDataEntry( empContentData.getInputConfig( "name" ), name ) );
-        return contentService.createContent( createPersonCreateContentCommand( "content-creator", ContentStatus.APPROVED, name,
-                                                                               empContentData, DATE_TIME_2010_01_01, null ) );
+        return contentService.createContent(
+            createPersonCreateContentCommand( "content-creator", ContentStatus.APPROVED, name, empContentData, DATE_TIME_2010_01_01,
+                                              null ) );
     }
 
-    private CreateContentCommand createPersonCreateContentCommand( String creatorUid, ContentStatus contentStatus,
-                                                                   String contentName, ContentData contentData,
-                                                                   DateTime availableFrom, DateTime availableTo )
+    private CreateContentCommand createPersonCreateContentCommand( String creatorUid, ContentStatus contentStatus, String contentName,
+                                                                   ContentData contentData, DateTime availableFrom, DateTime availableTo )
     {
         CreateContentCommand createContentCommand = new CreateContentCommand();
         createContentCommand.setCategory( fixture.findCategoryByName( "Employees" ) );

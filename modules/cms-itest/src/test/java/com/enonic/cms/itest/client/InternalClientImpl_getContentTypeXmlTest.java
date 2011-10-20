@@ -18,6 +18,7 @@ import com.enonic.cms.core.client.InternalClientImpl;
 import com.enonic.cms.core.content.ContentHandlerName;
 import com.enonic.cms.itest.DomainFactory;
 import com.enonic.cms.itest.DomainFixture;
+import com.enonic.cms.portal.livetrace.LivePortalTraceService;
 import com.enonic.cms.store.dao.ContentTypeDao;
 
 import static com.enonic.cms.itest.test.AssertTool.assertSingleXPathValueEquals;
@@ -43,6 +44,9 @@ public class InternalClientImpl_getContentTypeXmlTest
     @Autowired
     private ContentTypeDao contentTypeDao;
 
+    @Autowired
+    private LivePortalTraceService livePortalTraceService;
+
     @Before
     public void setUp()
     {
@@ -51,14 +55,14 @@ public class InternalClientImpl_getContentTypeXmlTest
 
         // setup
         fixture.initSystemData();
-        fixture.save( factory.createContentHandler( "Custom content",
-                                                    ContentHandlerName.CUSTOM.getHandlerClassShortName() ) );
+        fixture.save( factory.createContentHandler( "Custom content", ContentHandlerName.CUSTOM.getHandlerClassShortName() ) );
 
         fixture.save( factory.createContentType( 1002, "document", ContentHandlerName.CUSTOM.getHandlerClassShortName(),
                                                  getDocumentContentTypeXml() ) );
 
         internalClient = new InternalClientImpl();
         internalClient.setContentTypeDao( contentTypeDao );
+        internalClient.setLivePortalTraceService( livePortalTraceService );
     }
 
     @Test
@@ -79,7 +83,8 @@ public class InternalClientImpl_getContentTypeXmlTest
         assertXPathEquals( "/contenttype/config/form/block[2]/input[2]/@name", documentContentType, "meta-description" );
 
         assertSingleXPathValueEquals( "/contenttype/config/form/block[2]/input[1]/display", documentContentType, "Meta keywords" );
-        assertSingleXPathValueEquals( "/contenttype/config/form/block[2]/input[1]/xpath", documentContentType, "contentdata/meta-keywords" );
+        assertSingleXPathValueEquals( "/contenttype/config/form/block[2]/input[1]/xpath", documentContentType,
+                                      "contentdata/meta-keywords" );
         assertSingleXPathValueEquals( "/contenttype/config/form/block[2]/input[1]/help", documentContentType, "Comma separated" );
     }
 
@@ -101,7 +106,8 @@ public class InternalClientImpl_getContentTypeXmlTest
         assertXPathEquals( "/contenttype/config/form/block[2]/input[2]/@name", documentContentType, "meta-description" );
 
         assertSingleXPathValueEquals( "/contenttype/config/form/block[2]/input[1]/display", documentContentType, "Meta keywords" );
-        assertSingleXPathValueEquals( "/contenttype/config/form/block[2]/input[1]/xpath", documentContentType, "contentdata/meta-keywords" );
+        assertSingleXPathValueEquals( "/contenttype/config/form/block[2]/input[1]/xpath", documentContentType,
+                                      "contentdata/meta-keywords" );
         assertSingleXPathValueEquals( "/contenttype/config/form/block[2]/input[1]/help", documentContentType, "Comma separated" );
     }
 
@@ -139,5 +145,3 @@ public class InternalClientImpl_getContentTypeXmlTest
         return XMLDocumentFactory.create( config.toString() ).getDocument();
     }
 }
-
-

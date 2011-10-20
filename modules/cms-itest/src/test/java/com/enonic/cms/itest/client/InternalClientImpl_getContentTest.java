@@ -4,9 +4,33 @@
  */
 package com.enonic.cms.itest.client;
 
+import javax.inject.Inject;
+
+import org.jdom.Document;
+import org.joda.time.DateTime;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.enonic.cms.framework.time.MockTimeService;
+import com.enonic.cms.framework.xml.XMLDocumentFactory;
+
 import com.enonic.cms.api.client.model.GetContentParams;
 import com.enonic.cms.core.client.InternalClientImpl;
-import com.enonic.cms.core.content.*;
+import com.enonic.cms.core.content.ContentAndVersion;
+import com.enonic.cms.core.content.ContentEntity;
+import com.enonic.cms.core.content.ContentHandlerName;
+import com.enonic.cms.core.content.ContentKey;
+import com.enonic.cms.core.content.ContentService;
+import com.enonic.cms.core.content.ContentStatus;
+import com.enonic.cms.core.content.ContentVersionEntity;
 import com.enonic.cms.core.content.command.CreateContentCommand;
 import com.enonic.cms.core.content.contentdata.ContentData;
 import com.enonic.cms.core.content.contentdata.custom.CustomContentData;
@@ -21,31 +45,19 @@ import com.enonic.cms.core.security.SecurityHolder;
 import com.enonic.cms.core.security.SecurityService;
 import com.enonic.cms.core.security.user.User;
 import com.enonic.cms.core.servlet.ServletRequestAccessor;
-import com.enonic.cms.domain.Attribute;
-import com.enonic.cms.framework.time.MockTimeService;
-import com.enonic.cms.framework.xml.XMLDocumentFactory;
 import com.enonic.cms.itest.DomainFactory;
 import com.enonic.cms.itest.DomainFixture;
 import com.enonic.cms.portal.datasource.DataSourceContext;
+import com.enonic.cms.portal.livetrace.LivePortalTraceService;
 import com.enonic.cms.store.dao.ContentDao;
 import com.enonic.cms.store.dao.UserDao;
-import org.jdom.Document;
-import org.joda.time.DateTime;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
+import com.enonic.cms.domain.Attribute;
 
-import static com.enonic.cms.itest.test.AssertTool.*;
-import static org.junit.Assert.assertEquals;
+import static com.enonic.cms.itest.test.AssertTool.assertSingleXPathValueEquals;
+import static com.enonic.cms.itest.test.AssertTool.assertXPathEquals;
+import static com.enonic.cms.itest.test.AssertTool.assertXPathNotExist;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration()
@@ -69,6 +81,9 @@ public class InternalClientImpl_getContentTest
 
     @Inject
     private ContentService contentService;
+
+    @Inject
+    private LivePortalTraceService livePortalTraceService;
 
     @Inject
     private ContentDao contentDao;
@@ -112,7 +127,7 @@ public class InternalClientImpl_getContentTest
         ctyconf.addRelatedContentInput( "my-relatedcontent", "contentdata/my-relatedcontent", "My relatedcontent", false, false );
         ctyconf.addRelatedContentInput( "my-relatedcontents", "contentdata/my-relatedcontents", "My relatedcontents", false, true );
         ctyconf.endBlock();
-        personConfigAsXmlBytes = XMLDocumentFactory.create(ctyconf.toString());
+        personConfigAsXmlBytes = XMLDocumentFactory.create( ctyconf.toString() );
 
         fixture.save(
             factory.createContentType( "MyPersonType", ContentHandlerName.CUSTOM.getHandlerClassShortName(), personConfigAsXmlBytes ) );
@@ -128,7 +143,7 @@ public class InternalClientImpl_getContentTest
         ctyconfMyRelated.addInput( "title", "text", "contentdata/title", "Title", true );
         ctyconfMyRelated.addRelatedContentInput( "myRelatedContent", "contentdata/myRelatedContent", "My related content", false, true );
         ctyconfMyRelated.endBlock();
-        Document myRelatedconfigAsXmlBytes = XMLDocumentFactory.create(ctyconfMyRelated.toString());
+        Document myRelatedconfigAsXmlBytes = XMLDocumentFactory.create( ctyconfMyRelated.toString() );
 
         fixture.save(
             factory.createContentType( "MyRelatedType", ContentHandlerName.CUSTOM.getHandlerClassShortName(), myRelatedconfigAsXmlBytes ) );
@@ -149,6 +164,7 @@ public class InternalClientImpl_getContentTest
         internalClient.setContentDao( contentDao );
         internalClient.setUserDao( userDao );
         internalClient.setTimeService( new MockTimeService( DATE_TIME_2010_07_01_12_00_00_0 ) );
+        internalClient.setLivePortalTraceService( livePortalTraceService );
     }
 
     @Test
@@ -255,9 +271,7 @@ public class InternalClientImpl_getContentTest
 
         ContentKey relatedTo1 = createPersonContent( "Child of requested content", ContentStatus.DRAFT );
         ContentKey content1 = createPersonContentWithRelatedContent( "Request content", relatedTo1 );
-        ContentKey parentOf1 =
-            createPersonContentWithRelatedContent( "Parent to requested content", ContentStatus.DRAFT,
-                                                   content1 );
+        ContentKey parentOf1 = createPersonContentWithRelatedContent( "Parent to requested content", ContentStatus.DRAFT, content1 );
 
         ContentEntity contentInPreview = new ContentEntity( fixture.findContentByKey( content1 ) );
         ContentVersionEntity contentVersionInPreview = new ContentVersionEntity( contentInPreview.getMainVersion() );
@@ -402,8 +416,7 @@ public class InternalClientImpl_getContentTest
         ContentKey relatedDraft = createPersonContent( "Related draft", ContentStatus.DRAFT );
         ContentKey relatedApproved = createPersonContent( "Related approved", ContentStatus.APPROVED );
         ContentKey parent1 =
-            createPersonContentWithRelatedContents( "Parent content 1", ContentStatus.DRAFT, relatedDraft,
-                                                    relatedApproved );
+            createPersonContentWithRelatedContents( "Parent content 1", ContentStatus.DRAFT, relatedDraft, relatedApproved );
 
         ContentEntity contentInPreview = fixture.findContentByKey( parent1 );
         ContentVersionEntity contentVersionInPreview = new ContentVersionEntity( contentInPreview.getMainVersion() );
@@ -441,8 +454,7 @@ public class InternalClientImpl_getContentTest
         return createPersonContentWithRelatedContent( name, ContentStatus.APPROVED, relatedContent );
     }
 
-    private ContentKey createPersonContentWithRelatedContent( String name, ContentStatus status,
-                                                              ContentKey relatedContent )
+    private ContentKey createPersonContentWithRelatedContent( String name, ContentStatus status, ContentKey relatedContent )
     {
         CustomContentData contentData = new CustomContentData( fixture.findContentTypeByName( "MyPersonType" ).getContentTypeConfig() );
         contentData.add( new TextDataEntry( contentData.getInputConfig( "name" ), name ) );
@@ -457,8 +469,7 @@ public class InternalClientImpl_getContentTest
         return expectedContentKey;
     }
 
-    private ContentKey createPersonContentWithRelatedContents( String name, ContentStatus status,
-                                                               ContentKey... relatedContents )
+    private ContentKey createPersonContentWithRelatedContents( String name, ContentStatus status, ContentKey... relatedContents )
     {
         CustomContentData contentData = new CustomContentData( fixture.findContentTypeByName( "MyPersonType" ).getContentTypeConfig() );
         contentData.add( new TextDataEntry( contentData.getInputConfig( "name" ), name ) );
@@ -480,10 +491,9 @@ public class InternalClientImpl_getContentTest
         return expectedContentKey;
     }
 
-    private CreateContentCommand createCreateContentCommand( String categoryName, String creatorUid,
-                                                             ContentStatus contentStatus, DateTime dueDate,
-                                                             String assigneeUserName, ContentData contentData, DateTime availableFrom,
-                                                             DateTime availableTo )
+    private CreateContentCommand createCreateContentCommand( String categoryName, String creatorUid, ContentStatus contentStatus,
+                                                             DateTime dueDate, String assigneeUserName, ContentData contentData,
+                                                             DateTime availableFrom, DateTime availableTo )
     {
         CreateContentCommand createContentCommand = new CreateContentCommand();
         createContentCommand.setCategory( fixture.findCategoryByName( categoryName ) );
