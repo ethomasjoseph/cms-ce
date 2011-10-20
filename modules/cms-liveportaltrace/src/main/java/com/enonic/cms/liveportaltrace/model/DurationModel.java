@@ -25,7 +25,8 @@ public class DurationModel
 
     public static DurationModel create( Duration duration )
     {
-        return new DurationModel( duration.getStartTime().toDate(), duration.getStopTime().toDate(),
+        return new DurationModel( duration.getStartTime() != null ? duration.getStartTime().toDate() : null,
+                                  duration.getStopTime() != null ? duration.getStopTime().toDate() : null,
                                   duration.getExecutionTimeInMilliseconds(), duration.getExecutionTimeAsHRFormat() );
     }
 

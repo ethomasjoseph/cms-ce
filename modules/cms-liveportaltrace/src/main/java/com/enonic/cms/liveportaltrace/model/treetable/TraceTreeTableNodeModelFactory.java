@@ -100,8 +100,7 @@ public class TraceTreeTableNodeModelFactory
         node.setLeaf( false );
 
         node.addChild( doCreateDatasourceExecutionsNode( datasourceExecutionTraces,
-                                                         DatasourceExecutionTrace.resolveDurationOfDatasourceExecutions(
-                                                             datasourceExecutionTraces ) ) );
+                                                         createDuration( trace.getDurationOfDatasourceExecutionTracesInHRFormat() ) ) );
 
         for ( WindowRenderingTrace windowRenderingTrace : windowRenderingTraceList )
         {
@@ -123,8 +122,7 @@ public class TraceTreeTableNodeModelFactory
         node.setExecutor( trace.getRenderer().toString() );
         node.setLeaf( false );
         node.addChild( doCreateDatasourceExecutionsNode( datasourceExecutionTraces,
-                                                         DatasourceExecutionTrace.resolveDurationOfDatasourceExecutions(
-                                                             datasourceExecutionTraces ) ) );
+                                                         createDuration( trace.getDurationOfDatasourceExecutionTracesInHRFormat() ) ) );
         return node;
     }
 
@@ -155,5 +153,18 @@ public class TraceTreeTableNodeModelFactory
         node.setLeaf( true );
         node.setUsedCachedResult( String.valueOf( trace.isCacheUsed() ) );
         return node;
+    }
+
+    private static Duration createDuration( final String durationInHRFormat )
+    {
+        Duration duration = new Duration()
+        {
+            @Override
+            public String getExecutionTimeAsHRFormat()
+            {
+                return durationInHRFormat;
+            }
+        };
+        return duration;
     }
 }
