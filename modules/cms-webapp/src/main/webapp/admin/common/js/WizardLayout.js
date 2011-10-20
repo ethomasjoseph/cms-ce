@@ -115,7 +115,11 @@ Ext.define( 'Common.WizardLayout', {
         }
     },
 
-    // Don't manage the items size
-    setItemBox : Ext.emptyFn
+    // restrain item's width only to not exceed maxWidth
+    setItemBox : function( item, size ) {
+        if( this.owner.restrainWidth ) {
+            item.setWidth( Ext.Array.min( [ this.owner.restrainWidth, size.width ] ) )
+        }
+    }
 
 });

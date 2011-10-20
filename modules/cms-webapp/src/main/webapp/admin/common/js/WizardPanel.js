@@ -11,8 +11,7 @@ Ext.define( 'Common.WizardPanel', {
     defaults: {
         border: false,
         frame: false,
-        autoHeight: true,
-        maxWidth: 500
+        autoHeight: true
     },
     bodyPadding: 10,
     externalControls: undefined,
@@ -111,7 +110,8 @@ Ext.define( 'Common.WizardPanel', {
         this.updateProgress();
     },
 
-    changeStep: function(event, target){
+    changeStep: function(event, target)
+    {
         var element = Ext.fly(target);
         if (element.hasCls('text')){
             element = element.up('a');
@@ -173,7 +173,8 @@ Ext.define( 'Common.WizardPanel', {
         }
     },
 
-    onAnimationStarted: function( newStep, oldStep ) {
+    onAnimationStarted: function( newStep, oldStep )
+    {
         if ( this.showControls ) {
             // disable internal controls if shown
             this.updateButtons( this.getDockedComponent('controls'), true );
@@ -184,7 +185,8 @@ Ext.define( 'Common.WizardPanel', {
         }
     },
 
-    onAnimationFinished: function( newStep, oldStep ) {
+    onAnimationFinished: function( newStep, oldStep )
+    {
         if ( newStep )
         {
             this.updateProgress();
@@ -201,7 +203,8 @@ Ext.define( 'Common.WizardPanel', {
         }
     },
 
-    updateProgress: function() {
+    updateProgress: function()
+    {
         this.dockedItems.items[0].update( this.items.items );
     },
 
