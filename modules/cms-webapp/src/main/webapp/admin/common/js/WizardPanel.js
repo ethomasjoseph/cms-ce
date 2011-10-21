@@ -2,13 +2,19 @@ Ext.define( 'Common.WizardPanel', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.wizardPanel',
     requires: ['Common.WizardLayout'],
-    layout: 'wizard',
+    layout: {
+        type: 'wizard',
+        animation: 'none'
+    },
     cls: 'cms-wizard',
     autoScroll: true,
     defaults: {
         border: false,
-        padding: '10 0'
+        frame: false,
+        autoHeight: true,
+        maxWidth: 500
     },
+    bodyPadding: 10,
     externalControls: undefined,
     showControls: true,
     data: {},
@@ -139,6 +145,9 @@ Ext.define( 'Common.WizardPanel', {
     navigate: function( direction, btn )
     {
         var oldStep = this.getLayout().getActiveItem();
+        if( btn ) {
+            this.externalControls = btn.up( 'toolbar' );
+        }
         if ( this.fireEvent( "beforestepchanged", this, oldStep ) != false )
         {
             var newStep;
@@ -161,28 +170,24 @@ Ext.define( 'Common.WizardPanel', {
                     newStep = this.getLayout().setActiveItem( direction );
                     break;
             }
-            if( newStep ) {
-                this.updateProgress();
-                this.externalControls = btn.up( 'toolbar' );
-                if ( this.showControls ) {
-                    // disable internal controls if shown
-                    this.updateButtons( this.getDockedComponent('controls'), true );
-                }
-                if ( this.externalControls ) {
-                    // try to disable external controls
-                    this.updateButtons( this.externalControls, true );
-                }
-            }
         }
     },
 
     onAnimationStarted: function( newStep, oldStep ) {
-
+        if ( this.showControls ) {
+            // disable internal controls if shown
+            this.updateButtons( this.getDockedComponent('controls'), true );
+        }
+        if ( this.externalControls ) {
+            // try to disable external controls
+            this.updateButtons( this.externalControls, true );
+        }
     },
 
     onAnimationFinished: function( newStep, oldStep ) {
         if ( newStep )
         {
+            this.updateProgress();
             this.fireEvent( "stepchanged", this, oldStep, newStep );
             if ( this.showControls ) {
                 // update internal controls if shown

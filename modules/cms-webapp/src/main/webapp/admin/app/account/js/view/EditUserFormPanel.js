@@ -2,42 +2,15 @@ Ext.define( 'App.view.EditUserFormPanel', {
     extend: 'Ext.form.Panel',
     alias: 'widget.editUserFormPanel',
 
-    defaults: {
-        bodyPadding: 10
-    },
-
     requires: [
         'App.view.AddressContainer',
         'App.view.AddressPanel',
         'App.view.UserFormField'
     ],
 
-    autoScroll: true,
-
-    measureWidth: true,
-
-    border: 0,
-
-    style: {
-        overflow: 'hidden'
-    },
-
-    layout: {
-        type: 'table',
-        columns: 1,
-        defaultMargins: {top:10, right:10, bottom:10, left:10},
-        padding: 10,
-        tdAttrs: {
-            style:{
-                padding: '10px'
-            }
-        },
-        tableAttrs: {
-            style:{
-                width: '96%'
-            }
-        }
-    },
+    autoScroll: false,
+    autoHeight: true,
+    border: false,
 
     currentUser: undefined,
     defaultUserStoreName: 'default',

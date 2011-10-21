@@ -793,7 +793,7 @@ ul.cms-wizard-navigation a.last-current {
     border: 0 none;
 }
 
-.cms-wizard>.x-panel-body {
+.cms-wizard .x-panel-body {
     border: 0 none;
 }
 

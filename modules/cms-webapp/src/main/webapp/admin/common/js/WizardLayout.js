@@ -18,10 +18,15 @@ Ext.define( 'Common.WizardLayout', {
         var newIndex = owner.items.indexOf(newCard);
 
         if( oldCard != newCard ){
-            if( newCard.rendered && this.animation ) {
+
+            owner.fireEvent( "animationstarted", newCard, oldCard );
+
+            if( newCard.rendered && this.animation && this.animation != "none" ) {
 
                 this.syncFx();
-                owner.fireEvent( "animationstarted", newCard, oldCard );
+
+                var target = this.getRenderTarget();
+                newCard.setWidth( target.getWidth() - target.getPadding("lr") - Ext.getScrollBarWidth() );
 
                 switch( this.animation ) {
                     case 'fade':
@@ -50,8 +55,7 @@ Ext.define( 'Common.WizardLayout', {
                                 newCard.el.setStyle({
                                     position: ''
                                 });
-                                if( Ext.isFunction( owner.onAnimationFinished ) )
-                                    owner.onAnimationFinished( newCard, oldCard )
+                                owner.fireEvent( "animationfinished", newCard, oldCard );
                             },
                             scope: this
                         });
@@ -60,7 +64,6 @@ Ext.define( 'Common.WizardLayout', {
                         newCard.el.setStyle({
                             position: 'absolute',
                             visibility: 'hidden',
-                            width: this.getRenderTarget().getWidth(),
                             top: this.getRenderTarget().getPadding('t') + 'px'
                         });
                         newCard.show();
@@ -90,8 +93,7 @@ Ext.define( 'Common.WizardLayout', {
                                     newCard.el.setStyle({
                                         position: ''
                                     });
-                                    if( Ext.isFunction( owner.onAnimationFinished ) )
-                                        owner.onAnimationFinished( newCard, oldCard );
+                                    owner.fireEvent( "animationfinished", newCard, oldCard );
                                 }
                         });
                     break;
@@ -105,11 +107,15 @@ Ext.define( 'Common.WizardLayout', {
                     oldCard.hide();
                 }
                 this.activeItem = newCard;
-                newCard.show();
                 this.owner.doLayout();
+                newCard.show();
+                owner.fireEvent( "animationfinished", newCard, oldCard );
             }
             return newCard;
         }
-    }
+    },
+
+    // Don't manage the items size
+    setItemBox : Ext.emptyFn
 
 });
