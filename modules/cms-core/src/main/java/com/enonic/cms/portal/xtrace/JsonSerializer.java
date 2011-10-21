@@ -63,7 +63,7 @@ public class JsonSerializer
         pageObject.addProperty( "start_time", 0 );
         pageObject.addProperty( "stop_time", pageTrace.getDuration().getStopTime().getMillis() - timeZero );
         pageObject.addProperty( "total_time", pageTrace.getDuration().getExecutionTimeInMilliseconds() );
-        pageObject.addProperty( "run_as_user", resolveQualifiedUsernameAsString( pageTrace.getRenderer() ) );
+        pageObject.addProperty( "ran_as_user", resolveQualifiedUsernameAsString( pageTrace.getRenderer() ) );
 
         appendPageDatasources( pageObject );
         appendXsltTransformingObjectForPage( pageObject );
@@ -112,7 +112,7 @@ public class JsonSerializer
         windowObject.addProperty( "start_time", windowTrace.getDuration().getStartTime().getMillis() - timeZero );
         windowObject.addProperty( "stop_time", windowTrace.getDuration().getStopTime().getMillis() - timeZero );
         windowObject.addProperty( "total_time", windowTrace.getDuration().getExecutionTimeInMilliseconds() );
-        windowObject.addProperty( "run_as_user", resolveQualifiedUsernameAsString( windowTrace.getRenderer() ) );
+        windowObject.addProperty( "ran_as_user", resolveQualifiedUsernameAsString( windowTrace.getRenderer() ) );
 
         appendWindowDatasources( windowObject, windowTrace );
         appendXsltTransformingObjectForWindow( windowObject, windowTrace );
