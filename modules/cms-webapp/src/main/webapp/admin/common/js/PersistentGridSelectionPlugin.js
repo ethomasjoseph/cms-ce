@@ -9,11 +9,13 @@ Ext.define('Common.PersistentGridSelectionPlugin', {
     extend: 'Ext.util.Observable',
     pluginId: 'persistentGridSelection',
     alias : 'plugin.persistentGridSelection',
+
     init: function(grid) {
         this.grid = grid;
         this.selections = [];
         this.selected = {};
         this.ignoreSelectionChanges = '';
+
         grid.on('render', function() {
             // attach an interceptor for the selModel's onRefresh handler
             this.grid.view.un('refresh', this.grid.selModel.refresh, this.grid.selModel);
@@ -21,8 +23,11 @@ Ext.define('Common.PersistentGridSelectionPlugin', {
             this.grid.view.headerCt.on('headerclick', this.onHeaderClick, this);
             // add a handler to detect when the user changes the selection
             this.grid.selModel.on('select', this.onRowSelect, this );
-            this.grid.selModel.on('select', this.onRowSelect, this );
             this.grid.selModel.on('deselect', this.onRowDeselect, this);
+            this.grid.getStore().on('beforeload', function() {
+                this.ignoreSelectionChanges = true;
+            }, this);
+
             Ext.ComponentQuery.query('pagingtoolbar')[0].on('beforechange', this.pageChange, this );
         }, this);
     },
@@ -49,7 +54,7 @@ Ext.define('Common.PersistentGridSelectionPlugin', {
 
     // private
     onSelectionClear: function() {
-        if (! this.ignoreSelectionChanges) {
+        if (!this.ignoreSelectionChanges) {
             // selection cleared by user
             // also called internally when the selection replaces the old selection
             this.selections = [];
@@ -59,7 +64,7 @@ Ext.define('Common.PersistentGridSelectionPlugin', {
 
     // private
     onRowSelect: function(sm,rec,i,o) {
-        if (! this.ignoreSelectionChanges) {
+        if (!this.ignoreSelectionChanges) {
             if (!this.selected[rec.internalId])
             {
                 this.selections.push(rec);
@@ -67,7 +72,6 @@ Ext.define('Common.PersistentGridSelectionPlugin', {
             }
 
         }
-
     },
 
     onHeaderClick: function(headerCt, header, e) {
