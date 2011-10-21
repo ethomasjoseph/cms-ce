@@ -2,7 +2,7 @@ Ext.define( 'App.view.GridPanel', {
     extend: 'Ext.grid.Panel',
     alias : 'widget.accountGrid',
 
-    requires: ['Common.PersistentGridSelectionPlugin'],
+    requires: ['Common.PersistentGridSelectionPlugin', 'Common.SlidingPagerPlugin'],
     plugins: ['persistentGridSelection'],
     layout: 'fit',
     multiSelect: true,
@@ -10,8 +10,6 @@ Ext.define( 'App.view.GridPanel', {
     columnLines: true,
     frame: false,
     store: 'UserStore',
-    /*verticalScrollerType: 'paginggridscroller',
-    invalidateScrollerOnRefresh: false,*/
 
     initComponent: function()
     {
@@ -49,8 +47,7 @@ Ext.define( 'App.view.GridPanel', {
         this.tbar = {
             xtype: 'pagingtoolbar',
             store: this.store,
-            displayInfo: true,
-            displayMsg: 'Displaying {0} - {1} of {2} users'
+            plugins: ['slidingPagerPlugin']
         },
 
         this.viewConfig = {

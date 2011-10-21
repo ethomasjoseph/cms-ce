@@ -6,6 +6,7 @@ import com.enonic.cms.core.content.ContentKey;
 
 
 public class ImageRequestTrace
+    implements Trace
 {
     private PortalRequestTrace portalRequestTrace;
 

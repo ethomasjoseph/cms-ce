@@ -8,7 +8,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         'App.view.EditUserFormPanel',
         'App.view.wizard.WizardStepLoginInfoPanel',
         'App.view.wizard.WizardStepMembershipPanel',
-        'App.view.wizard.WizardStepFinalizePanel'
+        'App.view.wizard.WizardStepSummaryPanel'
     ],
 
     layout: {
@@ -17,47 +17,14 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         padding: 10
     },
 
+    border: 0,
+
     defaults: {
         border: false
     },
 
     tbar: {
         xtype: 'userWizardToolbar'
-    },
-
-    toggleDisplayNameField: function(event, target){
-        var className = target.className;
-        if (className && className === 'edit-button'){
-            var displayNameField = Ext.get('display-name');
-            var readonly = displayNameField.getAttribute('readonly');
-            if (readonly){
-                displayNameField.dom.removeAttribute('readonly');
-            }else{
-                displayNameField.set({readonly: true});
-            }
-            displayNameField.addCls('cms-edited-field');
-        }
-    },
-
-    toggleEditButton: function(e, t){
-        var editButton = Ext.get('edit-button');
-        if (e.type == 'mouseover'){
-            editButton.show();
-        }
-        if (e.type == 'mouseout'){
-            editButton.hide();
-        }
-    },
-
-    resizeFileUpload: function( file ) {
-        file.el.down( 'input[type=file]' ).setStyle( {
-            width: file.getWidth(),
-            height: file.getHeight()
-        } );
-    },
-
-    setFileUploadDisabled: function( disable ) {
-        this.uploadForm.setDisabled( disable );
     },
 
     initComponent: function()
@@ -160,23 +127,17 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                         cls: 'cms-new-user-header',
                         styleHtmlContent: true,
                         listeners: {
-                            click: {
-                                element: 'body',
-                                fn: me.toggleDisplayNameField
-                            },
-                            mouseover: {
-                                element: 'body',
-                                fn: me.toggleEditButton
-                            },
-                            mouseout: {
-                                element: 'body',
-                                fn: me.toggleEditButton
+                            afterrender: {
+                                fn: function() {
+                                    var me = this;
+                                    Ext.getBody().addListener('click', function(event, target, eOpts) {
+                                       me.toggleDisplayNameField(event, target);
+                                    });
+                                },
+                                scope: this
                             }
                         },
-                        html: '<div class="cms-wizard-header clearfix">' +
-                                '<div class="right">' +
-                                '<h1><input id="display-name" type="text" value="New User" readonly="true" class="cms-display-name"/></h1><a href="javascript:;" id="edit-button" class="edit-button"></a>' +
-                                '<p >-User Wizard: <span id="q-userstore"></span><span id="q-username"></span></p></div></div>'
+                        html: Templates.account.newUserPanelHeader
                     },
                     {
                         flex: 1,
@@ -184,26 +145,31 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                         showControls: false,
                         items: [
                             {
+                                stepNumber: 1,
                                 stepTitle: 'Userstore',
                                 xtype: 'userStoreListPanel'
                             },
                             {
+                                stepNumber: 2,
                                 stepTitle: "Profile",
                                 itemId: 'userForm',
                                 xtype: 'editUserFormPanel',
                                 enableToolbar: false
                             },
                             {
+                                stepNumber: 3,
                                 stepTitle: "Login",
                                 xtype: 'wizardStepLoginInfoPanel'
                             },
                             {
+                                stepNumber: 4,
                                 stepTitle: "Memberships",
                                 xtype: 'wizardStepMembershipPanel'
                             },
                             {
-                                stepTitle: "Finalize",
-                                xtype: 'wizardStepFinalizePanel'
+                                stepNumber: 5,
+                                stepTitle: "Summary",
+                                xtype: 'wizardStepSummaryPanel'
                             }
                         ]
                     }
@@ -211,6 +177,37 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
             }
         ];
         this.callParent( arguments );
+    },
+
+    toggleDisplayNameField: function(event, target)
+    {
+        var element = new Ext.Element(target);
+        var parent = element.findParent('.cms-wizard-header');
+        var displayNameField = Ext.get('display-name');
+        var readonly = displayNameField.getAttribute('readonly');
+
+        if (parent)
+        {
+            displayNameField.dom.removeAttribute('readonly');
+            displayNameField.addCls('cms-edited-field');
+        }
+        else
+        {
+            displayNameField.set({readonly: true});
+            displayNameField.removeCls('cms-edited-field');
+        }
+    },
+
+    resizeFileUpload: function( file )
+    {
+        file.el.down( 'input[type=file]' ).setStyle( {
+            width: file.getWidth(),
+            height: file.getHeight()
+        } );
+    },
+
+    setFileUploadDisabled: function( disable ) {
+        this.uploadForm.setDisabled( disable );
     }
 
-} );
+});

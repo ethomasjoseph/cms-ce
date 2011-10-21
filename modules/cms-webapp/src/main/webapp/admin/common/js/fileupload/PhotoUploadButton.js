@@ -3,35 +3,72 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
     alias: 'widget.photoUploadButton',
     width: 132,
     height: 132,
+    progressBarHeight: 8,
 
-    tpl : new Ext.Template(
-            '<div id="{id}" class="cms-image-upload-button-container">' +
-                '<img src="resources/images/x-user-photo.png" class="cms-image-upload-button-image"/>' +
-                '<div class="cms-image-upload-button-progress-bar-container">' +
-                    '<div class="cms-image-upload-button-progress-bar"><!-- --></div>' +
+    tpl : new Ext.XTemplate(
+            '<div id="{id}" class="cms-image-upload-button-container" style="width:{width}px;height:{height}px">' +
+                '<img src="resources/images/x-user-photo.png" class="cms-image-upload-button-image" style="width:{width - 4}px;height:{height - 4}px"/>' +
+                '<div class="cms-image-upload-button-progress-bar-container" style="width:{width - 12}px">' +
+                    '<div class="cms-image-upload-button-progress-bar" style="height:{progressBarHeight}px"><!-- --></div>' +
                 '</div>' +
             '</div>'),
 
     onRender: function() {
+        this.callParent(arguments);
         var me = this;
-        this.callParent(arguments); // call the superclass onRender method
         var id = Ext.id(null, 'image-upload-button-');
-        this.update({id: id});
+        var width = this.width;
+        var height = this.height;
+        var progressBarHeight = this.progressBarHeight;
+        this.update(
+            {
+                id: id,
+                width: width,
+                height: height,
+                progressBarHeight: progressBarHeight
+            }
+        );
         this.uploadButtonId = id;
     },
 
     afterRender: function() {
-        var photoElement = Ext.select('#' + this.uploadButtonId + ' .cms-image-upload-button-image');
-        photoElement.on('dragover', function(e) {
-            Ext.get(e.target.parentNode).addCls('cms-image-upload-button-container-dragover');
-        });
+        var body = Ext.getBody();
+        var buttonContainer =  Ext.get(this.uploadButtonId);
 
-        photoElement.on('dragleave', function(e) {
-            Ext.get(e.target.parentNode).removeCls('cms-image-upload-button-container-dragover');
-        });
+        function cancelEvent( event ) {
+            if (event.preventDefault) {
+                event.preventDefault();
+            }
+            return false;
+        }
 
-        photoElement.on('drop', function(e) {
-            Ext.get(e.target.parentNode).removeCls('cms-image-upload-button-container-dragover');
+        function addDragOverCls() {
+            buttonContainer.addCls('cms-image-upload-button-container-dragover');
+        }
+
+        function removeDragOverCls() {
+            buttonContainer.removeCls('cms-image-upload-button-container-dragover');
+        }
+
+        body.on('dragover', function(event) {
+            addDragOverCls();
+            cancelEvent(event);
+        });
+        body.on('dragenter', function(event) {
+            addDragOverCls();
+            cancelEvent(event);
+        });
+        body.on('dragleave', function(event) {
+            removeDragOverCls();
+            cancelEvent(event);
+        });
+        body.on('drop', function(event) {
+            removeDragOverCls();
+            cancelEvent(event);
+        });
+        body.on('dragend', function(event) {
+            removeDragOverCls();
+            cancelEvent(event);
         });
     },
 
@@ -48,17 +85,14 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
 
         var uploader = new plupload.Uploader(
             {
-                runtimes : 'html5',
-                //runtimes : 'html5,flash,silverlight',
+                runtimes : 'html5,flash,silverlight',
                 multi_selection:false,
-                // Attach listener to this button.
                 browse_button : buttonId,
                 url : 'data/user/photo',
                 multipart: true,
-                //container: buttonId,
                 drop_element: buttonId,
-                //flash_swf_url : 'common/js/fileupload/plupload/js/plupload.flash.swf',
-                //silverlight_xap_url : 'common/js/fileupload/plupload/js/plupload.silverlight.xap',
+                flash_swf_url : 'common/js/fileupload/plupload/js/plupload.flash.swf',
+                silverlight_xap_url : 'common/js/fileupload/plupload/js/plupload.silverlight.xap',
                 filters : [
                     {title : 'Image files', extensions : 'jpg,gif,png'}
                 ]
@@ -69,7 +103,7 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
         });
 
         uploader.bind('FilesAdded', function(up, files) {
-            uploader.start();
+            // uploader.start();
             me.fakeUpload();
         });
 
@@ -97,7 +131,7 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
             if (percent >= 100) {
                 clearInterval(interval);
                 me.updateImage();
-                me.fadeOutProgressBar();
+                me.hideProgressBar();
             }
 
             percent++;
@@ -115,7 +149,7 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
         this.getProgressBarContainerElement().style.visibility = 'visible';
     },
 
-    fadeOutProgressBar: function()
+    hideProgressBar: function()
     {
         this.getProgressBarElement().style.width = '0';
         this.getProgressBarContainerElement().style.visibility = 'hidden';
@@ -136,4 +170,4 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
         return Ext.DomQuery.select('#'+ this.uploadButtonId + ' .cms-image-upload-button-progress-bar')[0];
     }
 
-} );
+});

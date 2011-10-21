@@ -158,7 +158,7 @@ Ext.define( 'App.controller.AccountController', {
             {
                 title: 'New Group',
                 html: 'New Group Form',
-                iconCls: 'icon-group-add'
+                iconCls: 'icon-new-group'
             }
         );
     },
@@ -308,7 +308,7 @@ Ext.define( 'App.controller.AccountController', {
             var tab = {
                 id: Ext.id(null, 'new-user-'),
                 title: 'New User',
-                iconCls: 'icon-user-add',
+                iconCls: 'icon-new-user',
                 closable: true,
                 autoScroll: true,
                 layout: 'fit',
@@ -427,9 +427,9 @@ Ext.define( 'App.controller.AccountController', {
 
     addNewTab: function( button, event )
     {
-        var tabPanel = button.up( '#addressContainer' );
+        var tabPanel = button.up( 'addressContainer' );
         var newTab = this.getEditUserFormPanel().generateAddressPanel( tabPanel.sourceField, true );
-        newTab = tabPanel.insert( 0 , newTab );
+        newTab = tabPanel.down('addressColumn').insert( 0 , newTab );
     },
 
     updateTabTitle: function ( field, event )
@@ -533,7 +533,7 @@ Ext.define( 'App.controller.AccountController', {
                         : editUserForm.defaultUserStoreName,
                 userInfo: formValues
             };
-            var tabPanel = editUserForm.down( '#addressContainer' );
+            var tabPanel = editUserForm.down( 'addressContainer' );
             var tabs = tabPanel.query( 'form' );
             var addresses = [];
             for ( var index in tabs )
