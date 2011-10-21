@@ -95,7 +95,7 @@ Ext.define( 'App.view.AddressPanel', {
                 enableKeyEvents: true,
                 value: this.values['label'],
                 bubbleEvents: ['keyup'],
-                anchor: '30%',
+                anchor: '60%',
                 disabled: this.readonly
             },
             {
@@ -110,7 +110,7 @@ Ext.define( 'App.view.AddressPanel', {
                 xtype: 'textfield',
                 fieldLabel: 'Postal Code',
                 name: 'postal-code',
-                anchor: '20%',
+                anchor: '40%',
                 itemId: 'address-postal-code',
                 value: this.values['postal-code'],
                 disabled: this.readonly
@@ -119,7 +119,7 @@ Ext.define( 'App.view.AddressPanel', {
                 xtype: 'textfield',
                 fieldLabel: 'Postal Address',
                 name: 'postal-address',
-                anchor: '30%',
+                anchor: '60%',
                 itemId: 'address-postal-address',
                 value: this.values['postal-address'],
                 disabled: this.readonly
