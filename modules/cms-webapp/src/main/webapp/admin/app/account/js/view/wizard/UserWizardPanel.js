@@ -24,7 +24,8 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
     },
 
     tbar: {
-        xtype: 'userWizardToolbar'
+        xtype: 'userWizardToolbar',
+        restrainWidth: 700
     },
 
     initComponent: function()
@@ -143,6 +144,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                         flex: 1,
                         xtype: 'wizardPanel',
                         showControls: false,
+                        restrainWidth: 580,
                         items: [
                             {
                                 stepNumber: 1,

@@ -224,7 +224,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
                         : editUserForm.defaultUserStoreName,
                 userInfo: formValues
             };
-            var tabPanel = editUserForm.down( '#addressContainer' );
+            var tabPanel = editUserForm.down( 'addressContainer' );
             var tabs = tabPanel.query( 'form' );
             var addresses = [];
             for ( var index in tabs )
@@ -279,7 +279,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
 
     addNewTab: function( button, event )
     {
-        var tabPanel = button.up( '#addressContainer' );
+        var tabPanel = button.up( 'addressContainer' );
         var newTab = this.getEditUserFormPanel().generateAddressPanel( tabPanel.sourceField, true );
         newTab = tabPanel.insert( 0 , newTab );
     },

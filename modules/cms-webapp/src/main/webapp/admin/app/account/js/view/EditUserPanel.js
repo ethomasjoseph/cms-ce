@@ -6,8 +6,8 @@ Ext.define( 'App.view.EditUserPanel', {
         'App.view.EditUserFormPanel',
         'App.view.UserPreferencesPanel'
     ],
+    
     autoScroll: false,
-
     items: [],
     currentUser: '',
 

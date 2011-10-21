@@ -15,7 +15,7 @@ Templates.account = {
                             '<p>(usersstores\\\\{name})</p>' +
                         '</div>' +
                     '</div>' +
-                    '</div><br>' +
+                    '</div>' +
                 '</tpl>'
 
     ,gridPanelNameRenderer:
