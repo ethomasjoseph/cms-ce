@@ -66,15 +66,8 @@ Ext.define( 'Common.fileupload.FileUploadGrid', {
             }
         });
 
-        this.on('selectionchange', function(model, selected, eOpts ) {
-            var removeButton = grid.down('toolbar').down('button[itemId=removeButton]');
-            removeButton.setDisabled(selected.length === 0);
-        }, this);
-
-        this.getStore().on('datachanged', function(store, eOpts) {
-            var uploadButton = grid.down('toolbar').down('button[itemId=uploadButton]');
-            uploadButton.setDisabled(store.data.items.length === 0);
-        }, this, null);
+        grid.getStore().on('datachanged', this.onStoreDataChanged, grid);
+        grid.on('selectionchange', this.onSelectionChange, grid);
     },
 
     initUploader: function()
@@ -160,5 +153,17 @@ Ext.define( 'Common.fileupload.FileUploadGrid', {
                 }
             }
         });
+    },
+
+    onStoreDataChanged: function(store, eOpts)
+    {
+        var uploadButton = this.down('toolbar').down('button[itemId=uploadButton]');
+        uploadButton.setDisabled(store.data.items.length === 0);
+    },
+
+    onSelectionChange: function(model, selected, eOpts)
+    {
+        var removeButton = this.down('toolbar').down('button[itemId=removeButton]');
+        removeButton.setDisabled(selected.length === 0);
     }
 });
