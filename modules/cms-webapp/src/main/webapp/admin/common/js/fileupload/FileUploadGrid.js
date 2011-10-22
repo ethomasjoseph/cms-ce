@@ -8,7 +8,7 @@ Ext.define( 'Common.fileupload.FileUploadGrid', {
     {
         if (!window.plupload)
         {
-            alert('ImageUploadButton requires Plupload!');
+            alert('FileUploadGrid requires Plupload!');
         }
 
         this.createStore();
