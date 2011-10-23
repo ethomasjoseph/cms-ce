@@ -61,11 +61,11 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
         }
 
         function addDragOverCls() {
-            buttonContainerElement.addCls('cms-image-upload-button-container-dragover');
+            buttonContainerElement.addCls('cms-file-upload-drag-over');
         }
 
         function removeDragOverCls() {
-            buttonContainerElement.removeCls('cms-image-upload-button-container-dragover');
+            buttonContainerElement.removeCls('cms-file-upload-drag-over');
         }
 
         bodyElement.on('dragover', function(event) {
@@ -116,6 +116,8 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
 
         uploader.bind('FilesAdded', function(up, files) {
             // uploader.start();
+            // TODO: Check files length. Only one should be allowed
+            // TODO: Check file extension. Only jpeg,jpg,png,gif,tiff,bmp is allowed.
             uploadButton.fakeUpload();
         });
 

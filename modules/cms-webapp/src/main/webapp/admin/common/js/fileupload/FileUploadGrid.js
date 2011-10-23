@@ -22,6 +22,10 @@ Ext.define( 'Common.fileupload.FileUploadGrid', {
             mode: 'MULTI'
         });
 
+        this.on('afterrender', function() {
+            this.addBodyListeners();
+        }, this);
+
         this.callParent( arguments );
     },
 
@@ -73,16 +77,17 @@ Ext.define( 'Common.fileupload.FileUploadGrid', {
     initUploader: function()
     {
         var store = this.getStore();
-        var browseButtonElementId = this.down('toolbar').down('button[itemId=browseButton]').getEl().id;
+        var browseButtonHtmlElementId = this.down('toolbar').down('button[itemId=browseButton]').getEl().id;
+        var gridHtmlElementId = this.getEl().dom.id;
 
         this.uploader = new plupload.Uploader(
             {
                 runtimes            : 'html5,flash,silverlight',
                 multi_selection     : true,
-                browse_button       : browseButtonElementId ,
+                browse_button       : browseButtonHtmlElementId ,
                 url                 : 'data/user/photo',
                 multipart           : true,
-                //drop_element      : buttonId,
+                drop_element      : gridHtmlElementId,
                 flash_swf_url       : 'common/js/fileupload/plupload/js/plupload.flash.swf',
                 silverlight_xap_url : 'common/js/fileupload/plupload/js/plupload.silverlight.xap'
             }
@@ -165,5 +170,47 @@ Ext.define( 'Common.fileupload.FileUploadGrid', {
     {
         var removeButton = this.down('toolbar').down('button[itemId=removeButton]');
         removeButton.setDisabled(selected.length === 0);
+    },
+
+    addBodyListeners: function()
+    {
+        var bodyElement = Ext.getBody();
+        var gridHtmlElement =  this.getEl();
+
+        function cancelEvent( event ) {
+            if (event.preventDefault) {
+                event.preventDefault();
+            }
+            return false;
+        }
+
+        function addDragOverCls() {
+            gridHtmlElement.addCls('cms-file-upload-drag-over');
+        }
+
+        function removeDragOverCls() {
+            gridHtmlElement.removeCls('cms-file-upload-drag-over');
+        }
+
+        bodyElement.on('dragover', function(event) {
+            addDragOverCls();
+            cancelEvent(event);
+        });
+        bodyElement.on('dragenter', function(event) {
+            addDragOverCls();
+            cancelEvent(event);
+        });
+        bodyElement.on('dragleave', function(event) {
+            removeDragOverCls();
+            cancelEvent(event);
+        });
+        bodyElement.on('drop', function(event) {
+            removeDragOverCls();
+            cancelEvent(event);
+        });
+        bodyElement.on('dragend', function(event) {
+            removeDragOverCls();
+            cancelEvent(event);
+        });
     }
 });

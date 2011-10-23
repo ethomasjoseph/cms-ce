@@ -836,7 +836,7 @@ ul.cms-wizard-navigation a.last-current {
 }
 
 .cms-image-upload-button-container:hover,
-.cms-image-upload-button-container-dragover {
+.cms-file-upload-drag-over {
     border: 1px solid orange;
     -webkit-box-shadow:0 0 2px orange;
     -moz-box-shadow: 0 0 2px orange;
