@@ -836,11 +836,11 @@ ul.cms-wizard-navigation a.last-current {
 }
 
 .cms-image-upload-button-container:hover,
-.cms-file-upload-drag-over {
-    border: 1px solid orange;
-    -webkit-box-shadow:0 0 2px orange;
-    -moz-box-shadow: 0 0 2px orange;
-    box-shadow:0 0 2px orange;
+.cms-file-upload-drop-target {
+    border: 1px solid lime;
+    -webkit-box-shadow:0 0 2px lime;
+    -moz-box-shadow: 0 0 2px lime;
+    box-shadow:0 0 2px lime;
 }
 
 .cms-image-upload-button-container .cms-image-upload-button-image {

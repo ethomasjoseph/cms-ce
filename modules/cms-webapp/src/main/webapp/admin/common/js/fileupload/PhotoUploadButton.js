@@ -61,11 +61,11 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
         }
 
         function addDragOverCls() {
-            buttonContainerElement.addCls('cms-file-upload-drag-over');
+            buttonContainerElement.addCls('cms-file-upload-drop-target');
         }
 
         function removeDragOverCls() {
-            buttonContainerElement.removeCls('cms-file-upload-drag-over');
+            buttonContainerElement.removeCls('cms-file-upload-drop-target');
         }
 
         bodyElement.on('dragover', function(event) {
