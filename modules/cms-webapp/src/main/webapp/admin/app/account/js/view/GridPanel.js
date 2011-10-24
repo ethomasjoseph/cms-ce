@@ -13,10 +13,6 @@ Ext.define( 'App.view.GridPanel', {
 
     initComponent: function()
     {
-        this.selModel = Ext.create('Ext.selection.CheckboxModel', {
-            mode: 'SIMPLE'
-        });
-
         this.columns = [
             {
                 text: 'Display Name',
@@ -54,6 +50,10 @@ Ext.define( 'App.view.GridPanel', {
             trackOver : true,
             stripeRows: true
         };
+
+        this.selModel = Ext.create('Ext.selection.CheckboxModel', {
+            mode: 'SIMPLE'
+        });
 
         this.callParent( arguments );
     },

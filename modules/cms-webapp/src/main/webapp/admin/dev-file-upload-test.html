@@ -1,0 +1,130 @@
+<html>
+<head>
+    <title>Enonic CMS Admin</title>
+    <link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/main.css">
+    <style type="text/css">
+        h1 {
+            font-size: 21px;
+            margin-bottom: .5em;
+            font-weight: normal;
+        }
+
+        h2 {
+            font-size: 18px;
+            margin-bottom: .5em;
+            font-weight: normal;
+        }
+
+        .icon-browse {
+            background-image: url("resources/images/folder_explore.png");
+        }
+
+        .icon-upload {
+            background-image: url("resources/images/up-icon.png");
+        }
+
+        .icon-remove {
+            background-image: url("resources/images/delete.png");
+        }
+    </style>
+    <script type="text/javascript" src="common/js/fileupload/plupload/js/plupload.full.js"></script>
+    <script type="text/javascript" src="ext/ext-all-debug.js"></script>
+    <script type="text/javascript">
+        Ext.Loader.setConfig({
+            enabled: true,
+            paths: {
+                'Common' : 'common/js'
+            }
+        });
+
+        Ext.application({
+            name: 'App',
+
+            controllers: [
+            ],
+
+            requires: [
+                'Common.fileupload.PhotoUploadButton',
+                'Common.fileupload.FileUploadGrid'
+            ],
+
+            launch: function() {
+                Ext.create('Ext.container.Viewport', {
+                    layout: 'border',
+                    padding: 5,
+                    items: [
+                        {
+                            region: 'center',
+                            xtype: 'panel',
+                            defaults: {
+                                margin: '15 15 30 15'
+                            },
+                            autoScroll: true,
+                            items: [
+                                {
+                                    xtype: 'container',
+                                    margin: '15 15 15 15',
+                                    html: '<h1>File Upload</h1><div>File upload components using <a href="http://www.plupload.com/">Plupload</a></div>'
+                                },
+                                {
+                                    xtype: 'container',
+                                    layout: {
+                                        type: 'hbox'
+                                    },
+                                    defaults: {
+                                        margin: '0 5 0 0'
+                                    },
+                                    html: '<h2>Photo Upload Button</h2>',
+                                    items: [
+                                        {
+                                            xtype: 'photoUploadButton',
+                                            width: 128,
+                                            height: 128
+                                        },
+                                        {
+                                            xtype: 'photoUploadButton',
+                                            width: 64,
+                                            height: 64,
+                                            progressBarHeight: 6
+                                        },
+                                        {
+                                            xtype: 'photoUploadButton',
+                                            width: 32,
+                                            height: 32,
+                                            progressBarHeight: 2
+                                        }
+                                    ]
+                                },
+                                {
+                                    xtype: 'container',
+                                    layout: {
+                                        type: 'fit'
+                                    },
+                                    items: [
+                                        {
+                                            xtype: 'container',
+                                            html: '<h2>File Upload Grid</h2>'
+                                        },
+                                        {
+                                            xtype: 'fileUploadGrid',
+                                            width: 512,
+                                            height: 256,
+                                            resizable: true
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                });
+            }
+        });
+
+    </script>
+
+</head>
+<body>
+
+</body>
+</html>

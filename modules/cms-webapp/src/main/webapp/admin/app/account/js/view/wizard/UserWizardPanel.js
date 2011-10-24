@@ -130,7 +130,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                             afterrender: {
                                 fn: function() {
                                     var me = this;
-                                    Ext.getBody().addListener('click', function(event, target, eOpts) {
+                                    me.getEl().addListener('click', function(event, target, eOpts) {
                                        me.toggleDisplayNameField(event, target);
                                     });
                                 },
@@ -176,25 +176,26 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                 ]
             }
         ];
+
         this.callParent( arguments );
     },
 
     toggleDisplayNameField: function(event, target)
     {
-        var element = new Ext.Element(target);
-        var parent = element.findParent('.cms-wizard-header');
-        var displayNameField = Ext.get('display-name');
-        var readonly = displayNameField.getAttribute('readonly');
+        var clickedElement = new Ext.Element(target);
+        var parentToClickedElementIsHeader = clickedElement.findParent('.cms-wizard-header');
+        var displayNameField = Ext.DomQuery.select('input.cms-display-name', this.getEl().dom)[0];
+        var displayNameFieldElement = new Ext.Element(displayNameField);
 
-        if (parent)
+        if (parentToClickedElementIsHeader)
         {
-            displayNameField.dom.removeAttribute('readonly');
-            displayNameField.addCls('cms-edited-field');
+            displayNameFieldElement.dom.removeAttribute('readonly');
+            displayNameFieldElement.addCls('cms-edited-field');
         }
         else
         {
-            displayNameField.set({readonly: true});
-            displayNameField.removeCls('cms-edited-field');
+            displayNameFieldElement.set({readonly: true});
+            displayNameFieldElement.removeCls('cms-edited-field');
         }
     },
 
