@@ -59,16 +59,3 @@
     cursor: pointer;
 }
 
-li.x-boxselect-item {
-    background: url("../images/group.png") no-repeat 3px 3px transparent;
-    background-color: #DEE7F8;
-}
-
-li.x-boxselect-item:hover {
-    background: url("../images/group.png") no-repeat 3px 3px transparent !important;
-    background-color: #BBCEF1 !important;
-}
-
-div.x-boxselect-item-text {
-    margin-left: 18px;
-}
