@@ -24,7 +24,13 @@ Ext.define( 'App.view.wizard.WizardStepMembershipPanel', {
                         store: 'GroupStore',
                         mode: 'local',
                         displayField: 'name',
-                        displayFieldTpl: '{name} ({userStore})',
+                        listConfig: {
+                            getInnerTpl: function()
+                            {
+                                return Templates.common.groupList;
+                            }
+
+                        },
                         valueField: 'key',
                         growMin: 75,
                         hideTrigger: true,

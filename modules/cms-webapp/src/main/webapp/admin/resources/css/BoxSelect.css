@@ -34,7 +34,7 @@
     o-border-radius: 6px;
     khtml-border-radius: 6px;
     border: 1px solid #CAD8F3;
-    padding: 0px 1px 0px 5px !important;
+    padding: 0px 1px 4px 5px !important;
     margin: 1px 1px 1px 0;
     background-color: #DEE7F8;
     cursor: default;
@@ -60,15 +60,15 @@
 }
 
 li.x-boxselect-item {
-    background: url("../images/group.png") no-repeat scroll 0 0 transparent;
+    background: url("../images/group.png") no-repeat 3px 3px transparent;
     background-color: #DEE7F8;
 }
 
 li.x-boxselect-item:hover {
-    background: url("../images/group.png") no-repeat scroll 0 0 transparent !important;
+    background: url("../images/group.png") no-repeat 3px 3px transparent !important;
     background-color: #BBCEF1 !important;
 }
 
 div.x-boxselect-item-text {
-    margin-left: 15px;
+    margin-left: 18px;
 }
