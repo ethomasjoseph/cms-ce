@@ -11,13 +11,10 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         'App.view.wizard.WizardStepSummaryPanel'
     ],
 
-    layout: {
-        type: 'hbox',
-        align: 'stretch',
-        padding: 10
-    },
+    layout: 'column',
 
     border: 0,
+    autoScroll: true,
 
     defaults: {
         border: false
@@ -112,12 +109,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                 ]
             },
             {
-                flex: 1,
-                layout: {
-                    type: 'vbox',
-                    align: 'stretch',
-                    padding: '0 10'
-                },
+                columnWidth: 1,
                 defaults: {
                     border: false
                 },
@@ -140,7 +132,6 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                         html: Templates.account.newUserPanelHeader
                     },
                     {
-                        flex: 1,
                         xtype: 'wizardPanel',
                         showControls: false,
                         items: [

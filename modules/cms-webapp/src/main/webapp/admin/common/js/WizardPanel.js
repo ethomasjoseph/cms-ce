@@ -7,7 +7,7 @@ Ext.define( 'Common.WizardPanel', {
         animation: 'none'
     },
     cls: 'cms-wizard',
-    autoScroll: true,
+    autoHeight: true,
     defaults: {
         border: false,
         frame: false,
