@@ -3,6 +3,7 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
     alias: 'widget.photoUploadButton',
     width: 132,
     height: 132,
+    url: '',
 
     progressBarHeight: 8,
 
@@ -100,7 +101,7 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
                 runtimes                : 'html5,flash,silverlight',
                 multi_selection         :false,
                 browse_button           : buttonId,
-                url                     : 'data/user/photo',
+                url                     : this.url,
                 multipart               : true,
                 drop_element            : buttonId,
                 flash_swf_url           : 'common/js/fileupload/plupload/js/plupload.flash.swf',
@@ -115,16 +116,30 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
         });
 
         uploader.bind('FilesAdded', function(up, files) {
-            // uploader.start();
             // TODO: Check files length. Only one should be allowed
             // TODO: Check file extension. Only jpeg,jpg,png,gif,tiff,bmp is allowed.
-            uploadButton.fakeUpload();
+            up.start();
+            uploadButton.showProgressBar();
+        });
+
+        uploader.bind( 'UploadFile', function(up, file) {
+            uploadButton.fakeProgress();
         });
 
         uploader.bind('UploadProgress', function(up, file) {
+            //TODO: this is to be used instead of fakeProgress()
+        });
+
+        uploader.bind( 'FileUploaded', function( up, file, response ) {
+            if ( response && response.status == 200 ) {
+                var responseObj = Ext.decode(response.response);
+                uploadButton.updateImage( responseObj.src );
+            }
+            uploadButton.hideProgressBar();
         });
 
         uploader.bind('UploadComplete', function(up, files) {
+
         });
 
         setTimeout(function() {
@@ -132,9 +147,9 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
         }, 1);
     },
 
-    updateImage: function()
+    updateImage: function( src )
     {
-        this.getImageElement().src = 'resources/images/x-user.png';
+        this.getImageElement().src = src || 'resources/images/x-user.png';
     },
 
     showProgressBar: function()
@@ -164,18 +179,14 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
         return Ext.DomQuery.select('#'+ this.buttonElementId + ' .cms-image-upload-button-progress-bar')[0];
     },
 
-    fakeUpload: function()
+    fakeProgress: function()
     {
-        var me = this;
         var progressBar = this.getProgressBarElement();
-        me.showProgressBar();
         var percent = 0;
         var interval = setInterval(function() {
             progressBar.style.width = percent + '%';
             if (percent >= 100) {
                 clearInterval(interval);
-                me.updateImage();
-                me.hideProgressBar();
             }
 
             percent++;
