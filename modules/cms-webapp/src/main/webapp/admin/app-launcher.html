@@ -21,7 +21,7 @@
             appFolder: 'app/launcher/js',
 
             controllers: [
-                'LauncherController',
+                'AppLauncherController',
                 'ActivityStreamController'
             ],
 
@@ -37,9 +37,8 @@
                             layout: 'border',
                             items: [
                                 {
-                                    id: 'launcher-toolbar',
                                     region: 'north',
-                                    xtype: 'launcherToolbar'
+                                    xtype: 'appLauncherToolbar'
                                 },
                                 {
                                     id: 'launcher-center',

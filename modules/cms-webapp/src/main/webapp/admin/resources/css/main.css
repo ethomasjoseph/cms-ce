@@ -47,7 +47,7 @@ body,
 
 /*----- Launcher -----*/
 
-#launcher-toolbar {
+#app-launcher-toolbar {
     border-top: none;
     border-right: none;
     border-bottom: 1px solid #99BCE8;

@@ -1,10 +1,10 @@
-Ext.define('App.controller.LauncherController', {
+Ext.define('App.controller.AppLauncherController', {
     extend: 'Ext.app.Controller',
 
-    views: ['Toolbar'],
+    views: ['AppLauncherToolbar'],
 
     requires: [
-        'App.LauncherToolbarHelper'
+        'App.AppLauncherToolbarHelper'
     ],
 
     init: function() {
@@ -91,7 +91,7 @@ Ext.define('App.controller.LauncherController', {
     },
 
     getStartMenuButton: function() {
-        return Ext.ComponentQuery.query('launcherToolbar button[id=launcher-start-button]')[0];
+        return Ext.ComponentQuery.query('appLauncherToolbar button[id=launcher-start-button]')[0];
     }
 
 });

@@ -26,13 +26,13 @@
         if (window.addEventListener)
         {
             window.addEventListener('click', function() {
-                cms_getParentWindow().App.LauncherToolbarHelper.hideLauncherMenus();
+                cms_getParentWindow().App.AppLauncherToolbarHelper.hideLauncherMenus();
             }, false);
         }
         else if (window.attachEvent) // IE
         {
             window.attachEvent('onclick', function() {
-                cms_getParentWindow().App.LauncherToolbarHelper.hideLauncherMenus();
+                cms_getParentWindow().App.AppLauncherToolbarHelper.hideLauncherMenus();
             });
 
         }
