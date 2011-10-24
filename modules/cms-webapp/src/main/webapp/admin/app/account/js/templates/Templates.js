@@ -6,17 +6,19 @@ if ( !Templates )
 Templates.account = {
     userstoreRadioButton:
         '<tpl for=".">' +
-                    '<div class="cms-userstore">' +
+            '<div class="cms-userstore clearfix">' +
+                '<div class="cms-left" style="margin: 24px 5px 0 0">'+
                     '<input type="radio" name="userstore" value="{key}">' +
-                    '<div class="cms-userstore-block">' +
-                        '<div class="left"><img width="50" height="50" src="app/account/images/app-icon-userstores.png"/></div>' +
-                        '<div class="center">' +
-                            '<h2>{name}</h2>' +
-                            '<p>(usersstores\\\\{name})</p>' +
-                        '</div>' +
+                '</div>' +
+                '<div class="cms-userstore-block cms-left">' +
+                    '<div class="cms-left" style="padding-right: 15px;"><img width="50" height="50" src="app/account/images/app-icon-userstores.png"/></div>' +
+                    '<div class="cms-left">' +
+                        '<h2>{name}</h2>' +
+                        '<p>(usersstores\\\\{name})</p>' +
                     '</div>' +
-                    '</div><br>' +
-                '</tpl>'
+                '</div>' +
+            '</div>' +
+        '</tpl>'
 
     ,gridPanelNameRenderer:
         '<div style="float:left"><img src="data/user/photo?key={0}&thumb=true" class="cms-thumbnail"></div>' +
@@ -34,7 +36,7 @@ Templates.account = {
     ,newUserPanelHeader:
         '<div class="cms-wizard-header-container">' +
             '<div class="cms-wizard-header clearfix">' +
-                '<input id="display-name" type="text" value="New User" readonly="true" class="cms-display-name"/>' +
+                '<input type="text" value="New User" readonly="true" class="cms-display-name"/>' +
             '</div>' +
             '<div class="clearfix">- User Wizard: <span id="q-userstore"></span><span id="q-username"></span></div>' +
         '</div>'

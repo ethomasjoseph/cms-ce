@@ -88,9 +88,20 @@ Ext.define( 'App.controller.UserWizardController', {
     userStoreSelected: function(view, record, item)
     {
         view.setData(record);
-        var itemElement = new Ext.Element( item );
-        itemElement.highlight( '9B30FF' );
-        var radioButton = itemElement.down( 'input' );
+        var selectedUserStoreElement = new Ext.Element( item );
+
+        var userStoreElements = view.getNodes();
+        for (var i = 0; i < userStoreElements.length; i++)
+        {
+            var userStoreElement = new Ext.Element(userStoreElements[i]);
+            if(userStoreElement.id !== selectedUserStoreElement.id)
+            {
+                userStoreElement.removeCls('cms-userstore-active');
+            }
+        }
+
+        selectedUserStoreElement.addCls('cms-userstore-active');
+        var radioButton = selectedUserStoreElement.down( 'input' );
         radioButton.dom.checked = true;
         var nextButton = this.getUserWizardPanel().down('#next');
         var userForm = this.getUserWizardPanel().down('#userForm');
