@@ -8,6 +8,7 @@ Ext.define('App.controller.AppLauncherController', {
     ],
 
     init: function() {
+        // TODO: Try using itemId to get the component.
         this.control({
             'viewport': {
                 afterrender: this.loadDefaultApp
@@ -17,6 +18,11 @@ Ext.define('App.controller.AppLauncherController', {
             },
             '*[id=launcher-start-button] menu > menuitem': {
                 click: this.loadApp
+            },
+            '*[id=launcher-feedback-test-button]': {
+                click: function() {
+                     this.application.fireEvent('feedback.show', 'Feedback from App Launcher', 'App Launcher says Hello World!');
+                }
             }
         });
     },

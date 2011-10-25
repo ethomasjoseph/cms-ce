@@ -74,5 +74,25 @@ Templates.launcher = {
                     '</div>' +
                 '</div>' +
             '</div>' +
+        '</div>',
+
+    feedbackBox:
+        '<div class="cms-feedback-box clearfix">' +
+            '<table border="0">'+
+                '<tr>' +
+                    '<td style="width: 42px" valign="top">' +
+                        '<img src="resources/images/info-icon-32.png" style="width:32px; height:32px"/>' +
+                    '</td>' +
+                    '<td valign="top" style="height: 50px">' +
+                        '<h1>{messageTitle}</h1>' +
+                        '<div class="message-text">{messageText}</div>' +
+                    '</td>' +
+                '</tr>' +
+                '<tr>' +
+                    '<td colspan="2" style="text-align: right">' +
+                        '<a class="notify-user-button" href="javascript:;">Notify User</a>' +
+                    '</td>' +
+                '</tr>'+
+            '</table>'+
         '</div>'
 };

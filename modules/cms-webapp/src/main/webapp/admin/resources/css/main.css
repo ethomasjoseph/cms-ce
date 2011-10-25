@@ -443,7 +443,7 @@ img.photo {
 
 .cms-dashboard-palette-item {
     cursor: move;
-    background-color: #fafafa;
+    background-color: #f0f0f0;
     padding: 4px;
     margin: 2px;
     clear: both;
@@ -893,3 +893,33 @@ ul.cms-wizard-navigation a.last-current {
     border-radius: 3px;
 }
 
+/*----- Feedback Box -----*/
+
+.cms-feedback-box {
+    border-radius: 8px;
+    background-color: #444;
+    padding: 12px;
+    position: relative;
+}
+
+.cms-feedback-box table {
+    width: 100%;
+}
+
+.cms-feedback-box,
+.cms-feedback-box td {
+    color: #fff;
+    font-size: 11px;
+}
+
+.cms-feedback-box h1 {
+    font-weight: bold;
+}
+
+.cms-feedback-box .message-text {
+}
+
+.cms-feedback-box a {
+    font-weight: bold;
+    color: limegreen;
+}
