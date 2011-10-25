@@ -10,12 +10,12 @@ Ext.define('App.store.UserStore', {
 
     proxy: {
         type: 'ajax',
-        url: 'data/user/list',
+        url: 'data/account/search',
         simpleSortMode: true,
         reader: {
             type: 'json',
-            root: 'users',
-            totalProperty : 'total'
+            root: 'results.accounts',
+            totalProperty : 'results.total'
         }
     }
 });

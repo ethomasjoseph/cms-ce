@@ -128,6 +128,9 @@ Ext.define( 'App.controller.AccountController', {
                 }
             }
         );
+
+        this.getStore('UserstoreConfigStore').on('load', this.initFilterPanelUserStoreOptions);
+        this.getStore('UserStore').on('load', this.updateFilterFacets);
     },
 
     onFilterPanelRender: function()
@@ -144,10 +147,7 @@ Ext.define( 'App.controller.AccountController', {
 
         this.getFilterUserStoreField().addListener( 'change', function(field, newValue, oldValue, eOpts) {
             var fieldIsSelected = typeof field.getValue().userStoreKey === 'string';
-            if ( fieldIsSelected )
-            {
-                this.searchFilter();
-            }
+            this.searchFilter();
         }, this );
 
     },
@@ -254,7 +254,7 @@ Ext.define( 'App.controller.AccountController', {
                 params: {
                     query: textField.getValue(),
                     type: typeField.getValue(),
-                    userStoreKey: userStoreField.getValue()
+                    userstores: userStoreField.getValue()
                 }
             });
         },
@@ -630,7 +630,7 @@ Ext.define( 'App.controller.AccountController', {
 
     getFilterUserStoreField: function()
     {
-        return Ext.ComponentQuery.query( 'accountFilter radiogroup[itemId=userstoreRadios]' )[0];
+        return Ext.ComponentQuery.query( 'accountFilter checkboxgroup[itemId=userstoreRadios]' )[0];
     },
 
     getEditUserFormPanel: function()
@@ -651,6 +651,24 @@ Ext.define( 'App.controller.AccountController', {
     getUserContextMenu: function()
     {
         return Ext.ComponentQuery.query( 'accountContextMenu' )[0];
+    },
+
+    initFilterPanelUserStoreOptions: function(store) {
+        var items = store.data.items;
+        var userstores = [];
+        for (var i = 0; i < items.length; i++) {
+            var userstoreName = items[i].data.name;
+            userstores.push(userstoreName);
+        }
+        var filterPanel = Ext.widget('accountFilter');
+        filterPanel.setUserStores(userstores);
+    },
+
+    updateFilterFacets: function(store)
+    {
+        var data = store.proxy.reader.jsonData;
+        var filterPanel = Ext.widget('accountFilter');
+        filterPanel.showFacets(data.results.facets);
     }
 
 } );
