@@ -116,13 +116,16 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
         });
 
         uploader.bind('FilesAdded', function(up, files) {
+        });
+
+        uploader.bind('QueueChanged', function(up ) {
             // TODO: Check files length. Only one should be allowed
             // TODO: Check file extension. Only jpeg,jpg,png,gif,tiff,bmp is allowed.
             up.start();
-            uploadButton.showProgressBar();
         });
 
         uploader.bind( 'UploadFile', function(up, file) {
+            uploadButton.showProgressBar();
             uploadButton.fakeProgress();
         });
 
