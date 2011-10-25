@@ -335,17 +335,14 @@ Ext.define( 'App.controller.AccountController', {
                         var jsonObj = Ext.JSON.decode( response.responseText );
                         var tab = {
                             id: currentUser.userStore + '-' + currentUser.name,
-                            layout: 'border',
                             title: currentUser.displayName + ' (' + currentUser.qualifiedName + ')',
                             iconCls: 'icon-edit-user',
                             closable: true,
                             autoScroll: true,
                             items: [
                                 {
-                                    xtype: 'editUserPanel',
-                                    region: 'center',
-                                    userFields: jsonObj,
-                                    currentUser: currentUser
+                                    xtype: 'panel',
+                                    border: false
                                 }
                             ]
                         };
@@ -353,7 +350,6 @@ Ext.define( 'App.controller.AccountController', {
                     }
                 }
             );
-
         }
     },
 
