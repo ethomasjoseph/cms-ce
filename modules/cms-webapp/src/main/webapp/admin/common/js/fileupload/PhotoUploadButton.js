@@ -126,11 +126,10 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
 
         uploader.bind( 'UploadFile', function(up, file) {
             uploadButton.showProgressBar();
-            uploadButton.fakeProgress();
         });
 
         uploader.bind('UploadProgress', function(up, file) {
-            //TODO: this is to be used instead of fakeProgress()
+            uploadButton.updateProgressBar( file );
         });
 
         uploader.bind( 'FileUploaded', function( up, file, response ) {
@@ -161,6 +160,13 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
         this.getProgressBarContainerElement().style.visibility = 'visible';
     },
 
+    updateProgressBar: function( file )
+    {
+        var progressBar = this.getProgressBarElement();
+        var percent = file.percent || 0;
+        progressBar.style.width = percent + '%';
+    },
+
     hideProgressBar: function()
     {
         this.getProgressBarElement().style.width = '0';
@@ -180,20 +186,6 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
     getProgressBarElement: function()
     {
         return Ext.DomQuery.select('#'+ this.buttonElementId + ' .cms-image-upload-button-progress-bar')[0];
-    },
-
-    fakeProgress: function()
-    {
-        var progressBar = this.getProgressBarElement();
-        var percent = 0;
-        var interval = setInterval(function() {
-            progressBar.style.width = percent + '%';
-            if (percent >= 100) {
-                clearInterval(interval);
-            }
-
-            percent++;
-        }, 5);
     }
 
 });
