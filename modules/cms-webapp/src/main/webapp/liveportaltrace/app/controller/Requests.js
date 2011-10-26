@@ -20,7 +20,8 @@ Ext.define('LPT.controller.Requests', {
         'requests.PortalRequestTraceHistoryPanel',
         'requests.PortalRequestTraceHistoryDetailsPanel',
         'requests.ContextMenu',
-        'requests.GaugePanel'
+        'requests.GaugePanel',
+        'requests.ThreadsGaugePanel'
     ],
 
     refs: [
@@ -29,7 +30,11 @@ Ext.define('LPT.controller.Requests', {
         {ref: 'mainTabPanel', selector: 'mainTabPanel'},
         {ref: 'portalRequestTraceHistoryDetailsPanel', selector: 'portalRequestTraceHistoryDetailsPanel', xtype: 'portalRequestTraceHistoryDetailsPanel'},
         {ref: 'requestContextMenu', selector: 'requestContextMenu', autoCreate: true, xtype: 'requestContextMenu'},
-        {ref: 'requestsPerformancePanel', selector: 'requestsPerformancePanel', xtype: 'requestsPerformancePanel'}
+        {ref: 'requestsGaugePanel', selector: 'requestsGaugePanel', xtype: 'requestsGaugePanel'},
+        {ref: 'memoryGaugePanel', selector: 'memoryGaugePanel', xtype: 'memoryGaugePanel'},
+        {ref: 'entityCacheGaugePanel', selector: 'entityCacheGaugePanel', xtype: 'entityCacheGaugePanel'},
+        {ref: 'pageCacheGaugePanel', selector: 'pageCacheGaugePanel', xtype: 'pageCacheGaugePanel'},
+        {ref: 'threadsGaugePanel', selector: 'threadsGaugePanel', xtype: 'threadsGaugePanel'}
     ],
 
     init: function() {
@@ -66,6 +71,7 @@ Ext.define('LPT.controller.Requests', {
         });
 
         this.startAutoRefreshTimer();
+        this.startSystemCountersTimer();
     },
 
     totalFacetStatistics: new FacetStatistics(),
@@ -323,12 +329,82 @@ Ext.define('LPT.controller.Requests', {
         return requestObject;
     },
 
+    startSystemCountersTimer: function () {
+        var controller = this;
+        setTimeout( function() {
+            controller.loadSystemCounters();
+        }, REQUESTS_REFRESH_TIME);
+    },
+
+    loadSystemCounters: function () {
+        if (!this.autoRefreshOn) {
+            this.startSystemCountersTimer(); // restart timer
+            return;
+        }
+        var controller = this;
+        Ext.Ajax.request( {
+            url: '/liveportaltrace/rest/system/counters',
+            method: 'GET',
+            success: function( response ) {
+                var systemInfo = Ext.JSON.decode( response.responseText );
+
+                controller.showMemoryUsage(systemInfo.javaHeapMemoryUsageUsed, systemInfo.javaHeapMemoryUsageMax);
+                controller.showThreadCount(systemInfo.javaThreadCount, systemInfo.javaThreadPeakCount);
+
+                var entityCacheTotal = systemInfo.entityCacheHitCount + systemInfo.entityCacheMissCount;
+                controller.showEntityCacheUsage(systemInfo.entityCacheHitCount, entityCacheTotal);
+
+                var pageCacheTotal = systemInfo.pageCacheHitCount + systemInfo.pageCacheMissCount;
+                controller.showPageCacheUsage(systemInfo.pageCacheHitCount, pageCacheTotal);
+
+                controller.startSystemCountersTimer(); // restart timer
+            },
+            failure: function() {
+                controller.startSystemCountersTimer(); // restart timer
+            }
+        });
+    },
+
     showRequestsPerSecond: function (value) {
-        var performancePanel = this.getRequestsPerformancePanel();
-        performancePanel.updateData( [{
+        var requestsGaugePanel = this.getRequestsGaugePanel();
+        requestsGaugePanel.updateData( [{
             name: 'requests',
             data: ( value )
         }] );
+    },
+
+    showMemoryUsage: function (value, maxValue) {
+        var memoryGaugePanel = this.getMemoryGaugePanel();
+        memoryGaugePanel.updateData( [{
+            name: 'memory',
+            data: ( value )
+        }], maxValue );
+    },
+
+    showEntityCacheUsage: function (value, maxValue) {
+        var valPercent = (maxValue !== 0)? (value / maxValue) * 100 : 0;
+        var entityCachePanel = this.getEntityCacheGaugePanel();
+        entityCachePanel.updateData( [{
+            name: 'entity hits',
+            data: ( valPercent )
+        }] );
+    },
+
+    showPageCacheUsage: function (value, maxValue) {
+        var valPercent = (maxValue !== 0)? (value / maxValue) * 100 : 0;
+        var pageCachePanel = this.getPageCacheGaugePanel();
+        pageCachePanel.updateData( [{
+            name: 'page hits',
+            data: ( valPercent )
+        }] );
+    },
+
+    showThreadCount: function (value, maxValue) {
+        var threadsGaugePanel = this.getThreadsGaugePanel();
+        threadsGaugePanel.updateData( [{
+            name: 'thread count',
+            data: ( value )
+        }], maxValue );
     }
 
 });

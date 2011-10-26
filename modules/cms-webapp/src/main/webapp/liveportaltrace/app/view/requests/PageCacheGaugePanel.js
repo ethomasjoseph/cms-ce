@@ -1,25 +1,23 @@
-Ext.define( 'LPT.view.requests.GaugePanel', {
+Ext.define( 'LPT.view.requests.PageCacheGaugePanel', {
     extend: 'Ext.panel.Panel',
-    alias: 'widget.requestsGaugePanel',
+    alias: 'widget.pageCacheGaugePanel',
 
     requires: [
         'Ext.chart.*', 'Ext.chart.axis.Gauge', 'Ext.chart.series.*'
     ],
 
-    id: 'requestsGaugePanel',
-    title: 'Requests per second',
+    id: 'pageCacheGaugePanel',
+    title: 'Page Cache',
     collapsible: true,
     titleCollapse: true,
 
     layout: 'fit',
-
     defaults: {
         margins: '0 0 0 0'
     },
 
     gaugeColor: '#82B525',
     gaugeStore: null,
-    firstUpdate: true,
 
     initComponent: function() {
 
@@ -27,7 +25,15 @@ Ext.define( 'LPT.view.requests.GaugePanel', {
             fields: ['name', 'data']
         });
 
-        this.items = {
+        this.items = [
+            {
+                id: 'headerLabelEntities',
+                tpl: new Ext.Template('<div class="center">{text}</div>'),
+                border: false,
+                bodyPadding: 5,
+                height: 20
+            },
+            {
             xtype: 'chart',
             flex: 1,
             insetPadding: 30,
@@ -38,14 +44,21 @@ Ext.define( 'LPT.view.requests.GaugePanel', {
             height: 150,
             width: 210,
             store: this.gaugeStore,
+
             axes: [
                 {
                     type: 'gauge',
                     position: 'gauge',
                     minimum: 0,
-                    maximum: 10,
-                    steps: 10,
-                    margin: 7
+                    maximum: 100,
+                    steps: 5,
+                    margin: 7,
+                    label: {
+                        renderer: function(v) {
+                            return v+'%';
+                        }
+                    }
+
                 }
             ],
             series: [
@@ -56,31 +69,17 @@ Ext.define( 'LPT.view.requests.GaugePanel', {
                     colorSet: [this.gaugeColor, '#ddd']
                 }
             ]
-        };
+            }
+        ];
 
         this.callParent(arguments);
     },
 
     updateData: function( data ) {
-        if (this.firstUpdate) {
-            // skip first call (initial loading of data in grid)
-            this.firstUpdate = false;
-            return;
-        }
-
         if ( data ) {
             if (data.length > 0) {
                 var value = data[0].data;
-                var maxValue = this.items.get(0).axes.get(0).maximum;
-                if (value >= maxValue) {
-                    maxValue = value * 1.1; // Increase 10% over the current value
-                    maxValue = Math.round(maxValue / 10) * 10; // round it to a multiple of 10
-
-                    // set new chart maximum
-                    this.items.get(0).axes.get(0).maximum = maxValue;
-                }
-
-                this.setTitle('Requests per second: ' + value);
+                Ext.getCmp('headerLabelEntities').update({text: 'Hits vs misses: ' + value + '% hits' });
             }
 
             this.gaugeStore.loadData( data );
