@@ -12,11 +12,13 @@ import java.io.ByteArrayOutputStream;
 public final class UserPhotoService
 {
     private final BufferedImage defaultImage;
+    private final BufferedImage groupImage;
 
     public UserPhotoService()
         throws Exception
     {
         this.defaultImage = ImageIO.read(getClass().getResourceAsStream("default_user.gif"));
+        this.groupImage = ImageIO.read(getClass().getResourceAsStream("default_group.png"));
     }
 
     public byte[] renderPhoto(final UserEntity user, final int size)
@@ -24,6 +26,13 @@ public final class UserPhotoService
     {
         final BufferedImage image = createImage(user.getPhoto());
         final BufferedImage sizedImage = resizeImage(image, size);
+        return toBytes(sizedImage);
+    }
+
+    public byte[] renderGroupIcon(final int size)
+        throws Exception
+    {
+        final BufferedImage sizedImage = resizeImage(groupImage, size);
         return toBytes(sizedImage);
     }
 

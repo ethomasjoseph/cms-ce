@@ -7,11 +7,14 @@ public class AccountsModel
 {
     private int total;
 
-    private List<AccountModel> accounts;
+    private final List<AccountModel> accounts;
+
+    private final List<SearchFacetModel> facets;
 
     public AccountsModel()
     {
         this.accounts = new ArrayList<AccountModel>();
+        this.facets = new ArrayList<SearchFacetModel>();
     }
 
     public int getTotal()
@@ -29,13 +32,19 @@ public class AccountsModel
         return accounts;
     }
 
-    public void setAccounts( List<AccountModel> accounts )
-    {
-        this.accounts = accounts;
-    }
-
     public void addAccount( AccountModel account )
     {
         this.accounts.add( account );
     }
+
+    public List<SearchFacetModel> getFacets()
+    {
+        return facets;
+    }
+
+    public void addFacet( SearchFacetModel facet )
+    {
+        this.facets.add( facet );
+    }
+
 }

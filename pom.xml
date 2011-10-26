@@ -284,53 +284,6 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
-                <artifactId>se-jcr</artifactId>
-                <version>0.9</version>
-                <exclusions>
-                  <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring</artifactId>
-                  </exclusion>
-                  <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-webmvc</artifactId>
-                  </exclusion>
-                  <exclusion>
-                    <groupId>org.apache.jackrabbit</groupId>
-                    <artifactId>jackrabbit-api</artifactId>
-                  </exclusion>
-                  <exclusion>
-                    <groupId>org.apache.jackrabbit</groupId>
-                    <artifactId>jackrabbit-core</artifactId>
-                  </exclusion>
-                  <exclusion>
-                    <groupId>org.apache.jackrabbit</groupId>
-                    <artifactId>jackrabbit-jca</artifactId>
-                  </exclusion>
-                  <exclusion>
-                    <groupId>org.apache.jackrabbit</groupId>
-                    <artifactId>jackrabbit-jcr-commons</artifactId>
-                  </exclusion>
-                  <exclusion>
-                    <groupId>org.apache.jackrabbit</groupId>
-                    <artifactId>jackrabbit-jcr-rmi</artifactId>
-                  </exclusion>
-                  <exclusion>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>servlet-api</artifactId>
-                  </exclusion>
-                  <exclusion>
-                    <groupId>geronimo-spec</groupId>
-                    <artifactId>geronimo-spec-j2ee-connector</artifactId>
-                  </exclusion>
-                  <exclusion>
-                    <groupId>geronimo-spec</groupId>
-                    <artifactId>geronimo-spec-jta</artifactId>
-                  </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
                 <artifactId>spring-expression</artifactId>
                 <version>${spring.version}</version>
                 <exclusions>
@@ -471,6 +424,11 @@
                 <artifactId>jcr</artifactId>
                 <version>2.0</version>
             </dependency>
+            <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>0.17.8</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -536,8 +494,8 @@
             <url>http://repo.enonic.com/maven</url>
         </repository>
         <repository>
-            <id>se-jcr-repo</id>
-            <url>https://src.springframework.org/svn/se-jcr/repo/</url>
+            <id>sonatype.repo</id>
+            <url>https://oss.sonatype.org/content/groups/public</url>
         </repository>
     </repositories>
 

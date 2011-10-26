@@ -4,104 +4,44 @@ import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public final class AccountModel
+interface AccountModel
 {
-    private final static String IS_USER = "isUser";
+    public final static String USER_NAME = "username";
 
-    private boolean isUser;
+    public final static String EMAIL = "email";
 
-    private String key;
+    public final static String KEY = "key";
 
-    private String name;
+    public final static String DISPLAY_NAME = "display-name";
 
-    private String email;
+    public final static String USER_INFO = "userInfo";
 
-    private String qualifiedName;
+    public final static String USERSTORE = "userStore";
 
-    private String displayName;
+    @JsonProperty("isUser")
+    public boolean isUser();
 
-    private String userStore;
+    public void setKey( String key );
 
-    private Date lastModified;
+    public String getKey();
 
-    @JsonProperty(IS_USER)
-    public boolean isUser()
-    {
-        return isUser;
-    }
+    public void setName( String name );
 
-    public void setUser( boolean user )
-    {
-        isUser = user;
-    }
+    public String getName();
 
-    public void setKey( String key )
-    {
-        this.key = key;
-    }
+    public void setQualifiedName( String qualifiedName );
 
-    public void setName( String name )
-    {
-        this.name = name;
-    }
+    public String getQualifiedName();
 
-    public void setEmail( String email )
-    {
-        this.email = email;
-    }
+    public void setUserStore( String userStore );
 
-    public void setQualifiedName( String qualifiedName )
-    {
-        this.qualifiedName = qualifiedName;
-    }
+    public String getUserStore();
 
-    public void setUserStore( String userStore )
-    {
-        this.userStore = userStore;
-    }
+    public void setDisplayName( String displayName );
 
-    public void setDisplayName( String displayName )
-    {
-        this.displayName = displayName;
-    }
+    public String getDisplayName();
 
-    public void setLastModified( Date lastModified )
-    {
-        this.lastModified = lastModified;
-    }
+    public void setLastModified( Date lastModified );
 
-    public String getKey()
-    {
-        return key;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public String getEmail()
-    {
-        return email;
-    }
-
-    public String getQualifiedName()
-    {
-        return qualifiedName;
-    }
-
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-    public String getUserStore()
-    {
-        return userStore;
-    }
-
-    public Date getLastModified()
-    {
-        return lastModified;
-    }
+    public Date getLastModified();
 }
