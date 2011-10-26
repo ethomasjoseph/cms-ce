@@ -77,11 +77,7 @@ public class JsonSerializer
 
     private void appendPageDatasources( JsonObject page )
     {
-        if ( pageTrace.isUsedCachedResult() )
-        {
-            page.add( "datasources", new JsonArray() );
-        }
-        else
+        if ( !pageTrace.isUsedCachedResult() )
         {
             page.add( "datasources", createDatasources( pageTrace.getDatasourceExecutionTraces() ) );
         }
@@ -138,10 +134,6 @@ public class JsonSerializer
             xsltTransformingObject.addProperty( "total_time", endTime - startTime );
             pageObject.add( "xslt_transforming", xsltTransformingObject );
         }
-        else
-        {
-            pageObject.add( "xslt_transforming", new JsonObject() );
-        }
     }
 
     private void appendXsltTransformingObjectForWindow( JsonObject windowObject, WindowRenderingTrace windowTrace )
@@ -160,10 +152,6 @@ public class JsonSerializer
             xsltTransformingObject.addProperty( "total_time", endTime - startTime );
             windowObject.add( "xslt_transforming", xsltTransformingObject );
         }
-        else
-        {
-            windowObject.add( "xslt_transforming", new JsonObject() );
-        }
     }
 
     private JsonObject createInstructionPostProcessingObject( InstructionPostProcessingTrace trace )
@@ -177,11 +165,7 @@ public class JsonSerializer
 
     private void appendWindowDatasources( JsonObject windowObject, WindowRenderingTrace window )
     {
-        if ( window.isUsedCachedResult() )
-        {
-            windowObject.add( "datasources", new JsonArray() );
-        }
-        else
+        if ( !window.isUsedCachedResult() )
         {
             windowObject.add( "datasources", createDatasources( window.getDatasourceExecutionTraces() ) );
         }
