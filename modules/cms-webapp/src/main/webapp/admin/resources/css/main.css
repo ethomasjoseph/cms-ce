@@ -893,3 +893,14 @@ ul.cms-wizard-navigation a.last-current {
     border-radius: 3px;
 }
 
+.cms-cursor-clickable {
+    cursor: pointer;
+}
+
+.cms-cursor-clickable:hover {
+    font-weight: bold !important;
+}
+
+.cms-bold-text {
+    font-weight: bold !important;
+}
