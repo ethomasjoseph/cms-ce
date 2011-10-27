@@ -9,7 +9,8 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         'App.view.wizard.WizardStepLoginInfoPanel',
         'App.view.wizard.WizardStepMembershipPanel',
         'App.view.wizard.WizardStepSummaryPanel',
-        'Common.fileupload.PhotoUploadButton'
+        'App.view.wizard.WizardStepPlacesPanel',
+        'Common.fileupload.PhotoUploadButton',
     ],
 
     layout: 'column',
@@ -57,11 +58,13 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                         styleHtmlContent: true,
                         listeners: {
                             afterrender: {
-                                fn: function() {
+                                fn: function()
+                                {
                                     var me = this;
-                                    me.getEl().addListener('click', function(event, target, eOpts) {
-                                       me.toggleDisplayNameField(event, target);
-                                    });
+                                    me.getEl().addListener( 'click', function( event, target, eOpts )
+                                    {
+                                        me.toggleDisplayNameField( event, target );
+                                    } );
                                 },
                                 scope: this
                             }
@@ -86,16 +89,23 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                             },
                             {
                                 stepNumber: 3,
+                                stepTitle: "Places",
+                                itemId: 'wizardStepPlacesPanel',
+                                xtype: 'wizardStepPlacesPanel',
+                                enableToolbar: false
+                            },
+                            {
+                                stepNumber: 4,
                                 stepTitle: "Login",
                                 xtype: 'wizardStepLoginInfoPanel'
                             },
                             {
-                                stepNumber: 4,
+                                stepNumber: 5,
                                 stepTitle: "Memberships",
                                 xtype: 'wizardStepMembershipPanel'
                             },
                             {
-                                stepNumber: 5,
+                                stepNumber: 6,
                                 stepTitle: "Summary",
                                 xtype: 'wizardStepSummaryPanel'
                             }
@@ -136,7 +146,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
     },
 
     setFileUploadDisabled: function( disable ) {
-        //this.uploadForm.setDisabled( disable );
+        this.uploadForm.setDisabled( disable );
     }
 
 });
