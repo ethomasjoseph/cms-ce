@@ -1,10 +1,10 @@
-Ext.define('App.controller.AppLauncherToolbarController', {
+Ext.define('App.controller.LauncherToolbarController', {
     extend: 'Ext.app.Controller',
 
-    views: ['AppLauncherToolbar'],
+    views: ['LauncherToolbar'],
 
     requires: [
-        'App.AppLauncherToolbarHelper'
+        'App.LauncherToolbarHelper'
     ],
 
     init: function()
@@ -14,13 +14,13 @@ Ext.define('App.controller.AppLauncherToolbarController', {
                 'viewport': {
                     afterrender: this.loadDefaultApp
                 },
-                'appLauncherToolbar *[id=app-launcher-logo]': {
+                'launcherToolbar *[id=app-launcher-logo]': {
                     render: this.onLogoRendered
                 },
-                'appLauncherToolbar *[itemId=app-launcher-button] menu > menuitem': {
+                'launcherToolbar *[itemId=app-launcher-button] menu > menuitem': {
                     click: this.loadApp
                 },
-                'appLauncherToolbar *[itemId=launcher-feedback-test-button]': {
+                'launcherToolbar *[itemId=launcher-feedback-test-button]': {
                     click: function() {
                         this.application.fireEvent('feedback.show', 'Feedback from App Launcher', 'App Launcher says Hello World!');
                     }
@@ -112,7 +112,7 @@ Ext.define('App.controller.AppLauncherToolbarController', {
 
     getStartMenuButton: function()
     {
-        return Ext.ComponentQuery.query('appLauncherToolbar button[itemId=app-launcher-button]')[0];
+        return Ext.ComponentQuery.query('launcherToolbar button[itemId=app-launcher-button]')[0];
     }
 
 });

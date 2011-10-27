@@ -1,6 +1,6 @@
-Ext.define('App.view.AppLauncherToolbar', {
+Ext.define('App.view.LauncherToolbar', {
     extend: 'Ext.toolbar.Toolbar',
-    alias: 'widget.appLauncherToolbar',
+    alias: 'widget.launcherToolbar',
     id: 'app-launcher-toolbar',
 
     requires: ['App.view.LoggedInUserButton'],
