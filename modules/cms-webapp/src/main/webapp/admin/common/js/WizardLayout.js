@@ -111,6 +111,9 @@ Ext.define( 'Common.WizardLayout', {
                 newCard.show();
                 owner.fireEvent( "animationfinished", newCard, oldCard );
             }
+            if ( newCard && Ext.isFunction( newCard.doLayout ) ) {
+                newCard.doLayout();
+            }
             return newCard;
         }
     },

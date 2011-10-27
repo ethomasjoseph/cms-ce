@@ -11,7 +11,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
     enableToolbar: true,
 
     listeners: {
-        afterrender: function( me )
+        show: function( me )
         {
             me.el.mask( "Loading..." );
             me.renderUserForm(me.currentUser);
@@ -115,6 +115,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
             }
         };
         this.callParent( arguments );
+        this.addEvents('fieldsloaded');
         this.removeAll();
         this.show();
     },
@@ -292,8 +293,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
             this.add( this.generateFieldSet( 'Communication', this.communicationFieldSet, fields ) );
             this.add( this.generateFieldSet( 'Address', this.addressFieldSet, fields ) );
         }
-
-
+        this.fireEvent('fieldsloaded', this);
     },
 
     generateFieldSet: function( title, fieldSet, storeConfig )

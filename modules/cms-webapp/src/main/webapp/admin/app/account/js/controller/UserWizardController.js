@@ -25,6 +25,9 @@ Ext.define( 'App.controller.UserWizardController', {
                           },
                           'addressPanel textfield[name=label]': {
                               keyup: this.updateTabTitle
+                          },
+                          'editUserFormPanel': {
+                              fieldsloaded: this.userStoreFieldsLoaded
                           }
                       } );
     },
@@ -44,9 +47,7 @@ Ext.define( 'App.controller.UserWizardController', {
     stepChanged: function( wizard, oldStep, newStep )
     {
         this.getUserWizardPanel().doLayout();
-        if ( newStep && Ext.isFunction( newStep.doLayout ) ) {
-            newStep.doLayout();
-        }
+
         if ( newStep.getXType() == 'userStoreListPanel') {
             // move to 1st step
             this.getUserWizardPanel().setFileUploadDisabled( true );
@@ -89,6 +90,10 @@ Ext.define( 'App.controller.UserWizardController', {
         w.next( btn );
     },
 
+    userStoreFieldsLoaded: function() {
+        this.getUserWizardPanel().doLayout();
+    },
+
     userStoreSelected: function(view, record, item)
     {
         view.setData(record);
@@ -109,7 +114,7 @@ Ext.define( 'App.controller.UserWizardController', {
         radioButton.dom.checked = true;
         var nextButton = this.getUserWizardPanel().down('#next');
         var userForm = this.getUserWizardPanel().down('#userForm');
-        userForm.renderUserForm({userStore: record.get('name')});
+        userForm.currentUser = {userStore: record.get('name')};
         this.wizardNext(nextButton);
     },
 
