@@ -125,9 +125,9 @@
     height: 18px;
 }
 
-/*----- Feedback Box -----*/
+/*----- Feedback Window -----*/
 
-.cms-feedback-box {
+.cms-feedback-window {
     border: 2px solid #fff;
     border-radius: 8px;
     background-color: #444;
@@ -135,25 +135,25 @@
     position: relative;
 }
 
-.cms-feedback-box table {
+.cms-feedback-window table {
     width: 100%;
 }
 
-.cms-feedback-box,
-.cms-feedback-box td {
+.cms-feedback-window,
+.cms-feedback-window td {
     color: #f0f0f0;
     font-size: 11px;
 }
 
-.cms-feedback-box h1 {
+.cms-feedback-window h1 {
     font-weight: bold;
     margin-bottom: 5px;
 }
 
-.cms-feedback-box .message-text {
+.cms-feedback-window .message-text {
 }
 
-.cms-feedback-box a {
+.cms-feedback-window a {
     font-weight: bold;
     color: limegreen;
 }

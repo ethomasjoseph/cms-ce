@@ -1,12 +1,12 @@
-Ext.define( 'App.view.FeedbackBox', {
+Ext.define( 'App.view.FeedbackWindow', {
     extend: 'Ext.Component',
-    alias: 'widget.feedbackBox',
+    alias: 'widget.feedbackWindow',
     width: 390,
     autoHeight: true,
     floating: true,
     autoShow: true,
 
-    tpl: Templates.main.feedbackBox,
+    tpl: Templates.main.feedbackWindow,
 
     initComponent: function()
     {

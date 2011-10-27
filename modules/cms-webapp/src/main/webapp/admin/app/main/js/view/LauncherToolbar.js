@@ -144,7 +144,7 @@ Ext.define('App.view.LauncherToolbar', {
         {
             xtype: 'button',
             itemId: 'launcher-feedback-test-button',
-            text: 'Show FeedbackBox'
+            text: 'Show Feedback Window'
         },
         '->',
         // Logged in user

@@ -22,7 +22,7 @@ Ext.define('App.controller.LauncherToolbarController', {
                 },
                 'launcherToolbar *[itemId=launcher-feedback-test-button]': {
                     click: function() {
-                        this.application.fireEvent('feedback.show', 'Feedback from App Launcher', 'App Launcher says Hello World!');
+                        this.application.fireEvent('feedbackWindow.show', 'Feedback from App Launcher', 'App Launcher says Hello World!');
                     }
                 }
             }
