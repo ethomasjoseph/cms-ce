@@ -30,7 +30,7 @@ body,
 .x-panel-body,
 .x-form-item,
 .x-form-display-field {
-    font: 11px tahoma,arial,verdana,sans-serif;
+    font: 11px tahoma, arial, verdana, sans-serif;
 }
 
 .x-form-item-label {
@@ -39,8 +39,7 @@ body,
 }
 
 .x-toolbar,
-.x-toolbar .cms-bold-toolbar-text.x-toolbar-text
-{
+.x-toolbar .cms-bold-toolbar-text.x-toolbar-text {
     color: #04408C !important;
     font-weight: bold;
 }
@@ -112,7 +111,6 @@ body,
     border: 0
 }
 
-
 /*----- Logged in user popup -----*/
 
 .cms-logged-in-user-popup {
@@ -132,7 +130,7 @@ body,
 }
 
 .cms-logged-in-user-popup-left img {
-     border-radius: 4px;
+    border-radius: 4px;
 }
 
 .cms-logged-in-user-popup-right h1 {
@@ -490,7 +488,7 @@ img.photo {
     cursor: auto !important;
 }
 
-.cms-group-display button{
+.cms-group-display button {
     cursor: auto !important;
 }
 
@@ -499,12 +497,12 @@ img.photo {
 .cms-cache-info h1 {
     margin: 0;
 }
+
 .cms-cache-info h1 span {
     font-size: 13px;
     font-style: normal;
     margin-left: 10px;
 }
-
 
 /*------------------------------------------- */
 
@@ -577,7 +575,6 @@ img.photo {
     border: 1px solid TRANSPARENT;
     background: transparent url(../../resources/images/cross.png) no-repeat 2px;
 }
-
 
 /*----- Small -----*/
 .cms-selected-item-box.small {
@@ -716,7 +713,7 @@ div.cms-userstore-active {
     border: 1px solid #6495ed;
 }
 
-.cms-userstore input{
+.cms-userstore input {
     vertical-align: middle;
 }
 
@@ -761,6 +758,7 @@ ul.cms-wizard-navigation li.previous {
 ul.cms-wizard-navigation li.last {
     background-image: url(../../resources/images/wizard-navigation-arrow-last.png);
 }
+
 ul.cms-wizard-navigation li.current-last {
     background-image: url(../../resources/images/wizard-navigation-arrow-current-last.png);
 }
@@ -857,9 +855,9 @@ ul.cms-wizard-navigation a.last-current {
 .cms-image-upload-button-container:hover,
 .cms-file-upload-drop-target {
     border: 1px solid lime;
-    -webkit-box-shadow:0 0 2px lime;
+    -webkit-box-shadow: 0 0 2px lime;
     -moz-box-shadow: 0 0 2px lime;
-    box-shadow:0 0 2px lime;
+    box-shadow: 0 0 2px lime;
 }
 
 .cms-image-upload-button-container .cms-image-upload-button-image {
@@ -922,4 +920,24 @@ ul.cms-wizard-navigation a.last-current {
 .cms-feedback-box a {
     font-weight: bold;
     color: limegreen;
+}
+.cms-list-item {
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    margin-right: 3px;
+}
+
+.cms-groups-boxselect li.x-boxselect-item {
+    background: url("../images/group.png") no-repeat 3px 3px transparent;
+    background-color: #DEE7F8;
+}
+
+.cms-groups-boxselect li.x-boxselect-item:hover {
+    background: url("../images/group.png") no-repeat 3px 3px transparent !important;
+    background-color: #BBCEF1 !important;
+}
+
+.cms-groups-boxselect div.x-boxselect-item-text {
+    margin-left: 18px;
 }
