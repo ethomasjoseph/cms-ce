@@ -64,19 +64,24 @@ public final class AccountResource
             "Search accounts: query='" + req.getQuery() + "' , index=" + req.getStart() + ", count=" + req.getLimit() + ", selectUsers=" +
                 req.isSelectUsers() + ", selectGroups=" + req.isSelectGroups() + ", userstores=" + req.getUserstores() );
 
-        String userstores = req.getUserstores();
+        final String userstores = req.getUserstores();
         final String[] userstoreList = ( userstores == null ) ? new String[0] : userstores.split( "," );
 
-        AccountSearchQuery searchQuery = new AccountSearchQuery()
+        final AccountSearchQuery searchQueryCountFacets = new AccountSearchQuery()
+            .setCountOnly( true )
             .setCount( req.getLimit() )
             .setFrom( req.getStart() )
             .setQuery( req.getQuery() )
             .setGroups( req.isSelectGroups() )
             .setUsers( req.isSelectUsers() )
-            .setUserStores( userstoreList )
             .setSortField( AccountIndexField.parse( req.getSort() ) )
             .setSortOrder( SearchSortOrder.valueOf( req.getSortDir() ) );
-        AccountSearchResults searchResults = searchService.search( searchQuery );
+
+        final AccountSearchResults searchCountFacets = searchService.search( searchQueryCountFacets );
+        final AccountSearchQuery searchQuery = new AccountSearchQuery( searchQueryCountFacets )
+            .setCountOnly( false )
+            .setUserStores( userstoreList );
+        final AccountSearchResults searchResults = searchService.search( searchQuery );
 
         final List list = new ArrayList();
 
@@ -99,7 +104,7 @@ public final class AccountResource
         final EntityPageList accountList = new EntityPageList( searchResults.getCount(), searchResults.getTotal(), list);
         AccountsModel accountsModel = modelTranslator.toModel( accountList );
 
-        setFacets( accountsModel, searchResults );
+        setFacets( accountsModel, searchCountFacets );
 
         Map<String, Object> result = new HashMap<String, Object>();
         result.put( "results", accountsModel );
