@@ -59,7 +59,7 @@ Ext.define('App.controller.FeedbackBoxController', {
                     afteranimate: function() {
                         self.fadeoutWaiter = setTimeout(function() {
                             self.fadeOut();
-                        }, 2000)
+                        }, 3000)
                     },
                     scope: this
                 }

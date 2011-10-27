@@ -81,7 +81,7 @@ Templates.main = {
             '<table border="0">'+
                 '<tr>' +
                     '<td style="width: 42px" valign="top">' +
-                        '<img src="resources/images/info-icon-32.png" style="width:32px; height:32px"/>' +
+                        '<img src="app/main/images/feedback-ok.png" style="width:32px; height:32px"/>' +
                     '</td>' +
                     '<td valign="top" style="height: 50px">' +
                         '<h1>{messageTitle}</h1>' +
