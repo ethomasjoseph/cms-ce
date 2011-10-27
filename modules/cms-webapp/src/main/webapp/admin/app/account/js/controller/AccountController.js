@@ -192,6 +192,7 @@ Ext.define( 'App.controller.AccountController', {
         else
         {
             var user = selection[0];
+            this.application.fireEvent('showNotifyUserWindow', user );
             if ( user )
             {
                 accountDetailPanel.setCurrentUser( user.data );
