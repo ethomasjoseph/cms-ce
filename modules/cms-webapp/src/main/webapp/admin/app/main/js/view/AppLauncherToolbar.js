@@ -40,7 +40,7 @@ Ext.define('App.view.AppLauncherToolbar', {
                         cms: {
                             appUrl: 'app-dashboard.html'
                         },
-                        icon: 'app/launcher/images/house.png'
+                        icon: 'app/main/images/house.png'
                     },
                     '-',
                     {
@@ -49,7 +49,7 @@ Ext.define('App.view.AppLauncherToolbar', {
                         cms: {
                             appUrl: 'app-account.html'
                         },
-                        icon: 'app/launcher/images/group.png'
+                        icon: 'app/main/images/group.png'
                     },
                     {
                         id: 200,
@@ -57,7 +57,7 @@ Ext.define('App.view.AppLauncherToolbar', {
                         cms: {
                             appUrl: 'blank.html'
                         },
-                        icon: 'app/launcher/images/folder_database.png'
+                        icon: 'app/main/images/folder_database.png'
                     },
                     {
                         id: 300,
@@ -65,7 +65,7 @@ Ext.define('App.view.AppLauncherToolbar', {
                         cms: {
                             appUrl: 'blank.html'
                         },
-                        icon: 'app/launcher/images/world.png'
+                        icon: 'app/main/images/world.png'
                     },
                     {
                         id: 500,
@@ -73,7 +73,7 @@ Ext.define('App.view.AppLauncherToolbar', {
                         cms: {
                             appUrl: 'blank.html'
                         },
-                        icon: 'app/launcher/images/chart_curve.png'
+                        icon: 'app/main/images/chart_curve.png'
                     },
                     {
                         id: 600,
@@ -81,7 +81,7 @@ Ext.define('App.view.AppLauncherToolbar', {
                         cms: {
                             appUrl: 'blank.html'
                         },
-                        icon: 'app/launcher/images/report.png'
+                        icon: 'app/main/images/report.png'
                     },
 
                     '-',
@@ -92,7 +92,7 @@ Ext.define('App.view.AppLauncherToolbar', {
                         cms: {
                             appUrl: 'app-system.html'
                         },
-                        icon: 'app/launcher/images/cog.png',
+                        icon: 'app/main/images/cog.png',
                         menu: {
                             items: [
                                 {
@@ -101,7 +101,7 @@ Ext.define('App.view.AppLauncherToolbar', {
                                     cms: {
                                         appUrl:"app-systemCache.html"
                                     },
-                                    icon: 'app/launcher/images/drive_web.png'
+                                    icon: 'app/main/images/drive_web.png'
                                 },
                                 {
                                     id: 820,
@@ -109,7 +109,7 @@ Ext.define('App.view.AppLauncherToolbar', {
                                     cms: {
                                         appUrl: "app-contentType.html"
                                     },
-                                    icon: 'app/launcher/images/page_world.png'
+                                    icon: 'app/main/images/page_world.png'
                                 },
                                 {
                                     id: 830,
@@ -117,7 +117,7 @@ Ext.define('App.view.AppLauncherToolbar', {
                                     cms: {
                                         appUrl: 'blank.html'
                                     },
-                                    icon: 'app/launcher/images/utilities-system-monitor.png'
+                                    icon: 'app/main/images/utilities-system-monitor.png'
                                 },
                                 {
                                     id: 840,
@@ -125,7 +125,7 @@ Ext.define('App.view.AppLauncherToolbar', {
                                     cms: {
                                         appUrl: 'blank.html'
                                     },
-                                    icon: 'app/launcher/images/database.png'
+                                    icon: 'app/main/images/database.png'
                                 },
                                 {
                                     id: 850,
@@ -133,7 +133,7 @@ Ext.define('App.view.AppLauncherToolbar', {
                                     cms: {
                                         appUrl: 'app-userstore.html'
                                     },
-                                    icon: 'app/launcher/images/address-book-blue-icon.png'
+                                    icon: 'app/main/images/address-book-blue-icon.png'
                                 }
                             ]
                         }

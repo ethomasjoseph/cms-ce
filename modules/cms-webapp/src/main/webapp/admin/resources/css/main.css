@@ -98,12 +98,12 @@ body,
 .app-launcher-button .x-btn-arrow {
 }
 
-.app-launcher-center-body,
+.main-center-body,
 .system-center-inner {
     border: none !important;
 }
 
-#app-launcher-iframe,
+#main-iframe,
 #system-iframe {
     width: 100%;
     height: 100%;

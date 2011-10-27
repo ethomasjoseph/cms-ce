@@ -3,32 +3,32 @@
     <title>Enonic CMS Admin</title>
     <link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css">
     <link rel="stylesheet" type="text/css" href="resources/css/main.css">
-    <link rel="stylesheet" type="text/css" href="app/launcher/css/activity-stream.css">
+    <link rel="stylesheet" type="text/css" href="app/main/css/activity-stream.css">
     <script type="text/javascript" src="ext/ext-all.js"></script>
-    <script type="text/javascript" src="app/launcher/js/templates/Templates.js"></script>
+    <script type="text/javascript" src="app/main/js/templates/Templates.js"></script>
     <script type="text/javascript">
 
         Ext.Loader.setConfig({
             enabled: true,
             paths: {
-                'App' : 'app/launcher/js',
+                'App' : 'app/main/js',
                 'Common' : 'common/js'
             }
         });
 
         Ext.application({
             name: 'App',
-            appFolder: 'app/launcher/js',
+            appFolder: 'app/main/js',
 
             controllers: [
-                'AppLauncherController',
+                'AppLauncherToolbarController',
                 'ActivityStreamController',
                 'FeedbackBoxController'
             ],
 
             launch: function() {
                 Ext.create('Ext.container.Viewport', {
-                    id: 'launcher-viewport',
+                    id: 'main-viewport',
                     layout: 'border',
                     style: 'border: medium none',
                     padding: 0,
@@ -42,10 +42,10 @@
                                     xtype: 'appLauncherToolbar'
                                 },
                                 {
-                                    id: 'launcher-center',
+                                    id: 'main-center',
                                     region: 'center',
-                                    bodyCls: 'app-launcher-center-body',
-                                    html: '<iframe id="app-launcher-iframe" src="#"><!-- --></iframe>'
+                                    bodyCls: 'main-center-body',
+                                    html: '<iframe id="main-iframe" src="#"><!-- --></iframe>'
                                 },
                             ]
                         },

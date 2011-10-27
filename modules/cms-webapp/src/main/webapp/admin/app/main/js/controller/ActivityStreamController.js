@@ -23,7 +23,7 @@ Ext.define('App.controller.ActivityStreamController', {
     createDataView: function()
     {
         var store = this.getStore('ActivityStreamStore');
-        var template = new Ext.XTemplate(Templates.launcher.activityStream);
+        var template = new Ext.XTemplate(Templates.main.activityStream);
 
         Ext.create('Ext.view.View', {
             store: store,
@@ -89,7 +89,7 @@ Ext.define('App.controller.ActivityStreamController', {
 
     appendSpeakOutPanel: function()
     {
-        var template = new Ext.XTemplate(Templates.launcher.speakOutPanel);
+        var template = new Ext.XTemplate(Templates.main.speakOutPanel);
         var container = Ext.DomQuery.select( '#cms-activity-stream-speak-out-panel-container' )[0];
         template.append( container, {});
 

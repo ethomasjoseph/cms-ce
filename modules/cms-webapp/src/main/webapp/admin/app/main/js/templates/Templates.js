@@ -3,7 +3,7 @@ if ( !Templates )
     var Templates = {};
 }
 
-Templates.launcher = {
+Templates.main = {
     loggedInUserButtonPopup:
         '<div class="cms-logged-in-user-popup-left">' +
             '<img src="resources/images/x-user.png"/>' +
@@ -29,7 +29,7 @@ Templates.launcher = {
                         '</td>' +
                         '<td valign="top">' +
                             '<div class="display-name-location"><a href="javascript:;">' +
-                            '<tpl if="birthday"><img src="app/launcher/images/cake.png" style="width:11px; height:8px" title="{displayName} has Birthday today"/> </tpl>' +
+                            '<tpl if="birthday"><img src="app/main/images/cake.png" style="width:11px; height:8px" title="{displayName} has Birthday today"/> </tpl>' +
                             '{displayName}</a> via {location}</div>' +
                             '<div>{action}: ' +
                                 '<tpl if="action == \'Said\'">{description}</tpl>' +

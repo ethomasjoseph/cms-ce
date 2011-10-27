@@ -1,4 +1,4 @@
-Ext.define('App.controller.AppLauncherController', {
+Ext.define('App.controller.AppLauncherToolbarController', {
     extend: 'Ext.app.Controller',
 
     views: ['AppLauncherToolbar'],
@@ -14,7 +14,7 @@ Ext.define('App.controller.AppLauncherController', {
                 'viewport': {
                     afterrender: this.loadDefaultApp
                 },
-                'appLauncherToolbar *[itemId=app-launcher-logo]': {
+                'appLauncherToolbar *[id=app-launcher-logo]': {
                     render: this.onLogoRendered
                 },
                 'appLauncherToolbar *[itemId=app-launcher-button] menu > menuitem': {
@@ -39,7 +39,7 @@ Ext.define('App.controller.AppLauncherController', {
     {
         if ( !window.appLoadMask )
         {
-            window.appLoadMask = new Ext.LoadMask( Ext.getDom( 'launcher-center' ), {msg:"Please wait..."} );
+            window.appLoadMask = new Ext.LoadMask( Ext.getDom( 'main-center' ), {msg:"Please wait..."} );
         }
 
         if ( item.cms.appUrl === '' )
@@ -78,7 +78,7 @@ Ext.define('App.controller.AppLauncherController', {
 
     getIframe: function()
     {
-        return Ext.getDom( 'app-launcher-iframe' );
+        return Ext.getDom( 'main-iframe' );
     },
 
     showAboutWindow: function()

@@ -6,7 +6,7 @@ Ext.define( 'App.view.FeedbackBox', {
     floating: true,
     autoShow: true,
 
-    tpl: Templates.launcher.feedbackBox,
+    tpl: Templates.main.feedbackBox,
 
     initComponent: function()
     {
