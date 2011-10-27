@@ -83,9 +83,7 @@ Ext.define('App.view.AppLauncherToolbar', {
                         },
                         icon: 'app/launcher/images/report.png'
                     },
-
                     '-',
-
                     {
                         id: 800,
                         text: 'System',
@@ -141,11 +139,11 @@ Ext.define('App.view.AppLauncherToolbar', {
                 ]
             }
         },
-        {
+        /*{
             xtype: 'button',
             text: 'Show FeedbackBox',
             id: 'launcher-feedback-test-button'
-        },
+        },*/
         '->',
         // Logged in user
         {
