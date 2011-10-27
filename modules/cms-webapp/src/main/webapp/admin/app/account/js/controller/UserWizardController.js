@@ -43,6 +43,10 @@ Ext.define( 'App.controller.UserWizardController', {
 
     stepChanged: function( wizard, oldStep, newStep )
     {
+        this.getUserWizardPanel().doLayout();
+        if ( newStep && Ext.isFunction( newStep.doLayout ) ) {
+            newStep.doLayout();
+        }
         if ( newStep.getXType() == 'userStoreListPanel') {
             // move to 1st step
             this.getUserWizardPanel().setFileUploadDisabled( true );
