@@ -12,7 +12,7 @@ Ext.define('App.view.AppLauncherToolbar', {
         // Logo
         {
             xtype: 'component',
-            id: 'launcher-logo',
+            id: 'app-launcher-logo',
             autoEl: {
                 tag: 'div'
             }
@@ -26,11 +26,10 @@ Ext.define('App.view.AppLauncherToolbar', {
         },
         // Start button
         {
-            id: 'launcher-start-button',
+            itemId: 'app-launcher-button',
             xtype: 'button',
             text: 'Dashboard',
-            icon: Ext.BLANK_IMAGE_URL,
-
+            icon: Ext.BLANK_IMAGE_URL, // TODO: (bug fix) Remove icon when Ext is upgraded to >= 4.0.7
             menu: {
                 minWidth: 160,
                 items:[
@@ -141,11 +140,11 @@ Ext.define('App.view.AppLauncherToolbar', {
                 ]
             }
         },
-        {
+        /*{
             xtype: 'button',
-            text: 'Show FeedbackBox',
-            id: 'launcher-feedback-test-button'
-        },
+            itemId: 'launcher-feedback-test-button',
+            text: 'Show FeedbackBox'
+        },*/
         '->',
         // Logged in user
         {

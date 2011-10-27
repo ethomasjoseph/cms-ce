@@ -7,81 +7,85 @@ Ext.define('App.controller.AppLauncherController', {
         'App.AppLauncherToolbarHelper'
     ],
 
-    init: function() {
-        // TODO: Try using itemId to get the component.
-        this.control({
-            'viewport': {
-                afterrender: this.loadDefaultApp
-            },
-            '*[id=launcher-logo]': {
-                render: this.onLogoRendered
-            },
-            '*[id=launcher-start-button] menu > menuitem': {
-                click: this.loadApp
-            },
-            '*[id=launcher-feedback-test-button]': {
-                click: function() {
-                     this.application.fireEvent('feedback.show', 'Feedback from App Launcher', 'App Launcher says Hello World!');
+    init: function()
+    {
+        this.control(
+            {
+                'viewport': {
+                    afterrender: this.loadDefaultApp
+                },
+                'appLauncherToolbar *[itemId=app-launcher-logo]': {
+                    render: this.onLogoRendered
+                },
+                'appLauncherToolbar *[itemId=app-launcher-button] menu > menuitem': {
+                    click: this.loadApp
+                },
+                'appLauncherToolbar *[itemId=launcher-feedback-test-button]': {
+                    click: function() {
+                        this.application.fireEvent('feedback.show', 'Feedback from App Launcher', 'App Launcher says Hello World!');
+                    }
                 }
             }
-        });
+        );
     },
 
-    onLogoRendered: function(component, options)
+    loadDefaultApp: function( component, options )
     {
-        component.el.on('click', this.showAboutWindow);
+        var defaultApplication = this.getStartMenuButton().menu.items.items[0];
+        this.loadApp( defaultApplication, null, null );
     },
 
-    loadDefaultApp: function(component, options) {
-        if (!window.appLoadMask) {
-            window.appLoadMask = new Ext.LoadMask(Ext.getDom('launcher-center'), {msg:"Please wait..."});
+    loadApp: function( item, e, options )
+    {
+        if ( !window.appLoadMask )
+        {
+            window.appLoadMask = new Ext.LoadMask( Ext.getDom( 'launcher-center' ), {msg:"Please wait..."} );
         }
 
-        var defaultApplication = this.getStartMenuButton().menu.items.items[0];
-        this.loadApp(defaultApplication, null, null);
-    },
-
-    loadApp: function(item, e, options ) {
-        if (item.cms.appUrl === '') {
+        if ( item.cms.appUrl === '' )
+        {
             item.cms.appUrl = 'blank.html'
         }
 
-        if (!item.icon || item.icon === '') {
+        if ( !item.icon || item.icon === '' )
+        {
             item.icon = Ext.BLANK_IMAGE_URL
         }
 
         this.showLoadMask();
-        this.setDocumentTitle(item.text);
-        this.setUrlFragment(item.text);
+        this.setDocumentTitle( item.text );
+        this.setUrlFragment( item.text );
         this.getIframe().src = item.cms.appUrl;
-        this.updateStartButton(item);
+        this.updateStartButton( item );
     },
 
-    showLoadMask: function() {
-        window.appLoadMask.show();
-    },
-
-    updateStartButton: function(item) {
+    updateStartButton: function( item )
+    {
         var startMenuButton = this.getStartMenuButton();
-        startMenuButton.setText(item.text);
-        startMenuButton.setIcon(item.icon);
+        startMenuButton.setText( item.text );
+        startMenuButton.setIcon( item.icon );
     },
 
-    setDocumentTitle: function(title) {
+    setDocumentTitle: function( title )
+    {
         window.document.title = 'Enonic CMS Admin - ' + title;
     },
 
-    setUrlFragment: function(fragmentId) {
+    setUrlFragment: function( fragmentId )
+    {
         window.location.hash = fragmentId;
     },
 
-    getIframe: function() {
-        return Ext.getDom('launcher-iframe');
+    getIframe: function()
+    {
+        return Ext.getDom( 'app-launcher-iframe' );
     },
 
-    showAboutWindow: function() {
+    showAboutWindow: function()
+    {
         var aboutWindow = Ext.ComponentQuery.query('#cms-about-window')[0];
-        if (aboutWindow) {
+        if (aboutWindow)
+        {
             aboutWindow.show();
             return;
         }
@@ -96,8 +100,19 @@ Ext.define('App.controller.AppLauncherController', {
         }).show();
     },
 
-    getStartMenuButton: function() {
-        return Ext.ComponentQuery.query('appLauncherToolbar button[id=launcher-start-button]')[0];
+    showLoadMask: function()
+    {
+        window.appLoadMask.show();
+    },
+
+    onLogoRendered: function( component, options )
+    {
+        component.el.on( 'click', this.showAboutWindow );
+    },
+
+    getStartMenuButton: function()
+    {
+        return Ext.ComponentQuery.query('appLauncherToolbar button[itemId=app-launcher-button]')[0];
     }
 
 });

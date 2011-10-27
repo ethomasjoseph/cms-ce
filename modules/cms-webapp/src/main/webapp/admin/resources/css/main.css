@@ -1,29 +1,4 @@
-.cms-no-border {
-    border: none !important;
-}
-
-.cms-left {
-    float: left;
-}
-
-.cms-right {
-    float: right;
-}
-
-.clearfix:after {
-    content: ".";
-    display: block;
-    clear: both;
-    visibility: hidden;
-    line-height: 0;
-    height: 0;
-}
-
-.cms-emphasis {
-    font-style: italic;
-}
-
-/*----- Overrides ext-all.css -----*/
+/*----- Override declarations in ext-all.css -----*/
 
 body,
 .x-body,
@@ -63,6 +38,33 @@ body,
 	padding: 0 15px;
 }
 
+/*----- Generic -----*/
+
+.cms-no-border {
+    border: none !important;
+}
+
+.cms-left {
+    float: left;
+}
+
+.cms-right {
+    float: right;
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+
+.cms-emphasis {
+    font-style: italic;
+}
+
 /*----- Launcher -----*/
 
 #app-launcher-toolbar {
@@ -81,30 +83,27 @@ body,
     background: linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
 }
 
-#launcher-logo {
+#app-launcher-logo {
     background: Transparent url("../images/enonic-logo.png") 0 0 no-repeat;
     width: 80px;
     height: 16px;
     cursor: pointer;
 }
 
-#launcher-start-button {
-}
-
-#launcher-start-button .x-btn-inner {
+#app-launcher-button .x-btn-inner {
     font-size: 12px;
     font-weight: 200;
 }
 
-#launcher-start-button .x-btn-arrow {
+#app-launcher-button .x-btn-arrow {
 }
 
-.launcher-center-inner,
+.app-launcher-center-body,
 .system-center-inner {
     border: none !important;
 }
 
-#launcher-iframe,
+#app-launcher-iframe,
 #system-iframe {
     width: 100%;
     height: 100%;
