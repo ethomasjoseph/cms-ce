@@ -151,7 +151,7 @@ Ext.define('App.view.AppLauncherToolbar', {
         {
             //id: 'launcher-logged-in-user-button',
             xtype: 'loggedInUserButton',
-            text: 'Joe Doe'
+            text: 'Morten Eriksen'
         },
 
         '-',
