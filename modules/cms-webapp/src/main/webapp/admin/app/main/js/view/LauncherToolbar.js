@@ -141,15 +141,14 @@ Ext.define('App.view.LauncherToolbar', {
                 ]
             }
         },
-        /*{
+        {
             xtype: 'button',
             itemId: 'launcher-feedback-test-button',
             text: 'Show FeedbackBox'
-        },*/
+        },
         '->',
         // Logged in user
         {
-            //id: 'launcher-logged-in-user-button',
             xtype: 'loggedInUserButton',
             text: 'Morten Eriksen'
         },
