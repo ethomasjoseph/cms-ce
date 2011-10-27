@@ -90,12 +90,12 @@ body,
     cursor: pointer;
 }
 
-#app-launcher-button .x-btn-inner {
+.app-launcher-button .x-btn-inner {
     font-size: 12px;
     font-weight: 200;
 }
 
-#app-launcher-button .x-btn-arrow {
+.app-launcher-button .x-btn-arrow {
 }
 
 .app-launcher-center-body,

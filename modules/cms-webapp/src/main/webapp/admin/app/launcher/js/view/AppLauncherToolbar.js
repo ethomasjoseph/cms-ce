@@ -27,6 +27,7 @@ Ext.define('App.view.AppLauncherToolbar', {
         // Start button
         {
             itemId: 'app-launcher-button',
+            cls: 'app-launcher-button',
             xtype: 'button',
             text: 'Dashboard',
             icon: Ext.BLANK_IMAGE_URL, // TODO: (bug fix) Remove icon when Ext is upgraded to >= 4.0.7
