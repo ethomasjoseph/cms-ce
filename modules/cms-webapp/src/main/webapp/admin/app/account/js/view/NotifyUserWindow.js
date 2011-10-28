@@ -27,14 +27,20 @@ Ext.define( 'App.view.NotifyUserWindow', {
             ]
         }
     ],
+    listeners: {
+        show: function( cmp ) {
+            cmp.down( '#userInfo' ).doLayout();
+            cmp.down( 'form' ).doLayout();
+        }
+    },
 
     initComponent: function()
     {
         this.items = [
             {
                 itemId: 'userInfo',
-                margins: '0 0 10px',
-                height: 60,
+                bodyPadding: 10,
+                styleHtmlContent: true,
                 tpl: new Ext.XTemplate(Templates.common.userInfo),
                 listeners: {
                     'render': function() {
@@ -46,39 +52,43 @@ Ext.define( 'App.view.NotifyUserWindow', {
                 xtype: 'form',
                 method: 'POST',
                 autoHeight: true,
+                border: false,
                 url: 'data/user/notify',
+                bodyPadding: '10px 0 0',
                 items: [
                     {
                         xtype: 'fieldset',
                         title: 'Message',
                         defaults: {
                             xtype: 'textfield',
-                            anchor: '100%',
                             allowBlank: false
                         },
                         items: [
                             {
                                 fieldLabel: 'To',
                                 name: 'to',
+                                anchor: '100%',
                                 allowBlank: false
                             },{
                                 fieldLabel: 'Subject',
+                                anchor: '100%',
                                 name: 'subject'
                             }, {
                                 fieldLabel: 'Message',
                                 xtype: 'textarea',
+                                anchor: '100%',
                                 rows: 3,
                                 allowBlank: false
+                            },
+                            {
+                                style: 'margin-left: 105px;',
+                                xtype: 'button',
+                                scale: 'medium',
+                                text: 'Send',
+                                iconCls: 'icon-btn-tick-24',
+                                action: 'send'
                             }
                         ]
-                    },
-                    {
-                        style: 'margin-left: 120px;',
-                        xtype: 'button',
-                        scale: 'medium',
-                        text: 'Send',
-                        iconCls: 'icon-btn-tick-24',
-                        action: 'send'
                     }
                 ]
             }

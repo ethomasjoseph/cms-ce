@@ -10,6 +10,12 @@
     float: right;
 }
 
+.cms-clear {
+    clear: both;
+    line-height: 0;
+    height: 0;
+}
+
 .clearfix:after {
     content: ".";
     display: block;

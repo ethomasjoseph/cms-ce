@@ -19,10 +19,11 @@ Templates.common = {
                     '<img alt="User" src="data/user/photo?key={key}&thumb=true"/>' +
                 '</div>' +
                 '<div class="cms-left">' +
-                    '{displayName}<br/>' +
+                    '<h3>{displayName}</h3>' +
                     '({qualifiedName})<br/>' +
                     '<a href="mailto:{email}:">{email}</a>' +
                 '</div>' +
+                '<div class="cms-clear"></div>' +
             '</div>' +
         '</div>'
 
