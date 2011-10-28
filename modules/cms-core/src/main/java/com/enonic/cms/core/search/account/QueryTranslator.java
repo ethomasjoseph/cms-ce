@@ -9,8 +9,6 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.facet.FacetBuilders;
 import org.elasticsearch.search.facet.terms.TermsFacetBuilder;
-import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,11 +60,9 @@ public final class QueryTranslator
     {
         if ( query.getSortField() != null )
         {
-            SortOrder sortOrder = query.getSortOrder() == SearchSortOrder.ASC ? SortOrder.ASC : SortOrder.DESC;
-//            FieldSortBuilder sortBuilder = SortBuilders.fieldSort( query.getSortField().getId() )
-//                .order( sortOrder ).missing("_last" );
-//            searchBuilder.sort( sortBuilder );
+            final SortOrder sortOrder = query.getSortOrder() == SearchSortOrder.ASC ? SortOrder.ASC : SortOrder.DESC;
             final AccountIndexField sortField = query.getSortField();
+
             final String fieldName;
             switch ( sortField )
             {
@@ -125,6 +121,23 @@ public final class QueryTranslator
     }
 
     private FilterBuilder buildFilterTerm( final String term )
+    {
+        final String searchString;
+        if ( term.endsWith( "*" ) && ( term.length() > 1 ) )
+        {
+            searchString = StringUtils.substringBeforeLast( term, "*" );
+        }
+        else
+        {
+            searchString = term;
+        }
+        return FilterBuilders.orFilter( prefixFilter( AccountIndexField.NAME_FIELD.id(), searchString ),
+                                        prefixFilter( AccountIndexField.DISPLAY_NAME_FIELD.id(), searchString ),
+                                        prefixFilter( AccountIndexField.FIRST_NAME_FIELD.id(), searchString ) );
+
+    }
+
+    private FilterBuilder buildFilterTermStrict( final String term )
     {
         if ( term.endsWith( "*" ) && (term.length() > 1) )
         {
