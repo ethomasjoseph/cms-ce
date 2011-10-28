@@ -69,7 +69,6 @@
 }
 
 .cms-activity-stream-message .photo-container img {
-    border-radius: 3px;
 }
 
 .cms-activity-stream-message .message-container {
@@ -221,7 +220,6 @@
 }
 
 .cms-logged-in-user-popup-left img {
-    border-radius: 4px;
 }
 
 .cms-logged-in-user-popup-right h1 {
