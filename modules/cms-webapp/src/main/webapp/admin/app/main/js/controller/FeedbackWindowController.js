@@ -4,73 +4,77 @@ Ext.define('App.controller.FeedbackWindowController', {
 
     init: function()
     {
+        Ext.create('widget.feedbackWindow');
+
         this.control({
         });
 
         this.application.on(
             {
-                'feedbackWindow.showMessage': this.showMessage,
+                'feedbackWindow.show': this.show,
                 scope: this
             }
         );
 
-        this.createWindow();
+        this.addWindowClickListener();
     },
 
-    showMessage: function(title, message)
+    show: function(title, message)
     {
-        this.feedbackWindow.update(
+        this.getFeedbackWindow().update(
             {
                 messageTitle: title,
                 messageText: message
             }
         );
 
-        this.fadeInAndOut();
+        this.animateWindow();
     },
 
-    hide: function()
-    {
-        this.feedbackWindow.stopAnimation();
-        this.feedbackWindow.getEl().setOpacity(0);
-    },
-
-    fadeInAndOut: function()
+    animateWindow: function()
     {
         var self = this;
-        this.feedbackWindow.stopAnimation();
+        var feedbackWindow = this.getFeedbackWindow();
 
-        this.feedbackWindow.center();
-        var windowPosition = this.feedbackWindow.getPosition()[1];
+        feedbackWindow.stopAnimation();
 
-        this.feedbackWindow.animate(
+        var viewPortHeight = Ext.Element.getViewportHeight();
+        var viewPortWidth = Ext.Element.getViewportWidth();
+        var windowBox = feedbackWindow.getBox();
+        var leftPosition = viewPortWidth - windowBox.width - 5;
+        var animateFromPosition = viewPortHeight + windowBox.height;
+        var animateToPosition = viewPortHeight - windowBox.height - 5;
+
+        feedbackWindow.setPosition(leftPosition, animateFromPosition);
+
+        feedbackWindow.animate(
             {
-                duration: 300,
+                duration: 400,
                 from: {
                     opacity: 0,
-                    y: windowPosition - 160
+                    y: animateFromPosition
                 },
                 to: {
-                    opacity: .9,
-                    y: windowPosition
+                    opacity: 1,
+                    y: animateToPosition
                 },
                 easing: 'easeIn'
             }
         ).animate(
             {
-                duration: 2500,
+                duration: 4000,
                 from: {
-                    opacity: .9
+                    opacity: 1
                 },
                 to: {
-                    opacity: .9
+                    opacity: 1
                 }
             }
         ).animate(
             {
                 duration: 500,
                 from: {
-                    opacity: .9
+                    opacity: 1
                 },
                 to: {
                     opacity: 0
@@ -79,19 +83,17 @@ Ext.define('App.controller.FeedbackWindowController', {
         );
     },
 
-    // Private
-    createWindow: function()
+    hide: function()
     {
-        this.feedbackWindow = Ext.create('App.view.FeedbackWindow');
-        this.feedbackWindow.update({});
-        this.addWindowClickListener();
-        this.feedbackWindow.getEl().setOpacity(0);
+        var feedbackWindow = this.getFeedbackWindow();
+        feedbackWindow.stopAnimation();
+        feedbackWindow.getEl().setOpacity(0);
     },
 
-    // Private
     addWindowClickListener: function()
     {
-        this.feedbackWindow.getEl().on('click', function(event, target) {
+        var feedbackWindow = this.getFeedbackWindow();
+        feedbackWindow.getEl().on('click', function(event, target) {
             if(target.className.indexOf('notify-user-button') > -1)
             {
                 Ext.Msg.alert('Comming soon', 'Notify User Window');
@@ -99,6 +101,11 @@ Ext.define('App.controller.FeedbackWindowController', {
 
             this.hide();
         }, this);
+    },
+
+    getFeedbackWindow: function()
+    {
+        return Ext.ComponentQuery.query('feedbackWindow')[0];
     }
 
 });

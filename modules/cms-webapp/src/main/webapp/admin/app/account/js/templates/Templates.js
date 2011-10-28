@@ -21,8 +21,8 @@ Templates.account = {
         '</tpl>'
 
     ,gridPanelNameRenderer:
-        '<div style="float:left"><img src="data/user/photo?key={0}&thumb=true" class="cms-thumbnail"></div>' +
-        '<div style="float:left;padding-top: 5px"><div class="cms-grid-title">{1}</div>' +
+        '<div style="float:left"><img src="data/user/photo?key={0}&thumb=true" class="cms-grid-thumbnail"></div>' +
+        '<div style="float:left; padding: 1px 0 0 5px"><div class="cms-grid-title">{1}</div>' +
         '<div class="cms-grid-description">{3}\\{2}</div>'
 
     ,editUserPanelHeader:

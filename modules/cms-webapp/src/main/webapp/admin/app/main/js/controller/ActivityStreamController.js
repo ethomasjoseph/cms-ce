@@ -5,13 +5,15 @@ Ext.define('App.controller.ActivityStreamController', {
     stores: ['ActivityStreamStore'],
     views: ['ActivityStreamPanel'],
 
-    init: function() {
+    init: function()
+    {
         this.control(
-        {
-            'activityStreamPanel': {
-                'afterrender': this.afterPanelRender
+            {
+                'activityStreamPanel': {
+                    'afterrender': this.afterPanelRender
+                }
             }
-        });
+        );
     },
 
     afterPanelRender: function()
@@ -28,6 +30,7 @@ Ext.define('App.controller.ActivityStreamController', {
         Ext.create('Ext.view.View', {
             store: store,
             tpl: template,
+            loadMask: false,
             itemSelector: 'div.cms-activity-stream-message',
             renderTo: 'cms-activity-stream-messages-container',
             emptyText: 'No messages',
@@ -91,9 +94,10 @@ Ext.define('App.controller.ActivityStreamController', {
             }
         }
 
+        // TODO: Testing the feedback window.
         if (targetElement.hasCls('comment'))
         {
-            this.application.fireEvent('feedbackWindow.showMessage', 'Comment added', 'Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular. Li lingues differe solmen in li grammatica, li pronunciation e li plu commun vocabules.');
+            this.application.fireEvent('feedbackWindow.show', 'Comment added', 'Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.');
         }
     },
 

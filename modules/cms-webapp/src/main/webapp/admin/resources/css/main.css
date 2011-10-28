@@ -67,9 +67,9 @@ body,
 
 /*----- Accounts -----*/
 
-img.cms-thumbnail {
-    width: 40px;
-    height: 40px;
+img.cms-grid-thumbnail {
+    width: 32px;
+    height: 32px;
 }
 
 img.photo {
@@ -429,9 +429,8 @@ img.photo {
     margin-left: 10px;
 }
 
-/*------------------------------------------- */
+/*----- Grid selected item -----*/
 
-/*----- Generic -----*/
 .cms-selected-item-box {
     float: left;
     display: inline-block;
@@ -440,11 +439,6 @@ img.photo {
 .cms-selected-item-box.large .right a:hover,
 .cms-selected-item-box.small .right a:hover {
     border: 1px solid #d1d1d1;
-}
-
-.cms-selected-item-box.large .left img,
-.cms-selected-item-box.small .left img {
-    border-radius: 3px;
 }
 
 .cms-selected-item-box .left {
@@ -466,20 +460,20 @@ img.photo {
 }
 
 .cms-selected-item-box.large .left {
-    margin-right: 16px;
+    margin-right: 10px;
 }
 
 .cms-selected-item-box.large .left img {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
 }
 
 .cms-selected-item-box.large .center {
-    margin-right: 16px;
+    margin-right: 10px;
 }
 
 .cms-selected-item-box.large .center h2 {
-    margin: 2px 0 0 0;
+    margin: 0;
     font-size: 14px;
     font-weight: normal;
 
@@ -490,7 +484,7 @@ img.photo {
 }
 
 .cms-selected-item-box.large .right {
-    margin: 9px 6px 0 0;
+    margin: 6px 6px 0 0;
 }
 
 .cms-selected-item-box.large .right a {
@@ -508,7 +502,7 @@ img.photo {
 }
 
 .cms-selected-item-box.small .left {
-    margin-right: 12px;
+    margin-right: 5px;
 }
 
 .cms-selected-item-box.small .left img {
@@ -517,7 +511,7 @@ img.photo {
 }
 
 .cms-selected-item-box.small .center {
-    margin-right: 16px;
+    margin-right: 5px;
 }
 
 .cms-selected-item-box.small .center h2 {
@@ -744,45 +738,43 @@ ul.cms-wizard-navigation a.last-current {
 
 .cms-wizard-header-container .cms-wizard-header {
     position: relative;
-    border: 1px solid TRANSPARENT;
-    padding: 4px 0;
-}
-
-.cms-wizard-header-container .cms-wizard-header:hover {
-    border: 1px solid #ccc;
 }
 
 .cms-wizard-header-container input {
     width: 100%;
-    border: 1px solid TRANSPARENT;
+    padding: 4px;
+    border: 1px solid #dbeeff;
     font-size: 18px;
     color: #ccc;
 }
 
+.cms-wizard-header-container input:hover {
+    border: 1px solid #99BCE8;
+    transition: all 0.25s ease-in-out;
+    -webkit-transition: all 0.25s ease-in-out;
+    -moz-transition: all 0.25s ease-in-out;
+}
+
 .cms-edited-field {
     color: #000 !important;
+    border: 1px solid #99BCE8 !important;
 }
 
 /*----- Image Upload Button -----*/
 
 .cms-image-upload-button-container {
     position: relative;
+    border: 1px solid #dbeeff;
     padding: 1px;
-    border: 1px solid #99BCE8;
     cursor: pointer;
 }
 
-.cms-image-upload-button-container,
-.cms-image-upload-button-container img {
-    border-radius: 3px;
+.cms-file-upload-drop-target {
+    border: 1px dashed #99BCE8;
 }
 
-.cms-image-upload-button-container:hover,
-.cms-file-upload-drop-target {
-    border: 1px solid lime;
-    -webkit-box-shadow: 0 0 2px lime;
-    -moz-box-shadow: 0 0 2px lime;
-    box-shadow: 0 0 2px lime;
+.cms-file-upload-drop-target img.cms-image-upload-button-image {
+    opacity: .5;
 }
 
 .cms-image-upload-button-container .cms-image-upload-button-image {
@@ -806,13 +798,13 @@ ul.cms-wizard-navigation a.last-current {
 .cms-image-upload-button-container .cms-image-upload-button-progress-bar {
     font-size: 1px;
     background: #dbeeff;
-    background: -moz-linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #dbeeff), color-stop(100%, #bbd2f0));
-    background: -webkit-linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
-    background: -o-linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
-    background: -ms-linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#dbeeff', endColorstr = '#bbd2f0', GradientType = 0);
-    background: linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
+    background: -moz-linear-gradient(top, #dbeeff 0%, #99BCE8 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #dbeeff), color-stop(100%, #99BCE8));
+    background: -webkit-linear-gradient(top, #dbeeff 0%, #99BCE8 100%);
+    background: -o-linear-gradient(top, #dbeeff 0%, #99BCE8 100%);
+    background: -ms-linear-gradient(top, #dbeeff 0%, #99BCE8 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#dbeeff', endColorstr = '#99BCE8', GradientType = 0);
+    background: linear-gradient(top, #dbeeff 0%, #99BCE8 100%);
     border-radius: 3px;
 }
 
