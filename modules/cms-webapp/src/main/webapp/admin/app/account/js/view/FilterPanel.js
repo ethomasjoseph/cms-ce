@@ -167,6 +167,7 @@ Ext.define('App.view.FilterPanel', {
             if (checkbox.length > 0) {
                 checkbox = checkbox[0];
                 count = terms[userstore];
+                checkbox.setVisible(count > 0);
                 userstore = (userstore === '_Global')? 'Global' : userstore;
                 checkbox.el.down('label').update(userstore + ' (' + count + ')');
             }
