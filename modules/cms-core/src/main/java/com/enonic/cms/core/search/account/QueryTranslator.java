@@ -83,6 +83,11 @@ public final class QueryTranslator
             searchBuilder.sort( AccountIndexField.TYPE_FIELD.id(), SortOrder.DESC );
             searchBuilder.sort( AccountIndexField.DISPLAY_NAME_FIELD.id() + ".untouched", SortOrder.ASC );
         }
+        else
+        {
+            // default sort
+            searchBuilder.sort( AccountIndexField.LAST_MODIFIED_FIELD.id(), SortOrder.DESC );
+        }
     }
 
     private FilterBuilder buildFilter( AccountSearchQuery query )
