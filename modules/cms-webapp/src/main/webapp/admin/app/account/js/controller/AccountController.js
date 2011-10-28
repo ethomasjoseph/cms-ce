@@ -41,7 +41,7 @@ Ext.define( 'App.controller.AccountController', {
                 'cmsTabPanel': {
                     afterrender: function(tabPanel, eOpts) {
                         //this.createBrowseTab(tabPanel, eOpts);
-                        //this.updateActionItems();
+                        this.updateActionItems();
                     }
                 },
                 '*[action=newUser]': {
