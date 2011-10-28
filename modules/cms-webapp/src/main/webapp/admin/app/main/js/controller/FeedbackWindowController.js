@@ -19,8 +19,8 @@ Ext.define('App.controller.FeedbackWindowController', {
 
     show: function(title, message)
     {
-        if (self.fadeoutWaiter)
-            clearTimeout(self.fadeoutWaiter);
+        if (self.fadeoutTimeout)
+            clearTimeout(self.fadeoutTimeout);
 
         this.feedbackWindow.center();
         this.feedbackWindow.update(
@@ -35,8 +35,8 @@ Ext.define('App.controller.FeedbackWindowController', {
 
     hide: function()
     {
-        if (self.fadeoutWaiter)
-            clearTimeout(self.fadeoutWaiter);
+        if (self.fadeoutTimeout)
+            clearTimeout(self.fadeoutTimeout);
 
         this.feedbackWindow.stopAnimation();
         this.feedbackWindow.getEl().setOpacity(0);
@@ -57,7 +57,7 @@ Ext.define('App.controller.FeedbackWindowController', {
                 },
                 listeners: {
                     afteranimate: function() {
-                        self.fadeoutWaiter = setTimeout(function() {
+                        self.fadeoutTimeout = setTimeout(function() {
                             self.fadeOut();
                         }, 3000)
                     },
@@ -69,8 +69,10 @@ Ext.define('App.controller.FeedbackWindowController', {
 
     fadeOut: function()
     {
-        if (this.fadeoutWaiter)
-            clearTimeout(this.fadeoutWaiter);
+        if (this.fadeoutTimeout)
+            clearTimeout(this.fadeoutTimeout);
+
+        this.feedbackWindow.stopAnimation();
 
         this.feedbackWindow.animate(
             {
@@ -80,8 +82,6 @@ Ext.define('App.controller.FeedbackWindowController', {
                 },
                 to: {
                     opacity: 0
-                },
-                listeners: {
                 }
             }
         )
