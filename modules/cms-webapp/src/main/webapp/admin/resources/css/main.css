@@ -836,3 +836,15 @@ ul.cms-wizard-navigation a.last-current {
 .cms-groups-boxselect div.x-boxselect-item-text {
     margin-left: 18px;
 }
+
+.cms-cursor-clickable {
+    cursor: pointer;
+}
+
+.cms-cursor-clickable:hover {
+    font-weight: bold !important;
+}
+
+.cms-bold-text {
+    font-weight: bold !important;
+}
