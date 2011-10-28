@@ -68,7 +68,7 @@ public final class AccountResource
         final String[] userstoreList = ( userstores == null ) ? new String[0] : userstores.split( "," );
 
         final AccountSearchQuery searchQueryCountFacets = new AccountSearchQuery()
-            .setCountOnly( true )
+            .setIncludeResults( false )
             .setCount( req.getLimit() )
             .setFrom( req.getStart() )
             .setQuery( req.getQuery() )
@@ -79,7 +79,7 @@ public final class AccountResource
 
         final AccountSearchResults searchCountFacets = searchService.search( searchQueryCountFacets );
         final AccountSearchQuery searchQuery = new AccountSearchQuery( searchQueryCountFacets )
-            .setCountOnly( false )
+            .setIncludeResults( true )
             .setUserStores( userstoreList );
         final AccountSearchResults searchResults = searchService.search( searchQuery );
 

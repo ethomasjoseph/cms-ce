@@ -14,7 +14,7 @@ public final class AccountSearchQuery
     private boolean groups;
     private SearchSortOrder sortOrder;
     private AccountIndexField sortField;
-    private boolean countOnly;
+    private boolean includeResults;
 
     public AccountSearchQuery()
     {
@@ -25,7 +25,7 @@ public final class AccountSearchQuery
         this.users = true;
         this.groups = true;
         this.sortField = null;
-        this.countOnly = false;
+        this.includeResults = true;
     }
 
     public AccountSearchQuery(AccountSearchQuery accountSearchQuery)
@@ -40,7 +40,7 @@ public final class AccountSearchQuery
         this.users = accountSearchQuery.users;
         this.groups = accountSearchQuery.groups;
         this.sortField = accountSearchQuery.sortField;
-        this.countOnly = accountSearchQuery.countOnly;
+        this.includeResults = accountSearchQuery.includeResults;
     }
 
     public boolean getGroups()
@@ -138,14 +138,14 @@ public final class AccountSearchQuery
         return this;
     }
 
-    public boolean isCountOnly()
+    public boolean isIncludeResults()
     {
-        return countOnly;
+        return includeResults;
     }
 
-    public AccountSearchQuery setCountOnly( boolean countOnly )
+    public AccountSearchQuery setIncludeResults( boolean includeResults )
     {
-        this.countOnly = countOnly;
+        this.includeResults = includeResults;
         return this;
     }
 }

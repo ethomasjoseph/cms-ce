@@ -838,11 +838,8 @@ ul.cms-wizard-navigation a.last-current {
 }
 
 .cms-cursor-clickable {
-    cursor: pointer;
-}
-
-.cms-cursor-clickable:hover {
-    font-weight: bold !important;
+    cursor: pointer !important;
+    text-decoration: underline;
 }
 
 .cms-bold-text {
