@@ -128,7 +128,6 @@
 /*----- Feedback Window -----*/
 
 .cms-feedback-window {
-    border: 2px solid #fff;
     border-radius: 8px;
     background-color: #444;
     padding: 10px;
@@ -141,7 +140,7 @@
 
 .cms-feedback-window,
 .cms-feedback-window td {
-    color: #f0f0f0;
+    color: #eee;
     font-size: 11px;
 }
 

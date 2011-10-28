@@ -9,7 +9,7 @@ Ext.define('App.controller.FeedbackWindowController', {
 
         this.application.on(
             {
-                'feedbackWindow.show': this.show,
+                'feedbackWindow.showMessage': this.showMessage,
                 scope: this
             }
         );
@@ -17,12 +17,8 @@ Ext.define('App.controller.FeedbackWindowController', {
         this.createWindow();
     },
 
-    show: function(title, message)
+    showMessage: function(title, message)
     {
-        if (self.fadeoutTimeout)
-            clearTimeout(self.fadeoutTimeout);
-
-        this.feedbackWindow.center();
         this.feedbackWindow.update(
             {
                 messageTitle: title,
@@ -30,51 +26,47 @@ Ext.define('App.controller.FeedbackWindowController', {
             }
         );
 
-        this.fadeIn();
+        this.fadeInAndOut();
     },
 
     hide: function()
     {
-        if (self.fadeoutTimeout)
-            clearTimeout(self.fadeoutTimeout);
-
         this.feedbackWindow.stopAnimation();
         this.feedbackWindow.getEl().setOpacity(0);
     },
 
-    fadeIn: function()
+    fadeInAndOut: function()
     {
         var self = this;
-
-        this.feedbackWindow.animate(
-            {
-                duration: 500,
-                from: {
-                    opacity: 0
-                },
-                to: {
-                    opacity: .9
-                },
-                listeners: {
-                    afteranimate: function() {
-                        self.fadeoutTimeout = setTimeout(function() {
-                            self.fadeOut();
-                        }, 3000)
-                    },
-                    scope: this
-                }
-            }
-        )
-    },
-
-    fadeOut: function()
-    {
-        if (this.fadeoutTimeout)
-            clearTimeout(this.fadeoutTimeout);
-
         this.feedbackWindow.stopAnimation();
 
+        this.feedbackWindow.center();
+        var windowPosition = this.feedbackWindow.getPosition()[1];
+
         this.feedbackWindow.animate(
+            {
+                duration: 300,
+                from: {
+                    opacity: 0,
+                    y: windowPosition - 160
+                },
+                to: {
+                    opacity: .9,
+                    y: windowPosition
+                },
+                easing: 'easeIn'
+            }
+        ).animate(
+            {
+                duration: 2500,
+                from: {
+                    opacity: .9
+                },
+                to: {
+                    opacity: .9
+                }
+            }
+        ).animate(
             {
                 duration: 500,
                 from: {
@@ -84,9 +76,10 @@ Ext.define('App.controller.FeedbackWindowController', {
                     opacity: 0
                 }
             }
-        )
+        );
     },
 
+    // Private
     createWindow: function()
     {
         this.feedbackWindow = Ext.create('App.view.FeedbackWindow');

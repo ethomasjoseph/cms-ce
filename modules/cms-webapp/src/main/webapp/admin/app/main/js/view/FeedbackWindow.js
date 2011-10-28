@@ -1,7 +1,7 @@
 Ext.define( 'App.view.FeedbackWindow', {
     extend: 'Ext.Component',
     alias: 'widget.feedbackWindow',
-    width: 390,
+    width: 370,
     autoHeight: true,
     floating: true,
     autoShow: true,

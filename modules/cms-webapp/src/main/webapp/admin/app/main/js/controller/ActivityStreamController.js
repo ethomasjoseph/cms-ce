@@ -39,7 +39,8 @@ Ext.define('App.controller.ActivityStreamController', {
                     fn: this.onMessageMouseLeave
                 },
                 'itemclick':  {
-                    fn: this.onMessageClick
+                    fn: this.onMessageClick,
+                    scope: this
                 }
             }
         });
@@ -76,14 +77,23 @@ Ext.define('App.controller.ActivityStreamController', {
 
     onMessageClick: function( view, record, item, index, event, eOpts )
     {
-        var target = event.target;
-        if (target.className.indexOf('favorited') === -1)
+        var targetElement = new Ext.Element(event.target);
+
+        if (targetElement.hasCls('favorite'))
         {
-            target.className += ' favorited';
+            if ( targetElement.hasCls('favorited') )
+            {
+                targetElement.removeCls('favorited');
+            }
+            else
+            {
+                targetElement.addCls('favorited');
+            }
         }
-        else
+
+        if (targetElement.hasCls('comment'))
         {
-            target.className = target.className.replace(/ favorited/, '');
+            this.application.fireEvent('feedbackWindow.showMessage', 'Comment added', 'Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular. Li lingues differe solmen in li grammatica, li pronunciation e li plu commun vocabules.');
         }
     },
 
