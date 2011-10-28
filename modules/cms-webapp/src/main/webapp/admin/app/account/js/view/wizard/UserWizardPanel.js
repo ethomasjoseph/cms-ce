@@ -146,7 +146,8 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
     },
 
     setFileUploadDisabled: function( disable ) {
-        this.uploadForm.setDisabled( disable );
+        //TODO: disable image upload
+        //this.uploadForm.setDisabled( disable );
     }
 
 });

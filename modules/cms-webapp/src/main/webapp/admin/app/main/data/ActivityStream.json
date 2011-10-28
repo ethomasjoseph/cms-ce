@@ -13,7 +13,7 @@
         {
             "displayName":"Viktor Fedorov",
             "location": "Admin",
-            "photo": "app/launcher/images/viktor.jpeg",
+            "photo": "app/main/images/viktor.jpeg",
             "action": "Started user store sync",
             "description": "System",
             "prettyDate": "5 minutes ago",
@@ -21,7 +21,7 @@
         },
         {
             "displayName":"Pavel Milkevich",
-            "photo": "app/launcher/images/pavel.jpeg",
+            "photo": "app/main/images/pavel.jpeg",
             "location": "Admin",
             "action": "Said",
             "description": "Going to be nice today!",
@@ -31,7 +31,7 @@
 
         {
             "displayName":"Hein Haraldsen",
-            "photo": "app/launcher/images/hein.jpg",
+            "photo": "app/main/images/hein.jpg",
             "location": "Admin",
             "action": "Accidently deleted site",
             "description": "Intranett",
