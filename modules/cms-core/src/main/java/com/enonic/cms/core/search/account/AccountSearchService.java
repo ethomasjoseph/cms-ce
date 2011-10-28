@@ -186,7 +186,7 @@ public class AccountSearchService
     {
         final SearchRequest req = Requests.searchRequest( CMS_INDEX )
                 .types( ACCOUNT_INDEX_TYPE )
-                .searchType( SearchType.QUERY_THEN_FETCH )
+                .searchType( getSearchType( query ) )
                 .source( this.translator.build( query ) );
 
         final SearchResponse res = this.client.search(req).actionGet();
@@ -194,13 +194,29 @@ public class AccountSearchService
 //        LOG.info( "Search result: " + res.toString() );
 
         final SearchHits hits = res.getHits();
+
         final AccountSearchResults searchResult = new AccountSearchResults(query.getFrom(), (int)hits.getTotalHits());
-        addSearchHits( searchResult, hits, query.getCount() );
+        if ( !query.isCountOnly() )
+        {
+            addSearchHits( searchResult, hits, query.getCount() );
+        }
 
         final Facets facets = res.facets();
         addSearchFacets(searchResult, facets);
 
         return searchResult;
+    }
+
+    private SearchType getSearchType( AccountSearchQuery query )
+    {
+        if ( query.isCountOnly() )
+        {
+            return SearchType.COUNT;
+        }
+        else
+        {
+            return SearchType.QUERY_THEN_FETCH;
+        }
     }
 
     private void addSearchFacets( AccountSearchResults searchResult, Facets facets )

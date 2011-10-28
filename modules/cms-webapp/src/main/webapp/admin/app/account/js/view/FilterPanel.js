@@ -51,7 +51,7 @@ Ext.define('App.view.FilterPanel', {
                 },
 
                 {
-                    xtype: 'radiogroup',
+                    xtype: 'fieldcontainer',
                     itemId: 'typeRadios',
                     columns: 1,
                     vertical: true,
@@ -64,9 +64,49 @@ Ext.define('App.view.FilterPanel', {
                     },
 
                     items: [
-                        { itemId: 'allFilterCheckbox', boxLabel: 'All', inputValue: 'all', checked: true },
-                        { itemId: 'usersFilterCheckbox', boxLabel: 'Users', inputValue: 'users'},
-                        { itemId: 'groupsFilterCheckbox', boxLabel: 'Groups', inputValue: 'groups'}
+                        {
+                            itemId: 'searchFilterUsersLabel',
+                            html: '<div class="cms-bold-text">Users</div>',
+                            border: false,
+                            hidden: true
+                        },
+                        {
+                            itemId: 'searchFilterGroupsLabel',
+                            html: '<div class="cms-bold-text">Groups</div>',
+                            border: false,
+                            hidden: true
+                        },
+                        {
+                            itemId: 'searchFilterAll',
+                            html: '<div class="cms-cursor-clickable">Show All</div>',
+                            border: false,
+                            hidden: true,
+                            listeners : {
+                                render : function(c) {
+                                    c.getEl().on('click', function(){ this.fireEvent('click'); }, c);
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'searchFilterUsers',
+                            tpl: new Ext.Template('<div class="cms-cursor-clickable">{text}</div>'),
+                            border: false,
+                            listeners : {
+                                render : function(c) {
+                                    c.getEl().on('click', function(){ this.fireEvent('click'); }, c);
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'searchFilterGroups',
+                            tpl: new Ext.Template('<div class="cms-cursor-clickable">{text}</div>'),
+                            border: false,
+                            listeners : {
+                                render : function(c) {
+                                    c.getEl().on('click', function(){ this.fireEvent('click'); }, c);
+                                }
+                            }
+                        }
                     ]
                 },
                 {
@@ -128,12 +168,11 @@ Ext.define('App.view.FilterPanel', {
     showUserTypeFacets: function(facet) {
         var userCount = facet.terms.user;
         var groupCount = facet.terms.group;
-        var usersRadioButton = Ext.ComponentQuery.query( '*[itemId=usersFilterCheckbox]' )[0];
-        var groupsRadioButton = Ext.ComponentQuery.query( '*[itemId=groupsFilterCheckbox]' )[0];
-        var allRadioButton = Ext.ComponentQuery.query( '*[itemId=allFilterCheckbox]' )[0];
-        usersRadioButton.el.down('label').update('Users (' + userCount + ')');
-        groupsRadioButton.el.down('label').update('Groups (' + groupCount + ')');
-        allRadioButton.el.down('label').update('All (' + (userCount+groupCount) + ')');
+
+        var usersButton = Ext.ComponentQuery.query( '*[itemId=searchFilterUsers]' )[0];
+        usersButton.update({text: 'Users (' + userCount + ')'});
+        var groupsButton = Ext.ComponentQuery.query( '*[itemId=searchFilterGroups]' )[0];
+        groupsButton.update({text: 'Groups (' + groupCount + ')'});
     },
 
     setUserStores: function(userstores) {
@@ -141,12 +180,12 @@ Ext.define('App.view.FilterPanel', {
         userstoreRadioGroup.removeAll();
 
         // global userstore (global groups, built-in users)
-        userstoreRadioGroup.add({ itemId: '_Global_checkbox', boxLabel: 'Global', inputValue: '_Global', checked: true });
+        userstoreRadioGroup.add({ itemId: '_Global_checkbox', boxLabel: 'Global', inputValue: '_Global', checked: false });
         
         for (var i = 0; i < userstores.length; i++) {
             var userstore = userstores[i];
             var itemId = this.userstoreCheckboxId(userstore);
-            userstoreRadioGroup.add({ itemId: itemId, boxLabel: userstore, inputValue: userstore, checked: true });
+            userstoreRadioGroup.add({ itemId: itemId, boxLabel: userstore, inputValue: userstore, checked: false });
         }
     },
 

@@ -9,16 +9,14 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         'App.view.wizard.WizardStepLoginInfoPanel',
         'App.view.wizard.WizardStepMembershipPanel',
         'App.view.wizard.WizardStepSummaryPanel',
-        'App.view.wizard.WizardStepPlacesPanel'
+        'App.view.wizard.WizardStepPlacesPanel',
+        'Common.fileupload.PhotoUploadButton'
     ],
 
-    layout: {
-        type: 'hbox',
-        align: 'stretch',
-        padding: 10
-    },
+    layout: 'column',
 
     border: 0,
+    autoScroll: true,
 
     defaults: {
         border: false
@@ -111,19 +109,21 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
 
         me.items = [
             {
-                width: 100,
+                width: 120,
+                padding: 10,
                 items: [
-                    userImage,
-                    uploadForm
+                    {
+                        xtype: 'photoUploadButton',
+                        width: 100,
+                        height: 100,
+                        url: '/admin/data/user/photo',
+                        progressBarHeight: 6
+                    }
                 ]
             },
             {
-                flex: 1,
-                layout: {
-                    type: 'vbox',
-                    align: 'stretch',
-                    padding: '0 10'
-                },
+                columnWidth: 1,
+                padding: '10 10 10 0',
                 defaults: {
                     border: false
                 },
@@ -148,7 +148,6 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                         html: Templates.account.newUserPanelHeader
                     },
                     {
-                        flex: 1,
                         xtype: 'wizardPanel',
                         showControls: false,
                         items: [
@@ -222,9 +221,9 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                                                      } );
     },
 
-    setFileUploadDisabled: function( disable )
-    {
-        this.uploadForm.setDisabled( disable );
+    setFileUploadDisabled: function( disable ) {
+        //TODO: disable image upload
+        //this.uploadForm.setDisabled( disable );
     }
 
 } );

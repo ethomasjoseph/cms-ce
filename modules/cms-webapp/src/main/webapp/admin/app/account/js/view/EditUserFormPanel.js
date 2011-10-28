@@ -2,43 +2,16 @@ Ext.define( 'App.view.EditUserFormPanel', {
     extend: 'Ext.form.Panel',
     alias: 'widget.editUserFormPanel',
 
-    defaults: {
-        bodyPadding: 10
-    },
-
-    autoScroll: true,
-
-    measureWidth: true,
-
-    border: 0,
-
-    style: {
-        overflow: 'hidden'
-    },
-
-    layout: {
-        type: 'table',
-        columns: 1,
-        defaultMargins: {top:10, right:10, bottom:10, left:10},
-        padding: 10,
-        tdAttrs: {
-            style:{
-                padding: '10px'
-            }
-        },
-        tableAttrs: {
-            style:{
-                width: '96%'
-            }
-        }
-    },
+    autoScroll: false,
+    autoHeight: true,
+    border: false,
 
     currentUser: undefined,
     defaultUserStoreName: 'default',
     enableToolbar: true,
 
     listeners: {
-        afterrender: function( me )
+        show: function( me )
         {
             me.el.mask( "Loading..." );
             me.renderUserForm(me.currentUser);
@@ -142,6 +115,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
             }
         };
         this.callParent( arguments );
+        this.addEvents('fieldsloaded');
         this.removeAll();
         this.show();
     },
@@ -319,8 +293,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
             this.add( this.generateFieldSet( 'Communication', this.communicationFieldSet, fields ) );
             this.add( this.generateFieldSet( 'Address', this.addressFieldSet, fields ) );
         }
-
-
+        this.fireEvent('fieldsloaded', this);
     },
 
     generateFieldSet: function( title, fieldSet, storeConfig )

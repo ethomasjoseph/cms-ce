@@ -52,7 +52,7 @@ Ext.define('App.view.LoggedInUserButton', {
     },
 
     createPopupTemplate: function() {
-        return new Ext.XTemplate( Templates.launcher.loggedInUserButtonPopup );
+        return new Ext.XTemplate( Templates.main.loggedInUserButtonPopup );
     },
 
     updatePopupPosition: function(component, x, y, options) {

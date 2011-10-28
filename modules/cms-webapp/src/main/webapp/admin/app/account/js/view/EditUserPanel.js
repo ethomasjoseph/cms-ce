@@ -3,7 +3,7 @@ Ext.define( 'App.view.EditUserPanel', {
     alias: 'widget.editUserPanel',
 
 
-    autoScroll: true,
+    autoScroll: false,
 
     items: [],
     currentUser: '',
@@ -25,6 +25,7 @@ Ext.define( 'App.view.EditUserPanel', {
             xtype: 'editUserFormPanel',
             region: 'center',
             userFields: [],
+            bodyPadding: 10,
             margin: 5,
             autoScroll: true,
             currentUser: me.currentUser,
