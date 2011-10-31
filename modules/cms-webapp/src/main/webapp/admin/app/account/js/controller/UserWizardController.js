@@ -166,12 +166,6 @@ Ext.define( 'App.controller.UserWizardController', {
         addressPanel.setTitle( field.getValue() );
     },
 
-    userImageClicked: function()
-    {
-        alert( 'clicked' );
-    },
-
-
     getUserWizardPanel: function()
     {
         return Ext.ComponentQuery.query( 'userWizardPanel' )[0];

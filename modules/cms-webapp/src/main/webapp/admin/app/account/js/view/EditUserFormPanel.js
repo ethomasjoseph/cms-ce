@@ -353,8 +353,18 @@ Ext.define( 'App.view.EditUserFormPanel', {
         }
         if ( storeConfig && storeConfig.userFields )
         {
-
-            var fields = Ext.Array.merge( this.staticFields, Ext.Array.toArray( storeConfig.userFields ) );
+            var fields = Ext.Array.filter( Ext.Array.toArray( storeConfig.userFields ), function ( field )
+            {
+                for ( index in this.staticFields )
+                {
+                    if ( this.staticFields[index].type == field.type )
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }, this );
+            fields = Ext.Array.merge( this.staticFields, fields );
             this.add( this.generateFieldSet( 'User', this.userFieldSet, fields ) );
             this.add( this.generateFieldSet( 'Security', this.securityFieldSet, fields ) );
             this.add( this.generateFieldSet( 'Name', this.nameFieldSet, fields ) );

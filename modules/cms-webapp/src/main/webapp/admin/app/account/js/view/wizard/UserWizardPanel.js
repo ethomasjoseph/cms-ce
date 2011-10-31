@@ -9,7 +9,6 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         'App.view.wizard.WizardStepLoginInfoPanel',
         'App.view.wizard.WizardStepMembershipPanel',
         'App.view.wizard.WizardStepSummaryPanel',
-        'App.view.wizard.WizardStepPlacesPanel',
         'Common.fileupload.PhotoUploadButton'
     ],
 
