@@ -99,7 +99,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
         if ( !this.excludedFields )
         {
             this.excludedFields = ["username", "email", "country", "global-position", "locale",
-                "address", "photo", "password", "timezone"];
+                "address", "photo", "password", "repeat-password", "timezone"];
         }
 
         if ( this.enableToolbar )
@@ -140,7 +140,8 @@ Ext.define( 'App.view.EditUserFormPanel', {
             'email': this.createTextField
         };
         this.securityFieldSet = {
-            'password': this.createPasswordField
+            'password': this.createPasswordField,
+            'repeat-password': this.createPasswordField
         };
         this.nameFieldSet = {
             'prefix': this.createTextField,

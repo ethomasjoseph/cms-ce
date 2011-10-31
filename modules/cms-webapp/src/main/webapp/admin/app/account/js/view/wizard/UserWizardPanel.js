@@ -175,7 +175,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                                 stepTitle: "Login",
                                 itemId: "loginPanel",
                                 xtype: 'editUserFormPanel',
-                                includedFields: ['username', 'email', 'password', 'photo',
+                                includedFields: ['username', 'email', 'password', 'repeat-password', 'photo',
                                     'country', 'locale', 'timezone', 'global-position'],
                                 enableToolbar: false
                             },
