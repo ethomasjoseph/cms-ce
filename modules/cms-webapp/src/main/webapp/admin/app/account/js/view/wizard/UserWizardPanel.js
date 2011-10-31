@@ -166,14 +166,19 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                             {
                                 stepNumber: 3,
                                 stepTitle: "Places",
-                                itemId: 'wizardStepPlacesPanel',
-                                xtype: 'wizardStepPlacesPanel',
+                                itemId: 'placesPanel',
+                                xtype: 'editUserFormPanel',
+                                includedFields: ['address'],
                                 enableToolbar: false
                             },
                             {
                                 stepNumber: 4,
                                 stepTitle: "Login",
-                                xtype: 'wizardStepLoginInfoPanel'
+                                itemId: "loginPanel",
+                                xtype: 'editUserFormPanel',
+                                includedFields: ['username', 'email', 'password', 'photo',
+                                    'country', 'locale', 'timezone', 'global-position'],
+                                enableToolbar: false
                             },
                             {
                                 stepNumber: 5,
@@ -221,7 +226,8 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                                                      } );
     },
 
-    setFileUploadDisabled: function( disable ) {
+    setFileUploadDisabled: function( disable )
+    {
         //TODO: disable image upload
         //this.uploadForm.setDisabled( disable );
     }

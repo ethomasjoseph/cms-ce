@@ -20,8 +20,7 @@ Ext.define( 'App.controller.UserWizardController', {
                               finished: this.wizardFinished
                           },
                           'userStoreListPanel': {
-                              itemclick: this.userStoreSelected,
-                              afterrender: this.userStoreAfterRender
+                              itemclick: this.userStoreSelected
                           },
                           'addressPanel textfield[name=label]': {
                               keyup: this.updateTabTitle
@@ -35,10 +34,12 @@ Ext.define( 'App.controller.UserWizardController', {
     validateStep: function( wizard, step )
     {
         var data = undefined;
-        if (step.getData){
+        if ( step.getData )
+        {
             data = step.getData();
         }
-        if (data){
+        if ( data )
+        {
             wizard.addData( data );
         }
         return true;
@@ -48,27 +49,44 @@ Ext.define( 'App.controller.UserWizardController', {
     {
         this.getUserWizardPanel().doLayout();
 
-        if ( newStep.getXType() == 'userStoreListPanel') {
+        if ( newStep.getXType() == 'userStoreListPanel' )
+        {
             // move to 1st step
             this.getUserWizardPanel().setFileUploadDisabled( true );
-        } else if ((newStep.getXType() == 'editUserFormPanel') &&
-                (oldStep.getXType() == 'userStoreListPanel')){
-            var prefix = newStep.down('#prefix');
-            var firstName = newStep.down('#first-name');
+        } else if ( (newStep.getXType() == 'editUserFormPanel') && (oldStep.getXType() == 'userStoreListPanel') )
+        {
+            var prefix = newStep.down( '#prefix' );
+            var firstName = newStep.down( '#first-name' );
             var middleName = newStep.down( '#middle-name' );
             var lastName = newStep.down( '#last-name' );
             var suffix = newStep.down( '#suffix' );
-            if (prefix) prefix.on('keyup', this.textFieldHandleEnterKey);
-            if (firstName) firstName.on('keyup', this.textFieldHandleEnterKey);
-            if (middleName) middleName.on('keyup', this.textFieldHandleEnterKey);
-            if (lastName) lastName.on('keyup', this.textFieldHandleEnterKey);
-            if (suffix) suffix.on('keyup', this.textFieldHandleEnterKey);
+            if ( prefix )
+            {
+                prefix.on( 'keyup', this.textFieldHandleEnterKey );
+            }
+            if ( firstName )
+            {
+                firstName.on( 'keyup', this.textFieldHandleEnterKey );
+            }
+            if ( middleName )
+            {
+                middleName.on( 'keyup', this.textFieldHandleEnterKey );
+            }
+            if ( lastName )
+            {
+                lastName.on( 'keyup', this.textFieldHandleEnterKey );
+            }
+            if ( suffix )
+            {
+                suffix.on( 'keyup', this.textFieldHandleEnterKey );
+            }
         }
-        if (oldStep.getXType() == 'userStoreListPanel') {
+        if ( oldStep.getXType() == 'userStoreListPanel' )
+        {
             // move from 1st step
             var userStore = wizard.getData().userStore;
-            Ext.get('q-userstore').dom.innerHTML = userStore + '\\';
-            Ext.get('q-username').dom.innerHTML = 'unnamed';
+            Ext.get( 'q-userstore' ).dom.innerHTML = userStore + '\\';
+            Ext.get( 'q-username' ).dom.innerHTML = 'unnamed';
             this.getUserWizardPanel().setFileUploadDisabled( false );
         }
     },
@@ -90,46 +108,36 @@ Ext.define( 'App.controller.UserWizardController', {
         w.next( btn );
     },
 
-    userStoreFieldsLoaded: function() {
+    userStoreFieldsLoaded: function()
+    {
         this.getUserWizardPanel().doLayout();
     },
 
-    userStoreSelected: function(view, record, item)
+    userStoreSelected: function( view, record, item )
     {
-        view.setData(record);
+        view.setData( record );
         var selectedUserStoreElement = new Ext.Element( item );
 
         var userStoreElements = view.getNodes();
-        for (var i = 0; i < userStoreElements.length; i++)
+        for ( var i = 0; i < userStoreElements.length; i++ )
         {
-            var userStoreElement = new Ext.Element(userStoreElements[i]);
-            if(userStoreElement.id !== selectedUserStoreElement.id)
+            var userStoreElement = new Ext.Element( userStoreElements[i] );
+            if ( userStoreElement.id !== selectedUserStoreElement.id )
             {
-                userStoreElement.removeCls('cms-userstore-active');
+                userStoreElement.removeCls( 'cms-userstore-active' );
             }
         }
 
-        selectedUserStoreElement.addCls('cms-userstore-active');
+        selectedUserStoreElement.addCls( 'cms-userstore-active' );
         var radioButton = selectedUserStoreElement.down( 'input' );
         radioButton.dom.checked = true;
-        var nextButton = this.getUserWizardPanel().down('#next');
-        var userForm = this.getUserWizardPanel().down('#userForm');
-        userForm.currentUser = {userStore: record.get('name')};
-        this.wizardNext(nextButton);
-    },
-
-    userStoreAfterRender: function(view)
-    {
-        if (view.getNodes().length == 1){
-            var node = Ext.fly(view.getNodes()[0]);
-            var radioButton = node.down('input');
-            radioButton.dom.checked = true;
-            var nextButton = this.getUserWizardPanel().down('#next');
-            var userForm = this.getUserWizardPanel().down('#userForm');
-            userForm.renderUserForm({userStore: record.get('name')});
-            this.wizardNext(nextButton);
-        }
-
+        var nextButton = this.getUserWizardPanel().down( '#next' );
+        var userForms = this.getUserWizardPanel().query( 'editUserFormPanel' );
+        Ext.Array.each( userForms, function( userForm )
+        {
+            userForm.currentUser = {userStore: record.get( 'name' )};
+        } );
+        this.wizardNext( nextButton );
     },
 
     textFieldHandleEnterKey: function( field, event )
@@ -143,12 +151,12 @@ Ext.define( 'App.controller.UserWizardController', {
         var lastName = formPanel.down( '#last-name' ) ? Ext.String.trim( formPanel.down( '#last-name' ).getValue() )
                 : '';
         var suffix = formPanel.down( '#suffix' ) ? Ext.String.trim( formPanel.down( '#suffix' ).getValue() ) : '';
-        var displayName = Ext.get('display-name');
+        var displayName = Ext.get( 'display-name' );
         if ( displayName )
         {
             var displayNameValue = prefix + ' ' + firstName + ' ' + middleName + ' ' + lastName + ' ' + suffix;
             displayName.dom.value = Ext.String.trim( displayNameValue );
-            displayName.addCls('cms-edited-field');
+            displayName.addCls( 'cms-edited-field' );
         }
     },
 
@@ -160,7 +168,7 @@ Ext.define( 'App.controller.UserWizardController', {
 
     userImageClicked: function()
     {
-        alert('clicked');
+        alert( 'clicked' );
     },
 
 
