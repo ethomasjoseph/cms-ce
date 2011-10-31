@@ -8,16 +8,15 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         'App.view.EditUserFormPanel',
         'App.view.wizard.WizardStepLoginInfoPanel',
         'App.view.wizard.WizardStepMembershipPanel',
-        'App.view.wizard.WizardStepSummaryPanel'
+        'App.view.wizard.WizardStepSummaryPanel',
+        'App.view.wizard.WizardStepPlacesPanel',
+        'Common.fileupload.PhotoUploadButton',
     ],
 
-    layout: {
-        type: 'hbox',
-        align: 'stretch',
-        padding: 10
-    },
+    layout: 'column',
 
     border: 0,
+    autoScroll: true,
 
     defaults: {
         border: false
@@ -31,93 +30,24 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
     {
         var me = this;
 
-        var userImage = Ext.create( 'Ext.Img', {
-            src: 'resources/images/x-user-photo.png',
-            width: 100,
-            height: 100
-        } );
-
-        var uploadForm = this.uploadForm = Ext.create('Ext.form.Panel', {
-            fileUpload: true,
-            disabled: true,
-            width: 100,
-            height: 100,
-            frame: false,
-            border: false,
-            style: {
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                padding: 0,
-                margin: 0,
-                opacity: 0
-            },
-            items: [{
-                xtype: 'filefield',
-                name: 'photo',
-                buttonOnly: true,
-                hideLabel: true,
-                width: 100,
-                height: 100,
-                buttonConfig: {
-                    width: 100,
-                    height: 100
-                },
-                listeners: {
-                    afterrender: function( imgUpl ) {
-                        me.resizeFileUpload( imgUpl );
-                    },
-                    change: function( imgUpl, path, eOpts ) {
-                        var form = this.up('form').getForm();
-                        var regex = new RegExp("\.(jpg|jpeg|gif|png|bmp)$");
-                        var isValid = regex.test( path );
-                        if( isValid )
-                        {
-                            form.submit( {
-                                url: 'data/user/photo',
-                                method: 'POST',
-                                waitMsg: 'Uploading your photo...',
-                                success: function( form, action ) {
-                                    userImage.setSrc( action.result.src );
-                                    me.resizeFileUpload( imgUpl );
-                                },
-                                failure: function(form, action) {
-                                    Ext.Msg.show({
-                                        title: 'Failure',
-                                        msg: 'File was not uploaded.',
-                                        minWidth: 200,
-                                        modal: true,
-                                        icon: Ext.Msg.INFO,
-                                        buttons: Ext.Msg.OK
-                                    });
-                                }
-                            } );
-                        }
-                        else
-                        {
-                            Ext.Msg.alert("Incorrect file", "Supported files are jpg, jpeg, png, gif and bmp.");
-                        }
-                    }
-                }
-            }]
-        });
-
 
         me.items = [
             {
-                width: 100,
+                width: 120,
+                padding: 10,
                 items: [
-                    userImage,
-                    uploadForm
+                    {
+                        xtype: 'photoUploadButton',
+                        width: 100,
+                        height: 100,
+                        url: '/admin/data/user/photo',
+                        progressBarHeight: 6
+                    }
                 ]
             },
             {
-                flex: 1,
-                layout: {
-                    type: 'vbox',
-                    align: 'stretch',
-                    padding: '0 10'
-                },
+                columnWidth: 1,
+                padding: '10 10 10 0',
                 defaults: {
                     border: false
                 },
@@ -128,11 +58,13 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                         styleHtmlContent: true,
                         listeners: {
                             afterrender: {
-                                fn: function() {
+                                fn: function()
+                                {
                                     var me = this;
-                                    me.getEl().addListener('click', function(event, target, eOpts) {
-                                       me.toggleDisplayNameField(event, target);
-                                    });
+                                    me.getEl().addListener( 'click', function( event, target, eOpts )
+                                    {
+                                        me.toggleDisplayNameField( event, target );
+                                    } );
                                 },
                                 scope: this
                             }
@@ -140,7 +72,6 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                         html: Templates.account.newUserPanelHeader
                     },
                     {
-                        flex: 1,
                         xtype: 'wizardPanel',
                         showControls: false,
                         items: [
@@ -158,16 +89,23 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                             },
                             {
                                 stepNumber: 3,
+                                stepTitle: "Places",
+                                itemId: 'wizardStepPlacesPanel',
+                                xtype: 'wizardStepPlacesPanel',
+                                enableToolbar: false
+                            },
+                            {
+                                stepNumber: 4,
                                 stepTitle: "Login",
                                 xtype: 'wizardStepLoginInfoPanel'
                             },
                             {
-                                stepNumber: 4,
+                                stepNumber: 5,
                                 stepTitle: "Memberships",
                                 xtype: 'wizardStepMembershipPanel'
                             },
                             {
-                                stepNumber: 5,
+                                stepNumber: 6,
                                 stepTitle: "Summary",
                                 xtype: 'wizardStepSummaryPanel'
                             }
@@ -208,7 +146,8 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
     },
 
     setFileUploadDisabled: function( disable ) {
-        this.uploadForm.setDisabled( disable );
+        //TODO: disable image upload
+        //this.uploadForm.setDisabled( disable );
     }
 
 });

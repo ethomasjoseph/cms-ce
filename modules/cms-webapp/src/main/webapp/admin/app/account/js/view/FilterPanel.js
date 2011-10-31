@@ -51,7 +51,7 @@ Ext.define('App.view.FilterPanel', {
                 },
 
                 {
-                    xtype: 'radiogroup',
+                    xtype: 'fieldcontainer',
                     itemId: 'typeRadios',
                     columns: 1,
                     vertical: true,
@@ -64,10 +64,57 @@ Ext.define('App.view.FilterPanel', {
                     },
 
                     items: [
-                        { itemId: 'allFilterCheckbox', boxLabel: 'All', inputValue: 'all', checked: true },
-                        { itemId: 'usersFilterCheckbox', boxLabel: 'Users', inputValue: 'users'},
-                        { itemId: 'groupsFilterCheckbox', boxLabel: 'Groups', inputValue: 'groups'}
+                        {
+                            itemId: 'searchFilterUsersLabel',
+                            html: '<div style="padding-bottom:4px;" class="cms-bold-text">Users</div>',
+                            border: false,
+                            hidden: true
+                        },
+                        {
+                            itemId: 'searchFilterGroupsLabel',
+                            html: '<div style="padding-bottom:4px;" class="cms-bold-text">Groups</div>',
+                            border: false,
+                            hidden: true
+                        },
+                        {
+                            itemId: 'searchFilterAll',
+                            html: '<a href="javascript:;">Show All</a>',
+                            border: false,
+                            hidden: true,
+                            listeners : {
+                                render : function(c) {
+                                    c.getEl().on('click', function(){ this.fireEvent('click'); }, c);
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'searchFilterUsers',
+                            tpl: new Ext.Template('<div style="padding-bottom:4px;">{text}</div>'),
+                            overCls: 'cms-cursor-clickable',
+                            border: false,
+                            listeners : {
+                                render : function(c) {
+                                    c.getEl().on('click', function(){ this.fireEvent('click'); }, c);
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'searchFilterGroups',
+                            tpl: new Ext.Template('<div style="padding-bottom:4px;">{text}</div>'),
+                            overCls: 'cms-cursor-clickable',
+                            border: false,
+                            listeners : {
+                                render : function(c) {
+                                    c.getEl().on('click', function(){ this.fireEvent('click'); }, c);
+                                }
+                            }
+                        }
                     ]
+                },
+                                    {
+                    xtype: 'label',
+                    text: '',
+                    height: 10
                 },
                 {
                     xtype: 'label',
@@ -84,6 +131,7 @@ Ext.define('App.view.FilterPanel', {
                         name: 'userStoreKey',
                         cls: 'facet-single-select-item',
                         checkedCls: 'x-form-cb-checked facet-selected',
+                        overCls: 'cms-cursor-clickable',
                         width: 170
                     },
 
@@ -119,6 +167,7 @@ Ext.define('App.view.FilterPanel', {
             if (checkbox.length > 0) {
                 checkbox = checkbox[0];
                 count = terms[userstore];
+                checkbox.setVisible(count > 0);
                 userstore = (userstore === '_Global')? 'Global' : userstore;
                 checkbox.el.down('label').update(userstore + ' (' + count + ')');
             }
@@ -128,12 +177,19 @@ Ext.define('App.view.FilterPanel', {
     showUserTypeFacets: function(facet) {
         var userCount = facet.terms.user;
         var groupCount = facet.terms.group;
-        var usersRadioButton = Ext.ComponentQuery.query( '*[itemId=usersFilterCheckbox]' )[0];
-        var groupsRadioButton = Ext.ComponentQuery.query( '*[itemId=groupsFilterCheckbox]' )[0];
-        var allRadioButton = Ext.ComponentQuery.query( '*[itemId=allFilterCheckbox]' )[0];
-        usersRadioButton.el.down('label').update('Users (' + userCount + ')');
-        groupsRadioButton.el.down('label').update('Groups (' + groupCount + ')');
-        allRadioButton.el.down('label').update('All (' + (userCount+groupCount) + ')');
+
+        var showAllButton = Ext.ComponentQuery.query( '*[itemId=searchFilterAll]' )[0];
+
+        var usersButton = Ext.ComponentQuery.query( '*[itemId=searchFilterUsers]' )[0];
+        usersButton.update({text: 'Users (' + userCount + ')'});
+        if (!showAllButton.isVisible()) {
+            usersButton.setVisible(userCount > 0);
+        }
+        var groupsButton = Ext.ComponentQuery.query( '*[itemId=searchFilterGroups]' )[0];
+        groupsButton.update({text: 'Groups (' + groupCount + ')'});
+        if (!showAllButton.isVisible()) {
+            groupsButton.setVisible(groupCount > 0);
+        }
     },
 
     setUserStores: function(userstores) {
@@ -141,12 +197,12 @@ Ext.define('App.view.FilterPanel', {
         userstoreRadioGroup.removeAll();
 
         // global userstore (global groups, built-in users)
-        userstoreRadioGroup.add({ itemId: '_Global_checkbox', boxLabel: 'Global', inputValue: '_Global', checked: true });
+        userstoreRadioGroup.add({ itemId: '_Global_checkbox', boxLabel: 'Global', inputValue: '_Global', checked: false });
         
         for (var i = 0; i < userstores.length; i++) {
             var userstore = userstores[i];
             var itemId = this.userstoreCheckboxId(userstore);
-            userstoreRadioGroup.add({ itemId: itemId, boxLabel: userstore, inputValue: userstore, checked: true });
+            userstoreRadioGroup.add({ itemId: itemId, boxLabel: userstore, inputValue: userstore, checked: false });
         }
     },
 

@@ -5,13 +5,15 @@ Ext.define('App.controller.ActivityStreamController', {
     stores: ['ActivityStreamStore'],
     views: ['ActivityStreamPanel'],
 
-    init: function() {
+    init: function()
+    {
         this.control(
-        {
-            'activityStreamPanel': {
-                'afterrender': this.afterPanelRender
+            {
+                'activityStreamPanel': {
+                    'afterrender': this.afterPanelRender
+                }
             }
-        });
+        );
     },
 
     afterPanelRender: function()
@@ -23,11 +25,12 @@ Ext.define('App.controller.ActivityStreamController', {
     createDataView: function()
     {
         var store = this.getStore('ActivityStreamStore');
-        var template = new Ext.XTemplate(Templates.launcher.activityStream);
+        var template = new Ext.XTemplate(Templates.main.activityStream);
 
         Ext.create('Ext.view.View', {
             store: store,
             tpl: template,
+            loadMask: false,
             itemSelector: 'div.cms-activity-stream-message',
             renderTo: 'cms-activity-stream-messages-container',
             emptyText: 'No messages',
@@ -39,7 +42,8 @@ Ext.define('App.controller.ActivityStreamController', {
                     fn: this.onMessageMouseLeave
                 },
                 'itemclick':  {
-                    fn: this.onMessageClick
+                    fn: this.onMessageClick,
+                    scope: this
                 }
             }
         });
@@ -76,20 +80,30 @@ Ext.define('App.controller.ActivityStreamController', {
 
     onMessageClick: function( view, record, item, index, event, eOpts )
     {
-        var target = event.target;
-        if (target.className.indexOf('favorited') === -1)
+        var targetElement = new Ext.Element(event.target);
+
+        if (targetElement.hasCls('favorite'))
         {
-            target.className += ' favorited';
+            if ( targetElement.hasCls('favorited') )
+            {
+                targetElement.removeCls('favorited');
+            }
+            else
+            {
+                targetElement.addCls('favorited');
+            }
         }
-        else
+
+        // TODO: Testing the feedback window.
+        if (targetElement.hasCls('comment'))
         {
-            target.className = target.className.replace(/ favorited/, '');
+            this.application.fireEvent('feedbackWindow.show', 'Comment added', 'Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.');
         }
     },
 
     appendSpeakOutPanel: function()
     {
-        var template = new Ext.XTemplate(Templates.launcher.speakOutPanel);
+        var template = new Ext.XTemplate(Templates.main.speakOutPanel);
         var container = Ext.DomQuery.select( '#cms-activity-stream-speak-out-panel-container' )[0];
         template.append( container, {});
 

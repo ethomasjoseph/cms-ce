@@ -13,18 +13,11 @@ Templates.common = {
         '</ul>'
 
     ,userInfo:
-        '<div>' +
-            '<div class="cms-user-info clearfix">' +
-                '<div class="cms-user-photo cms-left">' +
-                    '<img alt="User" src="data/user/photo?key={key}&thumb=true"/>' +
-                '</div>' +
-                '<div class="cms-left">' +
-                    '<h2>{displayName}</h2>' +
-                    '({qualifiedName})<br/>' +
-                    '<a href="mailto:{email}:">{email}</a>' +
-                '</div>' +
-                '<div class="cms-clear"></div>' +
-            '</div>' +
-        '</div>'
+            '<div>' + '<div class="cms-user-info clearfix">' + '<div class="cms-user-photo cms-left">' +
+                    '<img alt="User" src="data/user/photo?key={key}&thumb=true"/>' + '</div>' +
+                    '<div class="cms-left">' + '<h2>{displayName}</h2>' + '({qualifiedName})<br/>' +
+                    '<a href="mailto:{email}:">{email}</a>' + '</div>' + '</div>' + '</div>'
+    ,groupList:
+            '<span class="icon-group cms-list-item"></span>' + '<span>{name} ({userStore})</span>'
 
 };

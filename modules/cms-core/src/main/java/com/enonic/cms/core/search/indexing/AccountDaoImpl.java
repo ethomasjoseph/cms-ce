@@ -95,7 +95,8 @@ class AccountDaoImpl
         {
             group.setUserStoreName( GLOBAL_USERSTORE_NAME );
         }
-        group.setLastModified( new DateTime( groupEntity.getLastModified() ) );
+        final DateTime lastModified = ( groupEntity.getLastModified() == null ) ? null : new DateTime( groupEntity.getLastModified() );
+        group.setLastModified( lastModified );
 
         return group;
     }

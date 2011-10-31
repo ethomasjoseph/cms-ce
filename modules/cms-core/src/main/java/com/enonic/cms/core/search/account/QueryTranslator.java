@@ -62,11 +62,9 @@ public final class QueryTranslator
     {
         if ( query.getSortField() != null )
         {
-            SortOrder sortOrder = query.getSortOrder() == SearchSortOrder.ASC ? SortOrder.ASC : SortOrder.DESC;
-//            FieldSortBuilder sortBuilder = SortBuilders.fieldSort( query.getSortField().getId() )
-//                .order( sortOrder ).missing("_last" );
-//            searchBuilder.sort( sortBuilder );
+            final SortOrder sortOrder = query.getSortOrder() == SearchSortOrder.ASC ? SortOrder.ASC : SortOrder.DESC;
             final AccountIndexField sortField = query.getSortField();
+
             final String fieldName;
             switch ( sortField )
             {
@@ -86,6 +84,13 @@ public final class QueryTranslator
             // no query and not sort field specified => sort by account type (1st users 2nd groups), and then by display name
             searchBuilder.sort( AccountIndexField.TYPE_FIELD.id(), SortOrder.DESC );
             searchBuilder.sort( AccountIndexField.DISPLAY_NAME_FIELD.id() + ".untouched", SortOrder.ASC );
+        }
+        else
+        {
+            // default sort
+            FieldSortBuilder sortBuilder = SortBuilders.fieldSort( AccountIndexField.LAST_MODIFIED_FIELD.id() )
+                .order( SortOrder.DESC ).missing( "_last" );
+            searchBuilder.sort( sortBuilder );
         }
     }
 
@@ -126,13 +131,32 @@ public final class QueryTranslator
 
     private FilterBuilder buildFilterTerm( final String term )
     {
+        final String searchString;
+        if ( term.endsWith( "*" ) && ( term.length() > 1 ) )
+        {
+            searchString = StringUtils.substringBeforeLast( term, "*" );
+        }
+        else
+        {
+            searchString = term;
+        }
+        return FilterBuilders.orFilter( prefixFilter( AccountIndexField.NAME_FIELD.id(), searchString ),
+                                        prefixFilter( AccountIndexField.DISPLAY_NAME_FIELD.id(), searchString ),
+                                        prefixFilter( AccountIndexField.FIRST_NAME_FIELD.id(), searchString ),
+                                        prefixFilter( AccountIndexField.EMAIL_FIELD.id(), searchString ) );
+
+    }
+
+    private FilterBuilder buildFilterTermStrict( final String term )
+    {
         if ( term.endsWith( "*" ) && (term.length() > 1) )
         {
             final String prefix = StringUtils.substringBeforeLast( term, "*" );
             return FilterBuilders.orFilter(
                 prefixFilter( AccountIndexField.NAME_FIELD.id(), prefix ),
                 prefixFilter( AccountIndexField.DISPLAY_NAME_FIELD.id(), prefix ),
-                prefixFilter( AccountIndexField.FIRST_NAME_FIELD.id(), prefix )
+                prefixFilter( AccountIndexField.FIRST_NAME_FIELD.id(), prefix ),
+                prefixFilter( AccountIndexField.EMAIL_FIELD.id(), prefix )
             );
         }
         else
@@ -140,7 +164,8 @@ public final class QueryTranslator
             return FilterBuilders.orFilter(
                 termsFilter( AccountIndexField.NAME_FIELD.id(), term ),
                 termsFilter( AccountIndexField.DISPLAY_NAME_FIELD.id(), term ),
-                termsFilter( AccountIndexField.FIRST_NAME_FIELD.id(), term )
+                termsFilter( AccountIndexField.FIRST_NAME_FIELD.id(), term ),
+                termsFilter( AccountIndexField.EMAIL_FIELD.id(), term )
             );
         }
     }

@@ -108,12 +108,11 @@ public final class UsersResource
     @POST
     @Path("/photo")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces("text/html")
-    public String uploadPhoto( @FormDataParam("photo") InputStream fileInputStream,
-                               @FormDataParam("photo") FormDataContentDisposition fileDetail,
-                               @Context ServletContext context )
+    public Map<String, Object> uploadPhoto( @FormDataParam("file") InputStream fileInputStream,
+                               @FormDataParam("file") FormDataContentDisposition fileDetail,
+                               @Context ServletContext context)
     {
-        String response;
+        Map<String, Object> response = new HashMap<String, Object>();
         try
         {
             File folder = new File( context.getRealPath( "/admin/resources/uploads/" ) );
@@ -135,16 +134,15 @@ public final class UsersResource
             }
             out.flush();
             out.close();
-            response = "{ src: \"/admin/resources/uploads/" + fileDetail.getFileName() + "\", success : true }";
+            response.put( "success", true );
+            response.put( "src", "/admin/resources/uploads/" + fileDetail.getFileName() );
         }
         catch ( IOException e )
         {
             e.printStackTrace();
-            response = "{ success: false }";
+            response.put( "success", false );
         }
-        // fileupload expects textarea because of using iframe
-        // on line 20732 of ext-all-debug.js
-        return "<textarea>" + response + "</textarea>";
+        return response;
     }
 
     @POST

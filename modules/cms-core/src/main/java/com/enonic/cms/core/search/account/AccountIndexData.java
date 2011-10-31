@@ -44,7 +44,9 @@ public class AccountIndexData
         throws Exception
     {
         final XContentBuilder result = buildAccountStart(user);
+        addField( result, AccountIndexField.EMAIL_FIELD.id(), user.getEmail() );
 
+        buildAccountEnd( result );
         return result;
     }
 

@@ -5,7 +5,8 @@ Ext.define('App.view.LoggedInUserButton', {
     menu: [],
     enableToggle: true,
 
-    constructor: function(config) {
+    constructor: function(config)
+    {
         config = config || {};
         config.listeners = config.listeners || {};
 
@@ -19,29 +20,32 @@ Ext.define('App.view.LoggedInUserButton', {
         App.view.LoggedInUserButton.superclass.constructor.apply(this, arguments);
     },
 
-    onRender: function() {
+    onRender: function()
+    {
         // Can we use 'this' here instead of CMS.view ..?
         App.view.LoggedInUserButton.superclass.onRender.apply(this, arguments);
 
         this.createPopup();
     },
 
-    toggleHandler: function(button, state) {
+    toggleHandler: function(button, state)
+    {
         state ? this.popup.show() : this.popup.hide();
     },
 
-    createPopup: function() {
+    createPopup: function()
+    {
         var user = {
-            uid: 'abcdef012345',
+            uid: '2fcab58712467eab4004583eb8fb7f89',
             displayName: 'Morten Eriksen',
             qualifiedName: 'local\\mer',
             email: 'mer@enonic.com'
         };
 
         this.popup = Ext.create('Ext.Component', {
-            width: 380,
+            width: 320,
             floating: true,
-            cls: 'x-panel-default-framed x-panel-default-framed cms-logged-in-user-popup',
+            cls: 'cms-logged-in-user-popup',
             bodyCls: 'cms-logged-in-user-popup-body',
             renderTo: Ext.getBody()
         });
@@ -51,11 +55,13 @@ Ext.define('App.view.LoggedInUserButton', {
         this.updatePopupPosition();
     },
 
-    createPopupTemplate: function() {
-        return new Ext.XTemplate( Templates.launcher.loggedInUserButtonPopup );
+    createPopupTemplate: function()
+    {
+        return new Ext.XTemplate( Templates.main.loggedInUserButtonPopup );
     },
 
-    updatePopupPosition: function(component, x, y, options) {
+    updatePopupPosition: function(component, x, y, options)
+    {
         var buttonArea = this.getEl().getPageBox();
         var popupX = buttonArea.right - this.popup.width;
         var popupY = buttonArea.bottom;

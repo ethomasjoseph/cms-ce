@@ -74,12 +74,12 @@ public class AccountSearchService
             .field( AccountIndexField.USERSTORE_FIELD.id() )
                 .startObject()
                     .field( "type", "multi_field" )
-                    .startObject("fields")
-                        .startObject(AccountIndexField.USERSTORE_FIELD.id())
+                    .startObject( "fields" )
+                        .startObject( AccountIndexField.USERSTORE_FIELD.id() )
                             .field( "type", "string" )
                             .field( "index", "analyzed" )
                         .endObject()
-                        .startObject("untouched")
+                        .startObject( "untouched" )
                             .field( "type", "string" )
                             .field( "index", "not_analyzed" )
                         .endObject()
@@ -88,12 +88,12 @@ public class AccountSearchService
             .field( AccountIndexField.DISPLAY_NAME_FIELD.id() )
                 .startObject()
                     .field( "type", "multi_field" )
-                    .startObject("fields")
-                        .startObject(AccountIndexField.DISPLAY_NAME_FIELD.id())
+                    .startObject( "fields" )
+                        .startObject( AccountIndexField.DISPLAY_NAME_FIELD.id() )
                             .field( "type", "string" )
                             .field( "index", "analyzed" )
                         .endObject()
-                        .startObject("untouched")
+                        .startObject( "untouched" )
                             .field( "type", "string" )
                             .field( "index", "not_analyzed" )
                         .endObject()
@@ -124,47 +124,16 @@ public class AccountSearchService
                     .field( "store", "yes" )
                     .field( "format", "dateOptionalTime" )
                 .endObject()
+            .field( AccountIndexField.EMAIL_FIELD.id() )
+                .startObject()
+                    .field( "type", "string" )
+                    .field( "index", "not_analyzed" )
+                .endObject()
             .endObject()
         .endObject()
         .endObject();
 
         LOG.info( "Account mapping: " + mapping.string() );
-        return mapping;
-    }
-
-    private XContentBuilder _buildIndexMapping()
-        throws IOException
-    {
-        final XContentBuilder mapping = XContentFactory.jsonBuilder().prettyPrint();
-        mapping.startObject(  );
-        mapping.field( ACCOUNT_INDEX_TYPE ).startObject(  );
-        mapping.field( "properties" ).startObject()
-            .field( AccountIndexField.USERSTORE_FIELD.id() )
-                .startObject()
-                    .field( "type", "string" )
-                    .field( "index", "not_analyzed" )
-                .endObject()
-            .field( AccountIndexField.DISPLAY_NAME_FIELD.id() )
-                .startObject()
-                    .field( "type", "string" )
-                    .field( "index", "not_analyzed" )
-                .endObject()
-            .field( AccountIndexField.KEY_FIELD.id() )
-                .startObject()
-                    .field( "type", "string" )
-                    .field( "enabled", false )
-                .endObject()
-            .field( AccountIndexField.LAST_MODIFIED_FIELD.id() )
-                .startObject()
-                    .field( "type", "date" )
-                    .field( "store", "yes" )
-                    .field( "format", "dateOptionalTime" )
-                .endObject()
-            .endObject()
-        .endObject()
-        .endObject();
-
-        LOG.info("Account mapping: " + mapping.string() );
         return mapping;
     }
 
@@ -186,7 +155,7 @@ public class AccountSearchService
     {
         final SearchRequest req = Requests.searchRequest( CMS_INDEX )
                 .types( ACCOUNT_INDEX_TYPE )
-                .searchType( SearchType.QUERY_THEN_FETCH )
+                .searchType( getSearchType( query ) )
                 .source( this.translator.build( query ) );
 
         final SearchResponse res = this.client.search(req).actionGet();
@@ -194,13 +163,29 @@ public class AccountSearchService
 //        LOG.info( "Search result: " + res.toString() );
 
         final SearchHits hits = res.getHits();
+
         final AccountSearchResults searchResult = new AccountSearchResults(query.getFrom(), (int)hits.getTotalHits());
-        addSearchHits( searchResult, hits, query.getCount() );
+        if ( query.isIncludeResults() )
+        {
+            addSearchHits( searchResult, hits, query.getCount() );
+        }
 
         final Facets facets = res.facets();
         addSearchFacets(searchResult, facets);
 
         return searchResult;
+    }
+
+    private SearchType getSearchType( AccountSearchQuery query )
+    {
+        if ( query.isIncludeResults() )
+        {
+            return SearchType.QUERY_THEN_FETCH;
+        }
+        else
+        {
+            return SearchType.COUNT;
+        }
     }
 
     private void addSearchFacets( AccountSearchResults searchResult, Facets facets )
@@ -223,7 +208,7 @@ public class AccountSearchService
 
     private void addSearchHits( AccountSearchResults searchResult, SearchHits hits, int count )
     {
-        final int hitCount = (int) Math.min( count, hits.totalHits() );
+        final int hitCount = Math.min( count, hits.getHits().length );
         for ( int i = 0; i < hitCount; i++ )
         {
             final SearchHit hit = hits.getAt( i );

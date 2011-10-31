@@ -4,9 +4,6 @@ Ext.define('App.view.ActivityStreamPanel', {
     title: 'Activity Stream',
     tools:[
         {
-            type:'refresh'
-        },
-        {
             type:'gear'
         }
     ],

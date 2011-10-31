@@ -28,6 +28,9 @@ Ext.define( 'App.controller.AccountController', {
         'wizard.UserStoreListPanel'
     ],
 
+    accountTypeSearchFilter: 'all',
+    searchFilterTypingTimer: null,
+
     init: function()
     {
         Ext.create('widget.accountContextMenu');
@@ -38,7 +41,7 @@ Ext.define( 'App.controller.AccountController', {
                 'cmsTabPanel': {
                     afterrender: function(tabPanel, eOpts) {
                         //this.createBrowseTab(tabPanel, eOpts);
-                        //this.updateActionItems();
+                        this.updateActionItems();
                     }
                 },
                 '*[action=newUser]': {
@@ -135,21 +138,18 @@ Ext.define( 'App.controller.AccountController', {
 
     onFilterPanelRender: function()
     {
-        Ext.getCmp( 'filter' ).focus( false, 10 );
+        var filterTextField = Ext.getCmp( 'filter' );
 
-        this.getFilterTypeField().addListener( 'change', function(field, newValue, oldValue, eOpts) {
-            var fieldIsSelected = typeof field.getValue().type === 'string';
-            if ( fieldIsSelected )
-            {
-                this.searchFilter();
-            }
-        }, this );
+        filterTextField.addListener( 'keypress', this.searchFilterKeyPress, this );
+        this.getSearchFilterUsers().addListener( 'click', this.searchFilterUsers, this);
+        this.getSearchFilterGroups().addListener( 'click', this.searchFilterGroups, this);
+        this.getSearchFilterAll().addListener( 'click', this.searchFilterAll, this);
 
         this.getFilterUserStoreField().addListener( 'change', function(field, newValue, oldValue, eOpts) {
-            var fieldIsSelected = typeof field.getValue().userStoreKey === 'string';
             this.searchFilter();
         }, this );
 
+        filterTextField.focus( false, 10 );
     },
 
     createNewGroupTab: function()
@@ -192,7 +192,7 @@ Ext.define( 'App.controller.AccountController', {
         else
         {
             var user = selection[0];
-            this.application.fireEvent('showNotifyUserWindow', user );
+
             if ( user )
             {
                 accountDetailPanel.setCurrentUser( user.data );
@@ -246,19 +246,20 @@ Ext.define( 'App.controller.AccountController', {
 
         var usersStore = this.getUserStoreStore();
         var textField = this.getFilterTextField();
-        var typeField = this.getFilterTypeField();
         var userStoreField = this.getFilterUserStoreField();
+        var typeFilter = this.accountTypeSearchFilter;
 
         usersStore.clearFilter();
         usersStore.load(
             {
                 params: {
                     query: textField.getValue(),
-                    type: typeField.getValue(),
+                    type: typeFilter,
                     userstores: userStoreField.getValue()
                 }
-            });
-        },
+            }
+        );
+    },
 
     setBrowseTabActive: function()
     {
@@ -620,11 +621,6 @@ Ext.define( 'App.controller.AccountController', {
         return Ext.ComponentQuery.query( 'accountFilter textfield[name=filter]' )[0];
     },
 
-    getFilterTypeField: function()
-    {
-        return Ext.ComponentQuery.query( 'accountFilter radiogroup[itemId=typeRadios]' )[0];
-    },
-
     getFilterUserStoreField: function()
     {
         return Ext.ComponentQuery.query( 'accountFilter checkboxgroup[itemId=userstoreRadios]' )[0];
@@ -650,6 +646,31 @@ Ext.define( 'App.controller.AccountController', {
         return Ext.ComponentQuery.query( 'accountContextMenu' )[0];
     },
 
+    getSearchFilterUsers: function()
+    {
+        return Ext.ComponentQuery.query( 'accountFilter [itemId=searchFilterUsers]' )[0];
+    },
+
+    getSearchFilterGroups: function()
+    {
+        return Ext.ComponentQuery.query( 'accountFilter [itemId=searchFilterGroups]' )[0];
+    },
+
+    getSearchFilterAll: function()
+    {
+        return Ext.ComponentQuery.query( 'accountFilter [itemId=searchFilterAll]' )[0];
+    },
+
+    getSearchFilterUsersLabel: function()
+    {
+        return Ext.ComponentQuery.query( 'accountFilter [itemId=searchFilterUsersLabel]' )[0];
+    },
+
+    getSearchFilterGroupsLabel: function()
+    {
+        return Ext.ComponentQuery.query( 'accountFilter [itemId=searchFilterGroupsLabel]' )[0];
+    },
+
     initFilterPanelUserStoreOptions: function(store) {
         var items = store.data.items;
         var userstores = [];
@@ -666,6 +687,59 @@ Ext.define( 'App.controller.AccountController', {
         var data = store.proxy.reader.jsonData;
         var filterPanel = Ext.widget('accountFilter');
         filterPanel.showFacets(data.results.facets);
+    },
+
+    searchFilterUsers: function()
+    {
+        this.accountTypeSearchFilter = 'users';
+        this.getSearchFilterUsers().hide();
+        this.getSearchFilterGroups().hide();
+        this.getSearchFilterAll().show();
+
+        this.getSearchFilterUsersLabel().show();
+        this.getSearchFilterGroupsLabel().hide();
+
+        this.searchFilter();
+    },
+
+    searchFilterGroups: function()
+    {
+        this.accountTypeSearchFilter = 'groups';
+        this.getSearchFilterUsers().hide();
+        this.getSearchFilterGroups().hide();
+        this.getSearchFilterAll().show();
+
+        this.getSearchFilterUsersLabel().hide();
+        this.getSearchFilterGroupsLabel().show();
+
+        this.searchFilter();
+    },
+
+    searchFilterAll: function()
+    {
+        this.accountTypeSearchFilter = 'all';
+        this.getSearchFilterAll().hide();
+        this.getSearchFilterUsers().show();
+        this.getSearchFilterGroups().show();
+
+        this.getSearchFilterUsersLabel().hide();
+        this.getSearchFilterGroupsLabel().hide();
+
+        this.searchFilter();
+    },
+
+    searchFilterKeyPress: function ()
+    {
+        if ( this.searchFilterTypingTimer != null )
+        {
+            window.clearTimeout( this.searchFilterTypingTimer );
+            this.searchFilterTypingTimer = null;
+        }
+        var controller = this;
+        this.searchFilterTypingTimer = window.setTimeout( function ()
+                                                            {
+                                                                controller.searchFilter();
+                                                            }, 500 );
     }
 
 } );

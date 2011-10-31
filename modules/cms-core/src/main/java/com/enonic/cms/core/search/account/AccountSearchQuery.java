@@ -1,5 +1,7 @@
 package com.enonic.cms.core.search.account;
 
+import java.util.Arrays;
+
 import com.enonic.cms.core.search.SearchSortOrder;
 
 public final class AccountSearchQuery
@@ -12,6 +14,7 @@ public final class AccountSearchQuery
     private boolean groups;
     private SearchSortOrder sortOrder;
     private AccountIndexField sortField;
+    private boolean includeResults;
 
     public AccountSearchQuery()
     {
@@ -22,6 +25,22 @@ public final class AccountSearchQuery
         this.users = true;
         this.groups = true;
         this.sortField = null;
+        this.includeResults = true;
+    }
+
+    public AccountSearchQuery(AccountSearchQuery accountSearchQuery)
+    {
+        this.query = accountSearchQuery.query;
+        this.from = accountSearchQuery.from;
+        this.count = accountSearchQuery.count;
+        if ( userStore != null )
+        {
+            this.userStore = Arrays.copyOf( accountSearchQuery.userStore, accountSearchQuery.userStore.length );
+        }
+        this.users = accountSearchQuery.users;
+        this.groups = accountSearchQuery.groups;
+        this.sortField = accountSearchQuery.sortField;
+        this.includeResults = accountSearchQuery.includeResults;
     }
 
     public boolean getGroups()
@@ -116,6 +135,17 @@ public final class AccountSearchQuery
     public AccountSearchQuery setSortField( AccountIndexField sortField )
     {
         this.sortField = sortField;
+        return this;
+    }
+
+    public boolean isIncludeResults()
+    {
+        return includeResults;
+    }
+
+    public AccountSearchQuery setIncludeResults( boolean includeResults )
+    {
+        this.includeResults = includeResults;
         return this;
     }
 }
