@@ -5,7 +5,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
     autoScroll: false,
     autoHeight: true,
     border: false,
-
+    cls: 'cms-form',
     currentUser: undefined,
     defaultUserStoreName: 'default',
     enableToolbar: true,
