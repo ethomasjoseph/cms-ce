@@ -8,12 +8,21 @@ Ext.define('App.view.DetailPanel', {
 
     initComponent: function() {
         var largeBoxesPanel = this.createLargeBoxSelection();
+        var oneSelectedPanel = this.createOneSelected();
         var smallBoxesPanel = this.createSmallBoxSelection();
         var noneSelectedPanel = this.createNoneSelection();
 
-        this.items = [noneSelectedPanel, largeBoxesPanel, smallBoxesPanel];
+        this.items = [noneSelectedPanel, oneSelectedPanel, largeBoxesPanel, smallBoxesPanel];
         this.callParent(arguments);
     },
+
+    showOneSelected: function(data)
+    {
+        var activeItem = this.down('#oneSelectedPanel');
+        this.getLayout().setActiveItem('oneSelectedPanel');
+        activeItem.update(data);
+    },
+
 
     showMultipleSelection: function(data, detailed){
         var activeItem;
@@ -36,6 +45,22 @@ Ext.define('App.view.DetailPanel', {
         var activeItem = this.down('#noneSelectedPanel');
         this.getLayout().setActiveItem('noneSelectedPanel');
         activeItem.update(data);
+    },
+
+    createOneSelected: function()
+    {
+        var tpl = new Ext.XTemplate( Templates.account.selectedUserOne );
+
+        var panel = {
+            xtype: 'panel',
+            itemId: 'oneSelectedPanel',
+            styleHtmlContent: true,
+            autoScroll: true,
+            border: 0,
+            tpl: tpl
+        };
+
+        return panel;
     },
 
     createNoneSelection: function()
@@ -122,6 +147,7 @@ Ext.define('App.view.DetailPanel', {
         }
     },
 
+    // TODO: Remove
     generateUserButton: function(userData, shortInfo)
     {
         if (shortInfo)

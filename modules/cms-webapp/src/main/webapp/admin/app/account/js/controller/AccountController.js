@@ -177,26 +177,32 @@ Ext.define( 'App.controller.AccountController', {
 
     updateDetailsPanel: function()
     {
+        var detailPanel = this.getAccountDetailPanel();
         var persistentGridSelection = this.getPersistentGridSelectionPlugin();
         var selection = persistentGridSelection.getSelection();
-        var accountDetailPanel = this.getAccountDetailPanel();
         var selectionCount = persistentGridSelection.getSelectionCount();
         var userStore = this.getStore('UserStore');
         var pageSize = userStore.pageSize;
         var totalCount = userStore.totalCount;
 
-        if ( selectionCount == 0 )
+        if ( selectionCount === 0 )
         {
-            accountDetailPanel.showNoneSelection();
+            detailPanel.showNoneSelection();
         }
-        else
+        else if ( selectionCount === 1 )
         {
             var user = selection[0];
             if ( user )
             {
-                accountDetailPanel.setCurrentUser( user.data );
+                detailPanel.setCurrentUser( user.data );
             }
 
+            console.log(user.data);
+
+            detailPanel.showOneSelected(user.data)
+        }
+        else
+        {
             var detailed = true;
             if ( selectionCount > 10 )
             {
@@ -207,10 +213,10 @@ Ext.define( 'App.controller.AccountController', {
             {
                 Ext.Array.include( selectedUsers, user.data );
             } );
-            accountDetailPanel.showMultipleSelection( selectedUsers, detailed );
+            detailPanel.showMultipleSelection( selectedUsers, detailed );
         }
 
-        accountDetailPanel.updateTitle(persistentGridSelection);
+        detailPanel.updateTitle(persistentGridSelection);
     },
 
     updateActionItems: function()
