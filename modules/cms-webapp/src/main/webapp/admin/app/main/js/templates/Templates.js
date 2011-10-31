@@ -13,10 +13,9 @@ Templates.main = {
             '<p>{qualifiedName}</p>' +
             '<p>{email}</p>' +
             '<p>&nbsp;</p>' +
-            '<p>Edit Account</p>' +
-            '<p>Change Password</p>' +
-            '<p>&nbsp;</p>' +
-            '<p class="cms-logged-in-user-popup-log-out"><a href="index.html">Log Out</a></p>' +
+            '<p><a href="javascript:;">Edit Account</a></p>' +
+            '<p><a href="javascript:;">Change Password</a></p>' +
+            '<p class="cms-logged-in-user-popup-log-out" style="float:right"><a href="index.html">Log Out</a></p>' +
         '</div>',
 
     activityStream:
@@ -83,14 +82,14 @@ Templates.main = {
                     '<td style="width: 42px" valign="top">' +
                         '<img src="app/main/images/feedback-ok.png" style="width:32px; height:32px"/>' +
                     '</td>' +
-                    '<td valign="top" style="height: 50px">' +
+                    '<td valign="top">' +
                         '<h1>{messageTitle}</h1>' +
                         '<div class="message-text">{messageText}</div>' +
                     '</td>' +
                 '</tr>' +
                 '<tr>' +
                     '<td colspan="2" style="text-align: right">' +
-                        '<a class="notify-user-button" href="javascript:;">Notify User</a>' +
+                        '<p><a class="notify-user-button" href="javascript:;">Notify User</a></p>' +
                     '</td>' +
                 '</tr>'+
             '</table>'+

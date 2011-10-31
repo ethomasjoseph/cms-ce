@@ -1,7 +1,7 @@
 Ext.define( 'App.view.FeedbackWindow', {
     extend: 'Ext.Component',
     alias: 'widget.feedbackWindow',
-    width: 390,
+    width: 370,
     autoHeight: true,
     floating: true,
     autoShow: true,
@@ -11,6 +11,9 @@ Ext.define( 'App.view.FeedbackWindow', {
     initComponent: function()
     {
         this.callParent( arguments );
+
+        this.update({});
+
     },
 
     onRender: function()
@@ -21,6 +24,7 @@ Ext.define( 'App.view.FeedbackWindow', {
     afterRender: function()
     {
         this.callParent( arguments );
+        this.getEl().setOpacity(0);
     }
 
 });

@@ -1,12 +1,11 @@
 /*----- Activity stream -----*/
 
 .cms-activity-stream-panel-body {
-    background-color: #f0f0f0;
+    background-color: #f5f5f5;
     padding: 0;
 }
 
 .cms-activity-stream-panel-body a {
-    font-weight: bold;
     text-decoration: none;
     color: #576cd5;
 }
@@ -46,7 +45,7 @@
 
 .cms-activity-stream-message {
     border-bottom: 1px solid #ccc;
-    padding: 9px 10px 10px 10px;
+    padding: 10px;
 }
 
 .cms-activity-stream-message:last-child {
@@ -65,11 +64,10 @@
 }
 
 .cms-activity-stream-message .photo-container {
-    padding-right: 15px;
+    padding-right: 10px;
 }
 
 .cms-activity-stream-message .photo-container img {
-    border-radius: 3px;
 }
 
 .cms-activity-stream-message .message-container {
@@ -87,14 +85,12 @@
 
 .cms-activity-stream-message .display-name-location,
 .cms-activity-stream-message .date-links table .pretty-date,
-#activity-stream-speak-out-letters-left-container
-{
+#activity-stream-speak-out-letters-left-container {
     color: #555;
 }
 
-.cms-activity-stream-message .date-links
-{
-    margin-top: 6px;
+.cms-activity-stream-message .date-links {
+    margin-top: 5px;
 }
 
 .cms-activity-stream-message .date-links table {
@@ -128,34 +124,37 @@
 /*----- Feedback Window -----*/
 
 .cms-feedback-window {
-    border: 2px solid #fff;
-    border-radius: 8px;
-    background-color: #444;
+    border: 1px solid #99BCE8;
+    background-color: #dbeeff;
     padding: 10px;
     position: relative;
+}
+
+.cms-feedback-window,
+.cms-feedback-window td {
+    color: #000;
+    font-size: 11px;
 }
 
 .cms-feedback-window table {
     width: 100%;
 }
 
-.cms-feedback-window,
-.cms-feedback-window td {
-    color: #f0f0f0;
-    font-size: 11px;
-}
-
 .cms-feedback-window h1 {
-    font-weight: bold;
     margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 .cms-feedback-window .message-text {
 }
 
 .cms-feedback-window a {
-    font-weight: bold;
-    color: limegreen;
+    color: #576CD5;
+}
+
+.cms-feedback-window p {
+    margin-top: 10px;
 }
 
 /*----- Launcher Toolbar -----*/
@@ -191,7 +190,7 @@
 .app-launcher-button .x-btn-arrow {
 }
 
-.main-center-body,
+.main-viewport-center-body,
 .system-center-inner {
     border: none !important;
 }
@@ -206,28 +205,33 @@
 /*----- Logged in user popup -----*/
 
 .cms-logged-in-user-popup {
-    background-color: #fff;
+    border: 1px solid #99BCE8;
     padding: 10px;
-    box-shadow: 5px 5px 5px #ccc;
+    background-color: #fff;
+}
+
+.cms-logged-in-user-popup h1 {
+    font-size: 14px;
+}
+
+.cms-logged-in-user-popup a {
+    color: #576CD5
 }
 
 .cms-logged-in-user-popup-left {
     float: left;
-    margin-right: 15px;
+    margin-right: 10px;
 }
 
 .cms-logged-in-user-popup-right {
     float: left;
-    width: 243px;
+    width: 223px;
 }
 
 .cms-logged-in-user-popup-left img {
-    border-radius: 4px;
-}
-
-.cms-logged-in-user-popup-right h1 {
-    font-size: 18px !important;
+    width: 64px;
 }
 
 .cms-logged-in-user-popup-log-out {
+    marigin-top: 10px;
 }

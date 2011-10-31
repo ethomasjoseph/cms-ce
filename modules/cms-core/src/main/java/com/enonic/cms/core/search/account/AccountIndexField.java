@@ -8,7 +8,8 @@ public enum AccountIndexField
     USERSTORE_FIELD( "userstore" ),
     NAME_FIELD( "name" ),
     FIRST_NAME_FIELD( "first-name" ),
-    KEY_FIELD( "key" );
+    KEY_FIELD( "key" ),
+    EMAIL_FIELD( "email" ),
     ;
 
     private final String id;

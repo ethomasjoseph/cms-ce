@@ -19,11 +19,6 @@ Ext.define('App.controller.LauncherToolbarController', {
                 },
                 'launcherToolbar *[itemId=app-launcher-button] menu > menuitem': {
                     click: this.loadApp
-                },
-                'launcherToolbar *[itemId=launcher-feedback-test-button]': {
-                    click: function() {
-                        this.application.fireEvent('feedbackWindow.show', 'Feedback from App Launcher', 'App Launcher says Hello World!');
-                    }
                 }
             }
         );
@@ -39,7 +34,7 @@ Ext.define('App.controller.LauncherToolbarController', {
     {
         if ( !window.appLoadMask )
         {
-            window.appLoadMask = new Ext.LoadMask( Ext.getDom( 'main-center' ), {msg:"Please wait..."} );
+            window.appLoadMask = new Ext.LoadMask( Ext.getDom( 'main-viewport-center' ), {msg:"Please wait..."} );
         }
 
         if ( item.cms.appUrl === '' )

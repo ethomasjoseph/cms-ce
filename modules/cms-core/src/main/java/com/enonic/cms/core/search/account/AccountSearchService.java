@@ -124,6 +124,11 @@ public class AccountSearchService
                     .field( "store", "yes" )
                     .field( "format", "dateOptionalTime" )
                 .endObject()
+            .field( AccountIndexField.EMAIL_FIELD.id() )
+                .startObject()
+                    .field( "type", "string" )
+                    .field( "index", "not_analyzed" )
+                .endObject()
             .endObject()
         .endObject()
         .endObject();
@@ -196,7 +201,7 @@ public class AccountSearchService
         final SearchHits hits = res.getHits();
 
         final AccountSearchResults searchResult = new AccountSearchResults(query.getFrom(), (int)hits.getTotalHits());
-        if ( !query.isCountOnly() )
+        if ( query.isIncludeResults() )
         {
             addSearchHits( searchResult, hits, query.getCount() );
         }
@@ -209,13 +214,13 @@ public class AccountSearchService
 
     private SearchType getSearchType( AccountSearchQuery query )
     {
-        if ( query.isCountOnly() )
+        if ( query.isIncludeResults() )
         {
-            return SearchType.COUNT;
+            return SearchType.QUERY_THEN_FETCH;
         }
         else
         {
-            return SearchType.QUERY_THEN_FETCH;
+            return SearchType.COUNT;
         }
     }
 
@@ -239,7 +244,7 @@ public class AccountSearchService
 
     private void addSearchHits( AccountSearchResults searchResult, SearchHits hits, int count )
     {
-        final int hitCount = (int) Math.min( count, hits.totalHits() );
+        final int hitCount = Math.min( count, hits.getHits().length );
         for ( int i = 0; i < hitCount; i++ )
         {
             final SearchHit hit = hits.getAt( i );

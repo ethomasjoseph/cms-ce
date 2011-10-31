@@ -4,6 +4,8 @@ Ext.define('App.controller.FeedbackWindowController', {
 
     init: function()
     {
+        Ext.create('widget.feedbackWindow');
+
         this.control({
         });
 
@@ -14,91 +16,84 @@ Ext.define('App.controller.FeedbackWindowController', {
             }
         );
 
-        this.createWindow();
+        this.addWindowClickListener();
     },
 
     show: function(title, message)
     {
-        if (self.fadeoutWaiter)
-            clearTimeout(self.fadeoutWaiter);
-
-        this.feedbackWindow.center();
-        this.feedbackWindow.update(
+        this.getFeedbackWindow().update(
             {
                 messageTitle: title,
                 messageText: message
             }
         );
 
-        this.fadeIn();
+        this.animateWindow();
+    },
+
+    animateWindow: function()
+    {
+        var self = this;
+        var feedbackWindow = this.getFeedbackWindow();
+
+        feedbackWindow.stopAnimation();
+
+        var viewPortHeight = Ext.Element.getViewportHeight();
+        var viewPortWidth = Ext.Element.getViewportWidth();
+        var windowBox = feedbackWindow.getBox();
+        var leftPosition = viewPortWidth - windowBox.width - 5;
+        var animateFromPosition = viewPortHeight + windowBox.height;
+        var animateToPosition = viewPortHeight - windowBox.height - 5;
+
+        feedbackWindow.setPosition(leftPosition, animateFromPosition);
+
+        feedbackWindow.animate(
+            {
+                duration: 400,
+                from: {
+                    opacity: 0,
+                    y: animateFromPosition
+                },
+                to: {
+                    opacity: 1,
+                    y: animateToPosition
+                },
+                easing: 'easeIn'
+            }
+        ).animate(
+            {
+                duration: 4000,
+                from: {
+                    opacity: 1
+                },
+                to: {
+                    opacity: 1
+                }
+            }
+        ).animate(
+            {
+                duration: 500,
+                from: {
+                    opacity: 1
+                },
+                to: {
+                    opacity: 0
+                }
+            }
+        );
     },
 
     hide: function()
     {
-        if (self.fadeoutWaiter)
-            clearTimeout(self.fadeoutWaiter);
-
-        this.feedbackWindow.stopAnimation();
-        this.feedbackWindow.getEl().setOpacity(0);
+        var feedbackWindow = this.getFeedbackWindow();
+        feedbackWindow.stopAnimation();
+        feedbackWindow.getEl().setOpacity(0);
     },
 
-    fadeIn: function()
-    {
-        var self = this;
-
-        this.feedbackWindow.animate(
-            {
-                duration: 500,
-                from: {
-                    opacity: 0
-                },
-                to: {
-                    opacity: .9
-                },
-                listeners: {
-                    afteranimate: function() {
-                        self.fadeoutWaiter = setTimeout(function() {
-                            self.fadeOut();
-                        }, 3000)
-                    },
-                    scope: this
-                }
-            }
-        )
-    },
-
-    fadeOut: function()
-    {
-        if (this.fadeoutWaiter)
-            clearTimeout(this.fadeoutWaiter);
-
-        this.feedbackWindow.animate(
-            {
-                duration: 500,
-                from: {
-                    opacity: .9
-                },
-                to: {
-                    opacity: 0
-                },
-                listeners: {
-                }
-            }
-        )
-    },
-
-    createWindow: function()
-    {
-        this.feedbackWindow = Ext.create('App.view.FeedbackWindow');
-        this.feedbackWindow.update({});
-        this.addWindowClickListener();
-        this.feedbackWindow.getEl().setOpacity(0);
-    },
-
-    // Private
     addWindowClickListener: function()
     {
-        this.feedbackWindow.getEl().on('click', function(event, target) {
+        var feedbackWindow = this.getFeedbackWindow();
+        feedbackWindow.getEl().on('click', function(event, target) {
             if(target.className.indexOf('notify-user-button') > -1)
             {
                 Ext.Msg.alert('Comming soon', 'Notify User Window');
@@ -106,6 +101,11 @@ Ext.define('App.controller.FeedbackWindowController', {
 
             this.hide();
         }, this);
+    },
+
+    getFeedbackWindow: function()
+    {
+        return Ext.ComponentQuery.query('feedbackWindow')[0];
     }
 
 });

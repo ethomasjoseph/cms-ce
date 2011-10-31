@@ -66,19 +66,19 @@ Ext.define('App.view.FilterPanel', {
                     items: [
                         {
                             itemId: 'searchFilterUsersLabel',
-                            html: '<div class="cms-bold-text">Users</div>',
+                            html: '<div style="padding-bottom:4px;" class="cms-bold-text">Users</div>',
                             border: false,
                             hidden: true
                         },
                         {
                             itemId: 'searchFilterGroupsLabel',
-                            html: '<div class="cms-bold-text">Groups</div>',
+                            html: '<div style="padding-bottom:4px;" class="cms-bold-text">Groups</div>',
                             border: false,
                             hidden: true
                         },
                         {
                             itemId: 'searchFilterAll',
-                            html: '<div class="cms-cursor-clickable">Show All</div>',
+                            html: '<a href="javascript:;">Show All</a>',
                             border: false,
                             hidden: true,
                             listeners : {
@@ -89,7 +89,8 @@ Ext.define('App.view.FilterPanel', {
                         },
                         {
                             itemId: 'searchFilterUsers',
-                            tpl: new Ext.Template('<div class="cms-cursor-clickable">{text}</div>'),
+                            tpl: new Ext.Template('<div style="padding-bottom:4px;">{text}</div>'),
+                            overCls: 'cms-cursor-clickable',
                             border: false,
                             listeners : {
                                 render : function(c) {
@@ -99,7 +100,8 @@ Ext.define('App.view.FilterPanel', {
                         },
                         {
                             itemId: 'searchFilterGroups',
-                            tpl: new Ext.Template('<div class="cms-cursor-clickable">{text}</div>'),
+                            tpl: new Ext.Template('<div style="padding-bottom:4px;">{text}</div>'),
+                            overCls: 'cms-cursor-clickable',
                             border: false,
                             listeners : {
                                 render : function(c) {
@@ -108,6 +110,11 @@ Ext.define('App.view.FilterPanel', {
                             }
                         }
                     ]
+                },
+                                    {
+                    xtype: 'label',
+                    text: '',
+                    height: 10
                 },
                 {
                     xtype: 'label',
@@ -124,6 +131,7 @@ Ext.define('App.view.FilterPanel', {
                         name: 'userStoreKey',
                         cls: 'facet-single-select-item',
                         checkedCls: 'x-form-cb-checked facet-selected',
+                        overCls: 'cms-cursor-clickable',
                         width: 170
                     },
 
@@ -159,6 +167,7 @@ Ext.define('App.view.FilterPanel', {
             if (checkbox.length > 0) {
                 checkbox = checkbox[0];
                 count = terms[userstore];
+                checkbox.setVisible(count > 0);
                 userstore = (userstore === '_Global')? 'Global' : userstore;
                 checkbox.el.down('label').update(userstore + ' (' + count + ')');
             }
@@ -169,10 +178,18 @@ Ext.define('App.view.FilterPanel', {
         var userCount = facet.terms.user;
         var groupCount = facet.terms.group;
 
+        var showAllButton = Ext.ComponentQuery.query( '*[itemId=searchFilterAll]' )[0];
+
         var usersButton = Ext.ComponentQuery.query( '*[itemId=searchFilterUsers]' )[0];
         usersButton.update({text: 'Users (' + userCount + ')'});
+        if (!showAllButton.isVisible()) {
+            usersButton.setVisible(userCount > 0);
+        }
         var groupsButton = Ext.ComponentQuery.query( '*[itemId=searchFilterGroups]' )[0];
         groupsButton.update({text: 'Groups (' + groupCount + ')'});
+        if (!showAllButton.isVisible()) {
+            groupsButton.setVisible(groupCount > 0);
+        }
     },
 
     setUserStores: function(userstores) {
