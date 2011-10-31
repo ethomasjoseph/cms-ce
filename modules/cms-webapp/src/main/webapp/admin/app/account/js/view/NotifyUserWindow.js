@@ -3,11 +3,11 @@ Ext.define( 'App.view.NotifyUserWindow', {
     alias: 'widget.notifyUserWindow',
 
     title: 'Notify User',
-    width: 350,
+    width: 500,
     modal: true,
-    autoHeight: true,
     modelData: undefined,
-
+    autoHeight: true,
+    cls: 'cms-notify-user-window',
     closeAction: 'hide',
     bodyPadding: 10,
     bodyStyle: 'background: #fff;',
@@ -39,14 +39,12 @@ Ext.define( 'App.view.NotifyUserWindow', {
         this.items = [
             {
                 itemId: 'userInfo',
-                bodyPadding: 10,
+                cls: 'notify-header',
+                xtype: 'container',
+                border: false,
+                height: 80,
                 styleHtmlContent: true,
-                tpl: new Ext.XTemplate(Templates.common.userInfo),
-                listeners: {
-                    'render': function() {
-                        this.update(this.up().modelData);
-                    }
-                }
+                tpl: new Ext.XTemplate(Templates.common.userInfo)
             },
             {
                 xtype: 'form',
@@ -54,14 +52,16 @@ Ext.define( 'App.view.NotifyUserWindow', {
                 autoHeight: true,
                 border: false,
                 url: 'data/user/notify',
-                bodyPadding: '10px 0 0',
+                bodyPadding: '5px 0 0',
                 items: [
                     {
                         xtype: 'fieldset',
+                        margin: 0,
                         title: 'Message',
                         defaults: {
                             xtype: 'textfield',
-                            allowBlank: false
+                            allowBlank: false,
+                            validateOnChange: true
                         },
                         items: [
                             {
@@ -81,7 +81,8 @@ Ext.define( 'App.view.NotifyUserWindow', {
                                 allowBlank: false
                             },
                             {
-                                style: 'margin-left: 105px;',
+                                margin: '0 0 10px 105px',
+                                formBind: true,
                                 xtype: 'button',
                                 scale: 'medium',
                                 text: 'Send',

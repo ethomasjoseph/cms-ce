@@ -11,7 +11,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
     measureWidth: true,
 
     border: 0,
-
+    cls: 'cms-form',
     style: {
         overflow: 'hidden'
     },

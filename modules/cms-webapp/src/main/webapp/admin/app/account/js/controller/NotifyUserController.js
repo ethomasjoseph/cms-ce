@@ -34,9 +34,13 @@ Ext.define( 'App.controller.NotifyUserController', {
     },
 
     doSend: function( btn, evt ) {
-        var form = btn.up('notifyUserWindow').down('form');
-        form.submit();
-        this.closeWindow();
+        var form = btn.up('notifyUserWindow').down('form').getForm();
+        if( form.isValid() ) {
+            form.submit();
+            this.closeWindow();
+        } else {
+            form.markInvalid();
+        }
     },
 
     getNotifyUserWindow: function()
