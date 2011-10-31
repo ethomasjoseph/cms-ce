@@ -255,15 +255,16 @@ Ext.define( 'App.controller.AccountController', {
         var typeFilter = this.accountTypeSearchFilter;
 
         usersStore.clearFilter();
-        usersStore.load(
-            {
-                params: {
-                    query: textField.getValue(),
-                    type: typeFilter,
-                    userstores: userStoreField.getValue()
-                }
-            }
-        );
+        usersStore.getProxy().extraParams = {
+            query: textField.getValue(),
+            type: typeFilter,
+            userstores: userStoreField.getValue()
+        };
+
+        // move to page 1 when search filter updated
+        var pagingToolbar = this.getUserGrid().down('pagingtoolbar');
+        // changing to first page triggers usersStore.load()
+        pagingToolbar.moveFirst();
     },
 
     setBrowseTabActive: function()
