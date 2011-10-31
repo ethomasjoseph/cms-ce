@@ -360,7 +360,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
             this.add( this.generateFieldSet( 'Name', this.nameFieldSet, fields ) );
             this.add( this.generateFieldSet( 'Photo', this.photoFieldSet, fields ) );
             this.add( this.generateFieldSet( 'Personal Information', this.detailsFieldSet, fields ) );
-            this.add( this.generateFieldSet( 'Location', this.locationFieldSet, fields ) );
+            this.add( this.generateFieldSet( 'Settings', this.locationFieldSet, fields ) );
             this.add( this.generateFieldSet( 'Communication', this.communicationFieldSet, fields ) );
             this.add( this.generateFieldSet( 'Address', this.addressFieldSet, fields ) );
         }
