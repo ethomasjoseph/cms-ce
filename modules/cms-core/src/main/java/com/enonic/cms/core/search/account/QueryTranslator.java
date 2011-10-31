@@ -9,6 +9,8 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.facet.FacetBuilders;
 import org.elasticsearch.search.facet.terms.TermsFacetBuilder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,7 +88,9 @@ public final class QueryTranslator
         else
         {
             // default sort
-            searchBuilder.sort( AccountIndexField.LAST_MODIFIED_FIELD.id(), SortOrder.DESC );
+            FieldSortBuilder sortBuilder = SortBuilders.fieldSort( AccountIndexField.LAST_MODIFIED_FIELD.id() )
+                .order( SortOrder.DESC ).missing( "_last" );
+            searchBuilder.sort( sortBuilder );
         }
     }
 
