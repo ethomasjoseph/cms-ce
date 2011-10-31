@@ -74,12 +74,12 @@ public class AccountSearchService
             .field( AccountIndexField.USERSTORE_FIELD.id() )
                 .startObject()
                     .field( "type", "multi_field" )
-                    .startObject("fields")
-                        .startObject(AccountIndexField.USERSTORE_FIELD.id())
+                    .startObject( "fields" )
+                        .startObject( AccountIndexField.USERSTORE_FIELD.id() )
                             .field( "type", "string" )
                             .field( "index", "analyzed" )
                         .endObject()
-                        .startObject("untouched")
+                        .startObject( "untouched" )
                             .field( "type", "string" )
                             .field( "index", "not_analyzed" )
                         .endObject()
@@ -88,12 +88,12 @@ public class AccountSearchService
             .field( AccountIndexField.DISPLAY_NAME_FIELD.id() )
                 .startObject()
                     .field( "type", "multi_field" )
-                    .startObject("fields")
-                        .startObject(AccountIndexField.DISPLAY_NAME_FIELD.id())
+                    .startObject( "fields" )
+                        .startObject( AccountIndexField.DISPLAY_NAME_FIELD.id() )
                             .field( "type", "string" )
                             .field( "index", "analyzed" )
                         .endObject()
-                        .startObject("untouched")
+                        .startObject( "untouched" )
                             .field( "type", "string" )
                             .field( "index", "not_analyzed" )
                         .endObject()
@@ -134,42 +134,6 @@ public class AccountSearchService
         .endObject();
 
         LOG.info( "Account mapping: " + mapping.string() );
-        return mapping;
-    }
-
-    private XContentBuilder _buildIndexMapping()
-        throws IOException
-    {
-        final XContentBuilder mapping = XContentFactory.jsonBuilder().prettyPrint();
-        mapping.startObject(  );
-        mapping.field( ACCOUNT_INDEX_TYPE ).startObject(  );
-        mapping.field( "properties" ).startObject()
-            .field( AccountIndexField.USERSTORE_FIELD.id() )
-                .startObject()
-                    .field( "type", "string" )
-                    .field( "index", "not_analyzed" )
-                .endObject()
-            .field( AccountIndexField.DISPLAY_NAME_FIELD.id() )
-                .startObject()
-                    .field( "type", "string" )
-                    .field( "index", "not_analyzed" )
-                .endObject()
-            .field( AccountIndexField.KEY_FIELD.id() )
-                .startObject()
-                    .field( "type", "string" )
-                    .field( "enabled", false )
-                .endObject()
-            .field( AccountIndexField.LAST_MODIFIED_FIELD.id() )
-                .startObject()
-                    .field( "type", "date" )
-                    .field( "store", "yes" )
-                    .field( "format", "dateOptionalTime" )
-                .endObject()
-            .endObject()
-        .endObject()
-        .endObject();
-
-        LOG.info("Account mapping: " + mapping.string() );
         return mapping;
     }
 
