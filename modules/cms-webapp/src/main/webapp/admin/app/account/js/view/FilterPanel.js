@@ -178,10 +178,18 @@ Ext.define('App.view.FilterPanel', {
         var userCount = facet.terms.user;
         var groupCount = facet.terms.group;
 
+        var showAllButton = Ext.ComponentQuery.query( '*[itemId=searchFilterAll]' )[0];
+
         var usersButton = Ext.ComponentQuery.query( '*[itemId=searchFilterUsers]' )[0];
         usersButton.update({text: 'Users (' + userCount + ')'});
+        if (!showAllButton.isVisible()) {
+            usersButton.setVisible(userCount > 0);
+        }
         var groupsButton = Ext.ComponentQuery.query( '*[itemId=searchFilterGroups]' )[0];
         groupsButton.update({text: 'Groups (' + groupCount + ')'});
+        if (!showAllButton.isVisible()) {
+            groupsButton.setVisible(groupCount > 0);
+        }
     },
 
     setUserStores: function(userstores) {

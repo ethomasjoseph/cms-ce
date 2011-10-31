@@ -124,6 +124,11 @@ public class AccountSearchService
                     .field( "store", "yes" )
                     .field( "format", "dateOptionalTime" )
                 .endObject()
+            .field( AccountIndexField.EMAIL_FIELD.id() )
+                .startObject()
+                    .field( "type", "string" )
+                    .field( "index", "not_analyzed" )
+                .endObject()
             .endObject()
         .endObject()
         .endObject();

@@ -138,7 +138,8 @@ public final class QueryTranslator
         }
         return FilterBuilders.orFilter( prefixFilter( AccountIndexField.NAME_FIELD.id(), searchString ),
                                         prefixFilter( AccountIndexField.DISPLAY_NAME_FIELD.id(), searchString ),
-                                        prefixFilter( AccountIndexField.FIRST_NAME_FIELD.id(), searchString ) );
+                                        prefixFilter( AccountIndexField.FIRST_NAME_FIELD.id(), searchString ),
+                                        prefixFilter( AccountIndexField.EMAIL_FIELD.id(), searchString ) );
 
     }
 
@@ -150,7 +151,8 @@ public final class QueryTranslator
             return FilterBuilders.orFilter(
                 prefixFilter( AccountIndexField.NAME_FIELD.id(), prefix ),
                 prefixFilter( AccountIndexField.DISPLAY_NAME_FIELD.id(), prefix ),
-                prefixFilter( AccountIndexField.FIRST_NAME_FIELD.id(), prefix )
+                prefixFilter( AccountIndexField.FIRST_NAME_FIELD.id(), prefix ),
+                prefixFilter( AccountIndexField.EMAIL_FIELD.id(), prefix )
             );
         }
         else
@@ -158,7 +160,8 @@ public final class QueryTranslator
             return FilterBuilders.orFilter(
                 termsFilter( AccountIndexField.NAME_FIELD.id(), term ),
                 termsFilter( AccountIndexField.DISPLAY_NAME_FIELD.id(), term ),
-                termsFilter( AccountIndexField.FIRST_NAME_FIELD.id(), term )
+                termsFilter( AccountIndexField.FIRST_NAME_FIELD.id(), term ),
+                termsFilter( AccountIndexField.EMAIL_FIELD.id(), term )
             );
         }
     }
