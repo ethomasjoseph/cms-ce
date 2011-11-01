@@ -121,39 +121,39 @@
     height: 18px;
 }
 
-/*----- Feedback Window -----*/
+/*----- Notifier -----*/
 
-.cms-feedback-window {
+.cms-notifier {
     border: 1px solid #99BCE8;
     background-color: #dbeeff;
     padding: 5px;
     position: relative;
 }
 
-.cms-feedback-window,
-.cms-feedback-window td {
+.cms-notifier,
+.cms-notifier td {
     color: #000;
     font-size: 11px;
 }
 
-.cms-feedback-window table {
+.cms-notifier table {
     width: 100%;
 }
 
-.cms-feedback-window h1 {
+.cms-notifier h1 {
     margin-bottom: 5px;
     font-size: 14px;
     font-weight: bold;
 }
 
-.cms-feedback-window .message-text {
+.cms-notifier .message-text {
 }
 
-.cms-feedback-window a {
+.cms-notifier a {
     color: #576CD5;
 }
 
-.cms-feedback-window p {
+.cms-notifier p {
     margin-top: 10px;
 }
 

@@ -1,12 +1,12 @@
-Ext.define( 'App.view.FeedbackWindow', {
+Ext.define( 'App.view.Notifier', {
     extend: 'Ext.Component',
-    alias: 'widget.feedbackWindow',
+    alias: 'widget.notifier',
     width: 370,
     autoHeight: true,
     floating: true,
     autoShow: true,
 
-    tpl: Templates.main.feedbackWindow,
+    tpl: Templates.main.notifier,
 
     initComponent: function()
     {

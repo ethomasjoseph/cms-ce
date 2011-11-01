@@ -75,8 +75,8 @@ Templates.main = {
             '</div>' +
         '</div>',
 
-    feedbackWindow:
-        '<div class="cms-feedback-window clearfix">' +
+    notifier:
+        '<div class="cms-notifier clearfix">' +
             '<table border="0">'+
                 '<tr>' +
                     '<td style="width: 42px" valign="top">' +
