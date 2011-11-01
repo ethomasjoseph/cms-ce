@@ -131,13 +131,13 @@ Ext.define( 'App.controller.UserWizardController', {
         selectedUserStoreElement.addCls( 'cms-userstore-active' );
         var radioButton = selectedUserStoreElement.down( 'input' );
         radioButton.dom.checked = true;
-        var nextButton = this.getUserWizardPanel().down( '#next' );
         var userForms = this.getUserWizardPanel().query( 'editUserFormPanel' );
         Ext.Array.each( userForms, function( userForm )
         {
             userForm.currentUser = {userStore: record.get( 'name' )};
         } );
-        this.wizardNext( nextButton );
+        var profilePanel = this.getUserWizardPanel().down( 'wizardStepProfilePanel' );
+        profilePanel.getLayout().next();
     },
 
     textFieldHandleEnterKey: function( field, event )

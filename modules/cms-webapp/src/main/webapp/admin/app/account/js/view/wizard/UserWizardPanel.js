@@ -9,7 +9,8 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         'App.view.wizard.WizardStepLoginInfoPanel',
         'App.view.wizard.WizardStepMembershipPanel',
         'App.view.wizard.WizardStepSummaryPanel',
-        'Common.fileupload.PhotoUploadButton'
+        'Common.fileupload.PhotoUploadButton',
+        'App.view.wizard.WizardStepProfilePanel'
     ],
 
     layout: 'column',
@@ -152,18 +153,12 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                         items: [
                             {
                                 stepNumber: 1,
-                                stepTitle: 'Userstore',
-                                xtype: 'userStoreListPanel'
-                            },
-                            {
-                                stepNumber: 2,
                                 stepTitle: "Profile",
-                                itemId: 'userForm',
-                                xtype: 'editUserFormPanel',
+                                xtype: 'wizardStepProfilePanel',
                                 enableToolbar: false
                             },
                             {
-                                stepNumber: 3,
+                                stepNumber: 2,
                                 stepTitle: "Places",
                                 itemId: 'placesPanel',
                                 xtype: 'editUserFormPanel',
@@ -171,7 +166,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                                 enableToolbar: false
                             },
                             {
-                                stepNumber: 4,
+                                stepNumber: 3,
                                 stepTitle: "Login",
                                 itemId: "loginPanel",
                                 xtype: 'editUserFormPanel',
@@ -180,12 +175,12 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                                 enableToolbar: false
                             },
                             {
-                                stepNumber: 5,
+                                stepNumber: 4,
                                 stepTitle: "Memberships",
                                 xtype: 'wizardStepMembershipPanel'
                             },
                             {
-                                stepNumber: 6,
+                                stepNumber: 5,
                                 stepTitle: "Summary",
                                 xtype: 'wizardStepSummaryPanel'
                             }
