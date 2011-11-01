@@ -23,6 +23,7 @@ Ext.define('App.view.FilterPanel', {
                 },
                 {
                     xtype: 'button',
+                    itemId: 'filterButton',
                     iconCls: 'icon-find',
                     action: 'search',
                     margins: '0 0 0 5'
@@ -51,8 +52,8 @@ Ext.define('App.view.FilterPanel', {
                 },
 
                 {
-                    xtype: 'fieldcontainer',
-                    itemId: 'typeRadios',
+                    xtype: 'checkboxgroup',
+                    itemId: 'accountTypeOptions',
                     columns: 1,
                     vertical: true,
 
@@ -60,54 +61,22 @@ Ext.define('App.view.FilterPanel', {
                         name: 'type',
                         cls: 'facet-single-select-item',
                         checkedCls: 'x-form-cb-checked facet-selected',
+                        overCls: 'cms-cursor-clickable',
                         width: 170
                     },
 
                     items: [
                         {
-                            itemId: 'searchFilterUsersLabel',
-                            html: '<div style="padding-bottom:4px;" class="cms-bold-text">Users</div>',
-                            border: false,
-                            hidden: true
-                        },
-                        {
-                            itemId: 'searchFilterGroupsLabel',
-                            html: '<div style="padding-bottom:4px;" class="cms-bold-text">Groups</div>',
-                            border: false,
-                            hidden: true
-                        },
-                        {
-                            itemId: 'searchFilterAll',
-                            html: '<a href="javascript:;">Show All</a>',
-                            border: false,
-                            hidden: true,
-                            listeners : {
-                                render : function(c) {
-                                    c.getEl().on('click', function(){ this.fireEvent('click'); }, c);
-                                }
-                            }
-                        },
-                        {
                             itemId: 'searchFilterUsers',
-                            tpl: new Ext.Template('<div style="padding-bottom:4px;">{text}</div>'),
-                            overCls: 'cms-cursor-clickable',
-                            border: false,
-                            listeners : {
-                                render : function(c) {
-                                    c.getEl().on('click', function(){ this.fireEvent('click'); }, c);
-                                }
-                            }
+                            boxLabel: 'Users',
+                            inputValue: 'users',
+                            checked: false
                         },
                         {
                             itemId: 'searchFilterGroups',
-                            tpl: new Ext.Template('<div style="padding-bottom:4px;">{text}</div>'),
-                            overCls: 'cms-cursor-clickable',
-                            border: false,
-                            listeners : {
-                                render : function(c) {
-                                    c.getEl().on('click', function(){ this.fireEvent('click'); }, c);
-                                }
-                            }
+                            boxLabel: 'Groups',
+                            inputValue: 'groups',
+                            checked: false
                         }
                     ]
                 },
@@ -123,7 +92,7 @@ Ext.define('App.view.FilterPanel', {
                 },
                 {
                     xtype: 'checkboxgroup',
-                    itemId: 'userstoreRadios',
+                    itemId: 'userstoreOptions',
                     columns: 1,
                     vertical: true,
 
@@ -167,7 +136,7 @@ Ext.define('App.view.FilterPanel', {
             if (checkbox.length > 0) {
                 checkbox = checkbox[0];
                 count = terms[userstore];
-                checkbox.setVisible(count > 0);
+                checkbox.setVisible(checkbox.getValue() || count > 0);
                 userstore = (userstore === '_Global')? 'Global' : userstore;
                 checkbox.el.down('label').update(userstore + ' (' + count + ')');
             }
@@ -178,22 +147,17 @@ Ext.define('App.view.FilterPanel', {
         var userCount = facet.terms.user;
         var groupCount = facet.terms.group;
 
-        var showAllButton = Ext.ComponentQuery.query( '*[itemId=searchFilterAll]' )[0];
-
         var usersButton = Ext.ComponentQuery.query( '*[itemId=searchFilterUsers]' )[0];
-        usersButton.update({text: 'Users (' + userCount + ')'});
-        if (!showAllButton.isVisible()) {
-            usersButton.setVisible(userCount > 0);
-        }
+        usersButton.el.down('label').update('Users (' + userCount + ')');
+        usersButton.setVisible(usersButton.getValue() || userCount > 0);
+
         var groupsButton = Ext.ComponentQuery.query( '*[itemId=searchFilterGroups]' )[0];
-        groupsButton.update({text: 'Groups (' + groupCount + ')'});
-        if (!showAllButton.isVisible()) {
-            groupsButton.setVisible(groupCount > 0);
-        }
+        groupsButton.el.down('label').update('Groups (' + groupCount + ')');
+        groupsButton.setVisible(groupsButton.getValue() || groupCount > 0);
     },
 
     setUserStores: function(userstores) {
-        var userstoreRadioGroup = Ext.ComponentQuery.query( '*[itemId=userstoreRadios]' )[0];
+        var userstoreRadioGroup = Ext.ComponentQuery.query( '*[itemId=userstoreOptions]' )[0];
         userstoreRadioGroup.removeAll();
 
         // global userstore (global groups, built-in users)
@@ -208,6 +172,35 @@ Ext.define('App.view.FilterPanel', {
 
     userstoreCheckboxId: function(userstoreName) {
         return userstoreName + '_checkbox';
+    },
+
+    clearFilter: function() {
+        var userstoreCheckboxes = Ext.ComponentQuery.query( '[itemId=userstoreOptions] * , [itemId=accountTypeOptions] *' );
+        Ext.Array.each(userstoreCheckboxes, function(checkbox) {
+            checkbox.suspendEvents();
+            checkbox.setValue(false);
+            checkbox.show();
+            checkbox.resumeEvents();
+        });
+        this.setTitle( 'Filter' );
+
+        var filterButton = this.query('#filterButton')[0];
+        filterButton.fireEvent('click');
+    },
+
+    updateTitle: function()
+    {
+        var title = "Filter   (<a href='javascript:;' class='clearSelection'>Clear filter</a>)";
+        this.setTitle( title );
+
+        var clearSel = this.header.el.down( 'a.clearSelection' );
+        if ( clearSel )
+        {
+            var filterPanel = this;
+            clearSel.on( "click", function() {
+                filterPanel.clearFilter();
+            }, this );
+        }
     }
 
 });
