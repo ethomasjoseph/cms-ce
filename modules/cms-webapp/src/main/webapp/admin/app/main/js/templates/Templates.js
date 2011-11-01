@@ -13,8 +13,8 @@ Templates.main = {
             '<p>{qualifiedName}</p>' +
             '<p>{email}</p>' +
             '<p>&nbsp;</p>' +
-            '<p><a href="javascript:;">Edit Account</a></p>' +
-            '<p><a href="javascript:;">Change Password</a></p>' +
+            '<p><span class="link">Edit Account</span></p>' +
+            '<p><span class="link">Change Password</span></p>' +
             '<p class="cms-logged-in-user-popup-log-out" style="float:right"><a href="index.html">Log Out</a></p>' +
         '</div>',
 
@@ -37,20 +37,20 @@ Templates.main = {
                         '</td>' +
                     '</tr>' +
                 '</table>' +
-                '<div class="date-links clearfix" style="clear:both">' +
+                '<div class="actions clearfix" style="clear:both">' +
                     '<table border="0" cellspacing="0" cellpadding="0">' +
                         '<tr>' +
                             '<td>' +
                                 '<span class="pretty-date">{prettyDate}</span>' +
                             '</td>' +
                             '<td>' +
-                                '<a href="javascript:;" class="favorite" style="visibility:hidden">Favorite</a>' +
+                                '<span class="link favorite" style="visibility:hidden">Favorite</span>' +
                             '</td>' +
                             '<td>' +
-                                '<a href="javascript:;" class="comment" style="visibility:hidden">Comment</a>' +
+                                '<span class="link comment" style="visibility:hidden">Comment</span>' +
                             '</td>' +
                             '<td style="text-align:right">' +
-                                '<a href="javascript:;" class="more" style="visibility:hidden"><!-- --></a>' +
+                                '<span class="link more" style="visibility:hidden"><!-- --></span>' +
                             '</td>' +
                         '</tr>' +
                     '</table>' +
@@ -89,7 +89,7 @@ Templates.main = {
                 '</tr>' +
                 '<tr>' +
                     '<td colspan="2" style="text-align: right">' +
-                        '<p><a class="notify-user-button" href="javascript:;">Notify User</a></p>' +
+                        '<p><span class="link notify-user" href="javascript:;">Notify User</span></p>' +
                     '</td>' +
                 '</tr>'+
             '</table>'+

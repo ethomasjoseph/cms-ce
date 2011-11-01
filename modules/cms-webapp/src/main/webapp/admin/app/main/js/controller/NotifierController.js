@@ -94,7 +94,7 @@ Ext.define('App.controller.NotifierController', {
     {
         var notifier = this.getNotifier();
         notifier.getEl().on('click', function(event, target) {
-            if(target.className.indexOf('notify-user-button') > -1)
+            if(target.className.indexOf('notify-user') > -1)
             {
                 Ext.Msg.alert('Comming soon', 'Notify User Window');
             }
