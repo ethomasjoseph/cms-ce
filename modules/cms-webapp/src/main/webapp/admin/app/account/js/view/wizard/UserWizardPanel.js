@@ -164,19 +164,19 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                             },
                             {
                                 stepNumber: 3,
-                                stepTitle: "Places",
-                                itemId: 'placesPanel',
+                                stepTitle: "User",
+                                itemId: "userPanel",
                                 xtype: 'editUserFormPanel',
-                                includedFields: ['address'],
+                                includedFields: ['username', 'email', 'password', 'repeat-password', 'photo',
+                                    'country', 'locale', 'timezone', 'global-position'],
                                 enableToolbar: false
                             },
                             {
                                 stepNumber: 4,
-                                stepTitle: "Login",
-                                itemId: "loginPanel",
+                                stepTitle: "Places",
+                                itemId: 'placesPanel',
                                 xtype: 'editUserFormPanel',
-                                includedFields: ['username', 'email', 'password', 'repeat-password', 'photo',
-                                    'country', 'locale', 'timezone', 'global-position'],
+                                includedFields: ['address'],
                                 enableToolbar: false
                             },
                             {
