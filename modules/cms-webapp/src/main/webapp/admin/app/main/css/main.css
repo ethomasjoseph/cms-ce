@@ -124,15 +124,16 @@
 /*----- Notifier -----*/
 
 .cms-notifier {
-    border: 1px solid #99BCE8;
-    background-color: #dbeeff;
+    border-radius: 6px;
+    background-color: #444;
+    opacity: .9;
     padding: 5px;
     position: relative;
 }
 
 .cms-notifier,
 .cms-notifier td {
-    color: #000;
+    color: #f0f0f0;
     font-size: 11px;
 }
 
