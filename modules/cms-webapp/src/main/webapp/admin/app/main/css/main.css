@@ -130,7 +130,7 @@ span.link:hover {
 
 /*----- Notifier -----*/
 
-.cms-notifier {
+.cms-notification-window {
     border-radius: 6px;
     opacity: .9;
     padding: 10px;
@@ -146,30 +146,30 @@ span.link:hover {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#444', endColorstr='#0e0e0e',GradientType=0 );
 }
 
-.cms-notifier,
-.cms-notifier td {
+.cms-notification-window,
+.cms-notification-window td {
     color: #f0f0f0;
     font-size: 11px;
 }
 
-.cms-notifier table {
+.cms-notification-window table {
     width: 100%;
 }
 
-.cms-notifier h1 {
+.cms-notification-window h1 {
     margin-bottom: 5px;
     font-size: 14px;
     font-weight: bold;
 }
 
-.cms-notifier .message-text {
+.cms-notification-window .message-text {
 }
 
-.cms-notifier span.link {
+.cms-notification-window span.link {
     color: lime;
 }
 
-.cms-notifier p {
+.cms-notification-window p {
     margin-top: 10px;
 }
 
