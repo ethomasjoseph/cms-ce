@@ -14,47 +14,134 @@ Ext.define( 'App.view.EditUserFormPanel', {
         show: function( me )
         {
             me.el.mask( "Loading..." );
-            me.renderUserForm(me.currentUser);
+            me.renderUserForm( me.currentUser );
         }
     },
 
     initComponent: function()
     {
         var me = this;
-        if (this.enableToolbar){
+        if ( !this.staticFields )
+        {
+            this.staticFields = [
+                {
+                    label: 'Username',
+                    type: 'username',
+                    required: true,
+                    remote: false,
+                    readonly: false
+                },
+                {
+                    label: 'Password',
+                    type: 'password',
+                    required: true,
+                    remote: false,
+                    readonly: false
+                },
+                {
+                    label: 'Repeat password',
+                    type: 'repeat-password',
+                    required: true,
+                    remote: false,
+                    readonly: false
+                },
+                {
+                    label: 'E-mail',
+                    type: 'email',
+                    required: true,
+                    remote: false,
+                    readonly: false
+                },
+                {
+                    label: 'Display name',
+                    type: 'display-name',
+                    required: true,
+                    remote: false,
+                    readonly: false
+                },
+                {
+                    "type":"photo",
+                    "readOnly":false,
+                    "required":false,
+                    "remote":false,
+                    "iso":true
+                },
+                {
+                    "type":"country",
+                    "readOnly":false,
+                    "required":false,
+                    "remote":false,
+                    "iso":true
+                },
+                {
+                    "type":"locale",
+                    "readOnly":false,
+                    "required":false,
+                    "remote":false,
+                    "iso":true
+                },
+                {
+                    "type":"timezone",
+                    "readOnly":false,
+                    "required":false,
+                    "remote":false,
+                    "iso":true
+                },
+                {
+                    "type":"global-position",
+                    "readOnly":false,
+                    "required":false,
+                    "remote":false,
+                    "iso":true
+                }
+            ];
+        }
+        if ( !this.excludedFields )
+        {
+            this.excludedFields = ["username", "email", "country", "global-position", "locale",
+                "address", "photo", "password", "repeat-password", "timezone"];
+        }
+
+        if ( this.enableToolbar )
+        {
             this.dockedItems = [
-            {
-                dock: 'top',
-                xtype: 'toolbar',
-                border: false,
-                padding: 5,
-                items: [
-                    {
-                        text: 'Save',
-                        iconCls: 'icon-save',
-                        action: 'saveUser'
-                    },
-                    {
-                        text: 'Cancel',
-                        action: 'closeUserForm'
-                    },
-                    '->',
-                    {
-                        text: 'Delete',
-                        iconCls: 'icon-delete-user',
-                        action: 'deleteUser'
-                    },
-                    {
-                        text: 'Change Password',
-                        iconCls: 'icon-change-password',
-                        action: 'changePassword'
-                    }
-                ]
-            }];
+                {
+                    dock: 'top',
+                    xtype: 'toolbar',
+                    border: false,
+                    padding: 5,
+                    items: [
+                        {
+                            text: 'Save',
+                            iconCls: 'icon-save',
+                            action: 'saveUser'
+                        },
+                        {
+                            text: 'Cancel',
+                            action: 'closeUserForm'
+                        },
+                        '->',
+                        {
+                            text: 'Delete',
+                            iconCls: 'icon-delete-user',
+                            action: 'deleteUser'
+                        },
+                        {
+                            text: 'Change Password',
+                            iconCls: 'icon-change-password',
+                            action: 'changePassword'
+                        }
+                    ]
+                }
+            ];
         }
         this.userFieldSet = {
             'username': this.createTextField,
             'email': this.createTextField
+        };
+        this.securityFieldSet = {
+            'password': this.createPasswordField,
+            'repeat-password': this.createPasswordField
         };
         this.nameFieldSet = {
             'prefix': this.createTextField,
@@ -91,21 +178,25 @@ Ext.define( 'App.view.EditUserFormPanel', {
             'fax': this.createAutoCompleteField
         };
         this.addressFieldSet = {
-            'address': function(field)
+            'address': function( field )
             {
-                if (me.userFields && me.userFields.userInfo && me.userFields.userInfo.addresses){
+                if ( me.userFields && me.userFields.userInfo && me.userFields.userInfo.addresses )
+                {
                     var addresses = me.userFields.userInfo.addresses;
                     var tabs = [];
-                    for ( var index in addresses){
-                        Ext.Array.include(tabs, me.generateAddressPanel(field, true, addresses[index]));
+                    for ( var index in addresses )
+                    {
+                        Ext.Array.include( tabs, me.generateAddressPanel( field, true, addresses[index] ) );
                     }
                     return {
                         sourceField: field,
                         xtype: 'addressContainer',
                         items: tabs
                     };
-                }else{
-                    var tabItem = me.generateAddressPanel(field);
+                }
+                else
+                {
+                    var tabItem = me.generateAddressPanel( field );
                     return {
                         sourceField: field,
                         xtype: 'addressContainer',
@@ -115,30 +206,31 @@ Ext.define( 'App.view.EditUserFormPanel', {
             }
         };
         this.callParent( arguments );
-        this.addEvents('fieldsloaded');
+        this.addEvents( 'fieldsloaded' );
         this.removeAll();
         this.show();
     },
 
-    renderUserForm: function( user ){
+    renderUserForm: function( user )
+    {
         var me = this;
         Ext.Ajax.request( {
-                url: 'data/userstore/detail',
-                method: 'GET',
-                params: {
-                    name: user ? user.userStore : me.defaultUserStoreName
-                },
-                success: function( response )
-                {
-                    var obj = Ext.decode( response.responseText, true );
-                    if ( obj )
-                    {
-                        me.removeAll();
-                        me.generateForm( obj );
-                    }
-                    me.el.unmask();
-                }
-            } );
+                              url: 'data/userstore/detail',
+                              method: 'GET',
+                              params: {
+                                  name: user ? user.userStore : me.defaultUserStoreName
+                              },
+                              success: function( response )
+                              {
+                                  var obj = Ext.decode( response.responseText, true );
+                                  if ( obj )
+                                  {
+                                      me.removeAll();
+                                      me.generateForm( obj );
+                                  }
+                                  me.el.unmask();
+                              }
+                          } );
     },
 
     createAutoCompleteField: function ( field )
@@ -188,12 +280,12 @@ Ext.define( 'App.view.EditUserFormPanel', {
             displayField = 'description';
         } else if ( field.type == 'gender' )
         {
-            fieldStore = new Ext.data.Store({
-                fields: ['label', 'value'],
-                data: [
-                    {label: 'Male', value: 'MALE'},
-                    {label: 'Female', value: 'FEMALE'}
-                ]});
+            fieldStore = new Ext.data.Store( {
+                                                 fields: ['label', 'value'],
+                                                 data: [
+                                                     {label: 'Male', value: 'MALE'},
+                                                     {label: 'Female', value: 'FEMALE'}
+                                                 ]} );
             valueField = 'value';
             displayField = 'label';
         }
@@ -234,6 +326,14 @@ Ext.define( 'App.view.EditUserFormPanel', {
         };
     },
 
+    createPasswordField: function ( field )
+    {
+        return {
+            xtype: 'userFormField',
+            type: 'password'
+        };
+    },
+
     createDateField: function( field )
     {
         return {
@@ -242,58 +342,40 @@ Ext.define( 'App.view.EditUserFormPanel', {
         };
     },
 
-    generateForm: function(storeConfig)
+    generateForm: function( storeConfig, staticFields, excludedFields )
     {
-        var fields = [
-            {
-                label: 'Username',
-                type: 'username',
-                required: true,
-                remote: false,
-                readonly: false
-            },
-            {
-                label: 'Password',
-                type: 'password',
-                required: true,
-                remote: false,
-                readonly: false
-            },
-            {
-                label: 'Repeat password',
-                type: 'repeat-password',
-                required: true,
-                remote: false,
-                readonly: false
-            },
-            {
-                label: 'E-mail',
-                type: 'email',
-                required: true,
-                remote: false,
-                readonly: false
-            },
-            {
-                label: 'Display name',
-                type: 'display-name',
-                required: true,
-                remote: false,
-                readonly: false
-            }
-        ];
+        if ( staticFields )
+        {
+            this.staticFields = staticFields;
+        }
+        if ( excludedFields )
+        {
+            this.excludedFields = excludedFields;
+        }
         if ( storeConfig && storeConfig.userFields )
         {
-
-            fields = Ext.Array.merge( fields, Ext.Array.toArray(storeConfig.userFields) );
+            var fields = Ext.Array.filter( Ext.Array.toArray( storeConfig.userFields ), function ( field )
+            {
+                for ( index in this.staticFields )
+                {
+                    if ( this.staticFields[index].type == field.type )
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }, this );
+            fields = Ext.Array.merge( this.staticFields, fields );
             this.add( this.generateFieldSet( 'User', this.userFieldSet, fields ) );
+            this.add( this.generateFieldSet( 'Security', this.securityFieldSet, fields ) );
             this.add( this.generateFieldSet( 'Name', this.nameFieldSet, fields ) );
             this.add( this.generateFieldSet( 'Photo', this.photoFieldSet, fields ) );
             this.add( this.generateFieldSet( 'Personal Information', this.detailsFieldSet, fields ) );
-            this.add( this.generateFieldSet( 'Location', this.locationFieldSet, fields ) );
+            this.add( this.generateFieldSet( 'Settings', this.locationFieldSet, fields ) );
             this.add( this.generateFieldSet( 'Communication', this.communicationFieldSet, fields ) );
             this.add( this.generateFieldSet( 'Address', this.addressFieldSet, fields ) );
         }
-        this.fireEvent('fieldsloaded', this);
+        this.fireEvent( 'fieldsloaded', this );
     },
 
     generateFieldSet: function( title, fieldSet, storeConfig )
@@ -310,12 +392,23 @@ Ext.define( 'App.view.EditUserFormPanel', {
         var fieldItems = [];
         Ext.Array.each( storeConfig, function ( item )
         {
-            if ( fieldSet[item.type] )
+            var canBeAdded = true;
+            if ( this.includedFields )
+            {
+                canBeAdded = Ext.Array.contains( this.includedFields, item.type );
+            }
+            else
+            {
+                canBeAdded = !Ext.Array.contains( this.excludedFields, item.type );
+            }
+            if ( fieldSet[item.type] && canBeAdded )
             {
                 var fieldValue;
-                if (me.userFields){
+                if ( me.userFields )
+                {
                     fieldValue = me.userFields[item.type];
-                    if ((fieldValue == null) && (me.userFields.userInfo != null)){
+                    if ( (fieldValue == null) && (me.userFields.userInfo != null) )
+                    {
                         fieldValue = me.userFields.userInfo[item.type];
                     }
                 }
@@ -348,7 +441,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
         }
     },
 
-    generateAddressPanel: function ( field , closable, values)
+    generateAddressPanel: function ( field, closable, values )
     {
         var addressPanel = {
             xtype: 'addressPanel',
@@ -361,14 +454,17 @@ Ext.define( 'App.view.EditUserFormPanel', {
         return addressPanel;
     },
 
-    setItemValue: function(itemId, value){
-        var field = this.down('#' + itemId);
-        if (field){
-            field.setValue(value);
+    setItemValue: function( itemId, value )
+    {
+        var field = this.down( '#' + itemId );
+        if ( field )
+        {
+            field.setValue( value );
         }
     },
 
-    getData: function(){
+    getData: function()
+    {
         var formValues = this.getValues();
         var userData = {
             username: formValues['username'],
