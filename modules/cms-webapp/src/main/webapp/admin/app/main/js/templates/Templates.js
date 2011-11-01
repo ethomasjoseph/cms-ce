@@ -75,7 +75,7 @@ Templates.main = {
             '</div>' +
         '</div>',
 
-    notifier:
+    notificationWindow:
         '<div class="cms-notifier clearfix">' +
             '<table border="0">'+
                 '<tr>' +
