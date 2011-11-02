@@ -1,4 +1,4 @@
-Ext.define( 'App.controller.NotifyUserController', {
+Ext.define( 'Common.controller.NotifyUserController', {
     extend: 'Ext.app.Controller',
 
     stores: [],
@@ -16,11 +16,11 @@ Ext.define( 'App.controller.NotifyUserController', {
             }
         } );
         this.application.on({
-            'showNotifyUserWindow': this.showWindow,
+            'notifier.show': this.showWindow,
             scope: this
         });
         this.application.on({
-            'closeNotifyUserWindow': this.closeWindow,
+            'notifier.close': this.closeWindow,
             scope: this
         });
     },

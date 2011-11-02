@@ -842,7 +842,11 @@ ul.cms-wizard-navigation a.last-current {
 }
 
 /*****   Notify User Window   *****/
-.cms-notify-user-window .cms-user-info {
+.cms-notify-user-window .notify-header h3 {
+    margin-top: 0;
+}
+
+.cms-notify-user-window .notify-user {
     color: #555;
     border: 1px solid #B5B8C8;
     padding:  10px;

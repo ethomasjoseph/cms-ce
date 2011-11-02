@@ -77,14 +77,18 @@ Ext.define( 'App.controller.UserWizardController', {
     {
         //TODO: get real user
         var user = {
-            data:{
-                displayName: data['display-name'] || 'User Name',
-                qualifiedName: ( data['userStore'] ||'Userstore1' ) + '/' + ( data['username'] || 'Username' ),
-                email: data['email'] || 'user@enonic.com',
-                key: 1
+            data: {
+               "username":"mer",
+               "display-name":"Morten Øien Eriksen",
+               "name":"mer",
+               "key":"2AF735F668BB0B75F8AF886C4D304F049460EE43",
+               "displayName":"Morten Øien Eriksen",
+               "lastModified":"2010-03-15 16:00:02",
+               "qualifiedName":"enonic\\mer",
+                "email":"mer@enonic.com"
             }
         };
-        this.application.fireEvent('showNotifyUserWindow', user );
+        this.application.fireEvent('notifier.show', user );
     },
 
     wizardPrev: function( btn, evt )

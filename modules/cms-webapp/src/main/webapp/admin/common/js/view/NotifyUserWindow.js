@@ -1,8 +1,9 @@
-Ext.define( 'App.view.NotifyUserWindow', {
+Ext.define( 'Common.view.NotifyUserWindow', {
     extend: 'Ext.window.Window',
     alias: 'widget.notifyUserWindow',
 
-    title: 'Notify User',
+    draggable:false,
+    closable:false,
     width: 500,
     modal: true,
     modelData: undefined,
@@ -38,8 +39,14 @@ Ext.define( 'App.view.NotifyUserWindow', {
     {
         this.items = [
             {
-                itemId: 'userInfo',
+                xtype: 'container',
                 cls: 'notify-header',
+                styleHtmlContent: true,
+                html: '<h3>Notify user</h3>'
+            },
+            {
+                itemId: 'userInfo',
+                cls: 'notify-user',
                 xtype: 'container',
                 border: false,
                 height: 80,
