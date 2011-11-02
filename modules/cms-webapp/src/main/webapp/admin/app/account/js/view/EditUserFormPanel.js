@@ -375,7 +375,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
             this.add( this.generateFieldSet( 'Communication', this.communicationFieldSet, fields ) );
             this.add( this.generateFieldSet( 'Address', this.addressFieldSet, fields ) );
         }
-        this.fireEvent( 'fieldsloaded', this );
+        this.fireEvent( 'fieldsloaded', this, this );
     },
 
     generateFieldSet: function( title, fieldSet, storeConfig )
