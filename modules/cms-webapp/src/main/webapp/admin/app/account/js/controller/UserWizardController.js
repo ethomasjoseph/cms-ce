@@ -94,20 +94,7 @@ Ext.define( 'App.controller.UserWizardController', {
 
     wizardFinished: function( wizard, data )
     {
-        //TODO: get real user
-        var user = {
-            data: {
-               "username":"mer",
-               "display-name":"Morten Øien Eriksen",
-               "name":"mer",
-               "key":"2AF735F668BB0B75F8AF886C4D304F049460EE43",
-               "displayName":"Morten Øien Eriksen",
-               "lastModified":"2010-03-15 16:00:02",
-               "qualifiedName":"enonic\\mer",
-                "email":"mer@enonic.com"
-            }
-        };
-        this.application.fireEvent('showNotifyUserWindow ', user );
+        this.application.fireEvent('notifier.show', "User created", "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth." );
     },
 
     wizardPrev: function( btn, evt )

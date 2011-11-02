@@ -1,4 +1,4 @@
-Ext.define('App.controller.NotificationWindowController', {
+Ext.define('Common.controller.NotificationWindowController', {
     extend: 'Ext.app.Controller',
 
     views: ['NotificationWindow'],

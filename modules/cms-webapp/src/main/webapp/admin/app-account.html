@@ -3,11 +3,13 @@
     <title>Enonic CMS Admin</title>
     <link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css">
     <link rel="stylesheet" type="text/css" href="resources/css/main.css">
+    <link rel="stylesheet" type="text/css" href="app/main/css/main.css">
     <link rel="stylesheet" type="text/css" href="app/account/css/user-preview.css">
     <link rel="stylesheet" type="text/css" href="resources/css/BoxSelect.css">
     <script type="text/javascript" src="ext/ext-all-debug.js"></script>
     <script type="text/javascript" src="common/js/templates/Templates.js"></script>
     <script type="text/javascript" src="app/account/js/templates/Templates.js"></script>
+    <script type="text/javascript" src="app/main/js/templates/Templates.js"></script>
     <script type="text/javascript" src="app/setup.js"></script>
 
     <!-- Third party plugins -->
@@ -20,7 +22,8 @@
             enabled: true,
             paths: {
                 'App' : 'app/account/js',
-                'Common' : 'common/js'
+                'Common' : 'common/js',
+                'Main' : 'app/main/js'
             },
             disableCaching: false
         });
@@ -32,7 +35,8 @@
             controllers: [
                 'AccountController',
                 'UserWizardController',
-                'Common.controller.NotifyUserController'
+                'Common.controller.NotifyUserController',
+                'Common.controller.NotificationWindowController'
             ],
 
             requires: [
