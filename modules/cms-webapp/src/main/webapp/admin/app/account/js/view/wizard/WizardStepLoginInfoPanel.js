@@ -2,6 +2,10 @@ Ext.define( 'App.view.wizard.WizardStepLoginInfoPanel', {
     extend: 'Ext.form.Panel',
     alias: 'widget.wizardStepLoginInfoPanel',
 
+    requires: [
+        'App.view.UserFormField'
+    ],
+
     defaults: {
         padding: '10px 15px'
     },
@@ -42,6 +46,22 @@ Ext.define( 'App.view.wizard.WizardStepLoginInfoPanel', {
                     fieldLabel: 'Password',
                     name: 'password',
                     emptyText: 'Password'
+                }
+            ]
+        },
+        {
+            xtype: 'fieldset',
+            title: 'Location',
+            items: [
+                {
+                    xtype: 'userFormField',
+                    type: 'combo',
+                    queryMode: 'local',
+                    minChars: 1,
+                    emptyText: 'Please select',
+                    fieldStore: Ext.data.StoreManager.lookup( 'CountryStore' ),
+                    valueField: 'code',
+                    displayField: 'englishName'
                 }
             ]
         }

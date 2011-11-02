@@ -16,6 +16,7 @@ Ext.define( 'App.view.wizard.WizardStepMembershipPanel', {
                     {
                         allowBlank:true,
                         forceSelection : false,
+                        triggerOnClick: false,
                         typeAhead: true,
                         xtype:'boxselect',
                         cls: 'cms-groups-boxselect',

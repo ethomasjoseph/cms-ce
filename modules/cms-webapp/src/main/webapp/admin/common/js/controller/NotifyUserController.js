@@ -16,11 +16,11 @@ Ext.define( 'Common.controller.NotifyUserController', {
             }
         } );
         this.application.on({
-            'notifier.show': this.showWindow,
+            'showNotifyUserWindow ': this.showWindow,
             scope: this
         });
         this.application.on({
-            'notifier.close': this.closeWindow,
+            'closeNotifyUserWindow ': this.closeWindow,
             scope: this
         });
     },

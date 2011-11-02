@@ -1,17 +1,18 @@
-Ext.define('App.controller.FeedbackWindowController', {
+Ext.define('App.controller.NotificationWindowController', {
     extend: 'Ext.app.Controller',
-    views: ['FeedbackWindow'],
+
+    views: ['NotificationWindow'],
 
     init: function()
     {
-        Ext.create('widget.feedbackWindow');
+        Ext.create('widget.notificationWindow');
 
         this.control({
         });
 
         this.application.on(
             {
-                'feedbackWindow.show': this.show,
+                'notifier.show': this.show,
                 scope: this
             }
         );
@@ -21,7 +22,7 @@ Ext.define('App.controller.FeedbackWindowController', {
 
     show: function(title, message)
     {
-        this.getFeedbackWindow().update(
+        this.getNotificationWindow().update(
             {
                 messageTitle: title,
                 messageText: message
@@ -34,20 +35,20 @@ Ext.define('App.controller.FeedbackWindowController', {
     animateWindow: function()
     {
         var self = this;
-        var feedbackWindow = this.getFeedbackWindow();
+        var notificationWindow = this.getNotificationWindow();
 
-        feedbackWindow.stopAnimation();
+        notificationWindow.stopAnimation();
 
         var viewPortHeight = Ext.Element.getViewportHeight();
         var viewPortWidth = Ext.Element.getViewportWidth();
-        var windowBox = feedbackWindow.getBox();
+        var windowBox = notificationWindow.getBox();
         var leftPosition = viewPortWidth - windowBox.width - 5;
         var animateFromPosition = viewPortHeight + windowBox.height;
         var animateToPosition = viewPortHeight - windowBox.height - 5;
 
-        feedbackWindow.setPosition(leftPosition, animateFromPosition);
+        notificationWindow.setPosition(leftPosition, animateFromPosition);
 
-        feedbackWindow.animate(
+        notificationWindow.animate(
             {
                 duration: 400,
                 from: {
@@ -85,16 +86,15 @@ Ext.define('App.controller.FeedbackWindowController', {
 
     hide: function()
     {
-        var feedbackWindow = this.getFeedbackWindow();
-        feedbackWindow.stopAnimation();
-        feedbackWindow.getEl().setOpacity(0);
+        var notificationWindow = this.getNotificationWindow();
+        notificationWindow.stopAnimation();
+        notificationWindow.getEl().setOpacity(0);
     },
 
     addWindowClickListener: function()
     {
-        var feedbackWindow = this.getFeedbackWindow();
-        feedbackWindow.getEl().on('click', function(event, target) {
-            if(target.className.indexOf('notify-user-button') > -1)
+        this.getNotificationWindow().getEl().on('click', function(event, target) {
+            if(target.className.indexOf('notify-user') > -1)
             {
                 //TODO: get real user
                 var user = {
@@ -109,16 +109,16 @@ Ext.define('App.controller.FeedbackWindowController', {
                         "email":"mer@enonic.com"
                     }
                 };
-                this.application.fireEvent('notifier.show', user );
+                this.application.fireEvent('showNotifyUserWindow ', user );
             }
 
             this.hide();
         }, this);
     },
 
-    getFeedbackWindow: function()
+    getNotificationWindow: function()
     {
-        return Ext.ComponentQuery.query('feedbackWindow')[0];
+        return Ext.ComponentQuery.query('notificationWindow')[0];
     }
 
 });

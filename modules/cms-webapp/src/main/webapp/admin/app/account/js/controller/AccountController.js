@@ -28,7 +28,6 @@ Ext.define( 'App.controller.AccountController', {
         'wizard.UserStoreListPanel'
     ],
 
-    accountTypeSearchFilter: 'all',
     searchFilterTypingTimer: null,
 
     init: function()
@@ -139,13 +138,15 @@ Ext.define( 'App.controller.AccountController', {
     onFilterPanelRender: function()
     {
         var filterTextField = Ext.getCmp( 'filter' );
-
         filterTextField.addListener( 'keypress', this.searchFilterKeyPress, this );
-        this.getSearchFilterUsers().addListener( 'click', this.searchFilterUsers, this);
-        this.getSearchFilterGroups().addListener( 'click', this.searchFilterGroups, this);
-        this.getSearchFilterAll().addListener( 'click', this.searchFilterAll, this);
 
         this.getFilterUserStoreField().addListener( 'change', function(field, newValue, oldValue, eOpts) {
+            this.getAccountFilter().updateTitle();
+            this.searchFilter();
+        }, this );
+
+        this.getFilterAccountTypeField().addListener( 'change', function(field, newValue, oldValue, eOpts) {
+            this.getAccountFilter().updateTitle();
             this.searchFilter();
         }, this );
 
@@ -177,27 +178,31 @@ Ext.define( 'App.controller.AccountController', {
 
     updateDetailsPanel: function()
     {
+        var detailPanel = this.getAccountDetailPanel();
         var persistentGridSelection = this.getPersistentGridSelectionPlugin();
         var selection = persistentGridSelection.getSelection();
-        var accountDetailPanel = this.getAccountDetailPanel();
         var selectionCount = persistentGridSelection.getSelectionCount();
         var userStore = this.getStore('UserStore');
         var pageSize = userStore.pageSize;
         var totalCount = userStore.totalCount;
 
-        if ( selectionCount == 0 )
+        if ( selectionCount === 0 )
         {
-            accountDetailPanel.showNoneSelection();
+            detailPanel.showNoneSelection();
         }
-        else
+        else if ( selectionCount === 1 )
         {
             var user = selection[0];
 
             if ( user )
             {
-                accountDetailPanel.setCurrentUser( user.data );
+                detailPanel.setCurrentUser( user.data );
             }
 
+            detailPanel.showOneSelected(user.data)
+        }
+        else
+        {
             var detailed = true;
             if ( selectionCount > 10 )
             {
@@ -208,10 +213,10 @@ Ext.define( 'App.controller.AccountController', {
             {
                 Ext.Array.include( selectedUsers, user.data );
             } );
-            accountDetailPanel.showMultipleSelection( selectedUsers, detailed );
+            detailPanel.showMultipleSelection( selectedUsers, detailed );
         }
 
-        accountDetailPanel.updateTitle(persistentGridSelection);
+        detailPanel.updateTitle(persistentGridSelection);
     },
 
     updateActionItems: function()
@@ -247,18 +252,19 @@ Ext.define( 'App.controller.AccountController', {
         var usersStore = this.getUserStoreStore();
         var textField = this.getFilterTextField();
         var userStoreField = this.getFilterUserStoreField();
-        var typeFilter = this.accountTypeSearchFilter;
+        var accountTypeField = this.getFilterAccountTypeField();
 
         usersStore.clearFilter();
-        usersStore.load(
-            {
-                params: {
-                    query: textField.getValue(),
-                    type: typeFilter,
-                    userstores: userStoreField.getValue()
-                }
-            }
-        );
+        usersStore.getProxy().extraParams = {
+            query: textField.getValue(),
+            type: accountTypeField.getValue(),
+            userstores: userStoreField.getValue()
+        };
+
+        // move to page 1 when search filter updated
+        var pagingToolbar = this.getUserGrid().down('pagingtoolbar');
+        // changing to first page triggers usersStore.load()
+        pagingToolbar.moveFirst();
     },
 
     setBrowseTabActive: function()
@@ -616,6 +622,10 @@ Ext.define( 'App.controller.AccountController', {
         return Ext.ComponentQuery.query( 'accountDetail' )[0];
     },
 
+    getAccountFilter: function() {
+        return Ext.ComponentQuery.query( 'accountFilter' )[0];
+    },
+
     getFilterTextField: function()
     {
         return Ext.ComponentQuery.query( 'accountFilter textfield[name=filter]' )[0];
@@ -623,7 +633,12 @@ Ext.define( 'App.controller.AccountController', {
 
     getFilterUserStoreField: function()
     {
-        return Ext.ComponentQuery.query( 'accountFilter checkboxgroup[itemId=userstoreRadios]' )[0];
+        return Ext.ComponentQuery.query( 'accountFilter checkboxgroup[itemId=userstoreOptions]' )[0];
+    },
+
+    getFilterAccountTypeField: function()
+    {
+        return Ext.ComponentQuery.query( 'accountFilter checkboxgroup[itemId=accountTypeOptions]' )[0];
     },
 
     getEditUserFormPanel: function()
@@ -646,31 +661,6 @@ Ext.define( 'App.controller.AccountController', {
         return Ext.ComponentQuery.query( 'accountContextMenu' )[0];
     },
 
-    getSearchFilterUsers: function()
-    {
-        return Ext.ComponentQuery.query( 'accountFilter [itemId=searchFilterUsers]' )[0];
-    },
-
-    getSearchFilterGroups: function()
-    {
-        return Ext.ComponentQuery.query( 'accountFilter [itemId=searchFilterGroups]' )[0];
-    },
-
-    getSearchFilterAll: function()
-    {
-        return Ext.ComponentQuery.query( 'accountFilter [itemId=searchFilterAll]' )[0];
-    },
-
-    getSearchFilterUsersLabel: function()
-    {
-        return Ext.ComponentQuery.query( 'accountFilter [itemId=searchFilterUsersLabel]' )[0];
-    },
-
-    getSearchFilterGroupsLabel: function()
-    {
-        return Ext.ComponentQuery.query( 'accountFilter [itemId=searchFilterGroupsLabel]' )[0];
-    },
-
     initFilterPanelUserStoreOptions: function(store) {
         var items = store.data.items;
         var userstores = [];
@@ -687,45 +677,6 @@ Ext.define( 'App.controller.AccountController', {
         var data = store.proxy.reader.jsonData;
         var filterPanel = Ext.widget('accountFilter');
         filterPanel.showFacets(data.results.facets);
-    },
-
-    searchFilterUsers: function()
-    {
-        this.accountTypeSearchFilter = 'users';
-        this.getSearchFilterUsers().hide();
-        this.getSearchFilterGroups().hide();
-        this.getSearchFilterAll().show();
-
-        this.getSearchFilterUsersLabel().show();
-        this.getSearchFilterGroupsLabel().hide();
-
-        this.searchFilter();
-    },
-
-    searchFilterGroups: function()
-    {
-        this.accountTypeSearchFilter = 'groups';
-        this.getSearchFilterUsers().hide();
-        this.getSearchFilterGroups().hide();
-        this.getSearchFilterAll().show();
-
-        this.getSearchFilterUsersLabel().hide();
-        this.getSearchFilterGroupsLabel().show();
-
-        this.searchFilter();
-    },
-
-    searchFilterAll: function()
-    {
-        this.accountTypeSearchFilter = 'all';
-        this.getSearchFilterAll().hide();
-        this.getSearchFilterUsers().show();
-        this.getSearchFilterGroups().show();
-
-        this.getSearchFilterUsersLabel().hide();
-        this.getSearchFilterGroupsLabel().hide();
-
-        this.searchFilter();
     },
 
     searchFilterKeyPress: function ()
