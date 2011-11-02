@@ -177,6 +177,10 @@ img.photo {
     padding: 1px;
 }
 
+.address .x-panel-body {
+    background: #fff;
+}
+
 /*----- Cycle Button Menu Items -----*/
 
 .x-menu-item img.icon-details-bottom, .icon-details-bottom {
