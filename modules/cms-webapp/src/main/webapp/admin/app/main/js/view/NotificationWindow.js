@@ -1,12 +1,12 @@
-Ext.define( 'App.view.Notifier', {
+Ext.define( 'App.view.NotificationWindow', {
     extend: 'Ext.Component',
-    alias: 'widget.notifier',
+    alias: 'widget.notificationWindow',
     width: 370,
     autoHeight: true,
     floating: true,
     autoShow: true,
 
-    tpl: Templates.main.notifier,
+    tpl: Templates.main.notificationWindow,
 
     initComponent: function()
     {

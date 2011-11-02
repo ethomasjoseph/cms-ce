@@ -1,10 +1,11 @@
-Ext.define('App.controller.NotifierController', {
+Ext.define('App.controller.NotificationWindowController', {
     extend: 'Ext.app.Controller',
-    views: ['Notifier'],
+
+    views: ['NotificationWindow'],
 
     init: function()
     {
-        Ext.create('widget.notifier');
+        Ext.create('widget.notificationWindow');
 
         this.control({
         });
@@ -21,7 +22,7 @@ Ext.define('App.controller.NotifierController', {
 
     show: function(title, message)
     {
-        this.getNotifier().update(
+        this.getNotificationWindow().update(
             {
                 messageTitle: title,
                 messageText: message
@@ -34,20 +35,20 @@ Ext.define('App.controller.NotifierController', {
     animateWindow: function()
     {
         var self = this;
-        var notifier = this.getNotifier();
+        var notificationWindow = this.getNotificationWindow();
 
-        notifier.stopAnimation();
+        notificationWindow.stopAnimation();
 
         var viewPortHeight = Ext.Element.getViewportHeight();
         var viewPortWidth = Ext.Element.getViewportWidth();
-        var windowBox = notifier.getBox();
+        var windowBox = notificationWindow.getBox();
         var leftPosition = viewPortWidth - windowBox.width - 5;
         var animateFromPosition = viewPortHeight + windowBox.height;
         var animateToPosition = viewPortHeight - windowBox.height - 5;
 
-        notifier.setPosition(leftPosition, animateFromPosition);
+        notificationWindow.setPosition(leftPosition, animateFromPosition);
 
-        notifier.animate(
+        notificationWindow.animate(
             {
                 duration: 400,
                 from: {
@@ -85,16 +86,15 @@ Ext.define('App.controller.NotifierController', {
 
     hide: function()
     {
-        var notifier = this.getNotifier();
-        notifier.stopAnimation();
-        notifier.getEl().setOpacity(0);
+        var notificationWindow = this.getNotificationWindow();
+        notificationWindow.stopAnimation();
+        notificationWindow.getEl().setOpacity(0);
     },
 
     addWindowClickListener: function()
     {
-        var notifier = this.getNotifier();
-        notifier.getEl().on('click', function(event, target) {
-            if(target.className.indexOf('notify-user-button') > -1)
+        this.getNotificationWindow().getEl().on('click', function(event, target) {
+            if(target.className.indexOf('notify-user') > -1)
             {
                 Ext.Msg.alert('Comming soon', 'Notify User Window');
             }
@@ -103,9 +103,9 @@ Ext.define('App.controller.NotifierController', {
         }, this);
     },
 
-    getNotifier: function()
+    getNotificationWindow: function()
     {
-        return Ext.ComponentQuery.query('notifier')[0];
+        return Ext.ComponentQuery.query('notificationWindow')[0];
     }
 
 });

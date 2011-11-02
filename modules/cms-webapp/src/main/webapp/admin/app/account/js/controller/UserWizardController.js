@@ -48,6 +48,7 @@ Ext.define( 'App.controller.UserWizardController', {
     stepChanged: function( wizard, oldStep, newStep )
     {
         this.getUserWizardPanel().doLayout();
+        this.focusFirstField();
 
         if ( newStep.getXType() == 'userStoreListPanel' )
         {
@@ -111,6 +112,7 @@ Ext.define( 'App.controller.UserWizardController', {
     userStoreFieldsLoaded: function()
     {
         this.getUserWizardPanel().doLayout();
+        this.focusFirstField();
     },
 
     userStoreSelected: function( view, record, item )
@@ -158,6 +160,13 @@ Ext.define( 'App.controller.UserWizardController', {
             displayName.dom.value = Ext.String.trim( displayNameValue );
             displayName.addCls( 'cms-edited-field' );
         }
+    },
+
+    focusFirstField: function() {
+        var activeItem = this.getWizardPanel().getLayout().getActiveItem();
+        var firstField;
+        if ( activeItem && ( firstField = activeItem.down( 'field' ) ) )
+            firstField.focus();
     },
 
     updateTabTitle: function ( field, event )
