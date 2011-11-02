@@ -969,6 +969,12 @@ public class UserStoreServiceImpl
         }
     }
 
+    @Override
+    public List<UserStoreEntity> findAll()
+    {
+        return userStoreDao.findAll();
+    }
+
     public UserStoreEntity getDefaultUserStore()
     {
         UserStoreEntity userStore = userStoreDao.findDefaultUserStore();

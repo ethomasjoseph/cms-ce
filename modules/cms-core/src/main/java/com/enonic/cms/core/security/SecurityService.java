@@ -72,7 +72,8 @@ public interface SecurityService
 
     List<GroupEntity> getGroups( GroupQuery spec );
 
-    List<UserStoreEntity> getUserStores();
+    void authenticateUser( final QualifiedUsername qualifiedUsername, final String password )
+            throws InvalidCredentialsException;
 
     User loginAdminUser( final QualifiedUsername qualifiedUsername, final String password );
 
@@ -101,6 +102,8 @@ public interface SecurityService
     User getLoggedInPortalUser();
 
     UserEntity getLoggedInPortalUserAsEntity();
+
+    List<UserStoreEntity> getUserStores();
 
     User getLoggedInAdminConsoleUser();
 

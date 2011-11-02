@@ -87,6 +87,10 @@ public interface UserStoreService
 
     void deleteGroupsLocally( final LocalGroupsStatus status, final List<GroupKey> groups );
 
+    List<UserStoreEntity> findAll();
+
+    //UserStoreEntity findByName( String name );
+
     UserStoreEntity getDefaultUserStore();
 
     UserStoreEntity getUserStore( final UserStoreKey userStoreKey );

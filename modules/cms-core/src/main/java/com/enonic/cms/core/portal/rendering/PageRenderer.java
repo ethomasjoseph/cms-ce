@@ -49,6 +49,7 @@ import com.enonic.cms.core.portal.rendering.viewtransformer.TemplateParameterTra
 import com.enonic.cms.core.portal.rendering.viewtransformer.TransformationParameterOrigin;
 import com.enonic.cms.core.portal.rendering.viewtransformer.TransformationParams;
 import com.enonic.cms.core.portal.rendering.viewtransformer.ViewTransformationResult;
+import com.enonic.cms.core.portal.xtrace.XTraceHelper;
 import com.enonic.cms.core.resource.ResourceFile;
 import com.enonic.cms.core.resource.ResourceKey;
 import com.enonic.cms.core.resource.ResourceService;
@@ -145,6 +146,7 @@ public class PageRenderer
         }
         finally
         {
+            XTraceHelper.setCurrentTrace( pageRenderingTrace );
             PageRenderingTracer.stopTracing( pageRenderingTrace, livePortalTraceService );
         }
     }

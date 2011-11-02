@@ -262,6 +262,36 @@ public class SecurityServiceImpl
         return doGetOldUserObject( doGetUserKeyForPortalExecutor() );
     }
 
+    public void authenticateUser( QualifiedUsername qualifiedUsername, String password )
+            throws InvalidCredentialsException
+    {
+        final String uid = qualifiedUsername.getUsername();
+
+        if ( UserEntity.isBuiltInUser( uid ) )
+        {
+            authenticateBuiltInUser( uid, password, true );
+        }
+        else
+        {
+            UserStoreEntity userStore;
+            if ( qualifiedUsername.hasUserStoreSet() )
+            {
+                userStore = doResolveUserStore( qualifiedUsername );
+            }
+            else
+            {
+                userStore = doGetDefaultUserStore();
+            }
+
+            if ( userStore == null )
+            {
+                throw new InvalidCredentialsException( qualifiedUsername );
+            }
+
+            userStoreService.authenticateUser( userStore.getKey(), uid, password );
+        }
+    }
+
     public boolean autoLoginPortalUser( QualifiedUsername qualifiedUsername )
     {
         try
