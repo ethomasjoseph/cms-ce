@@ -52,9 +52,9 @@ public class GeolocationServiceIpInfoDbImpl
             }
             byte[] responseBody = method.getResponseBody();
             String jsonText = new String( responseBody );
-            if ( LOG.isTraceEnabled() )
+            if ( LOG.isInfoEnabled() )
             {
-                LOG.trace( "Geolocation response for ip " + ipAddress + ": " + jsonText );
+                LOG.info( "Geolocation response for ip " + ipAddress + ": " + jsonText );
             }
 
             IpInfoDbResponse response = gson.fromJson( jsonText, IpInfoDbResponse.class );
@@ -63,6 +63,8 @@ public class GeolocationServiceIpInfoDbImpl
             location.setIpAddress( ipAddress );
             location.setLongitude( response.getLongitude() );
             location.setLatitude( response.getLatitude() );
+            location.setCity( response.getCityName() );
+            location.setCountry( response.getCountryName() );
 
             return location;
         }

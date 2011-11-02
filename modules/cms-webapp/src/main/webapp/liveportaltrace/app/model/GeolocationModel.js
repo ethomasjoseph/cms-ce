@@ -4,7 +4,9 @@ Ext.define( 'LPT.model.GeolocationModel', {
     fields: [
         'ipAddress',
         'latitude',
-        'longitude'
+        'longitude',
+        'city',
+        'country'
     ],
 
     idProperty: 'ipAddress'

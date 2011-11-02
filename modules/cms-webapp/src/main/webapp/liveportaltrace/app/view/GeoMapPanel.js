@@ -4,7 +4,15 @@ var Places = {
     NewYork: new OpenLayers.LonLat(-73.9739, 40.7555)
 };
 
-var MinimumZoomDistance = 1000*1000;
+// constants
+var MinimumZoomDistance = 10*1000*1000;
+var FeaturePointRadius = 8;
+var FeaturePointLifeTime = 500;
+var FeatureColors = [
+    {fill: '#ffcc66', border: '#ff9933'},
+    {fill: '#0033cc', border: '#000099'},
+    {fill: '#00cc00', border: '#66ff33'}
+];
 
 Ext.define('LPT.view.GeoMapPanel', {
 	extend: 'Ext.panel.Panel',
@@ -26,6 +34,7 @@ Ext.define('LPT.view.GeoMapPanel', {
 
     firstTimeRender: true,
     lastRequestId: 0,
+    featureColorIndex: 0,
 
     activate: function() {
         // set map size to container panel size
@@ -77,9 +86,16 @@ Ext.define('LPT.view.GeoMapPanel', {
         // mark points in map
         var pointStyles = new OpenLayers.StyleMap({
             "default": new OpenLayers.Style({
-                pointRadius: "${size}", // sized according to size attribute
-                fillColor: "#ffcc66",
-                strokeColor: "#ff9933",
+                graphicName: 'circle',
+                label: '${label}',
+                labelAlign: 'tr',
+                labelSelect: true,
+                fontOpacity: 1,
+                fontColor: '#666666',//'${bordercolor}',
+                pointRadius: "${size}",
+                fillColor: '${bordercolor}',//"${fillcolor}",
+                fillOpacity: 0.4,
+                strokeColor: '${bordercolor}',
                 strokeWidth: 1,
                 graphicZIndex: 1
             })
@@ -106,26 +122,33 @@ Ext.define('LPT.view.GeoMapPanel', {
         );
 
         // start auto-update timer
-        setInterval(function() {
-                var that = thisObj;
-                that.autoRefreshLocations();
-            }, 1000*4
-        );
+        this.startAutoRefreshTimer();
 	},
+
+    startAutoRefreshTimer: function () {
+        var me = this;
+        setTimeout( function() {
+            me.autoRefreshLocations();
+        }, 1000);
+    },
 
     animatePoints: function () {
         var i = 0;
         var featureItems = this.pointsLayer.features;
         var featuresToBeRemoved = [];
+        var maxSize = FeaturePointRadius * 2;
         for (i = 0; i < featureItems.length; i++) {
             if (featureItems[i].attributes.ttl <= 0) {
                 featuresToBeRemoved.push(featureItems[i]);
                 continue;
+            } else if (featureItems[i].attributes.ttl < (FeaturePointLifeTime - 100)) {
+                featureItems[i].attributes.label = '';
             }
             var size = featureItems[i].attributes.size;
             var incrementDirection = featureItems[i].attributes.incr;
-            if ((size >= 10) || (size <= 0)) {
-                incrementDirection = -incrementDirection;
+            if ((size > maxSize) || (size < 1)) {
+//                incrementDirection = -incrementDirection;
+                size = 1;
             }
             size = size + incrementDirection;
 
@@ -135,6 +158,7 @@ Ext.define('LPT.view.GeoMapPanel', {
         }
 
         if (featuresToBeRemoved.length > 0) {
+            console.log('remove points ' + featuresToBeRemoved);
             this.pointsLayer.removeFeatures(featuresToBeRemoved);
         }
         this.pointsLayer.redraw();
@@ -145,7 +169,7 @@ Ext.define('LPT.view.GeoMapPanel', {
     },
 
     loadLocations: function(lastReqId) {
-        var that = this;
+        var me = this;
         Ext.Ajax.request( {
             url: '/liveportaltrace/rest/locations',
             method: 'GET',
@@ -154,23 +178,26 @@ Ext.define('LPT.view.GeoMapPanel', {
             {
                 var resp = Ext.decode(response.responseText);
 
-                that.lastRequestId = resp.lastId;
+                me.lastRequestId = resp.lastId;
                 var locationList = resp.locations;
 
                 for (i = 0; i < locationList.length; i++) {
                     var location = locationList[i];
                     var lonlat = new OpenLayers.LonLat(location.longitude, location.latitude);
-                    that.pointsLayer.addFeatures([that.createFeaturePoint(lonlat)]);
+                    me.pointsLayer.addFeatures([me.createFeaturePoint(lonlat, location)]);
                 }
 
-                if (! that.userChangedZoom) {
-                    that.zoomToFeatures();
+                if (! me.userChangedZoom) {
+                    me.zoomToFeatures();
                 }
-                that.pointsLayer.redraw(true);
+                me.pointsLayer.redraw(true);
+
+                me.startAutoRefreshTimer(); // restart timer
             },
             failure: function( response, opts )
             {
                 console.log('Could not retrieve locations');
+                me.startAutoRefreshTimer(); // restart timer
             }
         } );
 
@@ -212,12 +239,26 @@ Ext.define('LPT.view.GeoMapPanel', {
         this.vectorLayer.addFeatures(feature);
     },
 
-    createFeaturePoint: function(place) {
+    createFeaturePoint: function(place, locationData) {
+//        this.featureColorIndex = (this.featureColorIndex + 1) % FeatureColors.length;
+        var nextColor = FeatureColors[this.featureColorIndex];
+        var direction = Math.random() > 0.5 ? 1 : -1;
+
         var feature = new OpenLayers.Feature.Vector(
-            this.convertLongigudeLatitudeToPoint(place),
-            {size: 5 + parseInt(5 * Math.random(), 10), incr: 1, ttl: 200}
+            this.convertLongigudeLatitudeToPoint(place), {
+                size: parseInt(FeaturePointRadius*2 * Math.random(), 10),
+                fillcolor: nextColor.fill,
+                bordercolor: this.getRandomColor(), //nextColor.border,
+                incr: 0.5,//direction,
+                ttl: FeaturePointLifeTime,
+                label: locationData.city + '(' + locationData.country + ')'
+            }
         );
         return feature;
+    },
+
+    getRandomColor: function() {
+        return "#"+((1<<24)*Math.random()|0).toString(16);
     },
 
     convertLongigudeLatitudeToPoint: function(lonLat, projection) {

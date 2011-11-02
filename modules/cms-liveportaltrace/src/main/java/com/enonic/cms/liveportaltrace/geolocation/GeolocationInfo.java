@@ -10,6 +10,10 @@ public class GeolocationInfo
 
     private double longitude;
 
+    private String city;
+
+    private String country;
+
 
     GeolocationInfo()
     {
@@ -46,6 +50,26 @@ public class GeolocationInfo
         this.longitude = longitude;
     }
 
+    public String getCity()
+    {
+        return city;
+    }
+
+    public void setCity( String city )
+    {
+        this.city = city;
+    }
+
+    public String getCountry()
+    {
+        return country;
+    }
+
+    public void setCountry( String country )
+    {
+        this.country = country;
+    }
+
     @Override
     public String toString()
     {
@@ -54,6 +78,8 @@ public class GeolocationInfo
         sb.append( "{ipAddress='" ).append( ipAddress ).append( '\'' );
         sb.append( ", latitude=" ).append( latitude );
         sb.append( ", longitude=" ).append( longitude );
+        sb.append( ", city=" ).append( city );
+        sb.append( ", country=" ).append( country );
         sb.append( '}' );
         return sb.toString();
     }
