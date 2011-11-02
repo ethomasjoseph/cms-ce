@@ -1,3 +1,45 @@
+/*----- Override declarations in ext-all.css -----*/
+
+body,
+.x-body,
+.x-panel-body,
+.x-form-item,
+.x-form-display-field {
+    font: 11px tahoma, arial, verdana, sans-serif;
+}
+
+.x-form-item-label {
+    font-size: 12px;
+    color: #333;
+}
+
+.x-toolbar,
+.x-toolbar .cms-bold-toolbar-text.x-toolbar-text {
+    color: #04408C !important;
+    font-weight: bold;
+}
+
+.x-html h1 {
+    font-size: 2.5em;
+    margin: 0
+}
+
+.x-fieldset-header {
+    color: #15428B;
+    font: 15px/16px bold tahoma,arial,verdana,sans-serif;
+    padding: 0 0 9px;
+}
+
+
+.x-fieldset {
+	border: 0;
+	border-top: 1px solid #ccc;
+	margin-bottom: 10px;
+	padding: 0 15px;
+}
+
+/*----- Generic -----*/
+
 .cms-no-border {
     border: none !important;
 }
@@ -23,111 +65,11 @@
     font-style: italic;
 }
 
-/*----- Overrides ext-all.css -----*/
-
-body,
-.x-body,
-.x-panel-body,
-.x-form-item,
-.x-form-item-label,
-.x-form-display-field {
-    font: 11px tahoma,arial,verdana,sans-serif;
-}
-.x-toolbar,
-.x-toolbar .cms-bold-toolbar-text.x-toolbar-text
-{
-    color: #04408C !important;
-    font-weight: bold;
-}
-
-.x-html h1 {
-    font-size: 2.5em;
-    margin: 0
-}
-
-/*----- Launcher -----*/
-
-#launcher-toolbar {
-    border-top: none;
-    border-right: none;
-    border-bottom: 1px solid #99BCE8;
-    border-left: none;
-    height: 34px;
-    background: #dbeeff;
-    background: -moz-linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #dbeeff), color-stop(100%, #bbd2f0));
-    background: -webkit-linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
-    background: -o-linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
-    background: -ms-linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#dbeeff', endColorstr = '#bbd2f0', GradientType = 0);
-    background: linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
-}
-
-#launcher-logo {
-    background: Transparent url("../images/enonic-logo.png") 0 0 no-repeat;
-    width: 80px;
-    height: 16px;
-    cursor: pointer;
-}
-
-#launcher-start-button {
-}
-
-#launcher-start-button .x-btn-inner {
-    font-size: 12px;
-    font-weight: 200;
-}
-
-#launcher-start-button .x-btn-arrow {
-}
-
-.launcher-center-inner,
-.system-center-inner {
-    border: none !important;
-}
-
-#launcher-iframe,
-#system-iframe {
-    width: 100%;
-    height: 100%;
-    border: 0
-}
-
-
-/*----- Logged in user popup -----*/
-
-.cms-logged-in-user-popup {
-    background-color: #fff;
-    padding: 10px;
-    box-shadow: 5px 5px 5px #ccc;
-}
-
-.cms-logged-in-user-popup-left {
-    float: left;
-    margin-right: 15px;
-}
-
-.cms-logged-in-user-popup-right {
-    float: left;
-    width: 243px;
-}
-
-.cms-logged-in-user-popup-left img {
-     border-radius: 4px;
-}
-
-.cms-logged-in-user-popup-right h1 {
-    font-size: 18px !important;
-}
-
-.cms-logged-in-user-popup-log-out {
-}
-
 /*----- Accounts -----*/
 
-img.cms-thumbnail {
-    width: 40px;
-    height: 40px;
+img.cms-grid-thumbnail {
+    width: 32px;
+    height: 32px;
 }
 
 img.photo {
@@ -424,7 +366,7 @@ img.photo {
 
 .cms-dashboard-palette-item {
     cursor: move;
-    background-color: #fafafa;
+    background-color: #f0f0f0;
     padding: 4px;
     margin: 2px;
     clear: both;
@@ -471,7 +413,7 @@ img.photo {
     cursor: auto !important;
 }
 
-.cms-group-display button{
+.cms-group-display button {
     cursor: auto !important;
 }
 
@@ -480,16 +422,15 @@ img.photo {
 .cms-cache-info h1 {
     margin: 0;
 }
+
 .cms-cache-info h1 span {
     font-size: 13px;
     font-style: normal;
     margin-left: 10px;
 }
 
+/*----- Grid selected item -----*/
 
-/*------------------------------------------- */
-
-/*----- Generic -----*/
 .cms-selected-item-box {
     float: left;
     display: inline-block;
@@ -498,11 +439,6 @@ img.photo {
 .cms-selected-item-box.large .right a:hover,
 .cms-selected-item-box.small .right a:hover {
     border: 1px solid #d1d1d1;
-}
-
-.cms-selected-item-box.large .left img,
-.cms-selected-item-box.small .left img {
-    border-radius: 3px;
 }
 
 .cms-selected-item-box .left {
@@ -524,20 +460,20 @@ img.photo {
 }
 
 .cms-selected-item-box.large .left {
-    margin-right: 16px;
+    margin-right: 10px;
 }
 
 .cms-selected-item-box.large .left img {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
 }
 
 .cms-selected-item-box.large .center {
-    margin-right: 16px;
+    margin-right: 10px;
 }
 
 .cms-selected-item-box.large .center h2 {
-    margin: 2px 0 0 0;
+    margin: 0;
     font-size: 14px;
     font-weight: normal;
 
@@ -548,7 +484,7 @@ img.photo {
 }
 
 .cms-selected-item-box.large .right {
-    margin: 9px 6px 0 0;
+    margin: 6px 6px 0 0;
 }
 
 .cms-selected-item-box.large .right a {
@@ -559,7 +495,6 @@ img.photo {
     background: transparent url(../../resources/images/cross.png) no-repeat 2px;
 }
 
-
 /*----- Small -----*/
 .cms-selected-item-box.small {
     padding: 2px;
@@ -567,7 +502,7 @@ img.photo {
 }
 
 .cms-selected-item-box.small .left {
-    margin-right: 12px;
+    margin-right: 5px;
 }
 
 .cms-selected-item-box.small .left img {
@@ -576,7 +511,7 @@ img.photo {
 }
 
 .cms-selected-item-box.small .center {
-    margin-right: 16px;
+    margin-right: 5px;
 }
 
 .cms-selected-item-box.small .center h2 {
@@ -666,44 +601,38 @@ img.photo {
     border-radius: 4px;
 }
 
-.cms-userstore-block{
-    display: inline-block;
-    border: 1px solid #a9a9a9;
-    background: #dcdcdc ;
+.cms-userstore-block {
     padding: 5px;
-    margin: 5px;
-    vertical-align: middle;
-    width: 95%;
+    cursor: pointer;
 }
 
-.cms-userstore-block div.left{
-    float: left;
-    padding-right: 20px;
-}
-
-.cms-userstore-block div.center{
-    float: left;
-    vertical-align: middle;
-}
-
-.cms-userstore-block div.center h2{
-    font-size: 30px;
-    font-weight: bold;
+.cms-userstore-block h2 {
+    margin-top: 4px;
+    font-size: 18px;
+    font-weight: normal;
 }
 
 .cms-userstore {
-    display: block;
+    width: 500px;
     padding-left: 10px;
     margin-bottom: 2px;
     border: 1px solid transparent;
 }
 
-div.cms-userstore:hover {
-    background-color: #add8e6;
+div.cms-userstore:hover,
+div.cms-userstore-active {
+    background: #dbeeff;
+    background: -moz-linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #dbeeff), color-stop(100%, #bbd2f0));
+    background: -webkit-linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
+    background: -o-linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
+    background: -ms-linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#dbeeff', endColorstr = '#bbd2f0', GradientType = 0);
+    background: linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
     border: 1px solid #6495ed;
 }
 
-.cms-userstore input{
+.cms-userstore input {
     vertical-align: middle;
 }
 
@@ -748,6 +677,7 @@ ul.cms-wizard-navigation li.previous {
 ul.cms-wizard-navigation li.last {
     background-image: url(../../resources/images/wizard-navigation-arrow-last.png);
 }
+
 ul.cms-wizard-navigation li.current-last {
     background-image: url(../../resources/images/wizard-navigation-arrow-current-last.png);
 }
@@ -808,45 +738,43 @@ ul.cms-wizard-navigation a.last-current {
 
 .cms-wizard-header-container .cms-wizard-header {
     position: relative;
-    border: 1px solid TRANSPARENT;
-    padding: 4px 0;
-}
-
-.cms-wizard-header-container .cms-wizard-header:hover {
-    border: 1px solid #ccc;
 }
 
 .cms-wizard-header-container input {
     width: 100%;
-    border: 1px solid TRANSPARENT;
+    padding: 4px;
+    border: 1px solid #dbeeff;
     font-size: 18px;
     color: #ccc;
 }
 
+.cms-wizard-header-container input:hover {
+    border: 1px solid #99BCE8;
+    transition: all 0.25s ease-in-out;
+    -webkit-transition: all 0.25s ease-in-out;
+    -moz-transition: all 0.25s ease-in-out;
+}
+
 .cms-edited-field {
     color: #000 !important;
+    border: 1px solid #99BCE8 !important;
 }
 
 /*----- Image Upload Button -----*/
 
 .cms-image-upload-button-container {
     position: relative;
+    border: 1px solid #dbeeff;
     padding: 1px;
-    border: 1px solid #ccc;
     cursor: pointer;
 }
 
-.cms-image-upload-button-container,
-.cms-image-upload-button-container img {
-    border-radius: 3px;
+.cms-file-upload-drop-target {
+    border: 1px dashed #99BCE8;
 }
 
-.cms-image-upload-button-container:hover,
-.cms-image-upload-button-container-dragover {
-    border: 1px solid orange;
-    -webkit-box-shadow:0 0 2px orange;
-    -moz-box-shadow: 0 0 2px orange;
-    box-shadow:0 0 2px orange;
+.cms-file-upload-drop-target img.cms-image-upload-button-image {
+    opacity: .5;
 }
 
 .cms-image-upload-button-container .cms-image-upload-button-image {
@@ -870,13 +798,42 @@ ul.cms-wizard-navigation a.last-current {
 .cms-image-upload-button-container .cms-image-upload-button-progress-bar {
     font-size: 1px;
     background: #dbeeff;
-    background: -moz-linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #dbeeff), color-stop(100%, #bbd2f0));
-    background: -webkit-linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
-    background: -o-linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
-    background: -ms-linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#dbeeff', endColorstr = '#bbd2f0', GradientType = 0);
-    background: linear-gradient(top, #dbeeff 0%, #bbd2f0 100%);
+    background: -moz-linear-gradient(top, #dbeeff 0%, #99BCE8 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #dbeeff), color-stop(100%, #99BCE8));
+    background: -webkit-linear-gradient(top, #dbeeff 0%, #99BCE8 100%);
+    background: -o-linear-gradient(top, #dbeeff 0%, #99BCE8 100%);
+    background: -ms-linear-gradient(top, #dbeeff 0%, #99BCE8 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#dbeeff', endColorstr = '#99BCE8', GradientType = 0);
+    background: linear-gradient(top, #dbeeff 0%, #99BCE8 100%);
     border-radius: 3px;
 }
 
+.cms-list-item {
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    margin-right: 3px;
+}
+
+.cms-groups-boxselect li.x-boxselect-item {
+    background: url("../images/group.png") no-repeat 3px 3px transparent;
+    background-color: #DEE7F8;
+}
+
+.cms-groups-boxselect li.x-boxselect-item:hover {
+    background: url("../images/group.png") no-repeat 3px 3px transparent !important;
+    background-color: #BBCEF1 !important;
+}
+
+.cms-groups-boxselect div.x-boxselect-item-text {
+    margin-left: 18px;
+}
+
+.cms-cursor-clickable {
+    cursor: pointer !important;
+    text-decoration: underline;
+}
+
+.cms-bold-text {
+    font-weight: bold !important;
+}

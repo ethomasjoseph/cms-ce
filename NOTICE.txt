@@ -104,3 +104,8 @@ Fugue Icons
 Small Icons
   Creative Commons Attribution
   http://creativecommons.org/licenses/by/3.0/
+
+Drag'n drop icon
+  Linkware
+  http://www.visualpharm.com
+

@@ -19,6 +19,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -31,11 +32,14 @@ import com.sun.jersey.api.core.InjectParam;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 
+import com.enonic.cms.core.security.group.GroupEntity;
+import com.enonic.cms.core.security.group.GroupKey;
 import com.enonic.cms.core.security.user.StoreNewUserCommand;
 import com.enonic.cms.core.security.user.UpdateUserCommand;
 import com.enonic.cms.core.security.user.User;
 import com.enonic.cms.core.security.user.UserEntity;
 import com.enonic.cms.core.security.userstore.UserStoreService;
+import com.enonic.cms.store.dao.GroupDao;
 import com.enonic.cms.store.dao.UserDao;
 
 import com.enonic.cms.domain.EntityPageList;
@@ -50,6 +54,9 @@ public final class UsersResource
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private GroupDao groupDao;
 
     @Autowired
     private UserStoreService userStoreService;
@@ -80,23 +87,32 @@ public final class UsersResource
     @GET
     @Path("photo")
     @Produces("image/png")
-    public byte[] getPhoto( @QueryParam("key") final String key,
-                            @QueryParam("thumb") @DefaultValue("false") final boolean thumb )
-            throws Exception
+    public byte[] getPhoto( @QueryParam("key") final String key, @QueryParam("thumb") @DefaultValue("false") final boolean thumb )
+        throws Exception
     {
-        final UserEntity entity = findEntity( key );
-        return this.photoService.renderPhoto( entity, thumb ? 40 : 100 );
+        try
+        {
+            final UserEntity entity = findEntity( key );
+            return this.photoService.renderPhoto( entity, thumb ? 40 : 100 );
+        }
+        catch ( NotFoundException e )
+        {
+            if ( isGroup( key ) )
+            {
+                return this.photoService.renderGroupIcon(thumb ? 40 : 100);
+            }
+            throw e;
+        }
     }
 
     @POST
     @Path("/photo")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces("text/html")
-    public String uploadPhoto( @FormDataParam("photo") InputStream fileInputStream,
-                               @FormDataParam("photo") FormDataContentDisposition fileDetail,
-                               @Context ServletContext context )
+    public Map<String, Object> uploadPhoto( @FormDataParam("file") InputStream fileInputStream,
+                               @FormDataParam("file") FormDataContentDisposition fileDetail,
+                               @Context ServletContext context)
     {
-        String response;
+        Map<String, Object> response = new HashMap<String, Object>();
         try
         {
             File folder = new File( context.getRealPath( "/admin/resources/uploads/" ) );
@@ -118,16 +134,15 @@ public final class UsersResource
             }
             out.flush();
             out.close();
-            response = "{ src: \"/admin/resources/uploads/" + fileDetail.getFileName() + "\", success : true }";
+            response.put( "success", true );
+            response.put( "src", "/admin/resources/uploads/" + fileDetail.getFileName() );
         }
         catch ( IOException e )
         {
             e.printStackTrace();
-            response = "{ success: false }";
+            response.put( "success", false );
         }
-        // fileupload expects textarea because of using iframe
-        // on line 20732 of ext-all-debug.js
-        return "<textarea>" + response + "</textarea>";
+        return response;
     }
 
     @POST
@@ -205,6 +220,17 @@ public final class UsersResource
         }
 
         return entity;
+    }
+
+    private boolean isGroup( final String key )
+    {
+        if ( key == null )
+        {
+            return false;
+        }
+
+        final GroupEntity groupEntity = this.groupDao.find( key );
+        return groupEntity != null;
     }
 
 }

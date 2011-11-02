@@ -12,19 +12,19 @@ Ext.define( 'App.view.DeleteWindow', {
     initComponent: function()
     {
         this.listeners = {
-                    'render': function() {
-                        if (this.selectionLength === 1)
-                        {
-                            this.tpl = new Ext.XTemplate(Templates.common.userInfo),
+            'render': function() {
+                if (this.selectionLength === 1)
+                {
+                    this.tpl = new Ext.XTemplate(Templates.common.userInfo),
                             this.update(this.modelData);
-                        }
-                        else
-                        {
-                            this.tpl = new Ext.XTemplate(Templates.account.deleteManyUsers),
-                            this.update({selectionLength: this.selectionLength});
-                        }
-                    }
                 }
+                else
+                {
+                    this.tpl = new Ext.XTemplate(Templates.account.deleteManyUsers),
+                            this.update({selectionLength: this.selectionLength});
+                }
+            }
+        };
 
         this.buttons = [
             {

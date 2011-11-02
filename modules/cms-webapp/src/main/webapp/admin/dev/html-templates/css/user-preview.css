@@ -1,0 +1,103 @@
+/*--- Generic ---*/
+#cms-user-preview {
+}
+
+#cms-user-preview h1 {
+    font-size: 30px;
+    font-weight: normal;
+}
+
+#cms-user-preview table {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+#cms-user-preview td,
+#cms-user-preview th {
+    padding: 1px;
+    font-size: 12px;
+}
+
+#cms-user-preview th {
+    font-weight: bold;
+    color: #555;
+}
+
+#cms-user-preview td.label {
+    width: 100px;
+    color: #777;
+}
+
+
+/*--- West ---*/
+#cms-user-preview .west {
+    width: 200px;
+    padding: 10px;
+    margin-left: -1px;
+}
+
+#cms-user-preview .west .photo-placeholder {
+    margin-bottom: 10px;
+}
+
+#cms-user-preview .west .photo-placeholder img {
+    width: 200px;
+    height: 200px;
+}
+
+
+/*--- East ---*/
+#cms-user-preview .east {
+    width: 620px;
+    margin-left: 230px;
+    border-left: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+}
+
+#cms-user-preview .east,
+#cms-user-preview .east th,
+#cms-user-preview .east td {
+    font-size: 15px;
+}
+
+#cms-user-preview .east th,
+#cms-user-preview .east td {
+    padding: 2px;
+}
+
+#cms-user-preview .east th,
+#cms-user-preview .east td,
+#cms-user-preview .east .container,
+#cms-user-preview .east .navigation {
+    padding-left: 20px !important;
+}
+
+#cms-user-preview .east th {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+#cms-user-preview .east .container {
+    padding:  5px;
+}
+
+#cms-user-preview .east .navigation {
+    background-color: #f0f0f0;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+#cms-user-preview .east .navigation li {
+    display: inline;
+    list-style-type: none;
+    padding-right: 20px;
+    color: #777;
+}
+
+#cms-user-preview .east .navigation li.active {
+    color: #000;
+}
+
+#cms-user-preview .east .email {
+    color: #777;
+}

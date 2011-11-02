@@ -57,7 +57,7 @@ Ext.define('Common.SlidingPagerPlugin', {
             }
         });
 
-        var total = Ext.create('Ext.toolbar.TextItem', {});
+        var total = Ext.create('Ext.toolbar.TextItem', {cls: 'cms-bold-text'});
         var tbFill = Ext.create('Ext.toolbar.Fill', {});
         var displayInfo = Ext.create('Ext.toolbar.TextItem', {});
 

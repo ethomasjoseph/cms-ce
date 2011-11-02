@@ -1,0 +1,66 @@
+<html>
+<head>
+    <title>Enonic CMS Admin</title>
+    <link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/main.css">
+    <link rel="stylesheet" type="text/css" href="app/main/css/main.css">
+    <script type="text/javascript" src="ext/ext-all.js"></script>
+    <script type="text/javascript" src="app/main/js/templates/Templates.js"></script>
+    <script type="text/javascript">
+
+        Ext.Loader.setConfig({
+            enabled: true,
+            paths: {
+                'App' : 'app/main/js',
+                'Common' : 'common/js'
+            }
+        });
+
+        Ext.application({
+            name: 'App',
+            appFolder: 'app/main/js',
+
+            controllers: [
+                'LauncherToolbarController',
+                'NotificationWindowController',
+                'ActivityStreamController'
+            ],
+
+            launch: function() {
+                Ext.create('Ext.container.Viewport', {
+                    id: 'main-viewport',
+                    layout: 'border',
+                    style: 'border: medium none',
+                    padding: 0,
+                    items: [
+                        {
+                            region: 'center',
+                            layout: 'border',
+                            items: [
+                                {
+                                    region: 'north',
+                                    xtype: 'launcherToolbar'
+                                },
+                                {
+                                    id: 'main-viewport-center',
+                                    region: 'center',
+                                    bodyCls: 'main-viewport-center-body',
+                                    html: '<iframe id="main-iframe" src="#"><!-- --></iframe>'
+                                },
+                            ]
+                        },
+                        {
+                            region: 'east',
+                            xtype:'activityStreamPanel'
+                        }
+                    ]
+                });
+            }
+        });
+
+    </script>
+
+</head>
+<body>
+</body>
+</html>

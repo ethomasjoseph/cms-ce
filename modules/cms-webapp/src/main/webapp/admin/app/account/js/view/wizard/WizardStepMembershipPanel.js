@@ -14,17 +14,29 @@ Ext.define( 'App.view.wizard.WizardStepMembershipPanel', {
                 padding: '10px 15px',
                 items: [
                     {
-                        allowBlank:false,
-                        forceSelection : true,
+                        allowBlank:true,
+                        forceSelection : false,
+                        triggerOnClick: false,
+                        typeAhead: true,
                         xtype:'boxselect',
+                        cls: 'cms-groups-boxselect',
                         resizable: false,
                         name: 'memberships',
                         anchor:'100%',
                         store: 'GroupStore',
                         mode: 'local',
                         displayField: 'name',
-                        displayFieldTpl: '{name} ({userStore})',
-                        valueField: 'key'
+                        listConfig: {
+                            getInnerTpl: function()
+                            {
+                                return Templates.common.groupList;
+                            }
+
+                        },
+                        valueField: 'key',
+                        growMin: 75,
+                        hideTrigger: true,
+                        pinList: false
                     }
                 ]
             }

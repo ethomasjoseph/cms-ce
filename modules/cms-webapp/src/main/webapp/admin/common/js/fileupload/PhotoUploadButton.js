@@ -3,74 +3,18 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
     alias: 'widget.photoUploadButton',
     width: 132,
     height: 132,
+    url: '',
     progressBarHeight: 8,
 
+    // TODO: Move markup to template file
     tpl : new Ext.XTemplate(
-            '<div id="{id}" class="cms-image-upload-button-container" style="width:{width}px;height:{height}px">' +
-                '<img src="resources/images/x-user-photo.png" class="cms-image-upload-button-image" style="width:{width - 4}px;height:{height - 4}px"/>' +
+            '<div id="{id}" class="cms-image-upload-button-container" style="width:{width - 2}px;height:{height - 2}px">' +
+                '<img src="resources/images/x-user-photo.png" class="cms-image-upload-button-image" style="width:{width - 6}px;height:{height - 6}px"/>' +
                 '<div class="cms-image-upload-button-progress-bar-container" style="width:{width - 12}px">' +
                     '<div class="cms-image-upload-button-progress-bar" style="height:{progressBarHeight}px"><!-- --></div>' +
                 '</div>' +
+                '<div id="{id}-over-border" style="visibility: hidden; position:absolute; top:0; left:0; width:{width - 4}px;height:{height - 4}px; border: 4px solid #dbeeff;"></div>' +
             '</div>'),
-
-    onRender: function() {
-        this.callParent(arguments);
-        var me = this;
-        var id = Ext.id(null, 'image-upload-button-');
-        var width = this.width;
-        var height = this.height;
-        var progressBarHeight = this.progressBarHeight;
-        this.update(
-            {
-                id: id,
-                width: width,
-                height: height,
-                progressBarHeight: progressBarHeight
-            }
-        );
-        this.uploadButtonId = id;
-    },
-
-    afterRender: function() {
-        var body = Ext.getBody();
-        var buttonContainer =  Ext.get(this.uploadButtonId);
-
-        function cancelEvent( event ) {
-            if (event.preventDefault) {
-                event.preventDefault();
-            }
-            return false;
-        }
-
-        function addDragOverCls() {
-            buttonContainer.addCls('cms-image-upload-button-container-dragover');
-        }
-
-        function removeDragOverCls() {
-            buttonContainer.removeCls('cms-image-upload-button-container-dragover');
-        }
-
-        body.on('dragover', function(event) {
-            addDragOverCls();
-            cancelEvent(event);
-        });
-        body.on('dragenter', function(event) {
-            addDragOverCls();
-            cancelEvent(event);
-        });
-        body.on('dragleave', function(event) {
-            removeDragOverCls();
-            cancelEvent(event);
-        });
-        body.on('drop', function(event) {
-            removeDragOverCls();
-            cancelEvent(event);
-        });
-        body.on('dragend', function(event) {
-            removeDragOverCls();
-            cancelEvent(event);
-        });
-    },
 
     initComponent: function()
     {
@@ -78,21 +22,49 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
         {
             alert('ImageUploadButton requires Plupload!');
         }
+    },
 
-        var me = this;
+    onRender: function()
+    {
+        this.callParent(arguments);
 
+        var buttonElementId = Ext.id(null, 'image-upload-button-');
+        var width = this.width;
+        var height = this.height;
+        var progressBarHeight = this.progressBarHeight;
+        this.update(
+            {
+                id: buttonElementId,
+                width: width,
+                height: height,
+                progressBarHeight: progressBarHeight
+            }
+        );
+
+        this.buttonElementId = buttonElementId;
+    },
+
+    afterRender: function()
+    {
+        this.initUploader();
+        this.addBodyMouseEventListeners();
+    },
+
+    initUploader: function()
+    {
+        var uploadButton = this;
         var buttonId = this.getId();
 
         var uploader = new plupload.Uploader(
             {
-                runtimes : 'html5,flash,silverlight',
-                multi_selection:false,
-                browse_button : buttonId,
-                url : 'data/user/photo',
-                multipart: true,
-                drop_element: buttonId,
-                flash_swf_url : 'common/js/fileupload/plupload/js/plupload.flash.swf',
-                silverlight_xap_url : 'common/js/fileupload/plupload/js/plupload.silverlight.xap',
+                runtimes                : 'html5,flash,silverlight',
+                multi_selection         :false,
+                browse_button           : buttonId,
+                url                     : this.url,
+                multipart               : true,
+                drop_element            : buttonId,
+                flash_swf_url           : 'common/js/fileupload/plupload/js/plupload.flash.swf',
+                silverlight_xap_url     : 'common/js/fileupload/plupload/js/plupload.silverlight.xap',
                 filters : [
                     {title : 'Image files', extensions : 'jpg,gif,png'}
                 ]
@@ -103,50 +75,55 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
         });
 
         uploader.bind('FilesAdded', function(up, files) {
-            // uploader.start();
-            me.fakeUpload();
+        });
+
+        uploader.bind('QueueChanged', function(up ) {
+            // TODO: Check files length. Only one should be allowed
+            // TODO: Check file extension. Only jpeg,jpg,png,gif,tiff,bmp is allowed.
+            up.start();
+        });
+
+        uploader.bind( 'UploadFile', function(up, file) {
+            uploadButton.showProgressBar();
         });
 
         uploader.bind('UploadProgress', function(up, file) {
+            uploadButton.updateProgressBar( file );
+        });
+
+        uploader.bind( 'FileUploaded', function( up, file, response ) {
+            if ( response && response.status == 200 ) {
+                var responseObj = Ext.decode(response.response);
+                uploadButton.updateImage( responseObj.src );
+            }
+            uploadButton.hideProgressBar();
         });
 
         uploader.bind('UploadComplete', function(up, files) {
+
         });
 
-        setTimeout( function() {
+        setTimeout(function() {
             uploader.init();
         }, 1);
-
-        this.callParent( arguments );
     },
 
-    fakeUpload: function()
+    updateImage: function( src )
     {
-        var me = this;
-        var progressBar = this.getProgressBarElement();
-        me.showProgressBar();
-        var percent = 0;
-        var interval = setInterval(function() {
-            progressBar.style.width = percent + '%';
-            if (percent >= 100) {
-                clearInterval(interval);
-                me.updateImage();
-                me.hideProgressBar();
-            }
-
-            percent++;
-        }, 5);
-    },
-
-    updateImage: function()
-    {
-        this.getImageElement().src = 'resources/images/x-user.png';
+        this.getImageElement().src = src || 'resources/images/x-user.png';
     },
 
     showProgressBar: function()
     {
         this.getProgressBarContainerElement().style.opacity = 1;
         this.getProgressBarContainerElement().style.visibility = 'visible';
+    },
+
+    updateProgressBar: function( file )
+    {
+        var progressBar = this.getProgressBarElement();
+        var percent = file.percent || 0;
+        progressBar.style.width = percent + '%';
     },
 
     hideProgressBar: function()
@@ -157,17 +134,82 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
 
     getImageElement: function()
     {
-        return Ext.DomQuery.select('#'+ this.uploadButtonId + ' .cms-image-upload-button-image')[0];
+        return Ext.DomQuery.select('#'+ this.buttonElementId + ' .cms-image-upload-button-image')[0];
     },
 
     getProgressBarContainerElement: function()
     {
-        return Ext.DomQuery.select('#'+ this.uploadButtonId + ' .cms-image-upload-button-progress-bar-container')[0];
+        return Ext.DomQuery.select('#'+ this.buttonElementId + ' .cms-image-upload-button-progress-bar-container')[0];
     },
 
     getProgressBarElement: function()
     {
-        return Ext.DomQuery.select('#'+ this.uploadButtonId + ' .cms-image-upload-button-progress-bar')[0];
+        return Ext.DomQuery.select('#'+ this.buttonElementId + ' .cms-image-upload-button-progress-bar')[0];
+    },
+
+    addBodyMouseEventListeners: function()
+    {
+        var bodyElement = Ext.getBody();
+        var dropTarget =  Ext.get(this.buttonElementId);
+        var border = Ext.get(this.buttonElementId + '-over-border');
+
+        function cancelEvent( event ) {
+            if (event.preventDefault) {
+                event.preventDefault();
+            }
+            return false;
+        }
+
+        function showBorder() {
+            border.dom.style.visibility = 'visible';
+        }
+        function hideBorder() {
+            border.dom.style.visibility = 'hidden';
+        }
+
+        function highlightDropTarget() {
+            dropTarget.addCls('cms-file-upload-drop-target');
+            showBorder();
+        }
+
+        function removeHighlightFromDropTarget() {
+            dropTarget.dom.className = dropTarget.dom.className.replace(/ cms-file-upload-drop-target/ , '');
+            hideBorder();
+        }
+
+        dropTarget.on('mouseenter', function(event) {
+            showBorder();
+            cancelEvent(event);
+        });
+        dropTarget.on('mouseleave', function(event) {
+            hideBorder();
+            cancelEvent(event);
+        });
+        dropTarget.on('dragenter', function(event) {
+            dropTarget.highlight('99BCE8');
+            cancelEvent(event);
+        });
+
+        bodyElement.on('dragover', function(event) {
+            highlightDropTarget();
+            cancelEvent(event);
+        });
+        bodyElement.on('dragenter', function(event) {
+            highlightDropTarget();
+            cancelEvent(event);
+        });
+        bodyElement.on('dragleave', function(event) {
+            removeHighlightFromDropTarget();
+            cancelEvent(event);
+        });
+        bodyElement.on('drop', function(event) {
+            removeHighlightFromDropTarget();
+            cancelEvent(event);
+        });
+        bodyElement.on('dragend', function(event) {
+            removeHighlightFromDropTarget();
+            cancelEvent(event);
+        });
     }
 
 });

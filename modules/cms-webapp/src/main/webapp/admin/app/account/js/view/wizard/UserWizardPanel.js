@@ -8,16 +8,15 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         'App.view.EditUserFormPanel',
         'App.view.wizard.WizardStepLoginInfoPanel',
         'App.view.wizard.WizardStepMembershipPanel',
-        'App.view.wizard.WizardStepSummaryPanel'
+        'App.view.wizard.WizardStepSummaryPanel',
+        'Common.fileupload.PhotoUploadButton',
+        'App.view.wizard.WizardStepProfilePanel'
     ],
 
-    layout: {
-        type: 'hbox',
-        align: 'stretch',
-        padding: 10
-    },
+    layout: 'column',
 
     border: 0,
+    autoScroll: true,
 
     defaults: {
         border: false
@@ -38,7 +37,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
             height: 100
         } );
 
-        var uploadForm = this.uploadForm = Ext.create('Ext.form.Panel', {
+        var uploadForm = this.uploadForm = Ext.create( 'Ext.form.Panel', {
             fileUpload: true,
             disabled: true,
             width: 100,
@@ -53,72 +52,79 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                 margin: 0,
                 opacity: 0
             },
-            items: [{
-                xtype: 'filefield',
-                name: 'photo',
-                buttonOnly: true,
-                hideLabel: true,
-                width: 100,
-                height: 100,
-                buttonConfig: {
+            items: [
+                {
+                    xtype: 'filefield',
+                    name: 'photo',
+                    buttonOnly: true,
+                    hideLabel: true,
                     width: 100,
-                    height: 100
-                },
-                listeners: {
-                    afterrender: function( imgUpl ) {
-                        me.resizeFileUpload( imgUpl );
+                    height: 100,
+                    buttonConfig: {
+                        width: 100,
+                        height: 100
                     },
-                    change: function( imgUpl, path, eOpts ) {
-                        var form = this.up('form').getForm();
-                        var regex = new RegExp("\.(jpg|jpeg|gif|png|bmp)$");
-                        var isValid = regex.test( path );
-                        if( isValid )
+                    listeners: {
+                        afterrender: function( imgUpl )
                         {
-                            form.submit( {
-                                url: 'data/user/photo',
-                                method: 'POST',
-                                waitMsg: 'Uploading your photo...',
-                                success: function( form, action ) {
-                                    userImage.setSrc( action.result.src );
-                                    me.resizeFileUpload( imgUpl );
-                                },
-                                failure: function(form, action) {
-                                    Ext.Msg.show({
-                                        title: 'Failure',
-                                        msg: 'File was not uploaded.',
-                                        minWidth: 200,
-                                        modal: true,
-                                        icon: Ext.Msg.INFO,
-                                        buttons: Ext.Msg.OK
-                                    });
-                                }
-                            } );
-                        }
-                        else
+                            me.resizeFileUpload( imgUpl );
+                        },
+                        change: function( imgUpl, path, eOpts )
                         {
-                            Ext.Msg.alert("Incorrect file", "Supported files are jpg, jpeg, png, gif and bmp.");
+                            var form = this.up( 'form' ).getForm();
+                            var regex = new RegExp( "\.(jpg|jpeg|gif|png|bmp)$" );
+                            var isValid = regex.test( path );
+                            if ( isValid )
+                            {
+                                form.submit( {
+                                                 url: 'data/user/photo',
+                                                 method: 'POST',
+                                                 waitMsg: 'Uploading your photo...',
+                                                 success: function( form, action )
+                                                 {
+                                                     userImage.setSrc( action.result.src );
+                                                     me.resizeFileUpload( imgUpl );
+                                                 },
+                                                 failure: function( form, action )
+                                                 {
+                                                     Ext.Msg.show( {
+                                                                       title: 'Failure',
+                                                                       msg: 'File was not uploaded.',
+                                                                       minWidth: 200,
+                                                                       modal: true,
+                                                                       icon: Ext.Msg.INFO,
+                                                                       buttons: Ext.Msg.OK
+                                                                   } );
+                                                 }
+                                             } );
+                            }
+                            else
+                            {
+                                Ext.Msg.alert( "Incorrect file", "Supported files are jpg, jpeg, png, gif and bmp." );
+                            }
                         }
                     }
                 }
-            }]
-        });
-
+            ]
+        } );
 
         me.items = [
             {
-                width: 100,
+                width: 120,
+                padding: 10,
                 items: [
-                    userImage,
-                    uploadForm
+                    {
+                        xtype: 'photoUploadButton',
+                        width: 100,
+                        height: 100,
+                        url: '/admin/data/user/photo',
+                        progressBarHeight: 6
+                    }
                 ]
             },
             {
-                flex: 1,
-                layout: {
-                    type: 'vbox',
-                    align: 'stretch',
-                    padding: '0 10'
-                },
+                columnWidth: 1,
+                padding: '10 10 10 0',
                 defaults: {
                     border: false
                 },
@@ -129,11 +135,13 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                         styleHtmlContent: true,
                         listeners: {
                             afterrender: {
-                                fn: function() {
+                                fn: function()
+                                {
                                     var me = this;
-                                    Ext.getBody().addListener('click', function(event, target, eOpts) {
-                                       me.toggleDisplayNameField(event, target);
-                                    });
+                                    me.getEl().addListener( 'click', function( event, target, eOpts )
+                                    {
+                                        me.toggleDisplayNameField( event, target );
+                                    } );
                                 },
                                 scope: this
                             }
@@ -141,27 +149,32 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                         html: Templates.account.newUserPanelHeader
                     },
                     {
-                        flex: 1,
                         xtype: 'wizardPanel',
                         showControls: false,
                         restrainWidth: 580,
                         items: [
                             {
                                 stepNumber: 1,
-                                stepTitle: 'Userstore',
-                                xtype: 'userStoreListPanel'
+                                stepTitle: "Profile",
+                                xtype: 'wizardStepProfilePanel',
+                                enableToolbar: false
                             },
                             {
                                 stepNumber: 2,
-                                stepTitle: "Profile",
-                                itemId: 'userForm',
+                                stepTitle: "User",
+                                itemId: "userPanel",
                                 xtype: 'editUserFormPanel',
+                                includedFields: ['username', 'email', 'password', 'repeat-password', 'photo',
+                                    'country', 'locale', 'timezone', 'global-position'],
                                 enableToolbar: false
                             },
                             {
                                 stepNumber: 3,
-                                stepTitle: "Login",
-                                xtype: 'wizardStepLoginInfoPanel'
+                                stepTitle: "Places",
+                                itemId: 'placesPanel',
+                                xtype: 'editUserFormPanel',
+                                includedFields: ['address'],
+                                enableToolbar: false
                             },
                             {
                                 stepNumber: 4,
@@ -178,38 +191,41 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                 ]
             }
         ];
+
         this.callParent( arguments );
     },
 
-    toggleDisplayNameField: function(event, target)
+    toggleDisplayNameField: function( event, target )
     {
-        var element = new Ext.Element(target);
-        var parent = element.findParent('.cms-wizard-header');
-        var displayNameField = Ext.get('display-name');
-        var readonly = displayNameField.getAttribute('readonly');
+        var clickedElement = new Ext.Element( target );
+        var parentToClickedElementIsHeader = clickedElement.findParent( '.cms-wizard-header' );
+        var displayNameField = Ext.DomQuery.select( 'input.cms-display-name', this.getEl().dom )[0];
+        var displayNameFieldElement = new Ext.Element( displayNameField );
 
-        if (parent)
+        if ( parentToClickedElementIsHeader )
         {
-            displayNameField.dom.removeAttribute('readonly');
-            displayNameField.addCls('cms-edited-field');
+            displayNameFieldElement.dom.removeAttribute( 'readonly' );
+            displayNameFieldElement.addCls( 'cms-edited-field' );
         }
         else
         {
-            displayNameField.set({readonly: true});
-            displayNameField.removeCls('cms-edited-field');
+            displayNameFieldElement.set( {readonly: true} );
+            displayNameFieldElement.removeCls( 'cms-edited-field' );
         }
     },
 
     resizeFileUpload: function( file )
     {
         file.el.down( 'input[type=file]' ).setStyle( {
-            width: file.getWidth(),
-            height: file.getHeight()
-        } );
+                                                         width: file.getWidth(),
+                                                         height: file.getHeight()
+                                                     } );
     },
 
-    setFileUploadDisabled: function( disable ) {
-        this.uploadForm.setDisabled( disable );
+    setFileUploadDisabled: function( disable )
+    {
+        //TODO: disable image upload
+        //this.uploadForm.setDisabled( disable );
     }
 
-});
+} );
