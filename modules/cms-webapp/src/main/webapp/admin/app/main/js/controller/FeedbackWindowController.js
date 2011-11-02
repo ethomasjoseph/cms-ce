@@ -96,16 +96,7 @@ Ext.define('App.controller.FeedbackWindowController', {
         feedbackWindow.getEl().on('click', function(event, target) {
             if(target.className.indexOf('notify-user-button') > -1)
             {
-                //TODO: get real user
-                var user = {
-                    data:{
-                        displayName: 'User Name',
-                        qualifiedName: 'Userstore1/Username',
-                        email: 'username@enonic.com',
-                        key: 1
-                    }
-                };
-                this.application.fireEvent('showNotifyUserWindow', user );
+                Ext.Msg.alert('Comming soon', 'Notify User Window');
             }
 
             this.hide();

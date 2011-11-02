@@ -75,7 +75,16 @@ Ext.define( 'App.controller.UserWizardController', {
 
     wizardFinished: function( wizard, data )
     {
-
+        //TODO: get real user
+        var user = {
+            data:{
+                displayName: data['display-name'] || 'User Name',
+                qualifiedName: ( data['userStore'] ||'Userstore1' ) + '/' + ( data['username'] || 'Username' ),
+                email: data['email'] || 'user@enonic.com',
+                key: 1
+            }
+        };
+        this.application.fireEvent('showNotifyUserWindow', user );
     },
 
     wizardPrev: function( btn, evt )

@@ -14,7 +14,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
     ],
 
     layout: 'column',
-    cls: 'cms-form',
+
     border: 0,
     autoScroll: true,
 
