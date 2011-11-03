@@ -33,9 +33,10 @@ Ext.define( 'App.view.GridPanel', {
             },
             {
                 text: 'Last Modified',
-                xtype: 'datecolumn',
+                //xtype: 'datecolumn',
+                //format: 'Y-m-d h:m',
                 dataIndex: 'lastModified',
-                format: 'Y-m-d h:m',
+                renderer: this.prettyDateRenderer,
                 sortable: true
             }
         ];
@@ -66,5 +67,15 @@ Ext.define( 'App.view.GridPanel', {
                 record.data.name,
                 record.data.userStore
                 );
+    },
+
+    prettyDateRenderer: function( value, p, record ) {
+        try {
+            if( parent && Ext.isFunction( parent.humane_date ) ) {
+                return parent.humane_date( value );
+            }
+        } catch( e ) {
+            return value;
+        }
     }
 });
