@@ -52,7 +52,6 @@ Ext.define( 'App.view.GridPanel', {
         };
 
         this.selModel = Ext.create('Ext.selection.CheckboxModel', {
-            mode: 'SIMPLE'
         });
 
         this.callParent( arguments );
