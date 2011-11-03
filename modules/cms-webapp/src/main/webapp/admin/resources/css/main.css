@@ -798,9 +798,9 @@ ul.cms-wizard-navigation a.last-current {
     position: absolute;
     border: 1px solid #555;
     background-color: #555;
-    bottom: 4px;
-    left: 5px;
-    right: 5px;
+    bottom: 1px;
+    left: 1px;
+    right: 1px;
     font-size: 1px;
     border-radius: 4px;
 }
