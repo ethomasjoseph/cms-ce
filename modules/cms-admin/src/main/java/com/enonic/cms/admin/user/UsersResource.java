@@ -72,11 +72,17 @@ public final class UsersResource
 
     private final URI GROUP_PHOTO_THUMB_ICON;
 
+    private final URI USER_PHOTO_ICON;
+
+    private final URI USER_PHOTO_THUMB_ICON;
+
     public UsersResource()
         throws URISyntaxException
     {
         GROUP_PHOTO_ICON = new URI( "admin/resources/images/default_group.png" );
         GROUP_PHOTO_THUMB_ICON = new URI( "admin/resources/images/default_group_thumb.png" );
+        USER_PHOTO_THUMB_ICON = new URI( "admin/resources/images/default_user_thumb.png" );
+        USER_PHOTO_ICON = new URI( "admin/resources/images/default_user.png" );
     }
 
     @GET
@@ -105,6 +111,11 @@ public final class UsersResource
         try
         {
             final UserEntity entity = findEntity( key );
+            if ( entity.getPhoto() == null )
+            {
+                final URI iconUrl = thumb ? USER_PHOTO_THUMB_ICON : USER_PHOTO_ICON;
+                return Response.status( Response.Status.MOVED_PERMANENTLY ).location( iconUrl ).build();
+            }
             byte[] photo = this.photoService.renderPhoto( entity, thumb ? 40 : 100 );
             return Response.ok(photo).build();
         }
