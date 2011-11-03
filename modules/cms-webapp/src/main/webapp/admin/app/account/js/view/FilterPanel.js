@@ -138,6 +138,7 @@ Ext.define('App.view.FilterPanel', {
         };
 
  		Ext.apply(this, filter);
+        Ext.tip.QuickTipManager.init();
 
         this.callParent(arguments);
     },
@@ -169,6 +170,8 @@ Ext.define('App.view.FilterPanel', {
     },
 
     showOrganizationFacets: function(facet) {
+        var MAX_ORG_FACET_ITEMS = 10;
+        var MAX_ORG_LABEL_CHARS = 20;
         var organizationCheckGroup = this.query( '#organizationOptions' )[0];
         var checked = organizationCheckGroup.getValue();
         var selectedCheck = {};
@@ -180,7 +183,7 @@ Ext.define('App.view.FilterPanel', {
         this.removeAllOrgCheckboxes();
 
         var terms = facet.terms;
-        var itemId, checkbox, label;
+        var itemId, checkbox, label, tooltip;
         var orgList = [];
         for (var organization in terms) {
             orgList.push({name: organization, hits: terms[organization]});
@@ -198,19 +201,38 @@ Ext.define('App.view.FilterPanel', {
         });
 
         var total = 0;
+        var checksToShow = 0;
         var checkSelected;
         Ext.Array.each(orgList, function(org) {
             total++;
-            if (total <= 10) {
+            if (total <= MAX_ORG_FACET_ITEMS) {
                 checkSelected = selectedCheck[org.name];
                 if (checkSelected || (org.hits > 0)) {
                     itemId = org.name + '_org_checkbox';
-                    label = org.name + ' ('+org.hits+')';
-                    var cb = new Ext.form.Checkbox( { itemId: itemId, boxLabel: label, inputValue: org.name, checked: checkSelected, visible: true } );
+                    label = Ext.String.ellipsis(org.name, MAX_ORG_LABEL_CHARS) + ' ('+org.hits+')';
+                    var cb = new Ext.form.Checkbox( { itemId: itemId, boxLabel: label, inputValue: org.name, checked: checkSelected, checkedCls: 'x-form-cb-checked facet-selected'} );
                     checkbox = organizationCheckGroup.add(cb);
+
+                    if (org.name.length > MAX_ORG_LABEL_CHARS) {
+                        tooltip = org.name + ' ('+org.hits+')';
+                           Ext.tip.QuickTipManager.register({
+                            target: cb.id,
+                            text: tooltip
+                        });
+                    }
+
+                    checksToShow++;
                 }
+            } else if (org.hits > 0) {
+                checksToShow++;
             }
         });
+
+        if (checksToShow > MAX_ORG_FACET_ITEMS) {
+            var text = '... ' + (checksToShow - MAX_ORG_FACET_ITEMS) + ' more';
+            var moreLabel = {html: '<a href="javascript:;" class="showMoreOrg">'+text+'</a>', border: false};
+            organizationCheckGroup.add(moreLabel);
+        }
     },
 
     showUserstoreFacets: function(facet) {
@@ -261,6 +283,8 @@ Ext.define('App.view.FilterPanel', {
     },
 
     clearFilter: function() {
+        this.setTitle( 'Filter' );
+
         var userstoreCheckboxes = Ext.ComponentQuery.query( '[itemId=userstoreOptions] * , [itemId=accountTypeOptions] *, [itemId=organizationOptions] *' );
         Ext.Array.each(userstoreCheckboxes, function(checkbox) {
             checkbox.suspendEvents();
@@ -268,7 +292,11 @@ Ext.define('App.view.FilterPanel', {
             checkbox.show();
             checkbox.resumeEvents();
         });
-        this.setTitle( 'Filter' );
+
+        var filterTextField = this.query('#filter')[0];
+        filterTextField.suspendEvents();
+        filterTextField.reset();
+        filterTextField.resumeEvents();
 
         var filterButton = this.query('#filterButton')[0];
         filterButton.fireEvent('click');
