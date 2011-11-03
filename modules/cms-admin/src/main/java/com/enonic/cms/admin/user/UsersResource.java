@@ -79,10 +79,10 @@ public final class UsersResource
     public UsersResource()
         throws URISyntaxException
     {
-        GROUP_PHOTO_ICON = new URI( "admin/resources/images/default_group.png" );
-        GROUP_PHOTO_THUMB_ICON = new URI( "admin/resources/images/default_group_thumb.png" );
-        USER_PHOTO_THUMB_ICON = new URI( "admin/resources/images/default_user_thumb.png" );
-        USER_PHOTO_ICON = new URI( "admin/resources/images/default_user.png" );
+        GROUP_PHOTO_ICON = new URI( "admin/resources/icons/128x128/group.png" );
+        GROUP_PHOTO_THUMB_ICON = new URI( "admin/resources/icons/32x32/group.png" );
+        USER_PHOTO_THUMB_ICON = new URI( "admin/resources/icons/256x256/dummy-user.png" );
+        USER_PHOTO_ICON = new URI( "admin/resources/icons/256x256/dummy-user.png" );
     }
 
     @GET

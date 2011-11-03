@@ -161,10 +161,10 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
         }
 
         function showBorder() {
-            border.dom.style.visibility = 'visible';
+            //border.dom.style.visibility = 'visible';
         }
         function hideBorder() {
-            border.dom.style.visibility = 'hidden';
+            //border.dom.style.visibility = 'hidden';
         }
 
         function highlightDropTarget() {
