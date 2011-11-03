@@ -86,11 +86,11 @@ public class AccountIndexing
 
     private void autoIndex()
     {
-        if ( !accountSearchService.indexExists() )
-        {
-            LOG.info( "Accounts index not found, initializing indexes." );
+//        if ( !accountSearchService.indexExists() )
+//        {
+//            LOG.info( "Accounts index not found, initializing indexes." );
             indexAccounts();
-        }
+//        }
     }
 
     public void indexAccounts()

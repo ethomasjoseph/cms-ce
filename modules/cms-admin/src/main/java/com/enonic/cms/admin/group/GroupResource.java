@@ -1,5 +1,6 @@
 package com.enonic.cms.admin.group;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.DefaultValue;
@@ -16,7 +17,14 @@ import org.springframework.stereotype.Component;
 
 import com.sun.jersey.api.NotFoundException;
 
+import com.enonic.cms.core.search.SearchSortOrder;
+import com.enonic.cms.core.search.account.AccountIndexField;
+import com.enonic.cms.core.search.account.AccountSearchHit;
+import com.enonic.cms.core.search.account.AccountSearchQuery;
+import com.enonic.cms.core.search.account.AccountSearchResults;
+import com.enonic.cms.core.search.account.AccountSearchService;
 import com.enonic.cms.core.security.group.GroupEntity;
+import com.enonic.cms.core.security.group.GroupKey;
 import com.enonic.cms.core.security.user.UserEntity;
 import com.enonic.cms.store.dao.GroupDao;
 import com.enonic.cms.store.dao.UserDao;
@@ -33,6 +41,8 @@ public final class GroupResource
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private AccountSearchService searchService;
 
     @POST
     @Path("join")
@@ -120,9 +130,37 @@ public final class GroupResource
     }
 
     @GET
-    @Path( "list" )
+    @Path( "list_" )
     public List<GroupModel> getGroups(@QueryParam("query") String query){
         List<GroupEntity> groups = groupDao.findByCriteria( query, null, true, MatchMode.START );
+        return GroupModelHelper.toListModel( groups );
+    }
+
+    @GET
+    @Path( "list" )
+    public List<GroupModel> getGroupsElasticSearch( @QueryParam("query") String query,
+                                                    @QueryParam("limit") @DefaultValue("50") final int limit )
+    {
+        final AccountSearchQuery searchQueryCountFacets = new AccountSearchQuery()
+            .setCount( limit )
+            .setIncludeResults( true )
+            .setQuery( query )
+            .setGroups( true )
+            .setUsers( false )
+            .setIncludeFacets( false )
+            .setSortField( AccountIndexField.DISPLAY_NAME_FIELD )
+            .setSortOrder( SearchSortOrder.ASC );
+
+        final AccountSearchResults searchResults = searchService.search( searchQueryCountFacets );
+
+        final List<GroupEntity> groups = new ArrayList<GroupEntity>();
+
+        for ( AccountSearchHit searchHit : searchResults )
+        {
+            GroupEntity groupEntity = this.groupDao.findByKey( new GroupKey( searchHit.getKey().toString() ) );
+            groups.add( groupEntity );
+        }
+
         return GroupModelHelper.toListModel( groups );
     }
 
