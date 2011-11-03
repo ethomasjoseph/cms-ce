@@ -129,6 +129,20 @@ public class AccountSearchService
                     .field( "type", "string" )
                     .field( "index", "not_analyzed" )
                 .endObject()
+            .field( AccountIndexField.ORGANIZATION_FIELD.id() )
+                .startObject()
+                    .field( "type", "multi_field" )
+                    .startObject( "fields" )
+                        .startObject( AccountIndexField.ORGANIZATION_FIELD.id() )
+                            .field( "type", "string" )
+                            .field( "index", "analyzed" )
+                        .endObject()
+                        .startObject( "untouched" )
+                            .field( "type", "string" )
+                            .field( "index", "not_analyzed" )
+                        .endObject()
+                    .endObject()
+                .endObject()
             .endObject()
         .endObject()
         .endObject();
@@ -167,11 +181,14 @@ public class AccountSearchService
         final AccountSearchResults searchResult = new AccountSearchResults(query.getFrom(), (int)hits.getTotalHits());
         if ( query.isIncludeResults() )
         {
-            addSearchHits( searchResult, hits, query.getCount() );
+            addSearchHits( searchResult, hits );
         }
 
-        final Facets facets = res.facets();
-        addSearchFacets(searchResult, facets);
+        if ( query.isIncludeFacets() )
+        {
+            final Facets facets = res.facets();
+            addSearchFacets( searchResult, facets );
+        }
 
         return searchResult;
     }
@@ -206,9 +223,9 @@ public class AccountSearchService
         }
     }
 
-    private void addSearchHits( AccountSearchResults searchResult, SearchHits hits, int count )
+    private void addSearchHits( AccountSearchResults searchResult, SearchHits hits )
     {
-        final int hitCount = Math.min( count, hits.getHits().length );
+        final int hitCount = hits.getHits().length;
         for ( int i = 0; i < hitCount; i++ )
         {
             final SearchHit hit = hits.getAt( i );

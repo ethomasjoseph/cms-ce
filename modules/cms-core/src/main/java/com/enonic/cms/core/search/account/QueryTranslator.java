@@ -8,6 +8,7 @@ import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.facet.FacetBuilders;
+import org.elasticsearch.search.facet.terms.TermsFacet;
 import org.elasticsearch.search.facet.terms.TermsFacetBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -32,24 +33,45 @@ public final class QueryTranslator
 {
     private static final Logger LOG = LoggerFactory.getLogger( QueryTranslator.class );
 
+    private static final int DEFAULT_SEARCH_COUNT = 10;
+
     public SearchSourceBuilder build(AccountSearchQuery query)
     {
-        final SearchSourceBuilder builder = new SearchSourceBuilder()
-            .explain( true )
-            .from( query.getFrom() )
-            .size( query.getCount() );
+        final SearchSourceBuilder builder = new SearchSourceBuilder();
+        if ( query.getFrom() >= 0 )
+        {
+            builder.from( query.getFrom() );
+        }
+
+        if ( query.getCount() >= 0 )
+        {
+            builder.size( query.getCount() );
+        }
+        else
+        {
+            builder.size( DEFAULT_SEARCH_COUNT );
+        }
 
         builder.query( buildQuery( query ));
 
-        final TermsFacetBuilder typeFacet = FacetBuilders.termsFacet( "type" )
-            .field( AccountIndexField.TYPE_FIELD.id() )
-            .allTerms( true );
+        if ( query.isIncludeFacets() )
+        {
+            final TermsFacetBuilder typeFacet = FacetBuilders.termsFacet( "type" )
+                .field( AccountIndexField.TYPE_FIELD.id() )
+                .allTerms( true );
 
-        final TermsFacetBuilder userStoreFacet = FacetBuilders.termsFacet( "userstore" )
-            .field( AccountIndexField.USERSTORE_FIELD.id() + ".untouched" )
-            .allTerms( true );
+            final TermsFacetBuilder userStoreFacet = FacetBuilders.termsFacet( "userstore" )
+                .field( AccountIndexField.USERSTORE_FIELD.id() + ".untouched" )
+                .allTerms( true );
 
-        builder.facet( typeFacet ).facet( userStoreFacet );
+            final TermsFacetBuilder organizationFacet = FacetBuilders.termsFacet( "organization" )
+                .field( AccountIndexField.ORGANIZATION_FIELD.id() + ".untouched" )
+                .size( 100 )
+                .order( TermsFacet.ComparatorType.COUNT )
+                .allTerms( true );
+
+            builder.facet( typeFacet ).facet( userStoreFacet ).facet( organizationFacet );
+        }
 
         setupSorting(query, builder);
 
@@ -143,7 +165,8 @@ public final class QueryTranslator
         return FilterBuilders.orFilter( prefixFilter( AccountIndexField.NAME_FIELD.id(), searchString ),
                                         prefixFilter( AccountIndexField.DISPLAY_NAME_FIELD.id(), searchString ),
                                         prefixFilter( AccountIndexField.FIRST_NAME_FIELD.id(), searchString ),
-                                        prefixFilter( AccountIndexField.EMAIL_FIELD.id(), searchString ) );
+                                        prefixFilter( AccountIndexField.EMAIL_FIELD.id(), searchString ),
+                                        prefixFilter( AccountIndexField.ORGANIZATION_FIELD.id(), searchString ) );
 
     }
 
@@ -156,7 +179,8 @@ public final class QueryTranslator
                 prefixFilter( AccountIndexField.NAME_FIELD.id(), prefix ),
                 prefixFilter( AccountIndexField.DISPLAY_NAME_FIELD.id(), prefix ),
                 prefixFilter( AccountIndexField.FIRST_NAME_FIELD.id(), prefix ),
-                prefixFilter( AccountIndexField.EMAIL_FIELD.id(), prefix )
+                prefixFilter( AccountIndexField.EMAIL_FIELD.id(), prefix ),
+                prefixFilter( AccountIndexField.ORGANIZATION_FIELD.id(), prefix )
             );
         }
         else
@@ -165,7 +189,8 @@ public final class QueryTranslator
                 termsFilter( AccountIndexField.NAME_FIELD.id(), term ),
                 termsFilter( AccountIndexField.DISPLAY_NAME_FIELD.id(), term ),
                 termsFilter( AccountIndexField.FIRST_NAME_FIELD.id(), term ),
-                termsFilter( AccountIndexField.EMAIL_FIELD.id(), term )
+                termsFilter( AccountIndexField.EMAIL_FIELD.id(), term ),
+                termsFilter( AccountIndexField.ORGANIZATION_FIELD.id(), term )
             );
         }
     }
@@ -176,10 +201,16 @@ public final class QueryTranslator
 
         qb.must( filteredQuery( matchAllQuery(), buildFilter( query ) ) );
 
-        String[] userStores = query.getUserStores();
+        final String[] userStores = query.getUserStores();
         if ( userStores != null )
         {
             qb.must( termsQuery( AccountIndexField.USERSTORE_FIELD.id() + ".untouched", userStores ) );
+        }
+
+        final String[] organizations = query.getOrganizations();
+        if ( organizations != null )
+        {
+            qb.must( termsQuery( AccountIndexField.ORGANIZATION_FIELD.id() + ".untouched", organizations ) );
         }
 
         if ( ! query.getUsers() )

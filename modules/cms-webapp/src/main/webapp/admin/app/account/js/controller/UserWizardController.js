@@ -58,37 +58,10 @@ Ext.define( 'App.controller.UserWizardController', {
         this.getUserWizardPanel().doLayout();
         this.focusFirstField();
 
-        if ( newStep.getXType() == 'userStoreListPanel' )
+        if ( newStep.getXType() == 'wizardStepProfilePanel' )
         {
             // move to 1st step
             this.getUserWizardPanel().setFileUploadDisabled( true );
-        } else if ( (newStep.getXType() == 'editUserFormPanel') && (oldStep.getXType() == 'userStoreListPanel') )
-        {
-            var prefix = newStep.down( '#prefix' );
-            var firstName = newStep.down( '#first-name' );
-            var middleName = newStep.down( '#middle-name' );
-            var lastName = newStep.down( '#last-name' );
-            var suffix = newStep.down( '#suffix' );
-            if ( prefix )
-            {
-                prefix.on( 'keyup', this.textFieldHandleEnterKey );
-            }
-            if ( firstName )
-            {
-                firstName.on( 'keyup', this.textFieldHandleEnterKey );
-            }
-            if ( middleName )
-            {
-                middleName.on( 'keyup', this.textFieldHandleEnterKey );
-            }
-            if ( lastName )
-            {
-                lastName.on( 'keyup', this.textFieldHandleEnterKey );
-            }
-            if ( suffix )
-            {
-                suffix.on( 'keyup', this.textFieldHandleEnterKey );
-            }
         }
         if ( oldStep.getXType() == 'userStoreListPanel' )
         {
@@ -102,7 +75,10 @@ Ext.define( 'App.controller.UserWizardController', {
 
     wizardFinished: function( wizard, data )
     {
-
+        var parentApp = parent.mainApp;
+        if ( parentApp ) {
+            parentApp.fireEvent('notifier.show', "User created", "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth." );
+        }
     },
 
     wizardPrev: function( btn, evt )
@@ -117,10 +93,11 @@ Ext.define( 'App.controller.UserWizardController', {
         w.next( btn );
     },
 
-    userStoreFieldsLoaded: function()
+    userStoreFieldsLoaded: function( target )
     {
         this.getUserWizardPanel().doLayout();
         this.focusFirstField();
+        this.bindFormEvents( target );
     },
 
     userStoreSelected: function( view, record, item )
@@ -150,6 +127,35 @@ Ext.define( 'App.controller.UserWizardController', {
         profilePanel.getLayout().next();
     },
 
+    bindFormEvents: function( form )
+    {
+        var prefix = form.down( '#prefix' );
+        var firstName = form.down( '#first-name' );
+        var middleName = form.down( '#middle-name' );
+        var lastName = form.down( '#last-name' );
+        var suffix = form.down( '#suffix' );
+        if ( prefix )
+        {
+            prefix.on( 'keyup', this.textFieldHandleEnterKey );
+        }
+        if ( firstName )
+        {
+            firstName.on( 'keyup', this.textFieldHandleEnterKey );
+        }
+        if ( middleName )
+        {
+            middleName.on( 'keyup', this.textFieldHandleEnterKey );
+        }
+        if ( lastName )
+        {
+            lastName.on( 'keyup', this.textFieldHandleEnterKey );
+        }
+        if ( suffix )
+        {
+            suffix.on( 'keyup', this.textFieldHandleEnterKey );
+        }
+    },
+
     textFieldHandleEnterKey: function( field, event )
     {
         var formPanel = field.up( 'editUserFormPanel' );
@@ -161,7 +167,7 @@ Ext.define( 'App.controller.UserWizardController', {
         var lastName = formPanel.down( '#last-name' ) ? Ext.String.trim( formPanel.down( '#last-name' ).getValue() )
                 : '';
         var suffix = formPanel.down( '#suffix' ) ? Ext.String.trim( formPanel.down( '#suffix' ).getValue() ) : '';
-        var displayName = Ext.get( 'display-name' );
+        var displayName = Ext.get( 'cms-display-name' );
         if ( displayName )
         {
             var displayNameValue = prefix + ' ' + firstName + ' ' + middleName + ' ' + lastName + ' ' + suffix;
@@ -170,11 +176,14 @@ Ext.define( 'App.controller.UserWizardController', {
         }
     },
 
-    focusFirstField: function() {
+    focusFirstField: function()
+    {
         var activeItem = this.getWizardPanel().getLayout().getActiveItem();
         var firstField;
         if ( activeItem && ( firstField = activeItem.down( 'field' ) ) )
+        {
             firstField.focus();
+        }
     },
 
     updateTabTitle: function ( field, event )

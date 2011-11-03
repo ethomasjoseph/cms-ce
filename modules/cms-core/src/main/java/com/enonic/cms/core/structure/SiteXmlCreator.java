@@ -129,12 +129,17 @@ public class SiteXmlCreator
 
     public static Document createEmptyMenuBranch()
     {
-        return new Document( new Element( "menuitems" ) );
+        return new Document( new Element( "menu" ) );
     }
 
     public static Document createEmptyMenus()
     {
         return new Document( new Element( "menus" ) );
+    }
+
+    public static Document createEmptyMenuItems()
+    {
+        return new Document( new Element( "menuitems" ) );
     }
 
     public Document createLegacyGetMenuBranch( SiteEntity siteEntity )

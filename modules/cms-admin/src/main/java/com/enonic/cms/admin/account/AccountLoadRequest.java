@@ -16,6 +16,10 @@ public final class AccountLoadRequest
 
     private boolean selectGroups;
 
+    @DefaultValue("")
+    @QueryParam("organizations")
+    private String organizations;
+
     @DefaultValue("all")
     @QueryParam("type")
     public void setType( String accountType )
@@ -65,5 +69,15 @@ public final class AccountLoadRequest
     public void setSelectGroups( boolean selectGroups )
     {
         this.selectGroups = selectGroups;
+    }
+
+    public String getOrganizations()
+    {
+        return organizations;
+    }
+
+    public void setOrganizations( String organizations )
+    {
+        this.organizations = organizations;
     }
 }

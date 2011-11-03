@@ -15,17 +15,21 @@ public final class AccountSearchQuery
     private SearchSortOrder sortOrder;
     private AccountIndexField sortField;
     private boolean includeResults;
+    private boolean includeFacets;
+    private String[] organization;
 
     public AccountSearchQuery()
     {
         this.query = "";
-        this.from = 0;
-        this.count = 0;
+        this.from = -1;
+        this.count = -1;
         this.userStore = null;
+        this.organization = null;
         this.users = true;
         this.groups = true;
         this.sortField = null;
         this.includeResults = true;
+        this.includeFacets = true;
     }
 
     public AccountSearchQuery(AccountSearchQuery accountSearchQuery)
@@ -37,10 +41,15 @@ public final class AccountSearchQuery
         {
             this.userStore = Arrays.copyOf( accountSearchQuery.userStore, accountSearchQuery.userStore.length );
         }
+        if ( organization != null )
+        {
+            this.organization = Arrays.copyOf( accountSearchQuery.organization, accountSearchQuery.organization.length );
+        }
         this.users = accountSearchQuery.users;
         this.groups = accountSearchQuery.groups;
         this.sortField = accountSearchQuery.sortField;
         this.includeResults = accountSearchQuery.includeResults;
+        this.includeFacets = accountSearchQuery.includeFacets;
     }
 
     public boolean getGroups()
@@ -116,6 +125,24 @@ public final class AccountSearchQuery
         return this;
     }
 
+    public String[] getOrganizations()
+    {
+        return organization;
+    }
+
+    public AccountSearchQuery setOrganizations( String... organizations )
+    {
+        if ( organizations == null || organizations.length == 0 || organizations.length == 1 && organizations[0].equals( "" ) )
+        {
+            this.organization = null;
+        }
+        else
+        {
+            this.organization = organizations;
+        }
+        return this;
+    }
+
     public SearchSortOrder getSortOrder()
     {
         return sortOrder;
@@ -146,6 +173,17 @@ public final class AccountSearchQuery
     public AccountSearchQuery setIncludeResults( boolean includeResults )
     {
         this.includeResults = includeResults;
+        return this;
+    }
+
+    public boolean isIncludeFacets()
+    {
+        return includeFacets;
+    }
+
+    public AccountSearchQuery setIncludeFacets( boolean includeFacets )
+    {
+        this.includeFacets = includeFacets;
         return this;
     }
 }

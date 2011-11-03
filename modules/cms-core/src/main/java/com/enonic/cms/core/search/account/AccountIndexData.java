@@ -45,6 +45,7 @@ public class AccountIndexData
     {
         final XContentBuilder result = buildAccountStart(user);
         addField( result, AccountIndexField.EMAIL_FIELD.id(), user.getEmail() );
+        addField( result, AccountIndexField.ORGANIZATION_FIELD.id(), user.getUserInfo().getOrganization() );
 
         buildAccountEnd( result );
         return result;

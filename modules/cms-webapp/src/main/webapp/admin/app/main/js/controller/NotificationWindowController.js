@@ -96,7 +96,20 @@ Ext.define('App.controller.NotificationWindowController', {
         this.getNotificationWindow().getEl().on('click', function(event, target) {
             if(target.className.indexOf('notify-user') > -1)
             {
-                Ext.Msg.alert('Comming soon', 'Notify User Window');
+                //TODO: get real user
+                var user = {
+                    data: {
+                       "username":"mer",
+                       "display-name":"Morten Øien Eriksen",
+                       "name":"mer",
+                       "key":"2AF735F668BB0B75F8AF886C4D304F049460EE43",
+                       "displayName":"Morten Øien Eriksen",
+                       "lastModified":"2010-03-15 16:00:02",
+                       "qualifiedName":"enonic\\mer",
+                        "email":"mer@enonic.com"
+                    }
+                };
+                this.application.fireEvent('showNotifyUserWindow ', user );
             }
 
             this.hide();
