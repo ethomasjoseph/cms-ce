@@ -33,30 +33,45 @@ public final class QueryTranslator
 {
     private static final Logger LOG = LoggerFactory.getLogger( QueryTranslator.class );
 
+    private static final int DEFAULT_SEARCH_COUNT = 10;
+
     public SearchSourceBuilder build(AccountSearchQuery query)
     {
-        final SearchSourceBuilder builder = new SearchSourceBuilder()
-            .explain( true )
-            .from( query.getFrom() )
-            .size( query.getCount() );
+        final SearchSourceBuilder builder = new SearchSourceBuilder();
+        if ( query.getFrom() >= 0 )
+        {
+            builder.from( query.getFrom() );
+        }
+
+        if ( query.getCount() >= 0 )
+        {
+            builder.size( query.getCount() );
+        }
+        else
+        {
+            builder.size( DEFAULT_SEARCH_COUNT );
+        }
 
         builder.query( buildQuery( query ));
 
-        final TermsFacetBuilder typeFacet = FacetBuilders.termsFacet( "type" )
-            .field( AccountIndexField.TYPE_FIELD.id() )
-            .allTerms( true );
+        if ( query.isIncludeFacets() )
+        {
+            final TermsFacetBuilder typeFacet = FacetBuilders.termsFacet( "type" )
+                .field( AccountIndexField.TYPE_FIELD.id() )
+                .allTerms( true );
 
-        final TermsFacetBuilder userStoreFacet = FacetBuilders.termsFacet( "userstore" )
-            .field( AccountIndexField.USERSTORE_FIELD.id() + ".untouched" )
-            .allTerms( true );
+            final TermsFacetBuilder userStoreFacet = FacetBuilders.termsFacet( "userstore" )
+                .field( AccountIndexField.USERSTORE_FIELD.id() + ".untouched" )
+                .allTerms( true );
 
-        final TermsFacetBuilder organizationFacet = FacetBuilders.termsFacet( "organization" )
-            .field( AccountIndexField.ORGANIZATION_FIELD.id() + ".untouched" )
-            .size( 100 )
-            .order( TermsFacet.ComparatorType.COUNT )
-            .allTerms( true );
+            final TermsFacetBuilder organizationFacet = FacetBuilders.termsFacet( "organization" )
+                .field( AccountIndexField.ORGANIZATION_FIELD.id() + ".untouched" )
+                .size( 100 )
+                .order( TermsFacet.ComparatorType.COUNT )
+                .allTerms( true );
 
-        builder.facet( typeFacet ).facet( userStoreFacet ).facet( organizationFacet );
+            builder.facet( typeFacet ).facet( userStoreFacet ).facet( organizationFacet );
+        }
 
         setupSorting(query, builder);
 

@@ -181,11 +181,14 @@ public class AccountSearchService
         final AccountSearchResults searchResult = new AccountSearchResults(query.getFrom(), (int)hits.getTotalHits());
         if ( query.isIncludeResults() )
         {
-            addSearchHits( searchResult, hits, query.getCount() );
+            addSearchHits( searchResult, hits );
         }
 
-        final Facets facets = res.facets();
-        addSearchFacets(searchResult, facets);
+        if ( query.isIncludeFacets() )
+        {
+            final Facets facets = res.facets();
+            addSearchFacets( searchResult, facets );
+        }
 
         return searchResult;
     }
@@ -220,9 +223,9 @@ public class AccountSearchService
         }
     }
 
-    private void addSearchHits( AccountSearchResults searchResult, SearchHits hits, int count )
+    private void addSearchHits( AccountSearchResults searchResult, SearchHits hits )
     {
-        final int hitCount = Math.min( count, hits.getHits().length );
+        final int hitCount = hits.getHits().length;
         for ( int i = 0; i < hitCount; i++ )
         {
             final SearchHit hit = hits.getAt( i );
