@@ -131,8 +131,8 @@ Ext.define( 'App.controller.AccountController', {
             }
         );
 
-        this.getStore('UserstoreConfigStore').on('load', this.initFilterPanelUserStoreOptions);
-        this.getStore('UserStore').on('load', this.updateFilterFacets);
+        this.getStore('UserstoreConfigStore').on('load', this.initFilterPanelUserStoreOptions, this);
+        this.getStore('UserStore').on('load', this.updateFilterFacets, this);
     },
 
     onFilterPanelRender: function()
@@ -146,6 +146,11 @@ Ext.define( 'App.controller.AccountController', {
         }, this );
 
         this.getFilterAccountTypeField().addListener( 'change', function(field, newValue, oldValue, eOpts) {
+            this.getAccountFilter().updateTitle();
+            this.searchFilter();
+        }, this );
+
+        this.getFilterOrganizationField().addListener( 'change', function(field, newValue, oldValue, eOpts) {
             this.getAccountFilter().updateTitle();
             this.searchFilter();
         }, this );
@@ -253,12 +258,20 @@ Ext.define( 'App.controller.AccountController', {
         var textField = this.getFilterTextField();
         var userStoreField = this.getFilterUserStoreField();
         var accountTypeField = this.getFilterAccountTypeField();
+        var organizationsField = this.getFilterOrganizationField();
+        var organizationsValues = [];
+
+        Ext.Object.each(organizationsField.getValue(), function(key, val) {
+            organizationsValues.push(val);
+        });
+        organizationsField = organizationsValues.join(',');
 
         usersStore.clearFilter();
         usersStore.getProxy().extraParams = {
             query: textField.getValue(),
             type: accountTypeField.getValue(),
-            userstores: userStoreField.getValue()
+            userstores: userStoreField.getValue(),
+            organizations: organizationsField
         };
 
         // move to page 1 when search filter updated
@@ -641,6 +654,11 @@ Ext.define( 'App.controller.AccountController', {
         return Ext.ComponentQuery.query( 'accountFilter checkboxgroup[itemId=accountTypeOptions]' )[0];
     },
 
+    getFilterOrganizationField: function()
+    {
+        return Ext.ComponentQuery.query( 'accountFilter checkboxgroup[itemId=organizationOptions]' )[0];
+    },
+
     getEditUserFormPanel: function()
     {
         return Ext.ComponentQuery.query( 'editUserFormPanel' )[0];
@@ -664,18 +682,20 @@ Ext.define( 'App.controller.AccountController', {
     initFilterPanelUserStoreOptions: function(store) {
         var items = store.data.items;
         var userstores = [];
+        
         for (var i = 0; i < items.length; i++) {
             var userstoreName = items[i].data.name;
             userstores.push(userstoreName);
         }
-        var filterPanel = Ext.widget('accountFilter');
+        var filterPanel = this.getAccountFilter();
         filterPanel.setUserStores(userstores);
     },
 
     updateFilterFacets: function(store)
     {
         var data = store.proxy.reader.jsonData;
-        var filterPanel = Ext.widget('accountFilter');
+        var filterPanel = this.getAccountFilter();
+
         filterPanel.showFacets(data.results.facets);
     },
 

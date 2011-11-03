@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +35,6 @@ import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 
 import com.enonic.cms.core.security.group.GroupEntity;
-import com.enonic.cms.core.security.group.GroupKey;
 import com.enonic.cms.core.security.user.StoreNewUserCommand;
 import com.enonic.cms.core.security.user.UpdateUserCommand;
 import com.enonic.cms.core.security.user.User;
@@ -67,6 +68,17 @@ public final class UsersResource
     @Autowired
     private UserModelTranslator userModelTranslator;
 
+    private final URI GROUP_PHOTO_ICON;
+
+    private final URI GROUP_PHOTO_THUMB_ICON;
+
+    public UsersResource()
+        throws URISyntaxException
+    {
+        GROUP_PHOTO_ICON = new URI( "admin/resources/images/default_group.png" );
+        GROUP_PHOTO_THUMB_ICON = new URI( "admin/resources/images/default_group_thumb.png" );
+    }
+
     @GET
     @Path("list")
     public UsersModel getAll( @InjectParam final UserLoadRequest req )
@@ -87,19 +99,21 @@ public final class UsersResource
     @GET
     @Path("photo")
     @Produces("image/png")
-    public byte[] getPhoto( @QueryParam("key") final String key, @QueryParam("thumb") @DefaultValue("false") final boolean thumb )
+    public Response getPhoto( @QueryParam("key") final String key, @QueryParam("thumb") @DefaultValue("false") final boolean thumb )
         throws Exception
     {
         try
         {
             final UserEntity entity = findEntity( key );
-            return this.photoService.renderPhoto( entity, thumb ? 40 : 100 );
+            byte[] photo = this.photoService.renderPhoto( entity, thumb ? 40 : 100 );
+            return Response.ok(photo).build();
         }
         catch ( NotFoundException e )
         {
             if ( isGroup( key ) )
             {
-                return this.photoService.renderGroupIcon(thumb ? 40 : 100);
+                final URI iconUrl = thumb ? GROUP_PHOTO_THUMB_ICON : GROUP_PHOTO_ICON;
+                return Response.status( Response.Status.MOVED_PERMANENTLY ).location( iconUrl ).build();
             }
             throw e;
         }

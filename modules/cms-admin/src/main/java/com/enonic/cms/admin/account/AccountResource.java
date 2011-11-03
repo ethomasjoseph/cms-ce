@@ -62,10 +62,14 @@ public final class AccountResource
     {
         LOG.info(
             "Search accounts: query='" + req.getQuery() + "' , index=" + req.getStart() + ", count=" + req.getLimit() + ", selectUsers=" +
-                req.isSelectUsers() + ", selectGroups=" + req.isSelectGroups() + ", userstores=" + req.getUserstores() );
+                req.isSelectUsers() + ", selectGroups=" + req.isSelectGroups() + ", userstores=" + req.getUserstores() + ", orgs=" +
+                req.getOrganizations() );
 
         final String userstores = req.getUserstores();
         final String[] userstoreList = ( userstores == null ) ? new String[0] : userstores.split( "," );
+
+        final String organizations = req.getOrganizations();
+        final String[] organizationList = ( organizations == null ) ? new String[0] : organizations.split( "," );
 
         final AccountSearchQuery searchQueryCountFacets = new AccountSearchQuery()
             .setIncludeResults( false )
@@ -80,7 +84,8 @@ public final class AccountResource
         final AccountSearchResults searchCountFacets = searchService.search( searchQueryCountFacets );
         final AccountSearchQuery searchQuery = new AccountSearchQuery( searchQueryCountFacets )
             .setIncludeResults( true )
-            .setUserStores( userstoreList );
+            .setUserStores( userstoreList )
+            .setOrganizations( organizationList );
         final AccountSearchResults searchResults = searchService.search( searchQuery );
 
         final List list = new ArrayList();

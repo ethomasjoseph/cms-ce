@@ -15,6 +15,7 @@ public final class AccountSearchQuery
     private SearchSortOrder sortOrder;
     private AccountIndexField sortField;
     private boolean includeResults;
+    private String[] organization;
 
     public AccountSearchQuery()
     {
@@ -22,6 +23,7 @@ public final class AccountSearchQuery
         this.from = 0;
         this.count = 0;
         this.userStore = null;
+        this.organization = null;
         this.users = true;
         this.groups = true;
         this.sortField = null;
@@ -36,6 +38,10 @@ public final class AccountSearchQuery
         if ( userStore != null )
         {
             this.userStore = Arrays.copyOf( accountSearchQuery.userStore, accountSearchQuery.userStore.length );
+        }
+        if ( organization != null )
+        {
+            this.organization = Arrays.copyOf( accountSearchQuery.organization, accountSearchQuery.organization.length );
         }
         this.users = accountSearchQuery.users;
         this.groups = accountSearchQuery.groups;
@@ -112,6 +118,24 @@ public final class AccountSearchQuery
         else
         {
             this.userStore = userStore;
+        }
+        return this;
+    }
+
+    public String[] getOrganizations()
+    {
+        return organization;
+    }
+
+    public AccountSearchQuery setOrganizations( String... organizations )
+    {
+        if ( organizations == null || organizations.length == 0 || organizations.length == 1 && organizations[0].equals( "" ) )
+        {
+            this.organization = null;
+        }
+        else
+        {
+            this.organization = organizations;
         }
         return this;
     }

@@ -80,7 +80,7 @@ Ext.define('App.view.FilterPanel', {
                         }
                     ]
                 },
-                                    {
+                {
                     xtype: 'label',
                     text: '',
                     height: 10
@@ -106,6 +106,33 @@ Ext.define('App.view.FilterPanel', {
 
                     items: [
                     ]
+                },
+                {
+                    xtype: 'label',
+                    text: '',
+                    height: 10
+                },
+                {
+                    xtype: 'label',
+                    text: 'Organization',
+                    cls: 'facet-header'
+                },
+                {
+                    xtype: 'checkboxgroup',
+                    itemId: 'organizationOptions',
+                    columns: 1,
+                    vertical: true,
+
+                    defaults: {
+                        name: 'organizations',
+                        cls: 'facet-single-select-item',
+                        checkedCls: 'x-form-cb-checked facet-selected',
+                        overCls: 'cms-cursor-clickable',
+                        width: 170
+                    },
+
+                    items: [
+                    ]
                 }
             ]
         };
@@ -123,8 +150,67 @@ Ext.define('App.view.FilterPanel', {
                 this.showUserstoreFacets(facet);
             } else if (facet.name === 'type') {
                 this.showUserTypeFacets(facet);
+            } else if (facet.name === 'organization') {
+                this.showOrganizationFacets(facet);
             }
         }
+    },
+
+    removeAllOrgCheckboxes: function() {
+        var organizationCheckGroup = this.query( '#organizationOptions' )[0];
+
+        var cbList = [];
+        Ext.Array.each(organizationCheckGroup.items.items, function(cb) {
+            if (cb) cbList.push(cb);
+        });
+        for (var i = 0; i < cbList.length; i++) {
+            cbList[i].destroy();
+        }
+    },
+
+    showOrganizationFacets: function(facet) {
+        var organizationCheckGroup = this.query( '#organizationOptions' )[0];
+        var checked = organizationCheckGroup.getValue();
+        var selectedCheck = {};
+
+        Ext.Object.each(checked, function(key, val) {
+            selectedCheck[val] = true;
+        });
+
+        this.removeAllOrgCheckboxes();
+
+        var terms = facet.terms;
+        var itemId, checkbox, label;
+        var orgList = [];
+        for (var organization in terms) {
+            orgList.push({name: organization, hits: terms[organization]});
+        }
+
+        orgList.sort(function (o1, o2) {
+            if ((selectedCheck[o1.name]) && (selectedCheck[o2.name])) {
+                return o2.hits - o1.hits;
+            } else if (selectedCheck[o1.name]) {
+                return -1;
+            } else if (selectedCheck[o2.name]) {
+                return 1;
+            }
+            return o2.hits - o1.hits;
+        });
+
+        var total = 0;
+        var checkSelected;
+        Ext.Array.each(orgList, function(org) {
+            total++;
+            if (total <= 10) {
+                checkSelected = selectedCheck[org.name];
+                if (checkSelected || (org.hits > 0)) {
+                    itemId = org.name + '_org_checkbox';
+                    label = org.name + ' ('+org.hits+')';
+                    var cb = new Ext.form.Checkbox( { itemId: itemId, boxLabel: label, inputValue: org.name, checked: checkSelected, visible: true } );
+                    checkbox = organizationCheckGroup.add(cb);
+                }
+            }
+        });
     },
 
     showUserstoreFacets: function(facet) {
@@ -175,7 +261,7 @@ Ext.define('App.view.FilterPanel', {
     },
 
     clearFilter: function() {
-        var userstoreCheckboxes = Ext.ComponentQuery.query( '[itemId=userstoreOptions] * , [itemId=accountTypeOptions] *' );
+        var userstoreCheckboxes = Ext.ComponentQuery.query( '[itemId=userstoreOptions] * , [itemId=accountTypeOptions] *, [itemId=organizationOptions] *' );
         Ext.Array.each(userstoreCheckboxes, function(checkbox) {
             checkbox.suspendEvents();
             checkbox.setValue(false);
