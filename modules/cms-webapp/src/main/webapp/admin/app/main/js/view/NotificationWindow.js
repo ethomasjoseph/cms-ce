@@ -1,4 +1,4 @@
-Ext.define( 'Common.view.NotificationWindow', {
+Ext.define( 'App.view.NotificationWindow', {
     extend: 'Ext.Component',
     alias: 'widget.notificationWindow',
     width: 370,

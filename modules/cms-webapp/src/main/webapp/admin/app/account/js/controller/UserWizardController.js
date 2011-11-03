@@ -67,7 +67,10 @@ Ext.define( 'App.controller.UserWizardController', {
 
     wizardFinished: function( wizard, data )
     {
-        this.application.fireEvent('notifier.show', "User created", "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth." );
+        var parentApp = parent.mainApp;
+        if ( parentApp ) {
+            parentApp.fireEvent('notifier.show', "User created", "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth." );
+        }
     },
 
     wizardPrev: function( btn, evt )
