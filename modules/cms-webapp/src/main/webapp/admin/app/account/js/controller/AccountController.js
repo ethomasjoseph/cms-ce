@@ -204,7 +204,7 @@ Ext.define( 'App.controller.AccountController', {
                 detailPanel.setCurrentUser( user.data );
             }
 
-            detailPanel.showOneSelected( user.data )
+            detailPanel.showUserPreview( user.data )
         }
         else
         {
