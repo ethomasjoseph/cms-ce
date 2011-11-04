@@ -160,7 +160,7 @@ public final class UsersResource
             out.flush();
             out.close();
             response.put( "success", true );
-            response.put( "src", "/admin/resources/uploads/" + fileDetail.getFileName() );
+            response.put( "src", "resources/uploads/" + fileDetail.getFileName() );
         }
         catch ( IOException e )
         {
