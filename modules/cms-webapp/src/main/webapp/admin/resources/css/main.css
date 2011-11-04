@@ -760,10 +760,6 @@ ul.cms-wizard-navigation a.last-current {
 .cms-wizard-header-container input:hover {
     border: 1px solid #98c9f2;
     box-shadow: 0 0 3px #98c9f2;
-    outline:none;
-    transition: all 0.35s ease-in-out;
-    -webkit-transition: all 0.35s ease-in-out;
-    -moz-transition: all 0.35s ease-in-out;
 }
 
 .cms-edited-field {
@@ -782,10 +778,6 @@ ul.cms-wizard-navigation a.last-current {
 .cms-file-upload-drop-target {
     border: 1px solid #98c9f2;
     box-shadow: 0 0 3px #98c9f2;
-    outline:none;
-    transition: all 0.35s ease-in-out;
-    -webkit-transition: all 0.35s ease-in-out;
-    -moz-transition: all 0.35s ease-in-out;
 }
 
 .cms-image-upload-button-container .cms-image-upload-button-image {
