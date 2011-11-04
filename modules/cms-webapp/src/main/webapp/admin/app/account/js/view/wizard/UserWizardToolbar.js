@@ -15,13 +15,25 @@ Ext.define('App.view.wizard.UserWizardToolbar', {
         this.items = [
             {
                 xtype: 'buttongroup',
-                columns: 1,
+                columns: 3,
                 defaults: buttonDefaults,
                 items: [
                     {
                         text: 'Save',
                         itemId: 'save',
                         iconCls: 'icon-btn-save-24'
+                    },
+                    {
+                        text: 'Change Password',
+                        action: 'changePassword',
+                        iconCls: 'icon-change-password-24',
+                        disabled: true
+                    },
+                    {
+                        text: 'Delete',
+                        action: 'showDeleteWindow',
+                        iconCls: 'icon-delete-user-24',
+                        disabled: true
                     }
                 ]
             },
