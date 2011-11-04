@@ -47,10 +47,10 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
     {
         this.initUploader();
         this.addBodyMouseEventListeners();
-        this.initToolip();
+        this.initToolTip();
     },
 
-    initToolip: function () {
+    initToolTip: function () {
 
         var config = {
             target: this.getImageElement(),
