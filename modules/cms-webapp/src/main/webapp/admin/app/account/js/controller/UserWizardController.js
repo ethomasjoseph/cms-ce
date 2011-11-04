@@ -109,15 +109,15 @@ Ext.define( 'App.controller.UserWizardController', {
         var radioButton = selectedUserStoreElement.down( 'input' );
         radioButton.dom.checked = true;
 
-        var userStore = record.get( 'name' );
+        var userStoreName = record.get( 'name' );
         var userForms = this.getUserWizardPanel().query( 'editUserFormPanel' );
         Ext.Array.each( userForms, function( userForm )
         {
-            userForm.currentUser = {userStore: userStore};
+            userForm.currentUser = {userStore: userStoreName};
         } );
         var profilePanel = this.getUserWizardPanel().down( 'wizardStepProfilePanel' );
 
-        this.getUserWizardPanel().updateQualifiedNameHeader( userStore );
+        this.getUserWizardPanel().updateQualifiedNameHeader( userStoreName );
 
         profilePanel.getLayout().next();
     },
