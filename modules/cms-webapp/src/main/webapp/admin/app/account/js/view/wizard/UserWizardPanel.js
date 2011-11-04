@@ -212,12 +212,18 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         }
     },
 
+    updateQualifiedNameHeader: function( userStoreName )
+    {
+        Ext.get( 'q-userstore' ).dom.innerHTML = userStoreName + '\\';
+        Ext.get( 'q-username' ).dom.innerHTML = 'unnamed';
+    },
+
     resizeFileUpload: function( file )
     {
-        file.el.down( 'input[type=file]' ).setStyle( {
-                                                         width: file.getWidth(),
-                                                         height: file.getHeight()
-                                                     } );
+        file.el.down( 'input[type=file]' ).setStyle({
+             width: file.getWidth(),
+             height: file.getHeight()
+        });
     },
 
     setFileUploadDisabled: function( disable )

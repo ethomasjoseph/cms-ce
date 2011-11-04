@@ -58,9 +58,6 @@ Ext.define( 'App.controller.UserWizardController', {
         if ( oldStep.getXType() == 'userStoreListPanel' )
         {
             // move from 1st step
-            var userStore = wizard.getData().userStore;
-            Ext.get( 'q-userstore' ).dom.innerHTML = userStore + '\\';
-            Ext.get( 'q-username' ).dom.innerHTML = 'unnamed';
             this.getUserWizardPanel().setFileUploadDisabled( false );
         }
     },
@@ -95,8 +92,8 @@ Ext.define( 'App.controller.UserWizardController', {
     userStoreSelected: function( view, record, item )
     {
         view.setData( record );
-        var selectedUserStoreElement = new Ext.Element( item );
 
+        var selectedUserStoreElement = new Ext.Element( item );
         var userStoreElements = view.getNodes();
         for ( var i = 0; i < userStoreElements.length; i++ )
         {
@@ -108,14 +105,20 @@ Ext.define( 'App.controller.UserWizardController', {
         }
 
         selectedUserStoreElement.addCls( 'cms-userstore-active' );
+
         var radioButton = selectedUserStoreElement.down( 'input' );
         radioButton.dom.checked = true;
+
+        var userStore = record.get( 'name' );
         var userForms = this.getUserWizardPanel().query( 'editUserFormPanel' );
         Ext.Array.each( userForms, function( userForm )
         {
-            userForm.currentUser = {userStore: record.get( 'name' )};
+            userForm.currentUser = {userStore: userStore};
         } );
         var profilePanel = this.getUserWizardPanel().down( 'wizardStepProfilePanel' );
+
+        this.getUserWizardPanel().updateQualifiedNameHeader( userStore );
+
         profilePanel.getLayout().next();
     },
 
