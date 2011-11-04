@@ -73,6 +73,8 @@ Ext.define( 'App.view.GridPanel', {
         try {
             if( parent && Ext.isFunction( parent.humane_date ) ) {
                 return parent.humane_date( value );
+            } else {
+                return value;
             }
         } catch( e ) {
             return value;
