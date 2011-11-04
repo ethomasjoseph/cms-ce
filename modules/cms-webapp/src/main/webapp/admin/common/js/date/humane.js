@@ -11,7 +11,7 @@
  * Licensed under the MIT license.
  */
 
-function humane_date( date){
+function humane_date( date_str ){
 	var time_formats = [
 		[60, 'Just Now'],
 		[90, '1 Minute'], // 60*1.5
@@ -29,8 +29,9 @@ function humane_date( date){
 		[4730400000, '1 Century'] // 60*60*24*365*100*1.5
 	];
 
-	var dt = new Date,
-		seconds = ((dt - date + (dt.getTimezoneOffset() * 60000)) / 1000),
+	var time = ('' + date_str).replace(/-/g,"/").replace(/[TZ]/g," "),
+		dt = new Date,
+		seconds = ((dt - new Date(time) + (dt.getTimezoneOffset() * 60000)) / 1000),
 		token = ' Ago',
 		i = 0,
 		format;
