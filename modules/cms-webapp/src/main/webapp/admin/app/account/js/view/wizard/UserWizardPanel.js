@@ -32,8 +32,8 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
 
         me.items = [
             {
-                width: 139,
-                padding: 10,
+                width: 121,
+                padding: 5,
                 items: [
                     {
                         xtype: 'photoUploadButton',
