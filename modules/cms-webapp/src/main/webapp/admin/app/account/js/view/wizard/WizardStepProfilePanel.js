@@ -6,7 +6,17 @@ Ext.define( 'App.view.wizard.WizardStepProfilePanel', {
 
     items:[
         {
-            xtype: 'userStoreListPanel'
+            items: [
+                {
+                    xtype: 'container',
+                    autoHeight: true,
+                    styleHtmlContent: true,
+                    html: '<h3>Select a userstore</h3>'
+                },
+                {
+                    xtype: 'userStoreListPanel'
+                }
+            ]
         },
         {
             itemId: 'userForm',

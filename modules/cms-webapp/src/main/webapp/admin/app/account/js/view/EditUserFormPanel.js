@@ -151,9 +151,9 @@ Ext.define( 'App.view.EditUserFormPanel', {
             'initials': this.createTextField,
             'nick-name': this.createTextField
         };
-        this.photoFieldSet = {
+/*        this.photoFieldSet = {
             'photo': this.createPhotoField
-        };
+        };*/
         this.detailsFieldSet = {
             'personal-id': this.createTextField,
             'member-id': this.createTextField,
@@ -368,7 +368,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
             this.add( this.generateFieldSet( 'User', this.userFieldSet, fields ) );
             this.add( this.generateFieldSet( 'Security', this.securityFieldSet, fields ) );
             this.add( this.generateFieldSet( 'Name', this.nameFieldSet, fields ) );
-            this.add( this.generateFieldSet( 'Photo', this.photoFieldSet, fields ) );
+//            this.add( this.generateFieldSet( 'Photo', this.photoFieldSet, fields ) );
             this.add( this.generateFieldSet( 'Personal Information', this.detailsFieldSet, fields ) );
             this.add( this.generateFieldSet( 'Settings', this.locationFieldSet, fields ) );
             this.add( this.generateFieldSet( 'Communication', this.communicationFieldSet, fields ) );
