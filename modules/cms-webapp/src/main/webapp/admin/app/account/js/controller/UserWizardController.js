@@ -166,7 +166,7 @@ Ext.define( 'App.controller.UserWizardController', {
         if ( displayName )
         {
             var displayNameValue = prefix + ' ' + firstName + ' ' + middleName + ' ' + lastName + ' ' + suffix;
-            displayName.dom.value = Ext.String.trim( displayNameValue );
+            displayName.dom.value = Ext.String.trim( displayNameValue.replace(/  /g, ' ') );
             displayName.addCls( 'cms-edited-field' );
         }
     },
