@@ -92,7 +92,7 @@ Ext.define('App.controller.NotificationWindowController', {
                        "display-name":"Morten Øien Eriksen",
                        "name":"mer",
                        "key":"2AF735F668BB0B75F8AF886C4D304F049460EE43",
-                       "displayName":"Morten Øien Eriksen",
+                       "displayName":"Morten Eriksen",
                        "lastModified":"2010-03-15 16:00:02",
                        "qualifiedName":"enonic\\mer",
                         "email":"mer@enonic.com"
