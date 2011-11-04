@@ -38,26 +38,15 @@ Ext.define('App.controller.NotificationWindowController', {
         var notificationWindow = this.getNotificationWindow();
 
         notificationWindow.stopAnimation();
-
-        var viewPortHeight = Ext.Element.getViewportHeight();
-        var viewPortWidth = Ext.Element.getViewportWidth();
-        var windowBox = notificationWindow.getBox();
-        var leftPosition = viewPortWidth - windowBox.width - 5;
-        var animateFromPosition = viewPortHeight + windowBox.height;
-        var animateToPosition = viewPortHeight - windowBox.height - 5;
-
-        notificationWindow.setPosition(leftPosition, animateFromPosition);
-
+        notificationWindow.center();
         notificationWindow.animate(
             {
                 duration: 400,
                 from: {
-                    opacity: 0,
-                    y: animateFromPosition
+                    opacity: 0
                 },
                 to: {
-                    opacity: 1,
-                    y: animateToPosition
+                    opacity: 1
                 },
                 easing: 'easeIn'
             }
