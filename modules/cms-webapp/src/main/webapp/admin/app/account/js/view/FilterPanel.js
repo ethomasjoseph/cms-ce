@@ -183,22 +183,18 @@ Ext.define('App.view.FilterPanel', {
         this.removeAllOrgCheckboxes();
 
         var terms = facet.terms;
-        var itemId, checkbox, label, tooltip;
+        var itemId, checkbox, label, tooltip, org;
         var orgList = [];
+        var countVisible = 0;
         for (var organization in terms) {
-            orgList.push({name: organization, hits: terms[organization]});
-        }
-
-        orgList.sort(function (o1, o2) {
-            if ((selectedCheck[o1.name]) && (selectedCheck[o2.name])) {
-                return o2.hits - o1.hits;
-            } else if (selectedCheck[o1.name]) {
-                return -1;
-            } else if (selectedCheck[o2.name]) {
-                return 1;
+            org = {name: organization, hits: terms[organization], checked: selectedCheck[organization] };
+            orgList.push(org);
+            if (org.checked || (org.hits > 0)) {
+                countVisible++;
             }
-            return o2.hits - o1.hits;
-        });
+        }
+        countVisible = Math.min(MAX_ORG_FACET_ITEMS, countVisible);
+        orgList = this.sortOrganizationFacets(orgList, countVisible);
 
         var total = 0;
         var checksToShow = 0;
@@ -206,7 +202,7 @@ Ext.define('App.view.FilterPanel', {
         Ext.Array.each(orgList, function(org) {
             total++;
             if (total <= MAX_ORG_FACET_ITEMS) {
-                checkSelected = selectedCheck[org.name];
+                checkSelected = org.checked;
                 if (checkSelected || (org.hits > 0)) {
                     itemId = org.name + '_org_checkbox';
                     label = Ext.String.ellipsis(org.name, MAX_ORG_LABEL_CHARS) + ' ('+org.hits+')';
@@ -233,6 +229,29 @@ Ext.define('App.view.FilterPanel', {
             var moreLabel = {html: '<a href="javascript:;" class="showMoreOrg">'+text+'</a>', border: false};
             organizationCheckGroup.add(moreLabel);
         }
+    },
+
+    sortOrganizationFacets: function(orgList, countVisible) {
+        // sort array by hits, descending, with stable sorting, checked values should appear on top
+        orgList.sort(function (o1, o2) {
+            if (o1.checked && o2.checked) {
+                return (o2.hits === o1.hits)? o1.name.localeCompare(o2.name) : (o2.hits - o1.hits);
+            } else if (o1.checked) {
+                return -1;
+            } else if (o2.checked) {
+                return 1;
+            }
+            return (o2.hits === o1.hits)? o1.name.localeCompare(o2.name) : (o2.hits - o1.hits);
+        });
+
+        var top = orgList.slice(0, countVisible);
+        var bottom = orgList.slice(countVisible);
+
+        top.sort(function (o1, o2) {
+            return (o2.hits === o1.hits)? o1.name.localeCompare(o2.name) : (o2.hits - o1.hits);
+        });
+
+        return top.concat(bottom);
     },
 
     showUserstoreFacets: function(facet) {
