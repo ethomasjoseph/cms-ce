@@ -3,7 +3,7 @@ Ext.define('App.model.UserModel', {
 
     fields: [
         'key', 'name', 'email', 'qualifiedName', 'displayName', 'userStore',
-        {name: 'lastModified', type: 'date', dateFormat: 'Y-m-d H:i:s'}
+        {name: 'lastModified'/*, type: 'date', dateFormat: 'Y-m-d H:i:s'*/}
     ],
 
     idProperty: 'key'
