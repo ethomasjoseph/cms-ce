@@ -69,7 +69,6 @@ public class AccountSearchService
         final XContentBuilder mapping = XContentFactory.jsonBuilder().prettyPrint();
         mapping.startObject(  );
         mapping.field( ACCOUNT_INDEX_TYPE ).startObject(  );
-//        mapping.field( "search_analyzer", "standard" );
         mapping.field( "properties" ).startObject()
             .field( AccountIndexField.USERSTORE_FIELD.id() )
                 .startObject()

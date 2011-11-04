@@ -119,6 +119,7 @@ public final class AccountResource
     private void setFacets( AccountsModel accountsModel, AccountSearchResults searchResults )
     {
         final Facets facets = searchResults.getFacets();
+        facets.consolidate();
 
         for ( Facet facet : facets )
         {
