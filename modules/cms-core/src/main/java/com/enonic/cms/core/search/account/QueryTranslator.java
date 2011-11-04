@@ -66,7 +66,7 @@ public final class QueryTranslator
 
             final TermsFacetBuilder organizationFacet = FacetBuilders.termsFacet( "organization" )
                 .field( AccountIndexField.ORGANIZATION_FIELD.id() + ".untouched" )
-                .size( 100 )
+                .size( 1000 )
                 .order( TermsFacet.ComparatorType.COUNT )
                 .allTerms( true );
 
