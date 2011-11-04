@@ -131,23 +131,23 @@ Ext.define( 'App.controller.UserWizardController', {
         var suffix = form.down( '#suffix' );
         if ( prefix )
         {
-            prefix.on( 'keyup', this.textFieldHandleEnterKey );
+            prefix.on( 'change', this.textFieldHandleEnterKey );
         }
         if ( firstName )
         {
-            firstName.on( 'keyup', this.textFieldHandleEnterKey );
+            firstName.on( 'change', this.textFieldHandleEnterKey );
         }
         if ( middleName )
         {
-            middleName.on( 'keyup', this.textFieldHandleEnterKey );
+            middleName.on( 'change', this.textFieldHandleEnterKey );
         }
         if ( lastName )
         {
-            lastName.on( 'keyup', this.textFieldHandleEnterKey );
+            lastName.on( 'change', this.textFieldHandleEnterKey );
         }
         if ( suffix )
         {
-            suffix.on( 'keyup', this.textFieldHandleEnterKey );
+            suffix.on( 'change', this.textFieldHandleEnterKey );
         }
     },
 

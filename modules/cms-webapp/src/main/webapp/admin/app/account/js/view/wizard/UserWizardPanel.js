@@ -208,7 +208,11 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         else
         {
             displayNameFieldElement.set( {readonly: true} );
-            displayNameFieldElement.removeCls( 'cms-edited-field' );
+            var value = Ext.String.trim( displayNameFieldElement.getValue() );
+            if ( value === '' || value === 'New User' )
+            {
+                displayNameFieldElement.removeCls( 'cms-edited-field' );
+            }
         }
     },
 

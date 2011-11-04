@@ -766,12 +766,10 @@ ul.cms-wizard-navigation a.last-current {
     -moz-transition: all 0.35s ease-in-out;
 }
 
-/*
 .cms-edited-field {
     color: #000 !important;
     border: 1px solid #99BCE8 !important;
 }
-*/
 
 /*----- Image Upload Button -----*/
 
