@@ -4,10 +4,12 @@ import com.enonic.cms.api.Version;
 import com.enonic.cms.core.security.InvalidCredentialsException;
 import com.enonic.cms.core.security.SecurityService;
 import com.enonic.cms.core.security.user.QualifiedUsername;
+import com.enonic.cms.core.security.user.UserEntity;
 import com.enonic.cms.core.security.userstore.UserStoreEntity;
 import com.enonic.cms.core.security.userstore.UserStoreKey;
 import com.enonic.cms.core.security.userstore.UserStoreService;
 
+import com.enonic.cms.store.dao.UserDao;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
@@ -38,6 +40,9 @@ public class XTraceController extends AbstractController
 
     @Autowired
     protected UserStoreService userStoreService;
+
+    @Autowired
+    private UserDao userDao;
 
     @Override
     protected ModelAndView handleRequestInternal( HttpServletRequest request, HttpServletResponse response ) throws Exception
@@ -92,6 +97,15 @@ public class XTraceController extends AbstractController
         final UserStoreKey userStoreKey = new UserStoreKey( Integer.parseInt( userStore ) );
         final UserStoreEntity systemUserStore = userStoreService.getUserStore( userStoreKey );
         final QualifiedUsername qname = new QualifiedUsername( systemUserStore.getKey(), userName );
+
+        // TODO: Needs review by CMS developer.
+        // Is this a nice way to do this?
+        // Should we check if the user has developer powers? rather than explicit check for EA or Developer membership.
+        UserEntity user = userDao.findByQualifiedUsername( qname );
+        if ( !user.isEnterpriseAdmin() || !user.isDeveloper() )
+        {
+            throw new InvalidCredentialsException( user.getKey().toString() );
+        }
 
         securityService.authenticateUser( qname, password );
     }

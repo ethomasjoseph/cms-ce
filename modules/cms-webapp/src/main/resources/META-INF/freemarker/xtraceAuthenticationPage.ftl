@@ -13,7 +13,7 @@
     <tr>
         <td>
             [#if authenticationFailed = true]
-                <p class="cms-error">The username or password you entered is not valid</p>
+                <p class="cms-error">The username or password you entered is not valid or you are not a member of the Developer group.</p>
             [/#if]
 
             <div id="inner">
