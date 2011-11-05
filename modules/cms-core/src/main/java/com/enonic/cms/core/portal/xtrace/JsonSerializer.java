@@ -29,6 +29,7 @@ public class JsonSerializer
 
         JsonObject xtrace = new JsonObject();
         appendVersion( xtrace );
+        appendRequester( xtrace );
         appendPage( xtrace );
 
         wrapper.add( "xtrace", xtrace );
@@ -39,6 +40,11 @@ public class JsonSerializer
         Gson gson = gsonBuilder.create();
 
         return gson.toJson( wrapper );
+    }
+
+    private void appendRequester( JsonObject xtrace )
+    {
+        xtrace.addProperty( "requester", pageTrace.getPortalRequestTrace().getRequester().toString() );
     }
 
     private void appendVersion( JsonObject xtrace )
