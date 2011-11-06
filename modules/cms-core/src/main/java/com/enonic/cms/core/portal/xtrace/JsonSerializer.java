@@ -13,7 +13,6 @@ import com.enonic.cms.core.portal.livetrace.InstructionPostProcessingTrace;
 import com.enonic.cms.core.portal.livetrace.PageRenderingTrace;
 import com.enonic.cms.core.portal.livetrace.WindowRenderingTrace;
 
-// TODO: Calculate accurate start times and end times
 public class JsonSerializer
 {
     private PageRenderingTrace pageTrace;
@@ -61,11 +60,11 @@ public class JsonSerializer
     {
         JsonObject pageObject = new JsonObject();
 
-        pageObject.addProperty( "key", "TODO" );
+        // pageObject.addProperty( "key", "TODO" );
         pageObject.addProperty( "name", pageTrace.getPortalRequestTrace().getUrl() );
-        pageObject.addProperty( "cacheable", "TODO" );
+        // pageObject.addProperty( "cacheable", "TODO" );
         pageObject.addProperty( "cache_hit", pageTrace.isUsedCachedResult() );
-        pageObject.addProperty( "page_template_name", "TODO" );
+        // pageObject.addProperty( "page_template_name", "TODO" );
         pageObject.addProperty( "start_time_ms", 0 );
         pageObject.addProperty( "stop_time_ms", pageTrace.getDuration().getStopTime().getMillis() - timeZero );
         pageObject.addProperty( "total_time_ms", pageTrace.getDuration().getExecutionTimeInMilliseconds() );
@@ -107,9 +106,9 @@ public class JsonSerializer
     private void createWindow( JsonArray windowsArray, WindowRenderingTrace windowTrace )
     {
         JsonObject windowObject = new JsonObject();
-        windowObject.addProperty( "key", "TODO" );
+        // windowObject.addProperty( "key", "TODO" );
         windowObject.addProperty( "name", windowTrace.getPortletName() );
-        windowObject.addProperty( "cacheable", "TODO" );
+        // windowObject.addProperty( "cacheable", "TODO" );
         windowObject.addProperty( "cache_hit", windowTrace.isUsedCachedResult() );
         windowObject.addProperty( "start_time_ms", windowTrace.getDuration().getStartTime().getMillis() - timeZero );
         windowObject.addProperty( "stop_time_ms", windowTrace.getDuration().getStopTime().getMillis() - timeZero );
