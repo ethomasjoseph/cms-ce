@@ -826,6 +826,7 @@ ul.cms-wizard-navigation a.last-current {
 .cms-groups-boxselect li.x-boxselect-item {
     background: url("../icons/16x16/group.png") no-repeat 3px 3px #DEE7F8;
     margin: 4px 0 0 4px;
+    padding: 0px 1px 4px 5px !important;
 }
 
 .cms-groups-boxselect li.x-boxselect-item:hover {

@@ -22,7 +22,7 @@
  * possible without your help.
  *
  * @author kvee_iv http://www.sencha.com/forum/member.php?29437-kveeiv
- * @version 1.1
+ * @version 1.3.1
  * @requires BoxSelect.css
  * @xtype boxselect
  */
@@ -185,10 +185,10 @@ Ext.define('Common.BoxSelect', {
 
         if (oldStore) {
             me.mun(oldStore, 'beforeload', me.onBeforeLoad, me);
-        }
-        if (me.valueStore) {
-            me.mun(me.valueStore, 'datachanged', me.applyMultiselectItemMarkup, me);
-            me.valueStore = null;
+            if (me.valueStore) {
+                me.mun(me.valueStore, 'datachanged', me.applyMultiselectItemMarkup, me);
+                me.valueStore = null;
+            }
         }
 
         me.callParent(arguments);
@@ -212,7 +212,20 @@ Ext.define('Common.BoxSelect', {
         var me = this,
         picker = me.callParent(arguments);
 
-        me.mon(picker, 'beforerefresh', me.onBeforeListRefresh, me);
+        me.mon(picker, {
+            'beforerefresh': me.onBeforeListRefresh,
+            'show': function(pick) {
+                /**
+                 * Temporary fix for reapplying maxHeight after shorter list was previously shown
+                 */
+                var listEl = picker.listEl,
+                ch = listEl.getHeight();
+                if (ch > picker.maxHeight) {
+                    listEl.setHeight(picker.maxHeight);
+                }
+            },
+            scope: me
+        });
 
         return picker;
     },
@@ -299,7 +312,7 @@ Ext.define('Common.BoxSelect', {
 
         if (valueStore) {
             if (!Ext.isEmpty(me.value) && (valueStore.getCount() == 0)) {
-                me.setValue(me.value);
+                me.setValue(me.value, false, true);
             }
 
             valueStore.suspendEvents();
@@ -320,7 +333,9 @@ Ext.define('Common.BoxSelect', {
 
         me.callParent(arguments);
 
-        me.ignoreSelection--;
+        me.ignoreSelection = Ext.Number.constrain(me.ignoreSelection - 1, 0);
+
+        me.alignPicker();
     },
 
     /**
@@ -355,7 +370,7 @@ Ext.define('Common.BoxSelect', {
             rawValue = rawValue.split(me.delimiter).pop();
         }
 
-        this.doQuery(rawValue);
+        this.doQuery(rawValue, false, true);
     },
 
     /**
@@ -372,7 +387,7 @@ Ext.define('Common.BoxSelect', {
 	 */
     onListRefresh: function() {
         this.callParent(arguments);
-        this.ignoreSelection--;
+        this.ignoreSelection = Ext.Number.constrain(this.ignoreSelection - 1, 0);
     },
 
     /**
@@ -387,7 +402,7 @@ Ext.define('Common.BoxSelect', {
 
         // Only react to selection if it is not called from setValue, and if our list is
         // expanded (ignores changes to the selection model triggered elsewhere)
-        if (!me.ignoreSelection && me.isExpanded) {
+        if ((me.ignoreSelection <= 0) && me.isExpanded) {
             // Pull forward records that were already selected or are now filtered out of the store
             valueStore.each(function(rec) {
                 if (Ext.Array.contains(selectedRecords, rec) || me.isFilteredRecord(rec)) {
@@ -430,12 +445,14 @@ Ext.define('Common.BoxSelect', {
 
             // From the value, find the Models that are in the store's current data
             selection = [];
-            me.valueStore.each(function(rec) {
-                var i = pickStore.findExact(valueField, rec.get(valueField));
-                if (i >= 0) {
-                    selection.push(pickStore.getAt(i));
-                }
-            });
+            if (me.valueStore) {
+                me.valueStore.each(function(rec) {
+                    var i = pickStore.findExact(valueField, rec.get(valueField));
+                    if (i >= 0) {
+                        selection.push(pickStore.getAt(i));
+                    }
+                });
+            }
 
             // Update the selection to match
             me.ignoreSelection++;
@@ -444,7 +461,7 @@ Ext.define('Common.BoxSelect', {
             if (selection.length > 0) {
                 selModel.select(selection);
             }
-            me.ignoreSelection--;
+            me.ignoreSelection = Ext.Number.constrain(me.ignoreSelection - 1, 0);
         }
     },
 
@@ -472,9 +489,6 @@ Ext.define('Common.BoxSelect', {
                 isAbove = picker.el.getY() < me.inputEl.getY();
                 me.bodyEl[isAbove ? 'addCls' : 'removeCls'](me.openCls + aboveSfx);
                 picker.el[isAbove ? 'addCls' : 'removeCls'](picker.baseCls + aboveSfx);
-            }
-            if (picker.getSelectedNodes().length > 0) {
-                picker.getTargetEl().scrollTo('top', pickerScrollPos);
             }
         }
     },
@@ -676,6 +690,8 @@ Ext.define('Common.BoxSelect', {
             return;
         }
 
+        evt.stopPropagation();
+
         if (itemEl) {
             if (closeEl) {
                 me.removeByListItemNode(itemEl);
@@ -696,6 +712,14 @@ Ext.define('Common.BoxSelect', {
         var me = this;
 
         if (!me.multiSelectItemTpl) {
+            if (!me.labelTpl) {
+                me.labelTpl = Ext.create('Ext.XTemplate',
+                    '{[values.' + me.displayField + ']}'
+                );
+            } else if (Ext.isString(me.labelTpl)) {
+                me.labelTpl = Ext.create('Ext.XTemplate', me.labelTpl);
+            }
+
             me.multiSelectItemTpl = [
             '<tpl for=".">',
             '<li class="x-boxselect-item ',
@@ -703,7 +727,7 @@ Ext.define('Common.BoxSelect', {
             ' selected',
             '</tpl>',
             '" qtip="{[typeof values === "string" ? values : values.' + me.displayField + ']}">' ,
-            '<div class="x-boxselect-item-text">{[typeof values === "string" ? values : values.' + me.displayField + ']}</div>',
+            '<div class="x-boxselect-item-text">{[typeof values === "string" ? values : this.getItemLabel(values)]}</div>',
             '<div class="x-tab-close-btn x-boxselect-item-close"></div>' ,
             '</li>' ,
             '</tpl>',
@@ -715,6 +739,9 @@ Ext.define('Common.BoxSelect', {
                     if (i >= 0) {
                         return me.selectionModel.isSelected(me.valueStore.getAt(i));
                     }
+                },
+                getItemLabel: function(values) {
+                    return me.getTpl('labelTpl').apply(values);
                 }
             }
             ];
@@ -906,6 +933,7 @@ Ext.define('Common.BoxSelect', {
                 callback: function() {
                     me.itemList.unmask();
                     me.setValue(value, doSelect, true);
+                    me.autoSize();
                 }
             });
             return false;
@@ -994,22 +1022,32 @@ Ext.define('Common.BoxSelect', {
 	 * Update the valueStore from the new value and fire change events for UI to respond to
 	 */
     checkChange: function() {
-        var me = this,
-        valueStore = me.valueStore,
-        models = valueStore.getRange(),
-        value = me.value;
+        if (!this.suspendCheckChange && !this.isDestroyed) {
+            var me = this,
+            valueStore = me.valueStore,
+            lastValue = me.lastValue,
+            valueField = me.valueField,
+            newValue = Ext.Array.map(Ext.Array.from(me.value), function(val) {
+                if (val.isModel) {
+                    return val.get(valueField);
+                }
+                return val;
+            }, this).join(this.delimiter);
 
-        if ((Ext.encode(value) !== Ext.encode(me.lastValue)) || (Ext.isArray(value) && (models.length != value.length))) {
-            valueStore.suspendEvents();
-            valueStore.removeAll();
-            if (Ext.isArray(me.valueModels)) {
-                valueStore.add(me.valueModels);
+            if (!me.isEqual(newValue, lastValue)) {
+                valueStore.suspendEvents();
+                valueStore.removeAll();
+                if (Ext.isArray(me.valueModels)) {
+                    valueStore.add(me.valueModels);
+                }
+                valueStore.resumeEvents();
+                valueStore.fireEvent('datachanged', valueStore);
+
+                me.lastValue = newValue;
+                me.fireEvent('change', me, newValue, lastValue);
+                me.onChange(newValue, lastValue)
             }
-            valueStore.resumeEvents();
-            valueStore.fireEvent('datachanged', valueStore);
         }
-
-        me.callParent(arguments);
     },
 
     /**
@@ -1027,6 +1065,9 @@ Ext.define('Common.BoxSelect', {
                 inputEl.dom.value = emptyText;
                 inputEl.addCls(me.emptyCls);
             } else {
+                if (inputEl.dom.value === emptyText) {
+                    inputEl.dom.value = '';
+                }
                 inputEl.removeCls(me.emptyCls);
             }
         }
@@ -1262,7 +1303,7 @@ Ext.define('Ext.ux.layout.component.field.BoxSelectField', {
             inputWidth = listWidth - 10;
             lastEntry = inputElCt.dom.previousSibling;
             if (lastEntry) {
-                inputWidth = inputWidth - (lastEntry.offsetLeft + Ext.fly(lastEntry).getWidth());
+                inputWidth = inputWidth - (lastEntry.offsetLeft + Ext.fly(lastEntry).getWidth() + Ext.fly(lastEntry).getPadding('lr'));
             }
             if (inputWidth < 35) {
                 inputWidth = listWidth - 10;

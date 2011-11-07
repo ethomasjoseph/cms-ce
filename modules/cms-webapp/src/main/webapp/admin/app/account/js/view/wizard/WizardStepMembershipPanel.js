@@ -15,6 +15,7 @@ Ext.define( 'App.view.wizard.WizardStepMembershipPanel', {
                 items: [
                     {
                         allowBlank:true,
+                        minChars: 1,
                         forceSelection : false,
                         triggerOnClick: false,
                         typeAhead: true,
@@ -36,7 +37,8 @@ Ext.define( 'App.view.wizard.WizardStepMembershipPanel', {
                         valueField: 'key',
                         growMin: 75,
                         hideTrigger: true,
-                        pinList: false
+                        pinList: false,
+                        labelTpl: '{name} ({userStore})'
                     }
                 ]
             }
