@@ -48,7 +48,8 @@ Ext.define('App.view.FilterPanel', {
                 {
                     xtype: 'label',
                     text: 'Type',
-                    cls: 'facet-header'
+                    cls: 'facet-header',
+                    itemId: 'accountTypeTitle'
                 },
 
                 {
@@ -88,7 +89,8 @@ Ext.define('App.view.FilterPanel', {
                 {
                     xtype: 'label',
                     text: 'Userstore',
-                    cls: 'facet-header'
+                    cls: 'facet-header',
+                    itemId: 'userstoreTitle'
                 },
                 {
                     xtype: 'checkboxgroup',
@@ -115,7 +117,8 @@ Ext.define('App.view.FilterPanel', {
                 {
                     xtype: 'label',
                     text: 'Organization',
-                    cls: 'facet-header'
+                    cls: 'facet-header',
+                    itemId: 'organizationTitle'
                 },
                 {
                     xtype: 'checkboxgroup',
@@ -193,6 +196,8 @@ Ext.define('App.view.FilterPanel', {
                 countVisible++;
             }
         }
+
+        this.query( '#organizationTitle' )[0].setVisible(countVisible > 0);
         countVisible = Math.min(MAX_ORG_FACET_ITEMS, countVisible);
         orgList = this.sortOrganizationFacets(orgList, countVisible);
 
@@ -256,7 +261,7 @@ Ext.define('App.view.FilterPanel', {
 
     showUserstoreFacets: function(facet) {
         var terms = facet.terms;
-        var itemId, checkbox, count;
+        var itemId, checkbox, count, countVisible = 0;
         for (var userstore in terms) {
             itemId = this.userstoreCheckboxId(userstore);
             checkbox = Ext.ComponentQuery.query( '*[itemId='+itemId+']' );
@@ -264,10 +269,14 @@ Ext.define('App.view.FilterPanel', {
                 checkbox = checkbox[0];
                 count = terms[userstore];
                 checkbox.setVisible(checkbox.getValue() || count > 0);
+                if (checkbox.isVisible()) {
+                    countVisible++;
+                }
                 userstore = (userstore === '_Global')? 'Global' : userstore;
                 checkbox.el.down('label').update(userstore + ' (' + count + ')');
             }
         }
+        this.query( '#userstoreTitle' )[0].setVisible(countVisible > 0);
     },
 
     showUserTypeFacets: function(facet) {
@@ -281,6 +290,9 @@ Ext.define('App.view.FilterPanel', {
         var groupsButton = Ext.ComponentQuery.query( '*[itemId=searchFilterGroups]' )[0];
         groupsButton.el.down('label').update('Groups (' + groupCount + ')');
         groupsButton.setVisible(groupsButton.getValue() || groupCount > 0);
+
+        var showTitle = usersButton.isVisible() || groupsButton.isVisible();
+        this.query( '#accountTypeTitle' )[0].setVisible(showTitle);
     },
 
     setUserStores: function(userstores) {
