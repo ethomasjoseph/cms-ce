@@ -204,20 +204,12 @@ img.photo {
     background-image: url("../icons/16x16/user_add.png");
 }
 
-.icon-tab-new-user {
-    background-image: url("../icons/16x16/user_edit.png");
-}
-
 .icon-add-24 {
     background-image: url("../icons/24x24/user_add.png");
 }
 
 .icon-new-group {
     background-image: url("../icons/16x16/group_add.png");
-}
-
-.icon-tab-new-group {
-    background-image: url("../icons/16x16/group_edit.png");
 }
 
 .icon-group {
