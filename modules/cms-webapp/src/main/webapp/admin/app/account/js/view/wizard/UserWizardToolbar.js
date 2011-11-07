@@ -58,7 +58,7 @@ Ext.define('App.view.wizard.UserWizardToolbar', {
                     },
                     {
                         text: 'Finish',
-                        iconCls: 'icon-btn-tick-24',
+                        iconCls: 'icon-btn-finish-24',
                         disabled: true,
                         itemId: 'finish',
                         action: 'wizardNext'

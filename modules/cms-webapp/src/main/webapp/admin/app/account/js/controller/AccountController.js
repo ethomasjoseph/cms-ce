@@ -163,11 +163,13 @@ Ext.define( 'App.controller.AccountController', {
 
     createNewGroupTab: function()
     {
-        this.getCmsTabPanel().addTab( {
-                                          title: 'New Group',
-                                          html: 'New Group Form',
-                                          iconCls: 'icon-new-group'
-                                      } );
+        this.getCmsTabPanel().addTab(
+            {
+                title: 'New Group',
+                html: 'New Group Form',
+                iconCls: 'icon-tab-new-group'
+            }
+        );
     },
 
     showDeleteUserWindow: function()
@@ -328,7 +330,7 @@ Ext.define( 'App.controller.AccountController', {
             var tab = {
                 id: Ext.id( null, 'new-user-' ),
                 title: 'New User',
-                iconCls: 'icon-new-user',
+                iconCls: 'icon-tab-new-user',
                 closable: true,
                 autoScroll: true,
                 layout: 'fit',
