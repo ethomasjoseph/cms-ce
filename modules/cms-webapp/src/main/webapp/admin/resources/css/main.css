@@ -657,7 +657,7 @@ div.cms-userstore-active {
 /*----- New form -----*/
 
 .cms-new-user-header {
-    margin-bottom: 1em;
+    margin-bottom: 10px;
 }
 
 .cms-new-user-header h4 {
