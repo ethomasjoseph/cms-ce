@@ -138,7 +138,7 @@ Ext.define( 'App.controller.AccountController', {
     onFilterPanelRender: function()
     {
         var filterTextField = Ext.getCmp( 'filter' );
-        filterTextField.addListener( 'keypress', this.searchFilterKeyPress, this );
+        filterTextField.addListener( 'change', this.searchFilterKeyPress, this );
 
         this.getFilterUserStoreField().addListener( 'change', function( field, newValue, oldValue, eOpts )
         {
@@ -268,6 +268,10 @@ Ext.define( 'App.controller.AccountController', {
             organizationsValues.push( val );
         } );
         organizationsField = organizationsValues.join( ',' );
+
+        if (textField.getValue().length > 0) {
+            this.getAccountFilter().updateTitle();
+        }
 
         usersStore.clearFilter();
         usersStore.getProxy().extraParams = {
