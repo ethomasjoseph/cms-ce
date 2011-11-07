@@ -204,6 +204,10 @@ img.photo {
     background-image: url("../icons/16x16/user_add.png");
 }
 
+.icon-edit-user {
+    background-image: url("../icons/16x16/user_edit.png");
+}
+
 .icon-add-24 {
     background-image: url("../icons/24x24/user_add.png");
 }
@@ -212,12 +216,12 @@ img.photo {
     background-image: url("../icons/16x16/group_add.png");
 }
 
-.icon-group {
-    background-image: url("../icons/16x16/group.png");
+.icon-edit-group {
+    background-image: url("../icons/16x16/group_edit.png");
 }
 
-.icon-edit-user {
-    background-image: url("../icons/16x16/edit.png");
+.icon-group {
+    background-image: url("../icons/16x16/group.png");
 }
 
 .icon-edit-user-24 {
@@ -290,7 +294,7 @@ img.photo {
 }
 
 .icon-delete {
-    background-image: url("../images/cross.png");
+    background-image: url("../icons/16x16/delete.png");
 }
 
 .icon-new {

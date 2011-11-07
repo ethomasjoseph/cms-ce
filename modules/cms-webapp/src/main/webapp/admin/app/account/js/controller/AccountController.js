@@ -311,20 +311,23 @@ Ext.define( 'App.controller.AccountController', {
     deleteUser: function()
     {
         var deleteUserWindow = this.getUserDeleteWindow();
-        Ext.Ajax.request( {
-                              url: 'data/user/delete',
-                              method: 'POST',
-                              params: {userKey: deleteUserWindow.userKey},
-                              success: function( response, opts )
-                              {
-                                  deleteUserWindow.close();
-                                  Ext.Msg.alert( 'Info', 'User was deleted' );
-                              },
-                              failure: function( response, opts )
-                              {
-                                  Ext.Msg.alert( 'Info', 'User wasn\'t deleted' );
-                              }
-                          } );
+
+        Ext.Ajax.request(
+            {
+                url: 'data/user/delete',
+                method: 'POST',
+                params: {userKey: deleteUserWindow.userKey},
+                success: function( response, opts )
+                {
+                    deleteUserWindow.close();
+                    Ext.Msg.alert( 'Info', 'User was deleted' );
+                },
+                failure: function( response, opts )
+                {
+                    Ext.Msg.alert( 'Info', 'User wasn\'t deleted' );
+                }
+            }
+        );
     },
 
     showEditUserForm: function( el, e )
