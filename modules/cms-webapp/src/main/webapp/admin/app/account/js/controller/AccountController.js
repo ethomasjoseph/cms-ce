@@ -138,7 +138,7 @@ Ext.define( 'App.controller.AccountController', {
     onFilterPanelRender: function()
     {
         var filterTextField = Ext.getCmp( 'filter' );
-        filterTextField.addListener( 'keypress', this.searchFilterKeyPress, this );
+        filterTextField.addListener( 'change', this.searchFilterKeyPress, this );
 
         this.getFilterUserStoreField().addListener( 'change', function( field, newValue, oldValue, eOpts )
         {
@@ -163,11 +163,13 @@ Ext.define( 'App.controller.AccountController', {
 
     createNewGroupTab: function()
     {
-        this.getCmsTabPanel().addTab( {
-                                          title: 'New Group',
-                                          html: 'New Group Form',
-                                          iconCls: 'icon-new-group'
-                                      } );
+        this.getCmsTabPanel().addTab(
+            {
+                title: 'New Group',
+                html: 'New Group Form',
+                iconCls: 'icon-new-group'
+            }
+        );
     },
 
     showDeleteUserWindow: function()
@@ -267,6 +269,10 @@ Ext.define( 'App.controller.AccountController', {
         } );
         organizationsField = organizationsValues.join( ',' );
 
+        if (textField.getValue().length > 0) {
+            this.getAccountFilter().updateTitle();
+        }
+
         usersStore.clearFilter();
         usersStore.getProxy().extraParams = {
             query: textField.getValue(),
@@ -305,20 +311,23 @@ Ext.define( 'App.controller.AccountController', {
     deleteUser: function()
     {
         var deleteUserWindow = this.getUserDeleteWindow();
-        Ext.Ajax.request( {
-                              url: 'data/user/delete',
-                              method: 'POST',
-                              params: {userKey: deleteUserWindow.userKey},
-                              success: function( response, opts )
-                              {
-                                  deleteUserWindow.close();
-                                  Ext.Msg.alert( 'Info', 'User was deleted' );
-                              },
-                              failure: function( response, opts )
-                              {
-                                  Ext.Msg.alert( 'Info', 'User wasn\'t deleted' );
-                              }
-                          } );
+
+        Ext.Ajax.request(
+            {
+                url: 'data/user/delete',
+                method: 'POST',
+                params: {userKey: deleteUserWindow.userKey},
+                success: function( response, opts )
+                {
+                    deleteUserWindow.close();
+                    Ext.Msg.alert( 'Info', 'User was deleted' );
+                },
+                failure: function( response, opts )
+                {
+                    Ext.Msg.alert( 'Info', 'User wasn\'t deleted' );
+                }
+            }
+        );
     },
 
     showEditUserForm: function( el, e )

@@ -204,6 +204,10 @@ img.photo {
     background-image: url("../icons/16x16/user_add.png");
 }
 
+.icon-edit-user {
+    background-image: url("../icons/16x16/user_edit.png");
+}
+
 .icon-add-24 {
     background-image: url("../icons/24x24/user_add.png");
 }
@@ -212,16 +216,16 @@ img.photo {
     background-image: url("../icons/16x16/group_add.png");
 }
 
+.icon-edit-group {
+    background-image: url("../icons/16x16/group_edit.png");
+}
+
 .icon-group {
     background-image: url("../icons/16x16/group.png");
 }
 
-.icon-edit-user {
-    background-image: url("../images/user_edit.png");
-}
-
 .icon-edit-user-24 {
-    background-image: url("../images/edit-24.png");
+    background-image: url("../icons/24x24/edit.png");
 }
 
 .icon-delete-user {
@@ -290,7 +294,7 @@ img.photo {
 }
 
 .icon-delete {
-    background-image: url("../images/cross.png");
+    background-image: url("../icons/16x16/delete.png");
 }
 
 .icon-new {
@@ -310,11 +314,11 @@ img.photo {
 }
 
 .icon-btn-arrow-left-24 {
-    background: url("../images/arrow-left-24.png");
+    background: url("../icons/24x24/nav_left_blue.png");
 }
 
 .icon-btn-arrow-right-24 {
-    background: url("../images/arrow-right-24.png");
+    background: url("../icons/24x24/nav_right_blue.png");
 }
 
 .icon-btn-tick-24 {
@@ -327,6 +331,10 @@ img.photo {
 
 .icon-question-mark-32 {
     background: url("../../ext/resources/themes/images/default/shared/icon-question.gif") no-repeat;
+}
+
+.icon-btn-finish-24 {
+    background: url("../icons/24x24/finish.png");
 }
 
 .icon-link {
@@ -645,7 +653,7 @@ div.cms-userstore-active {
 /*----- New form -----*/
 
 .cms-new-user-header {
-    margin-bottom: 1em;
+    margin-bottom: 10px;
 }
 
 .cms-new-user-header h4 {
@@ -817,6 +825,7 @@ ul.cms-wizard-navigation a.last-current {
 
 .cms-groups-boxselect li.x-boxselect-item {
     background: url("../icons/16x16/group.png") no-repeat 3px 3px #DEE7F8;
+    margin: 4px 0 0 4px;
 }
 
 .cms-groups-boxselect li.x-boxselect-item:hover {

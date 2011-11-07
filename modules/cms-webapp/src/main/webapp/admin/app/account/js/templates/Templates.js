@@ -9,7 +9,7 @@ Templates.account = {
                     '<div class="cms-left" style="margin: 24px 5px 0 0">' +
                     '<input type="radio" name="userstore" value="{key}">' + '</div>' +
                     '<div class="cms-userstore-block cms-left">' +
-                    '<div class="cms-left" style="padding-right: 15px;"><img width="50" height="50" src="app/account/images/app-icon-userstores.png"/></div>' +
+                    '<div class="cms-left" style="padding-right: 15px;"><img width="48" height="48" src="resources/icons/48x48/userstore.png"/></div>' +
                     '<div class="cms-left">' + '<h2>{name}</h2>' + '<p>(usersstores\\\\{name})</p>' + '</div>' +
                     '</div>' + '</div>' + '</tpl>'
 
