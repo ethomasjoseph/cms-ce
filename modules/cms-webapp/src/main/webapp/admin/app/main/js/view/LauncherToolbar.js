@@ -107,6 +107,7 @@ Ext.define('App.view.LauncherToolbar', {
                         },
                         icon: 'app/main/images/launcher/social.png'
                     },
+                    '-',
                     {
                         id: 800,
                         text: 'System',
