@@ -109,21 +109,21 @@ span.link:hover {
 }
 
 .cms-activity-stream-message .actions span.link.favorite {
-    background: url(../images/favorite.png) no-repeat scroll 0 -1px TRANSPARENT;
+    background: url(../images/activity-stream/favorite.png) no-repeat scroll 0 -1px TRANSPARENT;
     padding-left: 19px;
 }
 
 .cms-activity-stream-message .actions span.link.favorited {
-    background: url(../images/favorite-favorited.png) no-repeat scroll 0 -1px TRANSPARENT;
+    background: url(../images/activity-stream/favorite-favorited.png) no-repeat scroll 0 -1px TRANSPARENT;
 }
 
 .cms-activity-stream-message .actions span.link.comment {
-    background: url(../images/reply.png) no-repeat scroll 0 1px TRANSPARENT;
+    background: url(../images/activity-stream/reply.png) no-repeat scroll 0 1px TRANSPARENT;
     padding-left: 16px;
 }
 
 .cms-activity-stream-message .actions span.link.more {
-    background: url(../images/more.png) no-repeat scroll 0 1px TRANSPARENT;
+    background: url(../images/activity-stream/more.png) no-repeat scroll 0 1px TRANSPARENT;
     width: 18px;
     height: 18px;
 }

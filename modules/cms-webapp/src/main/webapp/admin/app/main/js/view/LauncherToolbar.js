@@ -40,7 +40,7 @@ Ext.define('App.view.LauncherToolbar', {
                         cms: {
                             appUrl: 'app-dashboard.html'
                         },
-                        icon: 'app/main/images/icons/dashboard.png'
+                        icon: 'app/main/images/launcher/dashboard.png'
                     },
                     '-',
                     {
@@ -49,7 +49,7 @@ Ext.define('App.view.LauncherToolbar', {
                         cms: {
                             appUrl: 'app-account.html'
                         },
-                        icon: 'app/main/images/icons/accounts.png'
+                        icon: 'app/main/images/launcher/accounts.png'
                     },
                     {
                         id: 200,
@@ -57,7 +57,7 @@ Ext.define('App.view.LauncherToolbar', {
                         cms: {
                             appUrl: 'blank.html'
                         },
-                        icon: 'app/main/images/icons/content.png'
+                        icon: 'app/main/images/launcher/content.png'
                     },
                     {
                         id: 300,
@@ -65,7 +65,7 @@ Ext.define('App.view.LauncherToolbar', {
                         cms: {
                             appUrl: 'blank.html'
                         },
-                        icon: 'app/main/images/icons/campaigns.png'
+                        icon: 'app/main/images/launcher/campaigns.png'
                     },
                     {
                         id: 500,
@@ -73,7 +73,7 @@ Ext.define('App.view.LauncherToolbar', {
                         cms: {
                             appUrl: 'blank.html'
                         },
-                        icon: 'app/main/images/icons/search.png'
+                        icon: 'app/main/images/launcher/search.png'
                     },
                     {
                         id: 600,
@@ -81,7 +81,7 @@ Ext.define('App.view.LauncherToolbar', {
                         cms: {
                             appUrl: 'blank.html'
                         },
-                        icon: 'app/main/images/icons/segments.png'
+                        icon: 'app/main/images/launcher/segments.png'
                     },
                     {
                         id: 610,
@@ -89,7 +89,7 @@ Ext.define('App.view.LauncherToolbar', {
                         cms: {
                             appUrl: 'blank.html'
                         },
-                        icon: 'app/main/images/icons/commerce.png'
+                        icon: 'app/main/images/launcher/commerce.png'
                     },
                     {
                         id: 620,
@@ -97,7 +97,7 @@ Ext.define('App.view.LauncherToolbar', {
                         cms: {
                             appUrl: 'blank.html'
                         },
-                        icon: ''
+                        icon: 'app/main/images/launcher/optimizer.png'
                     },
                     {
                         id: 630,
@@ -105,7 +105,7 @@ Ext.define('App.view.LauncherToolbar', {
                         cms: {
                             appUrl: 'blank.html'
                         },
-                        icon: 'app/main/images/icons/social.png'
+                        icon: 'app/main/images/launcher/social.png'
                     },
                     {
                         id: 800,
@@ -113,7 +113,7 @@ Ext.define('App.view.LauncherToolbar', {
                         cms: {
                             appUrl: 'app-system.html'
                         },
-                        icon: 'app/main/images/icons/system.png',
+                        icon: 'app/main/images/launcher/system.png',
                         menu: {
                             items: [
                                 {
@@ -122,7 +122,7 @@ Ext.define('App.view.LauncherToolbar', {
                                     cms: {
                                         appUrl:"blank.html"
                                     },
-                                    icon: 'app/main/images/icons/webdav.png'
+                                    icon: 'app/main/images/launcher/webdav.png'
                                 },
                                 {
                                     id: 820,
@@ -130,7 +130,7 @@ Ext.define('App.view.LauncherToolbar', {
                                     cms: {
                                         appUrl:"blank.html"
                                     },
-                                    icon: 'app/main/images/icons/applications.png'
+                                    icon: 'app/main/images/launcher/applications.png'
                                 },
                                 {
                                     id: 830,
@@ -138,7 +138,7 @@ Ext.define('App.view.LauncherToolbar', {
                                     cms: {
                                         appUrl: 'blank.html'
                                     },
-                                    icon: 'app/main/images/icons/cluster.png'
+                                    icon: 'app/main/images/launcher/cluster.png'
                                 },
                                 {
                                     id: 840,
@@ -146,7 +146,7 @@ Ext.define('App.view.LauncherToolbar', {
                                     cms: {
                                         appUrl: 'blank.html'
                                     },
-                                    icon: 'app/main/images/icons/live_trace.png'
+                                    icon: 'app/main/images/launcher/live_trace.png'
                                 },
                                 {
                                     id: 850,
@@ -154,7 +154,7 @@ Ext.define('App.view.LauncherToolbar', {
                                     cms: {
                                         appUrl: 'blank.html'
                                     },
-                                    icon: 'app/main/images/icons/sites.png'
+                                    icon: 'app/main/images/launcher/sites.png'
                                 },
                                 {
                                     id: 860,
@@ -162,7 +162,7 @@ Ext.define('App.view.LauncherToolbar', {
                                     cms: {
                                         appUrl: 'app-userstore.html'
                                     },
-                                    icon: 'app/main/images/icons/userstores.png'
+                                    icon: 'app/main/images/launcher/userstores.png'
                                 },
                                 {
                                     id: 860,
@@ -170,7 +170,7 @@ Ext.define('App.view.LauncherToolbar', {
                                     cms: {
                                         appUrl: 'app-systemCache.html'
                                     },
-                                    icon: 'app/main/images/icons/cache.png'
+                                    icon: 'app/main/images/launcher/cache.png'
                                 },
                                 {
                                     id: 870,
@@ -178,7 +178,7 @@ Ext.define('App.view.LauncherToolbar', {
                                     cms: {
                                         appUrl: 'app-contentType.html'
                                     },
-                                    icon: 'app/main/images/icons/content_types.png'
+                                    icon: 'app/main/images/launcher/content_types.png'
                                 }
                             ]
                         }
