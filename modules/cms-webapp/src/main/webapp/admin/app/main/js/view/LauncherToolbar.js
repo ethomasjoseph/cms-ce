@@ -107,6 +107,22 @@ Ext.define('App.view.LauncherToolbar', {
                         },
                         icon: 'app/main/images/launcher/social.png'
                     },
+                    {
+                        id: 635,
+                        text: 'Chat',
+                        cms: {
+                            appUrl: 'blank.html'
+                        },
+                        icon: 'app/main/images/launcher/chat.png'
+                    },
+                    {
+                        id: 700,
+                        text: 'Calendar',
+                        cms: {
+                            appUrl: 'blank.html'
+                        },
+                        icon: 'app/main/images/launcher/calendar.png'
+                    },
                     '-',
                     {
                         id: 800,
