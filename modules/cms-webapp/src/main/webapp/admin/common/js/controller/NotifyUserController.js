@@ -26,10 +26,13 @@ Ext.define( 'Common.controller.NotifyUserController', {
     },
 
     showWindow: function( model ) {
-        this.getNotifyUserWindow().doShow( model );
+        var notifyUserWindow = this.getNotifyUserWindow();
+        notifyUserWindow.doShow( model );
+        notifyUserWindow.center();
     },
 
     closeWindow: function() {
+        this.getNotifyUserWindow().setPosition(-5000, -5000);
         this.getNotifyUserWindow().close();
     },
 
