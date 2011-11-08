@@ -20,19 +20,20 @@ Ext.define('App.controller.NotificationWindowController', {
         this.addWindowClickListener();
     },
 
-    show: function(title, message)
+    show: function(title, message, notifyUser)
     {
         this.getNotificationWindow().update(
             {
                 messageTitle: title,
-                messageText: message
+                messageText: message,
+                notifyUser: notifyUser === undefined ? false: notifyUser
             }
         );
 
-        this.animateWindow();
+        this.fadeWindowInOut();
     },
 
-    animateWindow: function()
+    fadeWindowInOut: function()
     {
         var self = this;
         var notificationWindow = this.getNotificationWindow();

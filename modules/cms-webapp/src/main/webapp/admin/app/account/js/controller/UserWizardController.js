@@ -10,31 +10,44 @@ Ext.define( 'App.controller.UserWizardController', {
 
     init: function()
     {
-        this.control( {
-                          '*[action=wizardPrev]': {
-                              click: this.wizardPrev
-                          },
-                          '*[action=wizardNext]': {
-                              click: this.wizardNext
-                          },
-                          'wizardPanel': {
-                              beforestepchanged: this.validateStep,
-                              stepchanged: this.stepChanged,
-                              finished: this.wizardFinished
-                          },
-                          'userStoreListPanel': {
-                              itemclick: this.userStoreSelected
-                          },
-                          'addressPanel textfield[name=label]': {
-                              keyup: this.updateTabTitle
-                          },
-                          'editUserFormPanel': {
-                              fieldsloaded: this.userStoreFieldsLoaded
-                          },
-                          'userWizardPanel': {
-                              afterrender: this.bindDisplayNameEvents
-                          }
-                      } );
+        this.control(
+            {
+                '*[action=saveNewUser]': {
+                    click: this.saveNewUser
+                },
+                '*[action=wizardPrev]': {
+                    click: this.wizardPrev
+                },
+                '*[action=wizardNext]': {
+                    click: this.wizardNext
+                },
+                'wizardPanel': {
+                    beforestepchanged: this.validateStep,
+                    stepchanged: this.stepChanged,
+                    finished: this.wizardFinished
+                },
+                'userStoreListPanel': {
+                    itemclick: this.userStoreSelected
+                },
+                'addressPanel textfield[name=label]': {
+                    keyup: this.updateTabTitle
+                },
+                'editUserFormPanel': {
+                    fieldsloaded: this.userStoreFieldsLoaded
+                },
+                'userWizardPanel': {
+                    afterrender: this.bindDisplayNameEvents
+                }
+            }
+        );
+    },
+
+    saveNewUser: function()
+    {
+        var parentApp = parent.mainApp;
+        if ( parentApp ) {
+            parentApp.fireEvent('notifier.show', "User was saved", "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.", false );
+        }
     },
 
     validateStep: function( wizard, step )
@@ -72,7 +85,7 @@ Ext.define( 'App.controller.UserWizardController', {
     {
         var parentApp = parent.mainApp;
         if ( parentApp ) {
-            parentApp.fireEvent('notifier.show', "User created", "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth." );
+            parentApp.fireEvent('notifier.show', "User was created", "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.", true );
         }
     },
 
