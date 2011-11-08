@@ -26,7 +26,9 @@ Ext.define( 'LPT.view.requests.FilterPanel', {
             items: [
                 {
                     xtype: 'textfield',
-                    name: 'filter',
+                    name: 'filterSiteText',
+                    enableKeyEvents: true,
+                    id: 'filterSiteText',
                     flex: 1
                 },
                 {
@@ -119,7 +121,8 @@ Ext.define( 'LPT.view.requests.FilterPanel', {
                             itemId: itemId,
                             xtype: 'checkbox',
                             checked: true,
-                            boxLabel: label
+                            boxLabel: label,
+                            action: 'filtersite'
                         } );
 
                 filterSiteContainer.add( checkBox );

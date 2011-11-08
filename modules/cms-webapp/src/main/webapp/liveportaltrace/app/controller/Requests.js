@@ -62,6 +62,12 @@ Ext.define('LPT.controller.Requests', {
             '#filterIncludeAttachmentRequestsCheckbox': {
                 change: this.applyFilterForCompletedRequests
             },
+            'requestsFilterPanel': {
+                render: this.requestsFilterPanelRender
+            },
+            '*[action=filtersite]': {
+                change: this.applyFilterForCompletedRequests
+            },
             '*[action=stopAutoRefresh]': {
                 click: this.onStopAutoRefresh
             },
@@ -79,6 +85,14 @@ Ext.define('LPT.controller.Requests', {
     siteNames: {},
     
     autoRefreshOn: true,
+
+    searchFilterTypingTimer: null,
+
+    requestsFilterPanelRender: function()
+    {
+        var filterTextField = Ext.getCmp( 'filterSiteText' );
+        filterTextField.addListener( 'keypress', this.searchFilterKeyPress, this );
+    },
 
     showRequestInfo: function( view, modelItem, htmlEl, idx, e )
     {
@@ -201,74 +215,84 @@ Ext.define('LPT.controller.Requests', {
 
     applyFilterForCompletedRequests: function()
     {
+        console.log('applyFilterForCompletedRequests');
         var store = Ext.data.StoreManager.lookup( 'PortalRequestTraceHistoryListStore' );
 
         var filterIncludePageRequestsCheckbox = Ext.getCmp( 'filterIncludePageRequestsCheckbox' );
         var filterIncludeWindowRequestsCheckbox = Ext.getCmp( 'filterIncludeWindowRequestsCheckbox' );
         var filterIncludeAttachmentRequestsCheckbox = Ext.getCmp( 'filterIncludeAttachmentRequestsCheckbox' );
         var filterIncludeImageRequestsCheckbox = Ext.getCmp( 'filterIncludeImageRequestsCheckbox' );
-        var filterSite = Ext.getCmp( 'filterSite' );
+        var filterSite = Ext.getCmp( 'filterSiteText' );
 
+        var me = this;
         var requestTypeFilter = new Ext.util.Filter( {
-                                                         filterFn: function( item )
-                                                         {
-                                                             var dontAccept = false;
-                                                             if ( !filterIncludePageRequestsCheckbox.getValue() )
-                                                             {
-                                                                 dontAccept = item.data.requestType === 'Page';
-                                                             }
-                                                             if ( dontAccept )
-                                                             {
-                                                                 return false;
-                                                             }
+                                         filterFn: function( item )
+                                         {
+                                             var dontAccept = false;
+                                             if ( !filterIncludePageRequestsCheckbox.getValue() )
+                                             {
+                                                 dontAccept = item.data.requestType === 'Page';
+                                             }
+                                             if ( dontAccept )
+                                             {
+                                                 return false;
+                                             }
 
-                                                             if ( !filterIncludeWindowRequestsCheckbox.getValue() )
-                                                             {
-                                                                 dontAccept = item.data.requestType === 'Window';
-                                                             }
-                                                             if ( dontAccept )
-                                                             {
-                                                                 return false;
-                                                             }
+                                             if ( !filterIncludeWindowRequestsCheckbox.getValue() )
+                                             {
+                                                 dontAccept = item.data.requestType === 'Window';
+                                             }
+                                             if ( dontAccept )
+                                             {
+                                                 return false;
+                                             }
 
-                                                             if ( !filterIncludeAttachmentRequestsCheckbox.getValue() )
-                                                             {
-                                                                 dontAccept = item.data.requestType === 'Attachment';
-                                                             }
-                                                             if ( dontAccept )
-                                                             {
-                                                                 return false;
-                                                             }
+                                             if ( !filterIncludeAttachmentRequestsCheckbox.getValue() )
+                                             {
+                                                 dontAccept = item.data.requestType === 'Attachment';
+                                             }
+                                             if ( dontAccept )
+                                             {
+                                                 return false;
+                                             }
 
-                                                             if ( !filterIncludeImageRequestsCheckbox.getValue() )
-                                                             {
-                                                                 dontAccept = item.data.requestType === 'Image';
-                                                             }
-                                                             if ( dontAccept )
-                                                             {
-                                                                 return false;
-                                                             }
+                                             if ( !filterIncludeImageRequestsCheckbox.getValue() )
+                                             {
+                                                 dontAccept = item.data.requestType === 'Image';
+                                             }
+                                             if ( dontAccept )
+                                             {
+                                                 return false;
+                                             }
 
-                                                             if ( filterSite.getValue().length > 0 )
-                                                             {
-                                                                 console.log( "filterSite.getValue(): " + filterSite.getValue() +":" );
-                                                                 console.log( "item.data.site.name  : " + item.data.site.name + ":" );
-                                                                 if( item.data.site.name !== filterSite.getValue() )
-                                                                 {
-                                                                     return false;
-                                                                 }
-                                                             }
+                                             if ( filterSite.getValue().length > 0 )
+                                             {
+                                                 if (me.filterSearch(item.data, filterSite.getValue()))
+                                                 {
+                                                     return false;
+                                                 }
+                                             }
 
-
-
-                                                             return true;
-                                                         }
-                                                     } );
+                                             return true;
+                                         }
+                                     } );
 
         store.clearFilter();
         store.filter( requestTypeFilter );
 
         this.getFilterPanel().updateFacetStatistics( this.countFacets() );
+    },
+
+    filterSearch: function(reqData, searchText)
+    {
+        searchText = searchText.toLowerCase();
+        if (searchText.substring(0, 1) === '/') {
+            var url = reqData.url.siteLocalUrl.toLowerCase();
+            return url.substring(0, searchText.length) !== searchText;
+        } else {
+            var siteName = reqData.site.name.toLowerCase();
+            return siteName.substring(0, searchText.length) !== searchText;
+        }
     },
 
     countFacets: function()
@@ -405,6 +429,20 @@ Ext.define('LPT.controller.Requests', {
             name: 'thread count',
             data: ( value )
         }], maxValue );
+    },
+
+    searchFilterKeyPress: function ()
+    {
+        if ( this.searchFilterTypingTimer != null )
+        {
+            window.clearTimeout( this.searchFilterTypingTimer );
+            this.searchFilterTypingTimer = null;
+        }
+        var me = this;
+        this.searchFilterTypingTimer = window.setTimeout( function ()
+                                                          {
+                                                              me.applyFilterForCompletedRequests();
+                                                          }, 500 );
     }
 
 });
