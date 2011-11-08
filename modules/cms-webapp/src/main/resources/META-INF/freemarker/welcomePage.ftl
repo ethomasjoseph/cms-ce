@@ -157,7 +157,7 @@
                 </div>
             </div>
             <div style="background: #ffffcc">
-                <strong>Beta: </strong><a href="https://addons.mozilla.org/en-US/firefox/user/5849907/" rel="external">Enonic CMS Server Trace</a> for Firebug
+                <strong>Beta: </strong><a href="https://addons.mozilla.org/en-US/firefox/addon/enonic-cms-server-trace/" rel="external">Enonic CMS Server Trace</a> for Firebug
             </div>
         </div>
     </div>
