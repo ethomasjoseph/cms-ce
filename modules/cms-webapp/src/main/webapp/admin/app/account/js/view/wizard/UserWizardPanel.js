@@ -130,7 +130,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         {
             displayNameFieldElement.set( {readonly: true} );
             var value = Ext.String.trim( displayNameFieldElement.getValue() );
-            if ( value === '' || value === 'New User' )
+            if ( value === '' || value === 'Display Name' )
             {
                 displayNameFieldElement.removeCls( 'cms-edited-field' );
             }
@@ -140,7 +140,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
     updateQualifiedNameHeader: function( userStoreName )
     {
         Ext.get( 'q-userstore' ).dom.innerHTML = userStoreName + '\\';
-        Ext.get( 'q-username' ).dom.innerHTML = 'unnamed';
+        Ext.get( 'q-username' ).dom.innerHTML = '';
     },
 
     resizeFileUpload: function( file )

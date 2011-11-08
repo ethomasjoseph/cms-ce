@@ -27,9 +27,9 @@ Templates.account = {
     ,newUserPanelHeader:
             '<div class="cms-wizard-header-container">' +
                 '<div class="cms-wizard-header clearfix">' +
-                    '<input type="text" value="New User" readonly="true" id="cms-display-name" class="cms-display-name"/>' +
+                    '<input type="text" value="Display Name" readonly="true" id="cms-display-name" class="cms-display-name"/>' +
                 '</div>' +
-                '<div class="clearfix">- User Wizard: <span id="q-userstore"></span><span id="q-username"></span></div>' +
+                '<div class="clearfix">New User: <span id="q-userstore"></span><span id="q-username"></span></div>' +
             '</div>'
 
     ,noUserSelected:
