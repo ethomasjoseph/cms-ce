@@ -27,7 +27,7 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!-- Temporary solution. Added etagFilter for XTraceInterceptor. -->
+    <!-- TODO: Temporary solution. Added etagFilter for XTraceInterceptor. -->
     <filter>
         <filter-name>etagFilter</filter-name>
         <filter-class>org.springframework.web.filter.ShallowEtagHeaderFilter</filter-class>

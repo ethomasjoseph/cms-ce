@@ -542,7 +542,8 @@ public class SecurityServiceImpl
         HttpSession session = request.getSession( false );
         if ( null != session )
         {
-            session.invalidate();
+            // TODO: Fix me. xtrace is also logged out now.
+            // session.invalidate();
         }
     }
 
