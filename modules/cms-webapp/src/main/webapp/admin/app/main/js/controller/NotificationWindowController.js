@@ -69,6 +69,11 @@ Ext.define('App.controller.NotificationWindowController', {
                 },
                 to: {
                     opacity: 0
+                },
+                listeners: {
+                    'afteranimate': function(t) {
+                        notificationWindow.setPosition(-5000, -5000)
+                    }, scope: this
                 }
             }
         );
@@ -79,6 +84,7 @@ Ext.define('App.controller.NotificationWindowController', {
         var notificationWindow = this.getNotificationWindow();
         notificationWindow.stopAnimation();
         notificationWindow.getEl().setOpacity(0);
+        notificationWindow.setPosition(-5000, -5000)
     },
 
     addWindowClickListener: function()
