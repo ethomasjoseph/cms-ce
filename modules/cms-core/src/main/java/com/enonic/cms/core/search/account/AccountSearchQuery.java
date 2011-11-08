@@ -7,15 +7,25 @@ import com.enonic.cms.core.search.SearchSortOrder;
 public final class AccountSearchQuery
 {
     private String query;
+
     private int from;
+
     private int count;
+
     private String[] userStore;
+
     private boolean users;
+
     private boolean groups;
+
     private SearchSortOrder sortOrder;
+
     private AccountIndexField sortField;
+
     private boolean includeResults;
+
     private boolean includeFacets;
+
     private String[] organization;
 
     public AccountSearchQuery()
@@ -32,7 +42,7 @@ public final class AccountSearchQuery
         this.includeFacets = true;
     }
 
-    public AccountSearchQuery(AccountSearchQuery accountSearchQuery)
+    public AccountSearchQuery( AccountSearchQuery accountSearchQuery )
     {
         this.query = accountSearchQuery.query;
         this.from = accountSearchQuery.from;
@@ -57,7 +67,7 @@ public final class AccountSearchQuery
         return this.groups;
     }
 
-    public AccountSearchQuery setGroups(boolean selectGroups)
+    public AccountSearchQuery setGroups( boolean selectGroups )
     {
         this.groups = selectGroups;
         return this;
@@ -68,7 +78,7 @@ public final class AccountSearchQuery
         return this.users;
     }
 
-    public AccountSearchQuery setUsers(boolean selectUsers)
+    public AccountSearchQuery setUsers( boolean selectUsers )
     {
         this.users = selectUsers;
         return this;
@@ -79,7 +89,7 @@ public final class AccountSearchQuery
         return this.query != null ? this.query : "";
     }
 
-    public AccountSearchQuery setQuery(String value)
+    public AccountSearchQuery setQuery( String value )
     {
         this.query = value;
         return this;
@@ -90,7 +100,7 @@ public final class AccountSearchQuery
         return this.from;
     }
 
-    public AccountSearchQuery setFrom(int from)
+    public AccountSearchQuery setFrom( int from )
     {
         this.from = from;
         return this;
@@ -101,7 +111,7 @@ public final class AccountSearchQuery
         return this.count;
     }
 
-    public AccountSearchQuery setCount(int count)
+    public AccountSearchQuery setCount( int count )
     {
         this.count = count;
         return this;
@@ -138,7 +148,7 @@ public final class AccountSearchQuery
         }
         else
         {
-            this.organization = organizations;
+            this.organization = Arrays.<String>copyOf( organizations, organizations.length );
         }
         return this;
     }
