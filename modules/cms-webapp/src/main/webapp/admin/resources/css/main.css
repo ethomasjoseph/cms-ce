@@ -653,7 +653,6 @@ div.cms-userstore-active {
 /*----- New form -----*/
 
 .cms-new-user-header {
-    margin-bottom: 10px;
 }
 
 .cms-new-user-header h4 {
@@ -664,9 +663,10 @@ div.cms-userstore-active {
 
 ul.cms-wizard-navigation {
     list-style-type: none !important;
-    margin: 0;
+    margin-left: 3px;
     padding: 1px;
     background-color: #ccc;
+
 }
 
 ul.cms-wizard-navigation li {
@@ -743,8 +743,9 @@ ul.cms-wizard-navigation a.last-current {
 /*----- Wizard header -----*/
 
 .cms-wizard-header-container {
-    margin-bottom: 5px;
+    margin-bottom: 4px;
     font-size: 12px;
+    padding-left: 3px;
 }
 
 .cms-wizard-header-container p {
@@ -757,11 +758,11 @@ ul.cms-wizard-navigation a.last-current {
 
 .cms-wizard-header-container input {
     width: 99%;
+    margin: 3px 0 0 3px;
     border: 1px solid TRANSPARENT;
     color: #555555;
     font-size: 26px;
     font-weight: normal;
-    margin: 3px 0 0 3px;
     border-radius: 2px;
 }
 
