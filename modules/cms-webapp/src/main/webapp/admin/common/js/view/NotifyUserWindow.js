@@ -26,7 +26,7 @@ Ext.define( 'Common.view.NotifyUserWindow', {
                     iconAlign: 'top',
                     text: 'Close',
                     action: 'close',
-                    iconCls: 'icon-delete'
+                    iconCls: 'icon-close'
                 }
             ]
         }

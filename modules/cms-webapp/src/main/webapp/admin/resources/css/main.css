@@ -341,6 +341,10 @@ img.photo {
     background: url("../images/link.png") no-repeat;
 }
 
+.icon-close {
+    background: url("../images/cross.png") no-repeat;
+}
+
 /*-----  Dashboard  -----*/
 
 .dashboard .dashboard-body {
