@@ -188,19 +188,26 @@ Ext.define( 'App.controller.AccountController', {
     updateDetailsPanel: function()
     {
         var detailPanel = this.getAccountDetailPanel();
-        var persistentGridSelection = this.getPersistentGridSelectionPlugin();
-        var selection = persistentGridSelection.getSelection();
-        var selectionCount = persistentGridSelection.getSelectionCount();
+        var persistentGridSelectionPlugin = this.getPersistentGridSelectionPlugin();
+        var persistentSelection = persistentGridSelectionPlugin.getSelection();
+        var persistentSelectionCount = persistentGridSelectionPlugin.getSelectionCount();
         var userStore = this.getStore( 'UserStore' );
         var pageSize = userStore.pageSize;
         var totalCount = userStore.totalCount;
 
-        if ( selectionCount === 0 )
+        var selectionModel = this.getUserGrid().getSelectionModel();
+        var selectionModelCount = selectionModel.getCount();
+
+        // Works because selection model count is 1 even if page has changed.
+        var showUserPreviewOnly = ( selectionModelCount === 1 && userStore.currentPage > 1 ) || persistentSelectionCount == 1;
+
+        if ( persistentSelectionCount === 0 )
         {
             detailPanel.showNoneSelection();
-        } else if ( selectionCount === 1 )
+        }
+        else if ( showUserPreviewOnly )
         {
-            var user = selection[0];
+            var user = selectionModelCount === 1 ? selectionModel.getSelection()[0] : persistentSelection[0];
 
             if ( user )
             {
@@ -212,19 +219,19 @@ Ext.define( 'App.controller.AccountController', {
         else
         {
             var detailed = true;
-            if ( selectionCount > 10 )
+            if ( persistentSelectionCount > 10 )
             {
                 detailed = false;
             }
             var selectedUsers = [];
-            Ext.Array.each( selection, function( user )
+            Ext.Array.each( persistentSelection, function( user )
             {
                 Ext.Array.include( selectedUsers, user.data );
             } );
             detailPanel.showMultipleSelection( selectedUsers, detailed );
         }
 
-        detailPanel.updateTitle( persistentGridSelection );
+        detailPanel.updateTitle( persistentGridSelectionPlugin );
     },
 
     updateActionItems: function()
@@ -711,10 +718,9 @@ Ext.define( 'App.controller.AccountController', {
             this.searchFilterTypingTimer = null;
         }
         var controller = this;
-        this.searchFilterTypingTimer = window.setTimeout( function ()
-                                                          {
-                                                              controller.searchFilter();
-                                                          }, 500 );
+        this.searchFilterTypingTimer = window.setTimeout( function (){
+            controller.searchFilter();
+        }, 500 );
     }
 
 } );
