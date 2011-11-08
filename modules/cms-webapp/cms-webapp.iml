@@ -12,11 +12,11 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar:///Users/srs/.gradle/caches/artifacts-3/javax.servlet/servlet-api/c12498cf18507aa6433a94eb7d3e77d5/jars/servlet-api-2.5.jar!/"/>
+          <root url="file://$GRADLE_HOME$/caches/artifacts-3/filestore/595/5959582d97d8b61f4d154ca9e495aafd16726e34"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar:///Users/srs/.gradle/caches/artifacts-3/javax.servlet/servlet-api/c12498cf18507aa6433a94eb7d3e77d5/sources/servlet-api-2.5-sources.jar!/"/>
+          <root url="file://$GRADLE_HOME$/caches/artifacts-3/filestore/021/021599814ad9a605b86f3e6381571beccd861a32"/>
         </SOURCES>
       </library>
     </orderEntry>

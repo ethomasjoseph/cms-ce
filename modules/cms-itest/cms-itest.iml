@@ -14,29 +14,29 @@
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar:///Users/srs/.gradle/caches/artifacts-3/com.h2database/h2/c12498cf18507aa6433a94eb7d3e77d5/jars/h2-1.3.151.jar!/"/>
+          <root url="file://$GRADLE_HOME$/caches/artifacts-3/filestore/191/191a4d439cb421f4f84b5abb3214a8cfc9bde6a9"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar:///Users/srs/.gradle/caches/artifacts-3/com.h2database/h2/c12498cf18507aa6433a94eb7d3e77d5/sources/h2-1.3.151-sources.jar!/"/>
+          <root url="file://$GRADLE_HOME$/caches/artifacts-3/filestore/161/1613ecaed64344cdd51ad361ad7a4e48f36b4327"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar:///Users/srs/.gradle/caches/artifacts-3/junit/junit/c12498cf18507aa6433a94eb7d3e77d5/jars/junit-4.8.2.jar!/"/>
+          <root url="file://$GRADLE_HOME$/caches/artifacts-3/filestore/c94/c94f54227b08100974c36170dcb53329435fe5ad"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar:///Users/srs/.gradle/caches/artifacts-3/junit/junit/c12498cf18507aa6433a94eb7d3e77d5/sources/junit-4.8.2-sources.jar!/"/>
+          <root url="file://$GRADLE_HOME$/caches/artifacts-3/filestore/ccc/cccca612a66b8387c399be31d69daf000de2ac9e"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar:///Users/srs/.gradle/caches/artifacts-3/junit-addons/junit-addons/c12498cf18507aa6433a94eb7d3e77d5/jars/junit-addons-1.4.jar!/"/>
+          <root url="file://$GRADLE_HOME$/caches/artifacts-3/filestore/5f5/5f5fa0be54734f07a0b8fe9fa7b1447b4a88d55a"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES/>
@@ -45,18 +45,18 @@
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar:///Users/srs/.gradle/caches/artifacts-3/xerces/xercesImpl/c12498cf18507aa6433a94eb7d3e77d5/jars/xercesImpl-2.6.2.jar!/"/>
+          <root url="file://$GRADLE_HOME$/caches/artifacts-3/filestore/897/897bcb56d6b7fe2070a5f561bfc78968ecdd3851"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar:///Users/srs/.gradle/caches/artifacts-3/xerces/xercesImpl/c12498cf18507aa6433a94eb7d3e77d5/sources/xercesImpl-2.6.2-sources.jar!/"/>
+          <root url="file://$GRADLE_HOME$/caches/artifacts-3/filestore/eb9/eb9e01cc90dfc083dd41d7f76a5efd102ab6b01e"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar:///Users/srs/.gradle/caches/artifacts-3/xerces/xmlParserAPIs/c12498cf18507aa6433a94eb7d3e77d5/jars/xmlParserAPIs-2.6.2.jar!/"/>
+          <root url="file://$GRADLE_HOME$/caches/artifacts-3/filestore/065/065acede1e5305bd2b92213d7b5761328c6f4fd9"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES/>
@@ -65,62 +65,62 @@
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar:///Users/srs/.gradle/caches/artifacts-3/org.springframework/spring-test/22038101aa91f7395ccfde72ec6db622/jars/spring-test-3.1.0.RC1.jar!/"/>
+          <root url="file://$GRADLE_HOME$/caches/artifacts-3/filestore/14e/14e4a5c74ebbb0533319f240d9e98c092eef5eb3"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar:///Users/srs/.gradle/caches/artifacts-3/org.springframework/spring-test/22038101aa91f7395ccfde72ec6db622/sources/spring-test-3.1.0.RC1-sources.jar!/"/>
+          <root url="file://$GRADLE_HOME$/caches/artifacts-3/filestore/cb7/cb767b36a3c433d862294a10e36250de77521077"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar:///Users/srs/.gradle/caches/artifacts-3/org.easymock/easymock/c12498cf18507aa6433a94eb7d3e77d5/jars/easymock-2.2.jar!/"/>
+          <root url="file://$GRADLE_HOME$/caches/artifacts-3/filestore/0b9/0b9536281a0d32253f97445999dcaf0572e57bbb"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar:///Users/srs/.gradle/caches/artifacts-3/org.easymock/easymock/c12498cf18507aa6433a94eb7d3e77d5/sources/easymock-2.2-sources.jar!/"/>
+          <root url="file://$GRADLE_HOME$/caches/artifacts-3/filestore/68f/68f4a684c06d36d01931977532f17c5516755435"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar:///Users/srs/.gradle/caches/artifacts-3/org.easymock/easymockclassextension/c12498cf18507aa6433a94eb7d3e77d5/jars/easymockclassextension-2.2.1.jar!/"/>
+          <root url="file://$GRADLE_HOME$/caches/artifacts-3/filestore/7a8/7a86334961cbb40725423bf16c6490036c8aef26"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar:///Users/srs/.gradle/caches/artifacts-3/org.easymock/easymockclassextension/c12498cf18507aa6433a94eb7d3e77d5/sources/easymockclassextension-2.2.1-sources.jar!/"/>
+          <root url="file://$GRADLE_HOME$/caches/artifacts-3/filestore/126/1269e8d1b998e14d4000d6451cbd58103fe2401a"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar:///Users/srs/.gradle/caches/artifacts-3/cglib/cglib-nodep/c12498cf18507aa6433a94eb7d3e77d5/jars/cglib-nodep-2.2.jar!/"/>
+          <root url="file://$GRADLE_HOME$/caches/artifacts-3/filestore/59a/59afed7ab65e7ec6585d5bc60556c3cbd203532b"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar:///Users/srs/.gradle/caches/artifacts-3/cglib/cglib-nodep/c12498cf18507aa6433a94eb7d3e77d5/sources/cglib-nodep-2.2-sources.jar!/"/>
+          <root url="file://$GRADLE_HOME$/caches/artifacts-3/filestore/962/962f2bbd66901a9d67b0bb3c8c4a64ce6de0a8c4"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar:///Users/srs/.gradle/caches/artifacts-3/org.mockito/mockito-all/c12498cf18507aa6433a94eb7d3e77d5/jars/mockito-all-1.8.5.jar!/"/>
+          <root url="file://$GRADLE_HOME$/caches/artifacts-3/filestore/a92/a927d8ae3b8d22eb745a74f94e59ce3882f2b524"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar:///Users/srs/.gradle/caches/artifacts-3/org.mockito/mockito-all/c12498cf18507aa6433a94eb7d3e77d5/sources/mockito-all-1.8.5-sources.jar!/"/>
+          <root url="file://$GRADLE_HOME$/caches/artifacts-3/filestore/d48/d48cdc7660c8bb9b201b0b7ef21fd3421df90ae6"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar:///Users/srs/.gradle/caches/artifacts-3/xmlunit/xmlunit/c12498cf18507aa6433a94eb7d3e77d5/jars/xmlunit-1.2.jar!/"/>
+          <root url="file://$GRADLE_HOME$/caches/artifacts-3/filestore/9a8/9a8543988f6a1a1e584ae7bef34fd88825c54e1e"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES/>

@@ -45,7 +45,11 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/modules/cms-webapp/cms-webapp.iml" filepath="$PROJECT_DIR$/modules/cms-webapp/cms-webapp.iml"/>
+      <module fileurl="file://$PROJECT_DIR$/modules/cms-core/cms-core.iml" filepath="$PROJECT_DIR$/modules/cms-core/cms-core.iml"/>
+      <module fileurl="file://$PROJECT_DIR$/modules/cms-api/cms-api.iml" filepath="$PROJECT_DIR$/modules/cms-api/cms-api.iml"/>
       <module fileurl="file://$PROJECT_DIR$/cms.iml" filepath="$PROJECT_DIR$/cms.iml"/>
+      <module fileurl="file://$PROJECT_DIR$/modules/cms-itest/cms-itest.iml" filepath="$PROJECT_DIR$/modules/cms-itest/cms-itest.iml"/>
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-type="JavaSDK" assert-jdk-15="true" project-jdk-name="1.6">
