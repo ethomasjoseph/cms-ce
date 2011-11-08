@@ -25,29 +25,40 @@ Ext.define( 'Common.WizardPanel', {
 
         if ( this.showControls )
         {
-            this.bbar = {
-                xtype: 'toolbar',
-                itemId: 'controls',
-                items: [
-                    {
-                        text: 'Prev',
-                        itemId: 'prev',
-                        disabled: true,
-                        handler: function( btn, evt )
-                        {
-                            wizard.prev();
-                        }
+            Ext.each( this.items, function( item, index, all ) {
+                var isFirst = index == 0,
+                    isLast = ( index == ( all.length - 1 ) );
+                item.bbar = {
+                    xtype: 'container',
+                    margin: '20 10 10',
+                    height: 40,
+                    itemId: 'controls',
+                    defaults: {
+                        xtype: 'button'
                     },
-                    {
-                        text: 'Next',
-                        itemId: 'next',
-                        handler: function( btn, evt )
+                    items: [
                         {
-                            wizard.next();
+                            text: 'Previous',
+                            itemId: 'prev',
+                            hidden: isFirst,
+                            hideMode: 'visibility',
+                            margin: '0 10 0 0',
+                            handler: function( btn, evt )
+                            {
+                                wizard.prev();
+                            }
+                        },
+                        {
+                            text: isLast ? 'Finish' : 'Next',
+                            itemId: isLast ? 'finish' : 'next',
+                            handler: function( btn, evt )
+                            {
+                                wizard.next();
+                            }
                         }
-                    }
-                ]
-            }
+                    ]
+                };
+            });
         }
 
         this.dockedItems = [{

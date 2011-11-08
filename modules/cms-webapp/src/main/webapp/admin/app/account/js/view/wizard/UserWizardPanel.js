@@ -22,9 +22,9 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         border: false
     },
 
-    tbar: {
+/*    tbar: {
         xtype: 'userWizardToolbar'
-    },
+    },*/
 
     initComponent: function()
     {
@@ -70,13 +70,12 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                     },
                     {
                         xtype: 'wizardPanel',
-                        showControls: false,
+                        showControls: true,
                         items: [
                             {
                                 stepNumber: 1,
                                 stepTitle: "Profile",
-                                xtype: 'wizardStepProfilePanel',
-                                enableToolbar: false
+                                xtype: 'wizardStepProfilePanel'
                             },
                             {
                                 stepNumber: 2,
