@@ -10,8 +10,7 @@ public enum AccountIndexField
     FIRST_NAME_FIELD( "first-name" ),
     KEY_FIELD( "key" ),
     EMAIL_FIELD( "email" ),
-    ORGANIZATION_FIELD( "organization" ),
-    ;
+    ORGANIZATION_FIELD( "organization" ),;
 
     private final String id;
 
@@ -23,6 +22,16 @@ public enum AccountIndexField
     public String id()
     {
         return this.id;
+    }
+
+    public String notAnalyzedId()
+    {
+        return this.id + ".untouched";
+    }
+
+    public String lowerCaseId()
+    {
+        return this.id + ".lowercase";
     }
 
     public static AccountIndexField parse( String id )

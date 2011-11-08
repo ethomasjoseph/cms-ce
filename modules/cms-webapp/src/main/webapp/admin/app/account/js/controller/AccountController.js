@@ -29,6 +29,7 @@ Ext.define( 'App.controller.AccountController', {
     ],
 
     searchFilterTypingTimer: null,
+    facetSelected: '',
 
     init: function()
     {
@@ -143,19 +144,19 @@ Ext.define( 'App.controller.AccountController', {
         this.getFilterUserStoreField().addListener( 'change', function( field, newValue, oldValue, eOpts )
         {
             this.getAccountFilter().updateTitle();
-            this.searchFilter();
+            this.searchFilter('userstore');
         }, this );
 
         this.getFilterAccountTypeField().addListener( 'change', function( field, newValue, oldValue, eOpts )
         {
             this.getAccountFilter().updateTitle();
-            this.searchFilter();
+            this.searchFilter('type');
         }, this );
 
         this.getFilterOrganizationField().addListener( 'change', function( field, newValue, oldValue, eOpts )
         {
             this.getAccountFilter().updateTitle();
-            this.searchFilter();
+            this.searchFilter('organization');
         }, this );
 
         filterTextField.focus( false, 10 );
@@ -252,7 +253,7 @@ Ext.define( 'App.controller.AccountController', {
         }
     },
 
-    searchFilter: function()
+    searchFilter: function(facetSelected)
     {
         this.setBrowseTabActive();
 
@@ -272,6 +273,8 @@ Ext.define( 'App.controller.AccountController', {
         if (textField.getValue().length > 0) {
             this.getAccountFilter().updateTitle();
         }
+
+        this.facetSelected = facetSelected ? facetSelected : '';
 
         usersStore.clearFilter();
         usersStore.getProxy().extraParams = {
@@ -697,7 +700,7 @@ Ext.define( 'App.controller.AccountController', {
         var data = store.proxy.reader.jsonData;
         var filterPanel = this.getAccountFilter();
 
-        filterPanel.showFacets( data.results.facets );
+        filterPanel.showFacets( data.results.facets, this.facetSelected );
     },
 
     searchFilterKeyPress: function ()

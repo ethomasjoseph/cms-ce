@@ -15,6 +15,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.Requests;
+import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.indices.IndexMissingException;
@@ -27,6 +28,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 import com.enonic.cms.core.search.FacetEntry;
 
@@ -48,6 +51,19 @@ public class AccountSearchService
         try
         {
             CreateIndexRequest createIndexRequest = new CreateIndexRequest( CMS_INDEX );
+            ImmutableSettings.Builder settings = ImmutableSettings.settingsBuilder().loadFromSource(jsonBuilder()
+                .startObject()
+                    .startObject("analysis")
+                        .startObject("analyzer")
+                            .startObject("keywordlowercase")
+                                .field("type", "custom")
+                                .field("tokenizer", "keyword")
+                                .field("filter", new String[]{"lowercase"})
+                            .endObject()
+                        .endObject()
+                    .endObject()
+                .endObject().string());
+            createIndexRequest.settings( settings );
             client.admin().indices().create( createIndexRequest ).actionGet();
 
             final PutMappingRequest putMappingRequest = new PutMappingRequest( CMS_INDEX );
@@ -67,8 +83,8 @@ public class AccountSearchService
         throws IOException
     {
         final XContentBuilder mapping = XContentFactory.jsonBuilder().prettyPrint();
-        mapping.startObject(  );
-        mapping.field( ACCOUNT_INDEX_TYPE ).startObject(  );
+        mapping.startObject();
+        mapping.field( ACCOUNT_INDEX_TYPE ).startObject();
         mapping.field( "properties" ).startObject()
             .field( AccountIndexField.USERSTORE_FIELD.id() )
                 .startObject()
@@ -139,6 +155,11 @@ public class AccountSearchService
                         .startObject( "untouched" )
                             .field( "type", "string" )
                             .field( "index", "not_analyzed" )
+                        .endObject()
+                        .startObject( "lowercase" )
+                            .field( "type", "string" )
+                            .field( "index", "analyzed" )
+                            .field( "analyzer", "keywordlowercase" )
                         .endObject()
                     .endObject()
                 .endObject()

@@ -146,11 +146,13 @@ Ext.define('App.view.FilterPanel', {
         this.callParent(arguments);
     },
 
-    showFacets: function(facets) {
+    showFacets: function(facets, facetSelected) {
         var facet;
         for (var i = 0; i < facets.length; i++) {
             facet = facets[i];
-            if (facet.name === 'userstore') {
+            if (facet.name === facetSelected) {
+                continue; // skip update of selected facet
+            } else if (facet.name === 'userstore') {
                 this.showUserstoreFacets(facet);
             } else if (facet.name === 'type') {
                 this.showUserTypeFacets(facet);
