@@ -203,15 +203,22 @@ Ext.define('App.view.LauncherToolbar', {
                 ]
             }
         },
+        {
+            xtype: 'textfield',
+            name: 'app-search',
+            width: 290
+        },
+        {
+            xtype: 'button',
+            icon: 'app/main/images/launcher/magnifying_glass.png'
+        },
         '->',
         // Logged in user
         {
             xtype: 'loggedInUserButton',
             text: 'Morten Eriksen'
         },
-
         '-',
-
         // Settings
         {
             id: 'launcher-settings-button',
