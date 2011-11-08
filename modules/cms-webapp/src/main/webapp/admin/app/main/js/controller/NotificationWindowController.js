@@ -83,7 +83,17 @@ Ext.define('App.controller.NotificationWindowController', {
 
     addWindowClickListener: function()
     {
-        this.getNotificationWindow().getEl().on('click', function(event, target) {
+        var notificationWindow = this.getNotificationWindow();
+
+        notificationWindow.getEl().on('mouseenter', function() {
+            notificationWindow.getActiveAnimation().paused = true;
+        }, this);
+
+        notificationWindow.getEl().on('mouseleave', function() {
+            notificationWindow.getActiveAnimation().paused = false;
+        }, this);
+
+        notificationWindow.getEl().on('click', function(event, target) {
             if(target.className.indexOf('notify-user') > -1)
             {
                 //TODO: get real user
