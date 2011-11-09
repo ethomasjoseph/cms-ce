@@ -84,6 +84,10 @@ Ext.define( 'App.controller.UserWizardController', {
 
     wizardFinished: function( wizard, data )
     {
+        var tab = wizard.up('userWizardPanel').ownerCt;
+        if( tab ) {
+            tab.close();
+        }
         var parentApp = parent.mainApp;
         if ( parentApp ) {
             parentApp.fireEvent('notifier.show', "User was created", "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.", true );
