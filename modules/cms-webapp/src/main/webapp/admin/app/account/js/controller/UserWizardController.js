@@ -74,7 +74,8 @@ Ext.define( 'App.controller.UserWizardController', {
             // move to 1st step
             this.getUserWizardPanel().setFileUploadDisabled( true );
         }
-        if ( oldStep.getXType() == 'userStoreListPanel' )
+        // oldStep can be null for first page
+        if ( oldStep && oldStep.getXType() == 'userStoreListPanel' )
         {
             // move from 1st step
             this.getUserWizardPanel().setFileUploadDisabled( false );

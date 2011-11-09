@@ -1,11 +1,12 @@
 Ext.define( 'App.view.wizard.WizardStepProfilePanel', {
-    extend: 'Ext.form.Panel',
+    extend: 'Ext.panel.Panel',
     alias: 'widget.wizardStepProfilePanel',
 
     layout: 'card',
 
     items:[
         {
+            xtype: 'container',
             items: [
                 {
                     xtype: 'container',
@@ -32,4 +33,4 @@ Ext.define( 'App.view.wizard.WizardStepProfilePanel', {
     }
 
 
-} )
+} );
