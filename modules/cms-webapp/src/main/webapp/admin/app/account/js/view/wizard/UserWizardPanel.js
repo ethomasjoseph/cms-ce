@@ -22,9 +22,9 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         border: false
     },
 
-/*    tbar: {
+    tbar: {
         xtype: 'userWizardToolbar'
-    },*/
+    },
 
     initComponent: function()
     {
