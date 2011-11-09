@@ -5,6 +5,7 @@ import com.enonic.cms.core.security.InvalidCredentialsException;
 import com.enonic.cms.core.security.SecurityService;
 import com.enonic.cms.core.security.user.QualifiedUsername;
 import com.enonic.cms.core.security.user.UserEntity;
+import com.enonic.cms.core.security.userstore.MemberOfResolver;
 import com.enonic.cms.core.security.userstore.UserStoreEntity;
 import com.enonic.cms.core.security.userstore.UserStoreKey;
 import com.enonic.cms.core.security.userstore.UserStoreService;
@@ -40,6 +41,9 @@ public class XTraceController extends AbstractController
 
     @Autowired
     protected UserStoreService userStoreService;
+
+    @Autowired
+    protected MemberOfResolver memberOfResolver;
 
     @Autowired
     private UserDao userDao;
@@ -98,11 +102,8 @@ public class XTraceController extends AbstractController
         final UserStoreEntity systemUserStore = userStoreService.getUserStore( userStoreKey );
         final QualifiedUsername qname = new QualifiedUsername( systemUserStore.getKey(), userName );
 
-        // TODO: Needs review by CMS developer.
-        // Is this a nice way to do this?
-        // Should we check if the user has developer powers? rather than explicit check for EA or Developer membership.
-        UserEntity user = userDao.findByQualifiedUsername( qname );
-        if ( !user.isEnterpriseAdmin() || !user.isDeveloper() )
+        final UserEntity user = userDao.findByQualifiedUsername( qname );
+        if ( !memberOfResolver.hasDeveloperPowers( user ) )
         {
             throw new InvalidCredentialsException( user.getKey().toString() );
         }
