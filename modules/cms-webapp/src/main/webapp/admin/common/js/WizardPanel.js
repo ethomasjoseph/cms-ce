@@ -34,12 +34,14 @@ Ext.define( 'Common.WizardPanel', {
                     height: 40,
                     itemId: 'controls',
                     defaults: {
-                        xtype: 'button'
+                        xtype: 'button',
+                        scale: 'medium'
                     },
                     items: [
                         {
                             text: 'Previous',
                             itemId: 'prev',
+                            iconCls: 'icon-btn-arrow-left-24',
                             hidden: isFirst,
                             hideMode: 'visibility',
                             margin: '0 10 0 0',
@@ -51,6 +53,7 @@ Ext.define( 'Common.WizardPanel', {
                         {
                             text: isLast ? 'Finish' : 'Next',
                             itemId: isLast ? 'finish' : 'next',
+                            iconCls: isLast ? 'icon-btn-finish-24' : 'icon-btn-arrow-right-24',
                             handler: function( btn, evt )
                             {
                                 wizard.next();
