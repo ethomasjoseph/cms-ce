@@ -61,6 +61,19 @@ Ext.define( 'Common.WizardPanel', {
             });
         }
 
+        // Add stepchanged event for the first step
+        if ( this.items && this.items.length > 0 ) {
+            var ls = this.items[0].listeners || {};
+            Ext.apply( ls, {
+                afterrender: {
+                    fn: function( firstStep ) {
+                        wizard.fireEvent('stepchanged', this, null, firstStep );
+                    }
+                }
+            });
+            this.items[0].listeners = ls;
+        }
+
         this.dockedItems = [{
             xtype: 'panel',
             dock: 'top',
