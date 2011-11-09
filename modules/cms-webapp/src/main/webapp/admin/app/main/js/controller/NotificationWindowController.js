@@ -20,19 +20,20 @@ Ext.define('App.controller.NotificationWindowController', {
         this.addWindowClickListener();
     },
 
-    show: function(title, message)
+    show: function(title, message, notifyUser)
     {
         this.getNotificationWindow().update(
             {
                 messageTitle: title,
-                messageText: message
+                messageText: message,
+                notifyUser: notifyUser === undefined ? false: notifyUser
             }
         );
 
-        this.animateWindow();
+        this.fadeWindowInOut();
     },
 
-    animateWindow: function()
+    fadeWindowInOut: function()
     {
         var self = this;
         var notificationWindow = this.getNotificationWindow();
@@ -68,6 +69,11 @@ Ext.define('App.controller.NotificationWindowController', {
                 },
                 to: {
                     opacity: 0
+                },
+                listeners: {
+                    'afteranimate': function(t) {
+                        notificationWindow.setPosition(-5000, -5000)
+                    }, scope: this
                 }
             }
         );
@@ -78,11 +84,22 @@ Ext.define('App.controller.NotificationWindowController', {
         var notificationWindow = this.getNotificationWindow();
         notificationWindow.stopAnimation();
         notificationWindow.getEl().setOpacity(0);
+        notificationWindow.setPosition(-5000, -5000)
     },
 
     addWindowClickListener: function()
     {
-        this.getNotificationWindow().getEl().on('click', function(event, target) {
+        var notificationWindow = this.getNotificationWindow();
+
+        notificationWindow.getEl().on('mouseenter', function() {
+            notificationWindow.getActiveAnimation().paused = true;
+        }, this);
+
+        notificationWindow.getEl().on('mouseleave', function() {
+            notificationWindow.getActiveAnimation().paused = false;
+        }, this);
+
+        notificationWindow.getEl().on('click', function(event, target) {
             if(target.className.indexOf('notify-user') > -1)
             {
                 //TODO: get real user

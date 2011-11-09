@@ -341,6 +341,10 @@ img.photo {
     background: url("../images/link.png") no-repeat;
 }
 
+.icon-close {
+    background: url("../images/cross.png") no-repeat;
+}
+
 /*-----  Dashboard  -----*/
 
 .dashboard .dashboard-body {
@@ -663,7 +667,7 @@ div.cms-userstore-active {
 
 ul.cms-wizard-navigation {
     list-style-type: none !important;
-    margin-left: 3px;
+    margin-left: 6px;
     padding: 1px;
     background-color: #ccc;
 
@@ -769,6 +773,10 @@ ul.cms-wizard-navigation a.last-current {
 .cms-wizard-header-container input:hover {
     border: 1px solid #98c9f2;
     box-shadow: 0 0 3px #98c9f2;
+}
+
+.user-store-user-name {
+    padding-left: 3px;
 }
 
 .cms-edited-field {
