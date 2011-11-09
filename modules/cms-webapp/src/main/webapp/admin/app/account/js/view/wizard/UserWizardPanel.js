@@ -33,7 +33,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         me.items = [
             {
                 width: 121,
-                padding: 5,
+                padding: '5 5 5 5',
                 items: [
                     {
                         xtype: 'photoUploadButton',
@@ -46,7 +46,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
             },
             {
                 columnWidth: 1,
-                padding: '10 10 10 0',
+                padding: '8 10 10 0',
                 defaults: {
                     border: false
                 },
@@ -129,7 +129,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         {
             displayNameFieldElement.set( {readonly: true} );
             var value = Ext.String.trim( displayNameFieldElement.getValue() );
-            if ( value === '' || value === 'New User' )
+            if ( value === '' || value === 'Display Name' )
             {
                 displayNameFieldElement.removeCls( 'cms-edited-field' );
             }
@@ -139,7 +139,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
     updateQualifiedNameHeader: function( userStoreName )
     {
         Ext.get( 'q-userstore' ).dom.innerHTML = userStoreName + '\\';
-        Ext.get( 'q-username' ).dom.innerHTML = 'unnamed';
+        Ext.get( 'q-username' ).dom.innerHTML = '';
     },
 
     resizeFileUpload: function( file )

@@ -5,30 +5,49 @@ Ext.define( 'App.controller.UserWizardController', {
     models: ['UserstoreConfigModel'],
     views: [],
 
+    EMPTY_DISPLAY_NAME_TEXT: 'Display Name',
+    displayNameAutoGenerate: true,
+
     init: function()
     {
-        this.control( {
-                          '*[action=wizardPrev]': {
-                              click: this.wizardPrev
-                          },
-                          '*[action=wizardNext]': {
-                              click: this.wizardNext
-                          },
-                          'wizardPanel': {
-                              beforestepchanged: this.validateStep,
-                              stepchanged: this.stepChanged,
-                              finished: this.wizardFinished
-                          },
-                          'userStoreListPanel': {
-                              itemclick: this.userStoreSelected
-                          },
-                          'addressPanel textfield[name=label]': {
-                              keyup: this.updateTabTitle
-                          },
-                          'editUserFormPanel': {
-                              fieldsloaded: this.userStoreFieldsLoaded
-                          }
-                      } );
+        this.control(
+            {
+                '*[action=saveNewUser]': {
+                    click: this.saveNewUser
+                },
+                '*[action=wizardPrev]': {
+                    click: this.wizardPrev
+                },
+                '*[action=wizardNext]': {
+                    click: this.wizardNext
+                },
+                'wizardPanel': {
+                    beforestepchanged: this.validateStep,
+                    stepchanged: this.stepChanged,
+                    finished: this.wizardFinished
+                },
+                'userStoreListPanel': {
+                    itemclick: this.userStoreSelected
+                },
+                'addressPanel textfield[name=label]': {
+                    keyup: this.updateTabTitle
+                },
+                'editUserFormPanel': {
+                    fieldsloaded: this.userStoreFieldsLoaded
+                },
+                'userWizardPanel': {
+                    afterrender: this.bindDisplayNameEvents
+                }
+            }
+        );
+    },
+
+    saveNewUser: function()
+    {
+        var parentApp = parent.mainApp;
+        if ( parentApp ) {
+            parentApp.fireEvent('notifier.show', "User was saved", "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.", false );
+        }
     },
 
     validateStep: function( wizard, step )
@@ -66,7 +85,7 @@ Ext.define( 'App.controller.UserWizardController', {
     {
         var parentApp = parent.mainApp;
         if ( parentApp ) {
-            parentApp.fireEvent('notifier.show', "User created", "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth." );
+            parentApp.fireEvent('notifier.show', "User was created", "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.", true );
         }
     },
 
@@ -131,29 +150,88 @@ Ext.define( 'App.controller.UserWizardController', {
         var suffix = form.down( '#suffix' );
         if ( prefix )
         {
-            prefix.on( 'change', this.textFieldHandleEnterKey );
+            prefix.on( 'change', this.profileNameFieldChanged, this );
         }
         if ( firstName )
         {
-            firstName.on( 'change', this.textFieldHandleEnterKey );
+            firstName.on( 'change', this.profileNameFieldChanged, this );
         }
         if ( middleName )
         {
-            middleName.on( 'change', this.textFieldHandleEnterKey );
+            middleName.on( 'change', this.profileNameFieldChanged, this );
         }
         if ( lastName )
         {
-            lastName.on( 'change', this.textFieldHandleEnterKey );
+            lastName.on( 'change', this.profileNameFieldChanged, this );
         }
         if ( suffix )
         {
-            suffix.on( 'change', this.textFieldHandleEnterKey );
+            suffix.on( 'change', this.profileNameFieldChanged, this );
         }
     },
 
-    textFieldHandleEnterKey: function( field, event )
+    bindDisplayNameEvents: function()
     {
-        var formPanel = field.up( 'editUserFormPanel' );
+        var displayName = Ext.get( 'cms-display-name' );
+        if (displayName)
+        {
+            Ext.Element.get(displayName).on( 'blur', this.displayNameBlur, this );
+            Ext.Element.get(displayName).on( 'focus', this.displayNameFocus, this );
+            Ext.Element.get(displayName).on( 'change', this.displayNameChanged, this );
+        }
+    },
+
+    hasDefaultDisplayName: function(displayNameInputField) {
+        var text = Ext.String.trim(displayNameInputField.value);
+        return (text === this.EMPTY_DISPLAY_NAME_TEXT);
+    },
+
+    setDefaultDisplayName: function(displayNameInputField) {
+        displayNameInputField.value = this.EMPTY_DISPLAY_NAME_TEXT;
+        Ext.Element.get(displayNameInputField).removeCls( 'cms-edited-field' );
+    },
+
+    displayNameFocus: function( event, element )
+    {
+        if ( this.hasDefaultDisplayName(element) )
+        {
+            element.value = '';
+        }
+    },
+
+    displayNameBlur: function( event, element )
+    {
+        var text = Ext.String.trim( element.value );
+        if ( text === '' )
+        {
+            var autogeneratedDispName = this.autoGenerateDisplayName();
+            if ( autogeneratedDispName === '' )
+            {
+                this.setDefaultDisplayName( element );
+            }
+            else
+            {
+                element.value = autogeneratedDispName;
+                Ext.Element.get(element).addCls( 'cms-edited-field' );
+            }
+        }
+    },
+
+    displayNameChanged: function( event, element )
+    {
+        if ( element.value === '' )
+        {
+            this.displayNameAutoGenerate = true;
+        }
+        else
+        {
+            this.displayNameAutoGenerate = false;
+        }
+    },
+
+    autoGenerateDisplayName: function()
+    {
+        var formPanel = this.getUserWizardPanel().down( 'editUserFormPanel' );
         var prefix = formPanel.down( '#prefix' ) ? Ext.String.trim( formPanel.down( '#prefix' ).getValue() ) : '';
         var firstName = formPanel.down( '#first-name' ) ? Ext.String.trim( formPanel.down( '#first-name' ).getValue() )
                 : '';
@@ -162,12 +240,30 @@ Ext.define( 'App.controller.UserWizardController', {
         var lastName = formPanel.down( '#last-name' ) ? Ext.String.trim( formPanel.down( '#last-name' ).getValue() )
                 : '';
         var suffix = formPanel.down( '#suffix' ) ? Ext.String.trim( formPanel.down( '#suffix' ).getValue() ) : '';
-        var displayName = Ext.get( 'cms-display-name' );
-        if ( displayName )
+        var displayNameValue = prefix + ' ' + firstName + ' ' + middleName + ' ' + lastName + ' ' + suffix;
+        return Ext.String.trim( displayNameValue.replace(/  /g, ' ') );
+    },
+
+    profileNameFieldChanged: function( field )
+    {
+        if (!this.displayNameAutoGenerate) {
+            return;
+        }
+
+        var displayNameField = Ext.get( 'cms-display-name' );
+        if ( displayNameField )
         {
-            var displayNameValue = prefix + ' ' + firstName + ' ' + middleName + ' ' + lastName + ' ' + suffix;
-            displayName.dom.value = Ext.String.trim( displayNameValue.replace(/  /g, ' ') );
-            displayName.addCls( 'cms-edited-field' );
+            var displayNameValue = this.autoGenerateDisplayName();
+
+            if ( displayNameValue !== '' )
+            {
+                displayNameField.dom.value = displayNameValue;
+                displayNameField.addCls( 'cms-edited-field' );
+            }
+            else
+            {
+                this.setDefaultDisplayName( displayNameField.dom );
+            }
         }
     },
 

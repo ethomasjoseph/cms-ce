@@ -97,7 +97,7 @@ Ext.define('App.controller.ActivityStreamController', {
         // TODO: Testing the notifier.
         if (targetElement.hasCls('comment'))
         {
-            this.application.fireEvent('notifier.show', 'Comment added', 'Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.');
+            this.application.fireEvent('notifier.show', 'Comment added', 'Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.', true);
         }
     },
 

@@ -203,16 +203,17 @@ Ext.define('App.view.LauncherToolbar', {
                 ]
             }
         },
+        '->',
+        // Application search
         {
             xtype: 'textfield',
             name: 'app-search',
-            width: 290
+            width: 150
         },
         {
             xtype: 'button',
             icon: 'app/main/images/launcher/magnifying_glass.png'
         },
-        '->',
         // Logged in user
         {
             xtype: 'loggedInUserButton',

@@ -87,11 +87,13 @@ Templates.main = {
                         '<div class="message-text">{messageText}</div>' +
                     '</td>' +
                 '</tr>' +
-                '<tr>' +
-                    '<td colspan="2" style="text-align: right">' +
-                        '<p><span class="link notify-user" href="javascript:;">Notify User</span></p>' +
-                    '</td>' +
-                '</tr>'+
+                '<tpl if="notifyUser">' +
+                    '<tr>' +
+                        '<td colspan="2" style="text-align: right">' +
+                            '<p><span class="link notify-user" href="javascript:;">Notify User</span></p>' +
+                        '</td>' +
+                    '</tr>'+
+                '</tpl>' +
             '</table>'+
         '</div>'
 };
