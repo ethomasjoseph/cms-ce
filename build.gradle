@@ -40,3 +40,4 @@ configure(javaProjects) {
 configure(warProjects) {
 	apply from: "$scriptDir/war.gradle"
 }
+
