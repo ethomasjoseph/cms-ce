@@ -148,6 +148,8 @@ Ext.define( 'App.controller.UserWizardController', {
         var middleName = form.down( '#middle-name' );
         var lastName = form.down( '#last-name' );
         var suffix = form.down( '#suffix' );
+        var username = form.down( '#username' );
+
         if ( prefix )
         {
             prefix.on( 'change', this.profileNameFieldChanged, this );
@@ -167,6 +169,10 @@ Ext.define( 'App.controller.UserWizardController', {
         if ( suffix )
         {
             suffix.on( 'change', this.profileNameFieldChanged, this );
+        }
+        if ( username )
+        {
+            username.on( 'change', this.usernameFieldChanged, this );
         }
     },
 
@@ -265,6 +271,11 @@ Ext.define( 'App.controller.UserWizardController', {
                 this.setDefaultDisplayName( displayNameField.dom );
             }
         }
+    },
+
+    usernameFieldChanged: function( field )
+    {
+        Ext.get( 'q-username' ).dom.innerHTML = field.value;
     },
 
     focusFirstField: function()
