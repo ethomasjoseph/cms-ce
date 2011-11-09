@@ -5,10 +5,18 @@ Ext.define( 'App.view.AddressPanel', {
     xtype: 'form',
     draggable: true,
     frame: true,
-    layout: 'anchor',
+    layout: {
+        type: 'table',
+        columns: 1,
+        tableAttrs:{
+            style:{
+                width: '100%'
+            }
+        }
+    },
     bodyPadding: 10,
     defaults: {
-        anchor: '100%'
+        width: 300
     },
     cls: 'address',
 
@@ -38,6 +46,7 @@ Ext.define( 'App.view.AddressPanel', {
                 name: 'iso-country',
                 itemId: 'iso-country',
                 value: this.values['iso-country'],
+                width: 600,
                 disabled: this.readonly
             };
             regionField = new Ext.form.field.ComboBox( {
@@ -59,12 +68,13 @@ Ext.define( 'App.view.AddressPanel', {
                 Ext.apply( regionStore.proxy.extraParams, {
                     'countryCode': this.values['iso-country']
                 } );
-                regionStore.load({
-                    scope: this,
-                    callback: function() {
-                        regionField.setValue( this.values['iso-region'] );
-                    }
-                });
+                regionStore.load( {
+                                      scope: this,
+                                      callback: function()
+                                      {
+                                          regionField.setValue( this.values['iso-region'] );
+                                      }
+                                  } );
             }
         }
         else
@@ -75,6 +85,7 @@ Ext.define( 'App.view.AddressPanel', {
                 name: 'country',
                 itemId: 'address-country',
                 value: this.values['country'],
+                width: 600,
                 disabled: this.readonly
             };
             regionField = {
@@ -95,7 +106,6 @@ Ext.define( 'App.view.AddressPanel', {
                 enableKeyEvents: true,
                 value: this.values['label'],
                 bubbleEvents: ['keyup'],
-                anchor: '30%',
                 disabled: this.readonly
             },
             {
@@ -110,7 +120,6 @@ Ext.define( 'App.view.AddressPanel', {
                 xtype: 'textfield',
                 fieldLabel: 'Postal Code',
                 name: 'postal-code',
-                anchor: '20%',
                 itemId: 'address-postal-code',
                 value: this.values['postal-code'],
                 disabled: this.readonly
@@ -119,7 +128,6 @@ Ext.define( 'App.view.AddressPanel', {
                 xtype: 'textfield',
                 fieldLabel: 'Postal Address',
                 name: 'postal-address',
-                anchor: '30%',
                 itemId: 'address-postal-address',
                 value: this.values['postal-address'],
                 disabled: this.readonly
