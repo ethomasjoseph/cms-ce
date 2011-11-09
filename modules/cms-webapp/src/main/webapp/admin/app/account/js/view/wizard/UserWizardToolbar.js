@@ -51,7 +51,7 @@ Ext.define('App.view.wizard.UserWizardToolbar', {
                         disabled: true
                     }
                 ]
-            },
+            }/*,
             '->',
             {
                 xtype: 'buttongroup',
@@ -79,7 +79,7 @@ Ext.define('App.view.wizard.UserWizardToolbar', {
                         action: 'wizardNext'
                     }
                 ]
-            }
+            }*/
         ];
         this.callParent(arguments);
     }
