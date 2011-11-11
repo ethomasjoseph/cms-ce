@@ -1,7 +1,7 @@
 apply plugin: 'idea'
 
 idea {
-	// pathVariables 'GRADLE_HOME': gradle.gradleUserHomeDir
+	// pathVariables GRADLE_HOME: gradle.gradleUserHomeDir
 	
 	module {
     	downloadJavadoc = false

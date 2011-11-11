@@ -11,46 +11,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$GRADLE_HOME$/caches/artifacts-3/org.jdom/jdom/22038101aa91f7395ccfde72ec6db622/jars/jdom-1.1.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$GRADLE_HOME$/caches/artifacts-3/javax.servlet/servlet-api/c12498cf18507aa6433a94eb7d3e77d5/jars/servlet-api-2.5.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$GRADLE_HOME$/caches/artifacts-3/javax.servlet/servlet-api/c12498cf18507aa6433a94eb7d3e77d5/sources/servlet-api-2.5-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="" scope="RUNTIME">
-      <library>
-        <CLASSES>
-          <root url="jar://$GRADLE_HOME$/caches/artifacts-3/jaxen/jaxen/c12498cf18507aa6433a94eb7d3e77d5/jars/jaxen-1.1.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="TEST">
-      <library>
-        <CLASSES>
-          <root url="jar://$GRADLE_HOME$/caches/artifacts-3/junit/junit/c12498cf18507aa6433a94eb7d3e77d5/jars/junit-4.8.2.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$GRADLE_HOME$/caches/artifacts-3/junit/junit/c12498cf18507aa6433a94eb7d3e77d5/sources/junit-4.8.2-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="cms-api-compile" level="project" />
   </component>
 </module>
 

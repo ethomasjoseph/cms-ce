@@ -45,26 +45,6 @@
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar://$GRADLE_HOME$/caches/artifacts-3/xerces/xercesImpl/c12498cf18507aa6433a94eb7d3e77d5/jars/xercesImpl-2.6.2.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$GRADLE_HOME$/caches/artifacts-3/xerces/xercesImpl/c12498cf18507aa6433a94eb7d3e77d5/sources/xercesImpl-2.6.2-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="TEST">
-      <library>
-        <CLASSES>
-          <root url="jar://$GRADLE_HOME$/caches/artifacts-3/xerces/xmlParserAPIs/c12498cf18507aa6433a94eb7d3e77d5/jars/xmlParserAPIs-2.6.2.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="TEST">
-      <library>
-        <CLASSES>
           <root url="jar://$GRADLE_HOME$/caches/artifacts-3/org.springframework/spring-test/22038101aa91f7395ccfde72ec6db622/jars/spring-test-3.1.0.RC1.jar!/" />
         </CLASSES>
         <JAVADOC />
