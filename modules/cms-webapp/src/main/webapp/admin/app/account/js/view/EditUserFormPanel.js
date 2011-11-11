@@ -151,9 +151,9 @@ Ext.define( 'App.view.EditUserFormPanel', {
             'initials': this.createTextField,
             'nick-name': this.createTextField
         };
-/*        this.photoFieldSet = {
-            'photo': this.createPhotoField
-        };*/
+        /*        this.photoFieldSet = {
+         'photo': this.createPhotoField
+         };*/
         this.detailsFieldSet = {
             'personal-id': this.createTextField,
             'member-id': this.createTextField,
@@ -385,6 +385,15 @@ Ext.define( 'App.view.EditUserFormPanel', {
                 bodyPadding: 10
             },
             xtype: 'fieldset',
+            layout: {
+                type: 'table',
+                columns: 1,
+                tableAttrs: {
+                    style: {
+                        width: '100%'
+                    }
+                }
+            },
             measureWidth: true,
             title: title
         };
