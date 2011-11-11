@@ -2,16 +2,13 @@ package com.enonic.cms.core.portal.xtrace;
 
 import java.util.List;
 
+import com.enonic.cms.core.portal.livetrace.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import com.enonic.cms.core.security.user.QualifiedUsername;
-import com.enonic.cms.core.portal.livetrace.DatasourceExecutionTrace;
-import com.enonic.cms.core.portal.livetrace.InstructionPostProcessingTrace;
-import com.enonic.cms.core.portal.livetrace.PageRenderingTrace;
-import com.enonic.cms.core.portal.livetrace.WindowRenderingTrace;
 
 public class JsonSerializer
 {
@@ -28,8 +25,8 @@ public class JsonSerializer
 
         JsonObject xtrace = new JsonObject();
         appendVersion( xtrace );
-        appendRequester( xtrace );
-        appendPage( xtrace );
+
+        appendPortal( xtrace );
 
         wrapper.add( "xtrace", xtrace );
 
@@ -41,9 +38,9 @@ public class JsonSerializer
         return gson.toJson( wrapper );
     }
 
-    private void appendRequester( JsonObject xtrace )
+    private void appendPortal( JsonObject xtrace )
     {
-        xtrace.addProperty( "requester", pageTrace.getPortalRequestTrace().getRequester().toString() );
+        xtrace.add( "portal", createPortal() );
     }
 
     private void appendVersion( JsonObject xtrace )
@@ -51,24 +48,41 @@ public class JsonSerializer
         xtrace.addProperty( "version", "1.0" );
     }
 
-    private void appendPage( JsonObject xtrace )
+    private JsonObject createPortal()
     {
-        xtrace.add( "page", createPage() );
+        JsonObject portalObject = new JsonObject();
+
+        PortalRequestTrace portalRequestTrace = pageTrace.getPortalRequestTrace();
+
+        portalObject.addProperty("id", portalRequestTrace.getId());
+        portalObject.addProperty("request_number", portalRequestTrace.getRequestNumber());
+        portalObject.addProperty("url", portalRequestTrace.getUrl());
+        portalObject.addProperty("requester", portalRequestTrace.getRequester().toString());
+
+        appendPage( portalObject );
+
+        return portalObject;
+    }
+
+    private void appendPage( JsonObject portalObject )
+    {
+        portalObject.add( "page", createPage() );
     }
 
     private JsonObject createPage()
     {
         JsonObject pageObject = new JsonObject();
 
-        // pageObject.addProperty( "key", "TODO" );
         pageObject.addProperty( "name", pageTrace.getPortalRequestTrace().getUrl() );
-        // pageObject.addProperty( "cacheable", "TODO" );
         pageObject.addProperty( "cache_hit", pageTrace.isUsedCachedResult() );
-        // pageObject.addProperty( "page_template_name", "TODO" );
-        pageObject.addProperty( "start_time_ms", 0 );
-        pageObject.addProperty( "stop_time_ms", pageTrace.getDuration().getStopTime().getMillis() - timeZero );
-        pageObject.addProperty( "total_time_ms", pageTrace.getDuration().getExecutionTimeInMilliseconds() );
         pageObject.addProperty( "ran_as_user", resolveQualifiedUsernameAsString( pageTrace.getRenderer() ) );
+
+        JsonObject duration = new JsonObject();
+
+        duration.addProperty( "start_time_ms", 0 );
+        duration.addProperty( "stop_time_ms", pageTrace.getDuration().getStopTime().getMillis() - timeZero );
+        duration.addProperty( "total_time_ms", pageTrace.getDuration().getExecutionTimeInMilliseconds() );
+        pageObject.add( "duration", duration );
 
         appendPageDatasources( pageObject );
         appendXsltTransformingObjectForPage( pageObject );
@@ -106,14 +120,17 @@ public class JsonSerializer
     private void createWindow( JsonArray windowsArray, WindowRenderingTrace windowTrace )
     {
         JsonObject windowObject = new JsonObject();
-        // windowObject.addProperty( "key", "TODO" );
+
         windowObject.addProperty( "name", windowTrace.getPortletName() );
-        // windowObject.addProperty( "cacheable", "TODO" );
         windowObject.addProperty( "cache_hit", windowTrace.isUsedCachedResult() );
-        windowObject.addProperty( "start_time_ms", windowTrace.getDuration().getStartTime().getMillis() - timeZero );
-        windowObject.addProperty( "stop_time_ms", windowTrace.getDuration().getStopTime().getMillis() - timeZero );
-        windowObject.addProperty( "total_time_ms", windowTrace.getDuration().getExecutionTimeInMilliseconds() );
         windowObject.addProperty( "ran_as_user", resolveQualifiedUsernameAsString( windowTrace.getRenderer() ) );
+
+        JsonObject duration = new JsonObject();
+
+        duration.addProperty( "start_time_ms", windowTrace.getDuration().getStartTime().getMillis() - timeZero );
+        duration.addProperty( "stop_time_ms", windowTrace.getDuration().getStopTime().getMillis() - timeZero );
+        duration.addProperty( "total_time_ms", windowTrace.getDuration().getExecutionTimeInMilliseconds() );
+        windowObject.add( "duration", duration );
 
         appendWindowDatasources( windowObject, windowTrace );
         appendXsltTransformingObjectForWindow( windowObject, windowTrace );
@@ -134,9 +151,14 @@ public class JsonSerializer
             long endTime = pageTrace.getInstructionPostProcessingTrace().getDuration().getStartTime().getMillis() - timeZero;
 
             JsonObject xsltTransformingObject = new JsonObject();
-            xsltTransformingObject.addProperty( "start_time_ms", startTime );
-            xsltTransformingObject.addProperty( "stop_time_ms", endTime );
-            xsltTransformingObject.addProperty( "total_time_ms", endTime - startTime );
+
+            JsonObject duration = new JsonObject();
+
+            duration.addProperty( "start_time_ms", startTime );
+            duration.addProperty( "stop_time_ms", endTime );
+            duration.addProperty( "total_time_ms", endTime - startTime );
+            xsltTransformingObject.add( "duration", duration );
+
             pageObject.add( "xslt_transforming", xsltTransformingObject );
         }
     }
@@ -152,9 +174,14 @@ public class JsonSerializer
             long endTime = windowTrace.getInstructionPostProcessingTrace().getDuration().getStartTime().getMillis() - timeZero;
 
             JsonObject xsltTransformingObject = new JsonObject();
-            xsltTransformingObject.addProperty( "start_time_ms", startTime );
-            xsltTransformingObject.addProperty( "stop_time_ms", endTime );
-            xsltTransformingObject.addProperty( "total_time_ms", endTime - startTime );
+
+            JsonObject duration = new JsonObject();
+
+            duration.addProperty( "start_time_ms", startTime );
+            duration.addProperty( "stop_time_ms", endTime );
+            duration.addProperty( "total_time_ms", endTime - startTime );
+            xsltTransformingObject.add( "duration", duration );
+
             windowObject.add( "xslt_transforming", xsltTransformingObject );
         }
     }
@@ -162,9 +189,14 @@ public class JsonSerializer
     private JsonObject createInstructionPostProcessingObject( InstructionPostProcessingTrace trace )
     {
         JsonObject object = new JsonObject();
-        object.addProperty( "total_time_ms", trace.getDuration().getExecutionTimeInMilliseconds() );
-        object.addProperty( "start_time_ms", trace.getDuration().getStartTime().getMillis() - timeZero );
-        object.addProperty( "stop_time_ms", trace.getDuration().getStopTime().getMillis() - timeZero );
+
+        JsonObject duration = new JsonObject();
+        duration.addProperty( "total_time_ms", trace.getDuration().getExecutionTimeInMilliseconds() );
+        duration.addProperty( "start_time_ms", trace.getDuration().getStartTime().getMillis() - timeZero );
+        duration.addProperty( "stop_time_ms", trace.getDuration().getStopTime().getMillis() - timeZero );
+
+        object.add( "duration", duration );
+
         return object;
     }
 
@@ -192,9 +224,13 @@ public class JsonSerializer
     {
         JsonObject datasourceObject = new JsonObject();
         datasourceObject.addProperty( "name", datasource.getMethodName() );
-        datasourceObject.addProperty( "start_time_ms", datasource.getDuration().getStartTime().getMillis() - timeZero );
-        datasourceObject.addProperty( "stop_time_ms", datasource.getDuration().getStopTime().getMillis() - timeZero );
-        datasourceObject.addProperty( "total_time_ms", datasource.getDuration().getExecutionTimeInMilliseconds() );
+
+        JsonObject duration = new JsonObject();
+
+        duration.addProperty( "start_time_ms", datasource.getDuration().getStartTime().getMillis() - timeZero );
+        duration.addProperty( "stop_time_ms", datasource.getDuration().getStopTime().getMillis() - timeZero );
+        duration.addProperty( "total_time_ms", datasource.getDuration().getExecutionTimeInMilliseconds() );
+        datasourceObject.add( "duration", duration );
 
         jsonArray.add( datasourceObject );
     }
