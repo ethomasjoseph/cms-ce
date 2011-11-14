@@ -13,7 +13,7 @@ Ext.define( 'App.controller.DetailPanelController', {
                     click: this.deselectItem
                 },
                 'accountDetail': {
-                    render: this.initDetailToolbar
+                    afterrender: this.initDetailToolbar
                 }
             }
         );
@@ -22,6 +22,7 @@ Ext.define( 'App.controller.DetailPanelController', {
     initDetailToolbar: function()
     {
         var accountDetail = this.getAccountDetailPanel();
+        accountDetail.updateTitle( this.getPersistentGridSelectionPlugin() );
         accountDetail.showNoneSelection();
     },
 
@@ -45,6 +46,11 @@ Ext.define( 'App.controller.DetailPanelController', {
     getAccountDetailPanel: function()
     {
         return Ext.ComponentQuery.query( 'accountDetail' )[0];
+    },
+
+    getPersistentGridSelectionPlugin: function()
+    {
+        return this.getUserGrid().getPlugin( 'persistentGridSelection' );
     }
 
 } );

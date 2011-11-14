@@ -44,7 +44,7 @@ Ext.define( 'App.controller.BrowseToolbarController', {
             {
                 title: 'New Group',
                 html: 'New Group Form',
-                iconCls: 'icon-group-add'
+                iconCls: 'icon-new-group'
             }
         );
     },
@@ -67,7 +67,7 @@ Ext.define( 'App.controller.BrowseToolbarController', {
             var tab = {
                 id: Ext.id(null, 'new-user-'),
                 title: 'New User',
-                iconCls: 'icon-user-add',
+                iconCls: 'icon-new-user',
                 closable: true,
                 autoScroll: true,
                 layout: 'fit',
@@ -84,8 +84,7 @@ Ext.define( 'App.controller.BrowseToolbarController', {
             var accountDetail = this.getAccountDetailPanel();
             var tabPane = this.getCmsTabPanel();
             var currentUser = accountDetail.getCurrentUser();
-            Ext.Ajax.request(
-                {
+            Ext.Ajax.request( {
                     url: 'data/user/userinfo',
                     method: 'GET',
                     params: {key: currentUser.key},
@@ -94,25 +93,20 @@ Ext.define( 'App.controller.BrowseToolbarController', {
                         var jsonObj = Ext.JSON.decode( response.responseText );
                         var tab = {
                             id: currentUser.userStore + '-' + currentUser.name,
-                            layout: 'border',
                             title: currentUser.displayName + ' (' + currentUser.qualifiedName + ')',
                             iconCls: 'icon-edit-user',
                             closable: true,
                             autoScroll: true,
                             items: [
                                 {
-                                    xtype: 'editUserPanel',
-                                    region: 'center',
-                                    userFields: jsonObj,
-                                    currentUser: currentUser
+                                                  xtype: 'panel',
+                                                  border: false
                                 }
                             ]
                         };
                         tabPane.addTab( tab );
                     }
-                }
-            );
-
+            } );
         }
     },
 

@@ -16,94 +16,71 @@ Ext.define( 'App.controller.GridPanelController', {
 
     init: function()
     {
-        this.control(
-            {
-                'cmsTabPanel': {
-                    afterrender: function(tabPanel, eOpts) {
-                        this.createBrowseTab(tabPanel, eOpts);
-                        this.updateActionItems();
-                    }
-                },
-                'accountGrid': {
-                    selectionchange: function() {
-                        this.updateDetailsPanel();
-                        this.updateActionItems();
-                    },
-                    beforeitemmousedown: this.cancelItemContextClickOnMultipleSelection,
-                    itemcontextmenu: this.popupMenu,
-                    itemdblclick: this.showEditUserForm
-                }
+        this.control( {
+            'cmsTabPanel': {
+                  afterrender: function( tabPanel, eOpts ) {
+                      this.updateActionItems();
+                  }
+            },
+            'accountGrid': {
+                  selectionchange: function() {
+                      this.updateDetailsPanel();
+                      this.updateActionItems();
+                  },
+                  beforeitemmousedown: this.cancelItemContextClickOnMultipleSelection,
+                  itemcontextmenu: this.popupMenu,
+                  itemdblclick: this.showEditUserForm
             }
-        );
-    },
-
-    createBrowseTab: function( tabPanel, eOpts )
-    {
-        this.getCmsTabPanel().addTab( {
-           id: 'tab-browse',
-           title: 'Browse',
-           closable: false,
-           xtype: 'panel',
-           layout: 'border',
-           dockedItems: [
-               {
-                   xtype: 'browseToolbar',
-                   dock: 'top'
-               }],
-           items: [
-               {
-                   region: 'west',
-                   width: 225,
-                   xtype: 'accountFilter'
-               },
-               {
-                   region: 'center',
-                   padding: '5 5 5 0',
-                   xtype: 'accountShow'
-               }
-           ]
         } );
-
-        var accountDetail = this.getAccountDetailPanel();
-        accountDetail.updateTitle(this.getPersistentGridSelectionPlugin());
     },
 
     updateDetailsPanel: function()
     {
-        var persistentGridSelection = this.getPersistentGridSelectionPlugin();
-        var selection = persistentGridSelection.getSelection();
-        var accountDetailPanel = this.getAccountDetailPanel();
-        var selectionCount = persistentGridSelection.getSelectionCount();
+        var detailPanel = this.getAccountDetailPanel();
+        var persistentGridSelectionPlugin = this.getPersistentGridSelectionPlugin();
+        var persistentSelection = persistentGridSelectionPlugin.getSelection();
+        var persistentSelectionCount = persistentGridSelectionPlugin.getSelectionCount();
         var userStore = this.getStore('UserStore');
         var pageSize = userStore.pageSize;
         var totalCount = userStore.totalCount;
 
-        if ( selectionCount == 0 )
+        var selectionModel = this.getUserGrid().getSelectionModel();
+        var selectionModelCount = selectionModel.getCount();
+
+        // Works because selection model count is 1 even if page has changed.
+        var showUserPreviewOnly = ( selectionModelCount === 1 && userStore.currentPage > 1 ) || persistentSelectionCount == 1;
+
+        if ( persistentSelectionCount === 0 )
         {
-            accountDetailPanel.showNoneSelection();
+            detailPanel.showNoneSelection();
+        }
+        else if ( showUserPreviewOnly )
+        {
+            var user = selectionModelCount === 1 ? selectionModel.getSelection()[0] : persistentSelection[0];
+
+            if ( user )
+            {
+                detailPanel.setCurrentUser( user.data );
+            }
+
+            detailPanel.showUserPreview( user.data )
         }
         else
         {
-            var user = selection[0];
-            if ( user )
-            {
-                accountDetailPanel.setCurrentUser( user.data );
-            }
-
             var detailed = true;
-            if ( selectionCount > 10 )
+            if ( persistentSelectionCount > 10 )
             {
                 detailed = false;
             }
             var selectedUsers = [];
-            Ext.Array.each( selection, function( user )
+            Ext.Array.each( persistentSelection, function( user )
             {
                 Ext.Array.include( selectedUsers, user.data );
             } );
-            accountDetailPanel.showMultipleSelection( selectedUsers, detailed );
+            detailPanel.showMultipleSelection( selectedUsers, detailed );
         }
 
-        accountDetailPanel.updateTitle(persistentGridSelection);
+        detailPanel.updateTitle( persistentGridSelectionPlugin );
     },
 
     updateActionItems: function()
@@ -146,7 +123,7 @@ Ext.define( 'App.controller.GridPanelController', {
             var tab = {
                 id: Ext.id(null, 'new-user-'),
                 title: 'New User',
-                iconCls: 'icon-user-add',
+                iconCls: 'icon-new-user',
                 closable: true,
                 autoScroll: true,
                 layout: 'fit',
@@ -163,8 +140,7 @@ Ext.define( 'App.controller.GridPanelController', {
             var accountDetail = this.getAccountDetailPanel();
             var tabPane = this.getCmsTabPanel();
             var currentUser = accountDetail.getCurrentUser();
-            Ext.Ajax.request(
-                {
+            Ext.Ajax.request( {
                     url: 'data/user/userinfo',
                     method: 'GET',
                     params: {key: currentUser.key},
@@ -173,17 +149,14 @@ Ext.define( 'App.controller.GridPanelController', {
                         var jsonObj = Ext.JSON.decode( response.responseText );
                         var tab = {
                             id: currentUser.userStore + '-' + currentUser.name,
-                            layout: 'border',
                             title: currentUser.displayName + ' (' + currentUser.qualifiedName + ')',
                             iconCls: 'icon-edit-user',
                             closable: true,
                             autoScroll: true,
                             items: [
                                 {
-                                    xtype: 'editUserPanel',
-                                    region: 'center',
-                                    userFields: jsonObj,
-                                    currentUser: currentUser
+                                                  xtype: 'panel',
+                                                  border: false
                                 }
                             ]
                         };

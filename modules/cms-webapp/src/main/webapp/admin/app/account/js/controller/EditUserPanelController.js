@@ -64,6 +64,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
     deleteUser: function()
     {
         var deleteUserWindow = this.getUserDeleteWindow();
+
         Ext.Ajax.request(
             {
                 url: 'data/user/delete',
@@ -92,14 +93,12 @@ Ext.define( 'App.controller.EditUserPanelController', {
                 'countryCode': field.getValue()
             });
 
-            region.store.load(
-                {
+            region.store.load( {
                     callback: function( records, operation, success )
                     {
                         region.setDisabled( !records || records.length == 0 );
                     }
-                }
-            );
+                               } );
 }
         return true;
     },
@@ -119,7 +118,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
         if ( displayName )
         {
             var displayNameValue = prefix + ' ' + firstName + ' ' + middleName + ' ' + lastName + ' ' + suffix;
-            displayName.dom.value = Ext.String.trim( displayNameValue );
+            displayName.dom.value = Ext.String.trim( displayNameValue.replace(/  /g, ' ') );
         }
     },
 
@@ -163,8 +162,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
         var isContain = Ext.Array.contains( groupPanel.groupKeys, value[0].get( 'key' ) );
         if ( !isContain )
         {
-            Ext.Ajax.request(
-                {
+            Ext.Ajax.request( {
                     url: 'data/group/join',
                     method: 'POST',
                     params: {key: userPanel.currentUser.key, isUser: true, join: [groupItem.key]},
@@ -176,8 +174,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
                     {
                         Ext.Msg.alert( 'Info', 'Group wasn\'t added' );
                     }
-                }
-            );
+                              } );
         }
         else
         {
@@ -192,8 +189,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
         var groupItem = element.up( 'groupDetailButton' );
         var groupPanel = element.up( '#groupPanel' );
         var userPanel = element.up( 'editUserPanel' );
-        Ext.Ajax.request(
-            {
+        Ext.Ajax.request( {
                 url: 'data/group/leave',
                 method: 'POST',
                 params: {key: userPanel.currentUser.key, isUser: true, leave: [groupItem.key]},
@@ -205,8 +201,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
                 {
                     Ext.Msg.alert( 'Info', 'Group wasn\'t removed' );
                 }
-            }
-        );
+                          } );
     },
 
     saveUser: function( button )
@@ -234,8 +229,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
             }
             userData.userInfo.addresses = addresses;
 
-            Ext.Ajax.request(
-                {
+            Ext.Ajax.request( {
                     url: 'data/user/update',
                     method: 'POST',
                     jsonData: userData,
@@ -255,8 +249,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
                     {
                         Ext.Msg.alert( 'Error', 'Internal server error was occured' );
                     }
-                }
-            );
+                              } );
         }
         else
         {
@@ -281,10 +274,8 @@ Ext.define( 'App.controller.EditUserPanelController', {
     {
         var tabPanel = button.up( 'addressContainer' );
         var newTab = this.getEditUserFormPanel().generateAddressPanel( tabPanel.sourceField, true );
-        newTab = tabPanel.insert( 0 , newTab );
+        newTab = tabPanel.down( 'addressColumn' ).add( newTab );
     },
-
-
 
     getCmsTabPanel: function()
     {
