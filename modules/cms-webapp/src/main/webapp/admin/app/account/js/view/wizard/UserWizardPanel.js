@@ -9,8 +9,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         'App.view.wizard.WizardStepLoginInfoPanel',
         'App.view.wizard.WizardStepMembershipPanel',
         'App.view.wizard.WizardStepSummaryPanel',
-        'Common.fileupload.PhotoUploadButton',
-        'App.view.wizard.WizardStepProfilePanel'
+        'Common.fileupload.PhotoUploadButton'
     ],
 
     layout: 'column',
@@ -59,9 +58,10 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                                 fn: function()
                                 {
                                     var me = this;
-                                    me.getEl().addListener( 'click', function( event, target, eOpts ){
+                                    me.getEl().addListener( 'click', function( event, target, eOpts )
+                                    {
                                         me.toggleDisplayNameField( event, target );
-                                    });
+                                    } );
                                 },
                                 scope: this
                             }
@@ -75,7 +75,9 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                             {
                                 stepNumber: 1,
                                 stepTitle: "Profile",
-                                xtype: 'wizardStepProfilePanel'
+                                xtype: 'editUserFormPanel',
+                                userFields: this.userFields,
+                                enableToolbar: false
                             },
                             {
                                 stepNumber: 2,
@@ -111,6 +113,10 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         ];
 
         this.callParent( arguments );
+        if ( this.userFields && this.userFields.userStore )
+        {
+            this.renderUserForms( this.userFields.userStore );
+        }
     },
 
     toggleDisplayNameField: function( event, target )
@@ -144,16 +150,25 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
 
     resizeFileUpload: function( file )
     {
-        file.el.down( 'input[type=file]' ).setStyle({
-             width: file.getWidth(),
-             height: file.getHeight()
-        });
+        file.el.down( 'input[type=file]' ).setStyle( {
+                                                         width: file.getWidth(),
+                                                         height: file.getHeight()
+                                                     } );
     },
 
     setFileUploadDisabled: function( disable )
     {
         //TODO: disable image upload
         //this.uploadForm.setDisabled( disable );
+    },
+
+    renderUserForms: function( userStore )
+    {
+        var userForms = this.query( 'editUserFormPanel' );
+        Ext.Array.each( userForms, function( userForm )
+        {
+            userForm.renderUserForm( {userStore: userStore} );
+        } );
     }
 
 } );
