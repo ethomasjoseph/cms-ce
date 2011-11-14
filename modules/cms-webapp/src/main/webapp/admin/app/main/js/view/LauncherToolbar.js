@@ -40,7 +40,7 @@ Ext.define('App.view.LauncherToolbar', {
                         cms: {
                             appUrl: 'app-dashboard.html'
                         },
-                        icon: 'app/main/images/house.png'
+                        icon: 'app/main/images/launcher/dashboard.png'
                     },
                     '-',
                     {
@@ -49,7 +49,7 @@ Ext.define('App.view.LauncherToolbar', {
                         cms: {
                             appUrl: 'app-account.html'
                         },
-                        icon: 'app/main/images/group.png'
+                        icon: 'app/main/images/launcher/accounts.png'
                     },
                     {
                         id: 200,
@@ -57,83 +57,145 @@ Ext.define('App.view.LauncherToolbar', {
                         cms: {
                             appUrl: 'blank.html'
                         },
-                        icon: 'app/main/images/folder_database.png'
+                        icon: 'app/main/images/launcher/content.png'
                     },
                     {
                         id: 300,
-                        text: 'Sites',
+                        text: 'Campaigns',
                         cms: {
                             appUrl: 'blank.html'
                         },
-                        icon: 'app/main/images/world.png'
+                        icon: 'app/main/images/launcher/campaigns.png'
                     },
                     {
                         id: 500,
-                        text: 'Direct Marketing',
+                        text: 'Search',
                         cms: {
                             appUrl: 'blank.html'
                         },
-                        icon: 'app/main/images/chart_curve.png'
+                        icon: 'app/main/images/launcher/search.png'
                     },
                     {
                         id: 600,
-                        text: 'Reports',
+                        text: 'Segments',
                         cms: {
                             appUrl: 'blank.html'
                         },
-                        icon: 'app/main/images/report.png'
+                        icon: 'app/main/images/launcher/segments.png'
                     },
-
+                    {
+                        id: 610,
+                        text: 'Commerce',
+                        cms: {
+                            appUrl: 'blank.html'
+                        },
+                        icon: 'app/main/images/launcher/commerce.png'
+                    },
+                    {
+                        id: 620,
+                        text: 'Optimizer',
+                        cms: {
+                            appUrl: 'blank.html'
+                        },
+                        icon: 'app/main/images/launcher/optimizer.png'
+                    },
+                    {
+                        id: 630,
+                        text: 'Social',
+                        cms: {
+                            appUrl: 'blank.html'
+                        },
+                        icon: 'app/main/images/launcher/social.png'
+                    },
+                    {
+                        id: 635,
+                        text: 'Chat',
+                        cms: {
+                            appUrl: 'blank.html'
+                        },
+                        icon: 'app/main/images/launcher/chat.png'
+                    },
+                    {
+                        id: 700,
+                        text: 'Calendar',
+                        cms: {
+                            appUrl: 'blank.html'
+                        },
+                        icon: 'app/main/images/launcher/calendar.png'
+                    },
                     '-',
-
                     {
                         id: 800,
                         text: 'System',
                         cms: {
                             appUrl: 'app-system.html'
                         },
-                        icon: 'app/main/images/cog.png',
+                        icon: 'app/main/images/launcher/system.png',
                         menu: {
                             items: [
                                 {
                                     id: 810,
-                                    text:"Cache",
+                                    text:"WebDAV",
                                     cms: {
-                                        appUrl:"app-systemCache.html"
+                                        appUrl:"blank.html"
                                     },
-                                    icon: 'app/main/images/drive_web.png'
+                                    icon: 'app/main/images/launcher/webdav.png'
                                 },
                                 {
                                     id: 820,
-                                    text: "Content Types",
+                                    text: "Applications",
                                     cms: {
-                                        appUrl: "app-contentType.html"
+                                        appUrl:"blank.html"
                                     },
-                                    icon: 'app/main/images/page_world.png'
+                                    icon: 'app/main/images/launcher/applications.png'
                                 },
                                 {
                                     id: 830,
-                                    text: 'Live Portal Trace',
+                                    text: 'Cluster',
                                     cms: {
                                         appUrl: 'blank.html'
                                     },
-                                    icon: 'app/main/images/utilities-system-monitor.png'
+                                    icon: 'app/main/images/launcher/cluster.png'
                                 },
                                 {
                                     id: 840,
-                                    text: 'Repository',
+                                    text: 'Live Trace',
                                     cms: {
                                         appUrl: 'blank.html'
                                     },
-                                    icon: 'app/main/images/database.png'
+                                    icon: 'app/main/images/launcher/live_trace.png'
                                 },
                                 {
                                     id: 850,
+                                    text: 'Sites',
+                                    cms: {
+                                        appUrl: 'blank.html'
+                                    },
+                                    icon: 'app/main/images/launcher/sites.png'
+                                },
+                                {
+                                    id: 860,
                                     text: 'Userstores',
                                     cms: {
                                         appUrl: 'app-userstore.html'
                                     },
-                                    icon: 'app/main/images/address-book-blue-icon.png'
+                                    icon: 'app/main/images/launcher/userstores.png'
+                                },
+                                {
+                                    id: 860,
+                                    text: 'Cache',
+                                    cms: {
+                                        appUrl: 'app-systemCache.html'
+                                    },
+                                    icon: 'app/main/images/launcher/cache.png'
+                                },
+                                {
+                                    id: 870,
+                                    text: 'Content Types',
+                                    cms: {
+                                        appUrl: 'app-contentType.html'
+                                    },
+                                    icon: 'app/main/images/launcher/content_types.png'
                                 }
                             ]
                         }
@@ -142,14 +204,22 @@ Ext.define('App.view.LauncherToolbar', {
             }
         },
         '->',
+        // Application search
+        {
+            xtype: 'textfield',
+            name: 'app-search',
+            width: 150
+        },
+        {
+            xtype: 'button',
+            icon: 'app/main/images/launcher/magnifying_glass.png'
+        },
         // Logged in user
         {
             xtype: 'loggedInUserButton',
             text: 'Morten Eriksen'
         },
-
         '-',
-
         // Settings
         {
             id: 'launcher-settings-button',

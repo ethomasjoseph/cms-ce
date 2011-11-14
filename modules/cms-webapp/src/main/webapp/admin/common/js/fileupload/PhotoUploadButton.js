@@ -8,12 +8,11 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
 
     // TODO: Move markup to template file
     tpl : new Ext.XTemplate(
-            '<div id="{id}" class="cms-image-upload-button-container" style="width:{width - 2}px;height:{height - 2}px">' +
-                '<img src="resources/images/x-user-photo.png" class="cms-image-upload-button-image" style="width:{width - 6}px;height:{height - 6}px"/>' +
+            '<div id="{id}" class="cms-image-upload-button-container" style="width:{width - 9}px;height:{height - 9}px; margin: 6px">' +
+                '<img src="resources/images/x-user-photo.png" class="cms-image-upload-button-image" style="width:{width - 11}px;height:{height - 11}px"/>' +
                 '<div class="cms-image-upload-button-progress-bar-container" style="width:{width - 12}px">' +
                     '<div class="cms-image-upload-button-progress-bar" style="height:{progressBarHeight}px"><!-- --></div>' +
                 '</div>' +
-                '<div id="{id}-over-border" style="visibility: hidden; position:absolute; top:0; left:0; width:{width - 4}px;height:{height - 4}px; border: 4px solid #dbeeff;"></div>' +
             '</div>'),
 
     initComponent: function()
@@ -48,6 +47,23 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
     {
         this.initUploader();
         this.addBodyMouseEventListeners();
+        this.initToolTip();
+    },
+
+    initToolTip: function () {
+
+        var config = {
+            target: this.getImageElement(),
+            width: 100,
+            anchor: 'top',
+            anchorOffset: 30,
+            html: 'Click to upload photo'
+        };
+
+        Ext.create('Ext.tip.ToolTip', config);
+        Ext.QuickTips.init();
+
+        //Ext.tip.QuickTipManager.register(config);
     },
 
     initUploader: function()
@@ -160,33 +176,23 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
             return false;
         }
 
-        function showBorder() {
-            border.dom.style.visibility = 'visible';
-        }
-        function hideBorder() {
-            border.dom.style.visibility = 'hidden';
-        }
-
         function highlightDropTarget() {
             dropTarget.addCls('cms-file-upload-drop-target');
-            showBorder();
         }
 
         function removeHighlightFromDropTarget() {
             dropTarget.dom.className = dropTarget.dom.className.replace(/ cms-file-upload-drop-target/ , '');
-            hideBorder();
         }
 
         dropTarget.on('mouseenter', function(event) {
-            showBorder();
+            highlightDropTarget();
             cancelEvent(event);
         });
         dropTarget.on('mouseleave', function(event) {
-            hideBorder();
+            removeHighlightFromDropTarget();
             cancelEvent(event);
         });
         dropTarget.on('dragenter', function(event) {
-            dropTarget.highlight('99BCE8');
             cancelEvent(event);
         });
 

@@ -30,7 +30,6 @@ body,
     padding: 0 0 9px;
 }
 
-
 .x-fieldset {
 	border: 0;
 	border-top: 1px solid #ccc;
@@ -202,36 +201,40 @@ img.photo {
 }
 
 .icon-new-user {
-    background-image: url("../images/user_add.png");
-}
-
-.icon-add-24 {
-    background-image: url("../images/add-24.png");
-}
-
-.icon-new-group {
-    background-image: url("../images/group_add.png");
-}
-
-.icon-group {
-    background-image: url("../images/group.png");
+    background-image: url("../icons/16x16/user_add.png");
 }
 
 .icon-edit-user {
-    background-image: url("../images/user_edit.png");
+    background-image: url("../icons/16x16/user_edit.png");
+}
+
+.icon-add-24 {
+    background-image: url("../icons/24x24/user_add.png");
+}
+
+.icon-new-group {
+    background-image: url("../icons/16x16/group_add.png");
+}
+
+.icon-edit-group {
+    background-image: url("../icons/16x16/group_edit.png");
+}
+
+.icon-group {
+    background-image: url("../icons/16x16/group.png");
 }
 
 .icon-edit-user-24 {
-    background-image: url("../images/edit-24.png");
+    background-image: url("../icons/24x24/edit.png");
 }
 
 .icon-delete-user {
-    background-image: url("../images/user_delete.png");
+    background-image: url("../icons/16x16/delete.png");
     background-position: center;
 }
 
 .icon-delete-user-24 {
-    background-image: url("../images/delete-24.png");
+    background-image: url("../icons/24x24/delete.png");
 }
 
 .icon-change-password {
@@ -291,7 +294,7 @@ img.photo {
 }
 
 .icon-delete {
-    background-image: url("../images/cross.png");
+    background-image: url("../icons/16x16/delete.png");
 }
 
 .icon-new {
@@ -311,11 +314,11 @@ img.photo {
 }
 
 .icon-btn-arrow-left-24 {
-    background: url("../images/arrow-left-24.png");
+    background: url("../icons/24x24/nav_left_blue.png");
 }
 
 .icon-btn-arrow-right-24 {
-    background: url("../images/arrow-right-24.png");
+    background: url("../icons/24x24/nav_right_blue.png");
 }
 
 .icon-btn-tick-24 {
@@ -330,8 +333,16 @@ img.photo {
     background: url("../../ext/resources/themes/images/default/shared/icon-question.gif") no-repeat;
 }
 
+.icon-btn-finish-24 {
+    background: url("../icons/24x24/finish.png");
+}
+
 .icon-link {
     background: url("../images/link.png") no-repeat;
+}
+
+.icon-close {
+    background: url("../images/cross.png") no-repeat;
 }
 
 /*-----  Dashboard  -----*/
@@ -646,7 +657,6 @@ div.cms-userstore-active {
 /*----- New form -----*/
 
 .cms-new-user-header {
-    margin-bottom: 1em;
 }
 
 .cms-new-user-header h4 {
@@ -657,9 +667,10 @@ div.cms-userstore-active {
 
 ul.cms-wizard-navigation {
     list-style-type: none !important;
-    margin: 0;
+    margin-left: 6px;
     padding: 1px;
     background-color: #ccc;
+
 }
 
 ul.cms-wizard-navigation li {
@@ -736,7 +747,9 @@ ul.cms-wizard-navigation a.last-current {
 /*----- Wizard header -----*/
 
 .cms-wizard-header-container {
-    margin-bottom: 5px;
+    margin-bottom: 4px;
+    font-size: 12px;
+    padding-left: 3px;
 }
 
 .cms-wizard-header-container p {
@@ -748,18 +761,22 @@ ul.cms-wizard-navigation a.last-current {
 }
 
 .cms-wizard-header-container input {
-    width: 100%;
-    padding: 4px;
-    border: 1px solid #dbeeff;
-    font-size: 18px;
-    color: #ccc;
+    width: 99%;
+    margin: 3px 0 0 3px;
+    border: 1px solid TRANSPARENT;
+    color: #555555;
+    font-size: 26px;
+    font-weight: normal;
+    border-radius: 2px;
 }
 
 .cms-wizard-header-container input:hover {
-    border: 1px solid #99BCE8;
-    transition: all 0.25s ease-in-out;
-    -webkit-transition: all 0.25s ease-in-out;
-    -moz-transition: all 0.25s ease-in-out;
+    border: 1px solid #98c9f2;
+    box-shadow: 0 0 3px #98c9f2;
+}
+
+.user-store-user-name {
+    padding-left: 3px;
 }
 
 .cms-edited-field {
@@ -772,19 +789,12 @@ ul.cms-wizard-navigation a.last-current {
 .cms-image-upload-button-container {
     position: relative;
     border: 1px solid #dbeeff;
-    padding: 1px;
     cursor: pointer;
 }
 
 .cms-file-upload-drop-target {
-    border: 1px dashed #99BCE8;
-}
-
-.cms-file-upload-drop-target img.cms-image-upload-button-image {
-    opacity: .5;
-}
-
-.cms-image-upload-button-container .cms-image-upload-button-image {
+    border: 1px solid #98c9f2;
+    box-shadow: 0 0 3px #98c9f2;
 }
 
 .cms-image-upload-button-container .cms-image-upload-button-image {
@@ -795,9 +805,9 @@ ul.cms-wizard-navigation a.last-current {
     position: absolute;
     border: 1px solid #555;
     background-color: #555;
-    bottom: 4px;
-    left: 5px;
-    right: 5px;
+    bottom: 1px;
+    left: 1px;
+    right: 1px;
     font-size: 1px;
     border-radius: 4px;
 }
@@ -823,17 +833,19 @@ ul.cms-wizard-navigation a.last-current {
 }
 
 .cms-groups-boxselect li.x-boxselect-item {
-    background: url("../images/group.png") no-repeat 3px 3px transparent;
-    background-color: #DEE7F8;
+    background: url("../icons/16x16/group.png") no-repeat 3px 3px #DEE7F8;
+    margin: 4px 0 0 4px;
+    padding: 0px 1px 4px 5px !important;
 }
 
 .cms-groups-boxselect li.x-boxselect-item:hover {
-    background: url("../images/group.png") no-repeat 3px 3px transparent !important;
-    background-color: #BBCEF1 !important;
+    background: url("../icons/16x16/group.png") no-repeat 3px 3px #BBCEF1 !important;
 }
 
 .cms-groups-boxselect div.x-boxselect-item-text {
+    font-size: 11px;
     margin-left: 18px;
+    padding-top: 1px;
 }
 
 .cms-cursor-clickable {

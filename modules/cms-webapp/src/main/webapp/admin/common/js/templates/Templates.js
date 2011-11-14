@@ -18,6 +18,10 @@ Templates.common = {
                     '<div class="cms-left">' + '<h2>{displayName}</h2>' + '({qualifiedName})<br/>' +
                     '<a href="mailto:{email}:">{email}</a>' + '</div>' + '</div>' + '</div>'
     ,groupList:
-            '<span class="icon-group cms-list-item"></span>' + '<span>{name} ({userStore})</span>'
+            '<div class="clearfix">' +
+                '<div class="cms-left">' +
+                    '<span class="icon-group cms-list-item"></span></div>' + '<div class="cms-left"><span>{name} ({userStore})</span>' +
+                '</div>' +
+            '</div>'
 
 };

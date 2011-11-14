@@ -1,5 +1,7 @@
 package com.enonic.cms.core.search.account;
 
+import java.util.Arrays;
+
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.index.query.AndFilterBuilder;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -61,12 +63,12 @@ public final class QueryTranslator
                 .allTerms( true );
 
             final TermsFacetBuilder userStoreFacet = FacetBuilders.termsFacet( "userstore" )
-                .field( AccountIndexField.USERSTORE_FIELD.id() + ".untouched" )
+                .field( AccountIndexField.USERSTORE_FIELD.notAnalyzedId() )
                 .allTerms( true );
 
             final TermsFacetBuilder organizationFacet = FacetBuilders.termsFacet( "organization" )
-                .field( AccountIndexField.ORGANIZATION_FIELD.id() + ".untouched" )
-                .size( 100 )
+                .field( AccountIndexField.ORGANIZATION_FIELD.notAnalyzedId() )
+                .size( 1000 )
                 .order( TermsFacet.ComparatorType.COUNT )
                 .allTerms( true );
 
@@ -93,7 +95,7 @@ public final class QueryTranslator
                 case DISPLAY_NAME_FIELD:
                 case USERSTORE_FIELD:
                 case NAME_FIELD:
-                    fieldName = sortField.id() + ".untouched";
+                    fieldName = sortField.notAnalyzedId();
                     break;
 
                 default:
@@ -105,7 +107,7 @@ public final class QueryTranslator
         {
             // no query and not sort field specified => sort by account type (1st users 2nd groups), and then by display name
             searchBuilder.sort( AccountIndexField.TYPE_FIELD.id(), SortOrder.DESC );
-            searchBuilder.sort( AccountIndexField.DISPLAY_NAME_FIELD.id() + ".untouched", SortOrder.ASC );
+            searchBuilder.sort( AccountIndexField.DISPLAY_NAME_FIELD.notAnalyzedId(), SortOrder.ASC );
         }
         else
         {
@@ -204,13 +206,18 @@ public final class QueryTranslator
         final String[] userStores = query.getUserStores();
         if ( userStores != null )
         {
-            qb.must( termsQuery( AccountIndexField.USERSTORE_FIELD.id() + ".untouched", userStores ) );
+            qb.must( termsQuery( AccountIndexField.USERSTORE_FIELD.notAnalyzedId(), userStores ) );
         }
 
         final String[] organizations = query.getOrganizations();
         if ( organizations != null )
         {
-            qb.must( termsQuery( AccountIndexField.ORGANIZATION_FIELD.id() + ".untouched", organizations ) );
+            final String[] organizationList = Arrays.<String>copyOf( organizations, organizations.length );
+            for ( int i = 0; i < organizationList.length; i++ )
+            {
+                organizationList[i] = organizationList[i].toLowerCase();
+            }
+            qb.must( termsQuery( AccountIndexField.ORGANIZATION_FIELD.lowerCaseId(), organizationList ) );
         }
 
         if ( ! query.getUsers() )

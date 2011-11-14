@@ -1,12 +1,23 @@
 Ext.define( 'App.view.wizard.WizardStepProfilePanel', {
-    extend: 'Ext.form.Panel',
+    extend: 'Ext.panel.Panel',
     alias: 'widget.wizardStepProfilePanel',
 
     layout: 'card',
 
     items:[
         {
-            xtype: 'userStoreListPanel'
+            xtype: 'container',
+            items: [
+                {
+                    xtype: 'container',
+                    autoHeight: true,
+                    styleHtmlContent: true,
+                    html: '<h3>Select a userstore</h3>'
+                },
+                {
+                    xtype: 'userStoreListPanel'
+                }
+            ]
         },
         {
             itemId: 'userForm',
@@ -22,4 +33,4 @@ Ext.define( 'App.view.wizard.WizardStepProfilePanel', {
     }
 
 
-} )
+} );

@@ -6,8 +6,9 @@ Ext.define( 'App.view.UserFormField', {
         type: 'hbox'
     },
 
+    width: 600,
+
     actionName: undefined,
-    //anchor: '50%',
 
     initComponent: function()
     {
@@ -21,15 +22,15 @@ Ext.define( 'App.view.UserFormField', {
             'boolean': this.createCheckBoxConfig
         };
         this.fieldWidth = {
-            'initials': '30%',
-            'birthday': '40%',
-            'gender': '40%',
-            'country': '60%',
-            'global-position': '40%',
-            'locale': '40%',
-            'fax': '60%',
-            'mobile': '40%',
-            'phone': '60%'
+            'initials': 150,
+            'birthday': 300,
+            'gender': 200,
+            'country': 400,
+            'global-position': 200,
+            'locale': 200,
+            'fax': 300,
+            'mobile': 300,
+            'phone': 300
         }
         this.items = [];
         var fieldConfig = {
@@ -41,9 +42,10 @@ Ext.define( 'App.view.UserFormField', {
             action: this.actionName,
             value: this.fieldValue
         };
-        Ext.applyIf( this, {
-            anchor: this.fieldWidth[this.fieldname]
-        } );
+        if ( this.fieldWidth[this.fieldname] )
+        {
+            this.width = this.fieldWidth[this.fieldname];
+        }
         var builderFunction;
         if ( this.type )
         {
@@ -77,19 +79,19 @@ Ext.define( 'App.view.UserFormField', {
         {
             Ext.Array.include( this.items, fieldConfig );
         }
-        if ( this.required && (this.fieldLabel != undefined))
+        if ( this.required && (this.fieldLabel != undefined) )
         {
             this.fieldLabel += "<span style=\"color:red;\" ext:qtip=\"This field is required\">*</span>";
         }
 
-
         this.callParent( arguments );
     },
 
-    createCheckBoxConfig: function( fieldConfig){
+    createCheckBoxConfig: function( fieldConfig )
+    {
         var checkBoxConfig = {xtype: 'checkbox',
-        checked: fieldConfig.value};
-        return Ext.apply(fieldConfig, checkBoxConfig);
+            checked: fieldConfig.value};
+        return Ext.apply( fieldConfig, checkBoxConfig );
     },
 
     createDateConfig: function( fieldConfig )
@@ -99,7 +101,7 @@ Ext.define( 'App.view.UserFormField', {
             xtype: 'datefield',
             format: 'Y-m-d'
         };
-        return Ext.apply(fieldConfig, dateConfig);
+        return Ext.apply( fieldConfig, dateConfig );
     },
 
     createComboConfig: function( fieldConfig, me )
@@ -121,7 +123,7 @@ Ext.define( 'App.view.UserFormField', {
         {
             comboConfig = {xtype: 'textfield'};
         }
-        return Ext.apply(fieldConfig, comboConfig);
+        return Ext.apply( fieldConfig, comboConfig );
     },
 
     createAutoCompleteConfig: function( fieldConfig, me )
@@ -141,7 +143,7 @@ Ext.define( 'App.view.UserFormField', {
             listConfig: me.displayConfig,
             action: 'initValue'
         };
-        return Ext.apply(fieldConfig, autoCompleteConfig);
+        return Ext.apply( fieldConfig, autoCompleteConfig );
     },
 
     createPasswordConfig: function( fieldConfig )
@@ -150,13 +152,13 @@ Ext.define( 'App.view.UserFormField', {
             xtype: 'textfield',
             inputType: 'password'
         };
-        return Ext.apply(fieldConfig, passwordConfig);
+        return Ext.apply( fieldConfig, passwordConfig );
     },
 
     createFileConfig: function( fieldConfig )
     {
         var fileConfig = {xtype: 'filefield'};
-        return Ext.apply(fieldConfig, fileConfig);
+        return Ext.apply( fieldConfig, fileConfig );
     },
 
     createTextConfig: function( fieldConfig )
@@ -166,6 +168,6 @@ Ext.define( 'App.view.UserFormField', {
             enableKeyEvents: true,
             bubbleEvents: ['keyup']
         };
-        return Ext.apply(fieldConfig, textConfig);
+        return Ext.apply( fieldConfig, textConfig );
     }
 } );

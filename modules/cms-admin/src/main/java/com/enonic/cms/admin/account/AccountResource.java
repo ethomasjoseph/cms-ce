@@ -72,21 +72,18 @@ public final class AccountResource
         final String[] organizationList = ( organizations == null ) ? new String[0] : organizations.split( "," );
 
         final AccountSearchQuery searchQueryCountFacets = new AccountSearchQuery()
-            .setIncludeResults( false )
+            .setIncludeResults( true )
             .setCount( req.getLimit() )
             .setFrom( req.getStart() )
             .setQuery( req.getQuery() )
             .setGroups( req.isSelectGroups() )
             .setUsers( req.isSelectUsers() )
+            .setUserStores( userstoreList )
+            .setOrganizations( organizationList )
             .setSortField( AccountIndexField.parse( req.getSort() ) )
             .setSortOrder( SearchSortOrder.valueOf( req.getSortDir() ) );
 
-        final AccountSearchResults searchCountFacets = searchService.search( searchQueryCountFacets );
-        final AccountSearchQuery searchQuery = new AccountSearchQuery( searchQueryCountFacets )
-            .setIncludeResults( true )
-            .setUserStores( userstoreList )
-            .setOrganizations( organizationList );
-        final AccountSearchResults searchResults = searchService.search( searchQuery );
+        final AccountSearchResults searchResults = searchService.search( searchQueryCountFacets );
 
         final List list = new ArrayList();
 
@@ -109,7 +106,7 @@ public final class AccountResource
         final EntityPageList accountList = new EntityPageList( searchResults.getCount(), searchResults.getTotal(), list);
         AccountsModel accountsModel = modelTranslator.toModel( accountList );
 
-        setFacets( accountsModel, searchCountFacets );
+        setFacets( accountsModel, searchResults );
 
         Map<String, Object> result = new HashMap<String, Object>();
         result.put( "results", accountsModel );
@@ -119,6 +116,7 @@ public final class AccountResource
     private void setFacets( AccountsModel accountsModel, AccountSearchResults searchResults )
     {
         final Facets facets = searchResults.getFacets();
+        facets.consolidate();
 
         for ( Facet facet : facets )
         {

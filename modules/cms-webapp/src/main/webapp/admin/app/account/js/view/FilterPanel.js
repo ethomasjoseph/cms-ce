@@ -48,7 +48,8 @@ Ext.define('App.view.FilterPanel', {
                 {
                     xtype: 'label',
                     text: 'Type',
-                    cls: 'facet-header'
+                    cls: 'facet-header',
+                    itemId: 'accountTypeTitle'
                 },
 
                 {
@@ -88,7 +89,8 @@ Ext.define('App.view.FilterPanel', {
                 {
                     xtype: 'label',
                     text: 'Userstore',
-                    cls: 'facet-header'
+                    cls: 'facet-header',
+                    itemId: 'userstoreTitle'
                 },
                 {
                     xtype: 'checkboxgroup',
@@ -115,7 +117,8 @@ Ext.define('App.view.FilterPanel', {
                 {
                     xtype: 'label',
                     text: 'Organization',
-                    cls: 'facet-header'
+                    cls: 'facet-header',
+                    itemId: 'organizationTitle'
                 },
                 {
                     xtype: 'checkboxgroup',
@@ -143,11 +146,13 @@ Ext.define('App.view.FilterPanel', {
         this.callParent(arguments);
     },
 
-    showFacets: function(facets) {
+    showFacets: function(facets, facetSelected) {
         var facet;
         for (var i = 0; i < facets.length; i++) {
             facet = facets[i];
-            if (facet.name === 'userstore') {
+            if (facet.name === facetSelected) {
+                continue; // skip update of selected facet
+            } else if (facet.name === 'userstore') {
                 this.showUserstoreFacets(facet);
             } else if (facet.name === 'type') {
                 this.showUserTypeFacets(facet);
@@ -183,22 +188,20 @@ Ext.define('App.view.FilterPanel', {
         this.removeAllOrgCheckboxes();
 
         var terms = facet.terms;
-        var itemId, checkbox, label, tooltip;
+        var itemId, checkbox, label, tooltip, org;
         var orgList = [];
+        var countVisible = 0;
         for (var organization in terms) {
-            orgList.push({name: organization, hits: terms[organization]});
+            org = {name: organization, hits: terms[organization], checked: selectedCheck[organization] };
+            orgList.push(org);
+            if (org.checked || (org.hits > 0)) {
+                countVisible++;
+            }
         }
 
-        orgList.sort(function (o1, o2) {
-            if ((selectedCheck[o1.name]) && (selectedCheck[o2.name])) {
-                return o2.hits - o1.hits;
-            } else if (selectedCheck[o1.name]) {
-                return -1;
-            } else if (selectedCheck[o2.name]) {
-                return 1;
-            }
-            return o2.hits - o1.hits;
-        });
+        this.query( '#organizationTitle' )[0].setVisible(countVisible > 0);
+        countVisible = Math.min(MAX_ORG_FACET_ITEMS, countVisible);
+        orgList = this.sortOrganizationFacets(orgList, countVisible);
 
         var total = 0;
         var checksToShow = 0;
@@ -206,7 +209,7 @@ Ext.define('App.view.FilterPanel', {
         Ext.Array.each(orgList, function(org) {
             total++;
             if (total <= MAX_ORG_FACET_ITEMS) {
-                checkSelected = selectedCheck[org.name];
+                checkSelected = org.checked;
                 if (checkSelected || (org.hits > 0)) {
                     itemId = org.name + '_org_checkbox';
                     label = Ext.String.ellipsis(org.name, MAX_ORG_LABEL_CHARS) + ' ('+org.hits+')';
@@ -235,9 +238,32 @@ Ext.define('App.view.FilterPanel', {
         }
     },
 
+    sortOrganizationFacets: function(orgList, countVisible) {
+        // sort array by hits, descending, with stable sorting, checked values should appear on top
+        orgList.sort(function (o1, o2) {
+            if (o1.checked && o2.checked) {
+                return (o2.hits === o1.hits)? o1.name.localeCompare(o2.name) : (o2.hits - o1.hits);
+            } else if (o1.checked) {
+                return -1;
+            } else if (o2.checked) {
+                return 1;
+            }
+            return (o2.hits === o1.hits)? o1.name.localeCompare(o2.name) : (o2.hits - o1.hits);
+        });
+
+        var top = orgList.slice(0, countVisible);
+        var bottom = orgList.slice(countVisible);
+
+        top.sort(function (o1, o2) {
+            return (o2.hits === o1.hits)? o1.name.localeCompare(o2.name) : (o2.hits - o1.hits);
+        });
+
+        return top.concat(bottom);
+    },
+
     showUserstoreFacets: function(facet) {
         var terms = facet.terms;
-        var itemId, checkbox, count;
+        var itemId, checkbox, count, countVisible = 0;
         for (var userstore in terms) {
             itemId = this.userstoreCheckboxId(userstore);
             checkbox = Ext.ComponentQuery.query( '*[itemId='+itemId+']' );
@@ -245,10 +271,14 @@ Ext.define('App.view.FilterPanel', {
                 checkbox = checkbox[0];
                 count = terms[userstore];
                 checkbox.setVisible(checkbox.getValue() || count > 0);
+                if (checkbox.isVisible()) {
+                    countVisible++;
+                }
                 userstore = (userstore === '_Global')? 'Global' : userstore;
                 checkbox.el.down('label').update(userstore + ' (' + count + ')');
             }
         }
+        this.query( '#userstoreTitle' )[0].setVisible(countVisible > 0);
     },
 
     showUserTypeFacets: function(facet) {
@@ -262,6 +292,9 @@ Ext.define('App.view.FilterPanel', {
         var groupsButton = Ext.ComponentQuery.query( '*[itemId=searchFilterGroups]' )[0];
         groupsButton.el.down('label').update('Groups (' + groupCount + ')');
         groupsButton.setVisible(groupsButton.getValue() || groupCount > 0);
+
+        var showTitle = usersButton.isVisible() || groupsButton.isVisible();
+        this.query( '#accountTypeTitle' )[0].setVisible(showTitle);
     },
 
     setUserStores: function(userstores) {

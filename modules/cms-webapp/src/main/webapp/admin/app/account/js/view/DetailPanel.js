@@ -8,18 +8,18 @@ Ext.define('App.view.DetailPanel', {
 
     initComponent: function() {
         var largeBoxesPanel = this.createLargeBoxSelection();
-        var oneSelectedPanel = this.createOneSelected();
+        var userPreviewPanel = this.userPreviewPanel();
         var smallBoxesPanel = this.createSmallBoxSelection();
         var noneSelectedPanel = this.createNoneSelection();
 
-        this.items = [noneSelectedPanel, oneSelectedPanel, largeBoxesPanel, smallBoxesPanel];
+        this.items = [noneSelectedPanel, userPreviewPanel, largeBoxesPanel, smallBoxesPanel];
         this.callParent(arguments);
     },
 
-    showOneSelected: function(data)
+    showUserPreview: function(data)
     {
-        var activeItem = this.down('#oneSelectedPanel');
-        this.getLayout().setActiveItem('oneSelectedPanel');
+        var activeItem = this.down('#userPreviewPanel');
+        this.getLayout().setActiveItem('userPreviewPanel');
         activeItem.update(data);
     },
 
@@ -47,13 +47,13 @@ Ext.define('App.view.DetailPanel', {
         activeItem.update(data);
     },
 
-    createOneSelected: function()
+    userPreviewPanel: function()
     {
-        var tpl = new Ext.XTemplate( Templates.account.selectedUserOne );
+        var tpl = new Ext.XTemplate( Templates.account.userPreview );
 
         var panel = {
             xtype: 'panel',
-            itemId: 'oneSelectedPanel',
+            itemId: 'userPreviewPanel',
             styleHtmlContent: true,
             autoScroll: true,
             border: 0,

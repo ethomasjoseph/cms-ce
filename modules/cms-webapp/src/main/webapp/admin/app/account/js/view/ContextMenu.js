@@ -4,14 +4,14 @@ Ext.define('App.view.ContextMenu', {
 
     items: [
         {
-            text: 'Edit User',
-            iconCls: 'icon-edit-user',
+            text: 'Edit',
+            iconCls: 'icon-edit',
             action: 'edit',
             disableOnMultipleSelection: true
         },
         {
-            text: 'Delete User',
-            iconCls: 'icon-delete-user',
+            text: 'Delete',
+            iconCls: 'icon-delete',
             action: 'showDeleteWindow'
         },
         '-',

@@ -2,6 +2,9 @@ Ext.define( 'Common.view.NotifyUserWindow', {
     extend: 'Ext.window.Window',
     alias: 'widget.notifyUserWindow',
 
+    border: false,
+    padding: 1,
+
     draggable:false,
     closable:false,
     width: 500,
@@ -23,7 +26,7 @@ Ext.define( 'Common.view.NotifyUserWindow', {
                     iconAlign: 'top',
                     text: 'Close',
                     action: 'close',
-                    iconCls: 'icon-delete'
+                    iconCls: 'icon-close'
                 }
             ]
         }

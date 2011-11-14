@@ -28,4 +28,12 @@ public final class Facets
     {
         return this.facets.iterator();
     }
+
+    public void consolidate()
+    {
+        for ( Facet facet : facets )
+        {
+            facet.consolidate();
+        }
+    }
 }

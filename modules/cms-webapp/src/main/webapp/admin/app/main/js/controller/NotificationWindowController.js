@@ -20,44 +20,34 @@ Ext.define('App.controller.NotificationWindowController', {
         this.addWindowClickListener();
     },
 
-    show: function(title, message)
+    show: function(title, message, notifyUser)
     {
         this.getNotificationWindow().update(
             {
                 messageTitle: title,
-                messageText: message
+                messageText: message,
+                notifyUser: notifyUser === undefined ? false: notifyUser
             }
         );
 
-        this.animateWindow();
+        this.fadeWindowInOut();
     },
 
-    animateWindow: function()
+    fadeWindowInOut: function()
     {
         var self = this;
         var notificationWindow = this.getNotificationWindow();
 
         notificationWindow.stopAnimation();
-
-        var viewPortHeight = Ext.Element.getViewportHeight();
-        var viewPortWidth = Ext.Element.getViewportWidth();
-        var windowBox = notificationWindow.getBox();
-        var leftPosition = viewPortWidth - windowBox.width - 5;
-        var animateFromPosition = viewPortHeight + windowBox.height;
-        var animateToPosition = viewPortHeight - windowBox.height - 5;
-
-        notificationWindow.setPosition(leftPosition, animateFromPosition);
-
+        notificationWindow.center();
         notificationWindow.animate(
             {
                 duration: 400,
                 from: {
-                    opacity: 0,
-                    y: animateFromPosition
+                    opacity: 0
                 },
                 to: {
-                    opacity: 1,
-                    y: animateToPosition
+                    opacity: 1
                 },
                 easing: 'easeIn'
             }
@@ -79,6 +69,11 @@ Ext.define('App.controller.NotificationWindowController', {
                 },
                 to: {
                     opacity: 0
+                },
+                listeners: {
+                    'afteranimate': function(t) {
+                        notificationWindow.setPosition(-5000, -5000)
+                    }, scope: this
                 }
             }
         );
@@ -89,11 +84,22 @@ Ext.define('App.controller.NotificationWindowController', {
         var notificationWindow = this.getNotificationWindow();
         notificationWindow.stopAnimation();
         notificationWindow.getEl().setOpacity(0);
+        notificationWindow.setPosition(-5000, -5000)
     },
 
     addWindowClickListener: function()
     {
-        this.getNotificationWindow().getEl().on('click', function(event, target) {
+        var notificationWindow = this.getNotificationWindow();
+
+        notificationWindow.getEl().on('mouseenter', function() {
+            notificationWindow.getActiveAnimation().paused = true;
+        }, this);
+
+        notificationWindow.getEl().on('mouseleave', function() {
+            notificationWindow.getActiveAnimation().paused = false;
+        }, this);
+
+        notificationWindow.getEl().on('click', function(event, target) {
             if(target.className.indexOf('notify-user') > -1)
             {
                 //TODO: get real user
@@ -103,7 +109,7 @@ Ext.define('App.controller.NotificationWindowController', {
                        "display-name":"Morten Øien Eriksen",
                        "name":"mer",
                        "key":"2AF735F668BB0B75F8AF886C4D304F049460EE43",
-                       "displayName":"Morten Øien Eriksen",
+                       "displayName":"Morten Eriksen",
                        "lastModified":"2010-03-15 16:00:02",
                        "qualifiedName":"enonic\\mer",
                         "email":"mer@enonic.com"

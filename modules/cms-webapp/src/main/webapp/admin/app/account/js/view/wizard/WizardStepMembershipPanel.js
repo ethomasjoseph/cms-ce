@@ -15,6 +15,7 @@ Ext.define( 'App.view.wizard.WizardStepMembershipPanel', {
                 items: [
                     {
                         allowBlank:true,
+                        minChars: 1,
                         forceSelection : false,
                         triggerOnClick: false,
                         typeAhead: true,
@@ -36,7 +37,21 @@ Ext.define( 'App.view.wizard.WizardStepMembershipPanel', {
                         valueField: 'key',
                         growMin: 75,
                         hideTrigger: true,
-                        pinList: false
+                        pinList: false,
+                        labelTpl: '{name} ({userStore})',
+                        listeners: {
+                            afterrender: function(component, eOpts) {
+                                // Fix for BoxSelect's missing "focus on click" behaviour.
+                                // The element that looks like a text area is not actually a text area but a DIV element containing a borderless textfield for input. Hence the extending of the Combo box.
+                                // In order to focus on the component we have to add a click listener to the element for the component and set focus on the buried text field in the callback.
+                                // TODO: Make a feature request.
+                                var element = Ext.get(component.getEl());
+                                element.on('click', function() {
+                                    element.child('* input', true).focus();
+                                }, this, {capture: true})
+                            },
+                            scope: this
+                        }
                     }
                 ]
             }

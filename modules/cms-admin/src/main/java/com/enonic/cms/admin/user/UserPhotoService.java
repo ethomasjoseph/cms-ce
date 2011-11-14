@@ -11,14 +11,14 @@ import java.io.ByteArrayOutputStream;
 @Service
 public final class UserPhotoService
 {
-    private final BufferedImage defaultImage;
-    private final BufferedImage groupImage;
+//    private final BufferedImage defaultImage;
+//    private final BufferedImage groupImage;
 
     public UserPhotoService()
         throws Exception
     {
-        this.defaultImage = ImageIO.read(getClass().getResourceAsStream("default_user.gif"));
-        this.groupImage = ImageIO.read(getClass().getResourceAsStream("default_group.png"));
+//        this.defaultImage = ImageIO.read(getClass().getResourceAsStream("default_user.gif"));
+//        this.groupImage = ImageIO.read(getClass().getResourceAsStream("default_group.png"));
     }
 
     public byte[] renderPhoto(final UserEntity user, final int size)
@@ -29,12 +29,12 @@ public final class UserPhotoService
         return toBytes(sizedImage);
     }
 
-    public byte[] renderGroupIcon(final int size)
-        throws Exception
-    {
-        final BufferedImage sizedImage = resizeImage(groupImage, size);
-        return toBytes(sizedImage);
-    }
+//    public byte[] renderGroupIcon(final int size)
+//        throws Exception
+//    {
+//        final BufferedImage sizedImage = resizeImage(groupImage, size);
+//        return toBytes(sizedImage);
+//    }
 
     private BufferedImage toBufferedImage(final byte[] data)
         throws Exception
@@ -45,9 +45,9 @@ public final class UserPhotoService
     private BufferedImage createImage(final byte[] data)
         throws Exception
     {
-        if (data == null) {
-            return this.defaultImage;
-        }
+//        if (data == null) {
+//            return this.defaultImage;
+//        }
 
         return toBufferedImage(data);
     }

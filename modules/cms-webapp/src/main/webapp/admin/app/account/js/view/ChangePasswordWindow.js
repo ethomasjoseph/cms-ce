@@ -3,7 +3,7 @@ Ext.define( 'App.view.ChangePasswordWindow', {
     alias: 'widget.userChangePasswordWindow',
 
     title: 'Change Password',
-    width: 350,
+    width: 400,
     plain: true,
     modal: true,
 
@@ -33,16 +33,21 @@ Ext.define( 'App.view.ChangePasswordWindow', {
                     xtype: 'textfield',
                     anchor: '100%',
                     inputType: 'password',
-                    allowBlank: false
+                    allowBlank: false,
+                    listeners: {
+                        change: this.doChange,
+                        scope: this
+                    }
                 },
                 items: [{
                     fieldLabel: 'New Password',
                     name: 'cpw_password',
-                    id: 'cpw_password',
+                    itemId: 'cpw_password',
                     allowBlank: false
                 },{
                     fieldLabel: 'Confirm Password',
                     name: 'cpw_password2',
+                    itemId: 'cpw_password2',
                     submitValue: false,
                     allowBlank: false
                 }]
@@ -58,6 +63,7 @@ Ext.define( 'App.view.ChangePasswordWindow', {
             },
             {
                 text: 'Change Password',
+                itemId: 'changePasswordButton',
                 disabled: true,
                 handler: function() {
                     var form = Ext.getCmp( 'userChangePasswordForm' ).getForm();
@@ -71,7 +77,7 @@ Ext.define( 'App.view.ChangePasswordWindow', {
 
         this.listeners = {
             afterrender: function() {
-                Ext.getCmp('cpw_password').focus();
+                Ext.ComponentQuery.query('#cpw_password')[0].focus();
             }
         },
 
@@ -86,7 +92,12 @@ Ext.define( 'App.view.ChangePasswordWindow', {
 
     doChange: function( e )
     {
+        var password1 = Ext.ComponentQuery.query('#cpw_password')[0];
+        var password2 = Ext.ComponentQuery.query('#cpw_password2')[0];
+        var changePasswordButton = Ext.ComponentQuery.query('#changePasswordButton')[0];
+        var disable = password1.getValue() !== password2.getValue();
 
+        changePasswordButton.setDisabled(disable);
     }
 
 } );
