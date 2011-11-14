@@ -147,6 +147,7 @@ Ext.define( 'App.controller.UserWizardController', {
         } );
         this.getUserWizardPanel().updateQualifiedNameHeader( userStoreName );
         var window = view.up( 'window' );
+        window.cancelled = false;
         window.close();
     },
 

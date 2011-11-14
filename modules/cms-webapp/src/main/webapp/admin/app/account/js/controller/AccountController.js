@@ -364,10 +364,14 @@ Ext.define( 'App.controller.AccountController', {
                                                             xtype: 'userStoreListPanel'
                                                         }
                                                     ],
+                                                    cancelled: true,
                                                     listeners: {
                                                         close: function()
                                                         {
-                                                            tabItem.close();
+                                                            if ( this.cancelled )
+                                                            {
+                                                                tabItem.close();
+                                                            }
                                                         }
                                                     }
                                                 } );
