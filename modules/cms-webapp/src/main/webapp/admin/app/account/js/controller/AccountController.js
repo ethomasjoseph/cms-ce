@@ -341,17 +341,6 @@ Ext.define( 'App.controller.AccountController', {
     {
         if ( el.action == 'newUser' )
         {
-            var window = new Ext.window.Window( {
-                                                    title: 'Select user store',
-                                                    layout: 'fit',
-                                                    modal: 'true',
-                                                    items: [
-                                                        {
-                                                            xtype: 'userStoreListPanel'
-                                                        }
-                                                    ]
-                                                } );
-            window.show();
             var tab = {
                 id: Ext.id( null, 'new-user-' ),
                 title: 'New User',
@@ -365,7 +354,25 @@ Ext.define( 'App.controller.AccountController', {
                     }
                 ]
             };
-            this.getCmsTabPanel().addTab( tab );
+            var tabItem = this.getCmsTabPanel().addTab( tab );
+            var window = new Ext.window.Window( {
+                                                    title: 'Select user store',
+                                                    layout: 'fit',
+                                                    modal: 'true',
+                                                    items: [
+                                                        {
+                                                            xtype: 'userStoreListPanel'
+                                                        }
+                                                    ],
+                                                    listeners: {
+                                                        close: function()
+                                                        {
+                                                            tabItem.close();
+                                                        }
+                                                    }
+                                                } );
+            window.show();
+
         }
         else
         {
