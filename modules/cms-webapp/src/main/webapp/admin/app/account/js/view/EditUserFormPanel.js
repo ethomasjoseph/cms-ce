@@ -213,6 +213,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
     renderUserForm: function( user )
     {
         var me = this;
+        me.currentUser = user;
         Ext.Ajax.request( {
                               url: 'data/userstore/detail',
                               method: 'GET',

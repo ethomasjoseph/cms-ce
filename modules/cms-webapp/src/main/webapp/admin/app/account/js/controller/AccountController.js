@@ -144,19 +144,19 @@ Ext.define( 'App.controller.AccountController', {
         this.getFilterUserStoreField().addListener( 'change', function( field, newValue, oldValue, eOpts )
         {
             this.getAccountFilter().updateTitle();
-            this.searchFilter('userstore');
+            this.searchFilter( 'userstore' );
         }, this );
 
         this.getFilterAccountTypeField().addListener( 'change', function( field, newValue, oldValue, eOpts )
         {
             this.getAccountFilter().updateTitle();
-            this.searchFilter('type');
+            this.searchFilter( 'type' );
         }, this );
 
         this.getFilterOrganizationField().addListener( 'change', function( field, newValue, oldValue, eOpts )
         {
             this.getAccountFilter().updateTitle();
-            this.searchFilter('organization');
+            this.searchFilter( 'organization' );
         }, this );
 
         filterTextField.focus( false, 10 );
@@ -164,13 +164,11 @@ Ext.define( 'App.controller.AccountController', {
 
     createNewGroupTab: function()
     {
-        this.getCmsTabPanel().addTab(
-            {
-                title: 'New Group',
-                html: 'New Group Form',
-                iconCls: 'icon-new-group'
-            }
-        );
+        this.getCmsTabPanel().addTab( {
+                                          title: 'New Group',
+                                          html: 'New Group Form',
+                                          iconCls: 'icon-new-group'
+                                      } );
     },
 
     showDeleteUserWindow: function()
@@ -199,13 +197,13 @@ Ext.define( 'App.controller.AccountController', {
         var selectionModelCount = selectionModel.getCount();
 
         // Works because selection model count is 1 even if page has changed.
-        var showUserPreviewOnly = ( selectionModelCount === 1 && userStore.currentPage > 1 ) || persistentSelectionCount == 1;
+        var showUserPreviewOnly = ( selectionModelCount === 1 && userStore.currentPage > 1 ) ||
+                persistentSelectionCount == 1;
 
         if ( persistentSelectionCount === 0 )
         {
             detailPanel.showNoneSelection();
-        }
-        else if ( showUserPreviewOnly )
+        } else if ( showUserPreviewOnly )
         {
             var user = selectionModelCount === 1 ? selectionModel.getSelection()[0] : persistentSelection[0];
 
@@ -260,7 +258,7 @@ Ext.define( 'App.controller.AccountController', {
         }
     },
 
-    searchFilter: function(facetSelected)
+    searchFilter: function( facetSelected )
     {
         this.setBrowseTabActive();
 
@@ -277,7 +275,8 @@ Ext.define( 'App.controller.AccountController', {
         } );
         organizationsField = organizationsValues.join( ',' );
 
-        if (textField.getValue().length > 0) {
+        if ( textField.getValue().length > 0 )
+        {
             this.getAccountFilter().updateTitle();
         }
 
@@ -322,22 +321,20 @@ Ext.define( 'App.controller.AccountController', {
     {
         var deleteUserWindow = this.getUserDeleteWindow();
 
-        Ext.Ajax.request(
-            {
-                url: 'data/user/delete',
-                method: 'POST',
-                params: {userKey: deleteUserWindow.userKey},
-                success: function( response, opts )
-                {
-                    deleteUserWindow.close();
-                    Ext.Msg.alert( 'Info', 'User was deleted' );
-                },
-                failure: function( response, opts )
-                {
-                    Ext.Msg.alert( 'Info', 'User wasn\'t deleted' );
-                }
-            }
-        );
+        Ext.Ajax.request( {
+                              url: 'data/user/delete',
+                              method: 'POST',
+                              params: {userKey: deleteUserWindow.userKey},
+                              success: function( response, opts )
+                              {
+                                  deleteUserWindow.close();
+                                  Ext.Msg.alert( 'Info', 'User was deleted' );
+                              },
+                              failure: function( response, opts )
+                              {
+                                  Ext.Msg.alert( 'Info', 'User wasn\'t deleted' );
+                              }
+                          } );
     },
 
     showEditUserForm: function( el, e )
@@ -357,7 +354,29 @@ Ext.define( 'App.controller.AccountController', {
                     }
                 ]
             };
-            this.getCmsTabPanel().addTab( tab );
+            var tabItem = this.getCmsTabPanel().addTab( tab );
+            var window = new Ext.window.Window( {
+                                                    title: 'Select user store',
+                                                    layout: 'fit',
+                                                    modal: 'true',
+                                                    items: [
+                                                        {
+                                                            xtype: 'userStoreListPanel'
+                                                        }
+                                                    ],
+                                                    cancelled: true,
+                                                    listeners: {
+                                                        close: function()
+                                                        {
+                                                            if ( this.cancelled )
+                                                            {
+                                                                tabItem.close();
+                                                            }
+                                                        }
+                                                    }
+                                                } );
+            window.show();
+
         }
         else
         {
@@ -432,7 +451,7 @@ Ext.define( 'App.controller.AccountController', {
         if ( displayName )
         {
             var displayNameValue = prefix + ' ' + firstName + ' ' + middleName + ' ' + lastName + ' ' + suffix;
-            displayName.dom.value = Ext.String.trim( displayNameValue.replace(/  /g, ' ') );
+            displayName.dom.value = Ext.String.trim( displayNameValue.replace( /  /g, ' ' ) );
         }
     },
 
@@ -718,9 +737,10 @@ Ext.define( 'App.controller.AccountController', {
             this.searchFilterTypingTimer = null;
         }
         var controller = this;
-        this.searchFilterTypingTimer = window.setTimeout( function (){
-            controller.searchFilter();
-        }, 500 );
+        this.searchFilterTypingTimer = window.setTimeout( function ()
+                                                          {
+                                                              controller.searchFilter();
+                                                          }, 500 );
     }
 
 } );
