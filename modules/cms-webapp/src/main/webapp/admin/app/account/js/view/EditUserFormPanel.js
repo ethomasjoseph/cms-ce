@@ -9,6 +9,39 @@ Ext.define( 'App.view.EditUserFormPanel', {
     defaultUserStoreName: 'default',
     enableToolbar: true,
 
+    fieldLabels: {
+        'username': 'User Name',
+        'email': 'E-mail',
+        'password': 'Password',
+        'repeat-password': 'Repeat Password',
+        'timezone': 'Timezone',
+        /* general fields */
+        'prefix': 'Prefix',
+        'first-name': 'First Name',
+        'middle-name': 'Middle Name',
+        'last-name': 'Last Name',
+        'suffix': 'Suffix',
+        'initials': 'Initials',
+        'nick-name': 'Nick Name',
+        'personal-id': 'Personal ID',
+        'member-id': 'Member ID',
+        'organization': 'Organisation',
+        'birthday': 'Birthday',
+        'gender': 'Gender',
+        'title': 'Title',
+        'description': 'Descripion',
+        'html-email': 'E-mail',
+        'home-page': 'Web Page',
+        'time-zone': 'Time Zone',
+        'locale': 'Locale',
+        'country': 'Country',
+        'global-position': 'Global Position',
+        'phone': 'Phone Number',
+        'mobile': 'Mobile Number',
+        'fax': 'Fax Number',
+        'address': 'Address'
+    },
+
     listeners: {
         show: function( me )
         {
@@ -422,7 +455,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
                     }
                 }
                 var baseConfig = {
-                    fieldLabel: item.label || item.type,
+                    fieldLabel: me.fieldLabels[item.type] || item.type,
                     fieldname: item.type,
                     required: item.required || false,
                     remote: item.remote || false,
