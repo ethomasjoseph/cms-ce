@@ -10,6 +10,12 @@ Ext.define( 'App.view.EditUserFormPanel', {
     enableToolbar: true,
 
     fieldLabels: {
+        'username': 'User Name',
+        'email': 'E-mail',
+        'password': 'Password',
+        'repeat-password': 'Repeat Password',
+        'timezone': 'Timezone',
+        /* general fields */
         'prefix': 'Prefix',
         'first-name': 'First Name',
         'middle-name': 'Middle Name',
