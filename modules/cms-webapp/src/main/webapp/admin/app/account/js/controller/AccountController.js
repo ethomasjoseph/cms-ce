@@ -197,15 +197,15 @@ Ext.define( 'App.controller.AccountController', {
         var selectionModelCount = selectionModel.getCount();
 
         // Works because selection model count is 1 even if page has changed.
-        var showUserPreviewOnly = ( selectionModelCount === 1 && userStore.currentPage > 1 ) ||
-                persistentSelectionCount == 1;
+        var showUserPreviewOnly = selectionModelCount === 1;
 
         if ( persistentSelectionCount === 0 )
         {
             detailPanel.showNoneSelection();
-        } else if ( showUserPreviewOnly )
+        }
+        else if ( showUserPreviewOnly )
         {
-            var user = selectionModelCount === 1 ? selectionModel.getSelection()[0] : persistentSelection[0];
+            var user = selectionModel.getSelection()[0];
 
             if ( user )
             {
