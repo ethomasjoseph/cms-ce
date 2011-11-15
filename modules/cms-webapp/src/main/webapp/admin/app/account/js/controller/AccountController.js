@@ -391,17 +391,13 @@ Ext.define( 'App.controller.AccountController', {
                                   {
                                       var jsonObj = Ext.JSON.decode( response.responseText );
                                       var tab = {
+                                          xtype: 'userWizardPanel',
                                           id: currentUser.userStore + '-' + currentUser.name,
                                           title: currentUser.displayName + ' (' + currentUser.qualifiedName + ')',
                                           iconCls: 'icon-edit-user',
                                           closable: true,
-                                          autoScroll: true,
-                                          items: [
-                                              {
-                                                  xtype: 'panel',
-                                                  border: false
-                                              }
-                                          ]
+                                          userFields: jsonObj,
+                                          autoScroll: true
                                       };
                                       tabPane.addTab( tab );
                                   }

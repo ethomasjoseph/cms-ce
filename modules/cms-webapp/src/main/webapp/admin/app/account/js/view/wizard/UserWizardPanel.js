@@ -28,6 +28,15 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
     initComponent: function()
     {
         var me = this;
+        var photoUrl;
+        var userGroups = [];
+        var displayNameValue = 'Display name';
+        if ( me.userFields )
+        {
+            photoUrl = 'data/user/photo?key=' + me.userFields.key;
+            userGroups = me.userFields.groups;
+            displayNameValue = me.userFields.displayName;
+        }
 
         me.items = [
             {
@@ -39,6 +48,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                         width: 111,
                         height: 111,
                         url: 'data/user/photo',
+                        photoUrl: photoUrl,
                         progressBarHeight: 6
                     }
                 ]
@@ -66,7 +76,10 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                                 scope: this
                             }
                         },
-                        html: Templates.account.newUserPanelHeader
+                        tpl: Templates.account.newUserPanelHeader,
+                        data: {
+                            value: displayNameValue
+                        }
                     },
                     {
                         xtype: 'wizardPanel',
@@ -76,7 +89,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                                 stepNumber: 1,
                                 stepTitle: "Profile",
                                 xtype: 'editUserFormPanel',
-                                userFields: this.userFields,
+                                userFields: me.userFields,
                                 enableToolbar: false
                             },
                             {
@@ -84,6 +97,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                                 stepTitle: "User",
                                 itemId: "userPanel",
                                 xtype: 'editUserFormPanel',
+                                userFields: me.userFields,
                                 includedFields: ['username', 'email', 'password', 'repeat-password', 'photo',
                                     'country', 'locale', 'timezone', 'global-position'],
                                 enableToolbar: false
@@ -94,11 +108,13 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                                 itemId: 'placesPanel',
                                 xtype: 'editUserFormPanel',
                                 includedFields: ['address'],
+                                userFields: me.userFields,
                                 enableToolbar: false
                             },
                             {
                                 stepNumber: 4,
                                 stepTitle: "Memberships",
+                                groups: userGroups,
                                 xtype: 'wizardStepMembershipPanel'
                             },
                             {

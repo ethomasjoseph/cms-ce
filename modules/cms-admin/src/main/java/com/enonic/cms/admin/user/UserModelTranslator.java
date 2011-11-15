@@ -58,9 +58,10 @@ public final class UserModelTranslator
         model.setLastLogged( "01-01-2001" );
         //TODO: not implemented
         model.setCreated( "13-09-1998" );
-        List<Map<String, String>> groups = new ArrayList<Map<String, String>>(  );
-        for ( GroupEntity group : entity.getAllMembershipsGroups()){
-            Map <String, String> groupMap = new HashMap<String, String>();
+        List<Map<String, String>> groups = new ArrayList<Map<String, String>>();
+        for ( GroupEntity group : entity.getAllMembershipsGroups() )
+        {
+            Map<String, String> groupMap = new HashMap<String, String>();
             groupMap.put( "name", group.getDisplayName() );
             groupMap.put( "key", group.getGroupKey().toString() );
             groups.add( groupMap );
@@ -128,7 +129,7 @@ public final class UserModelTranslator
         userInfoModel.setSuffix( userInfo.getSuffix() );
         if ( userInfo.getTimeZone() != null )
         {
-            userInfoModel.setTimeZone( userInfo.getTimeZone().toString() );
+            userInfoModel.setTimeZone( userInfo.getTimeZone().getDisplayName() );
         }
         userInfoModel.setTitle( userInfo.getTitle() );
         if ( userInfo.getGender() != null )
