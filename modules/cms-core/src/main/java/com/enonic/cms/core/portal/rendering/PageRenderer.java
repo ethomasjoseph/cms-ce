@@ -12,12 +12,15 @@ import org.joda.time.DateTime;
 
 import com.enonic.vertical.VerticalProperties;
 
-import com.enonic.cms.framework.time.TimeService;
+import com.enonic.cms.core.time.TimeService;
 import com.enonic.cms.framework.util.GenericConcurrencyLock;
 
 import com.enonic.cms.core.CacheObjectSettings;
 import com.enonic.cms.core.CacheSettings;
 import com.enonic.cms.core.CachedObject;
+import com.enonic.cms.core.SitePropertiesService;
+import com.enonic.cms.core.SiteURLResolver;
+import com.enonic.cms.core.TightestCacheSettingsResolver;
 import com.enonic.cms.core.plugin.PluginManager;
 import com.enonic.cms.core.portal.InvocationCache;
 import com.enonic.cms.core.portal.PortalInstanceKey;
@@ -60,11 +63,7 @@ import com.enonic.cms.core.structure.menuitem.MenuItemEntity;
 import com.enonic.cms.core.structure.page.Region;
 import com.enonic.cms.core.structure.page.template.PageTemplateEntity;
 
-import com.enonic.cms.business.SitePropertiesService;
-import com.enonic.cms.business.SiteURLResolver;
-import com.enonic.cms.business.TightestCacheSettingsResolver;
-
-import com.enonic.cms.domain.stylesheet.StylesheetNotFoundException;
+import com.enonic.cms.core.stylesheet.StylesheetNotFoundException;
 
 
 /**

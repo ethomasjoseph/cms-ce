@@ -19,18 +19,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.enonic.cms.core.DeploymentPathResolver;
+import com.enonic.cms.core.structure.SiteContext;
 import com.enonic.cms.core.log.LogService;
 import com.enonic.cms.core.log.StoreNewLogEntryCommand;
 import com.enonic.esl.util.ArrayUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.util.Assert;
 
-import com.enonic.esl.ESLException;
 import com.enonic.esl.containers.ExtendedMap;
 import com.enonic.esl.containers.MultiValueMap;
 import com.enonic.esl.net.Mail;
 import com.enonic.esl.servlet.http.CookieUtil;
-import com.enonic.esl.util.RegexpUtil;
 import com.enonic.esl.util.StringUtil;
 import com.enonic.vertical.VerticalProperties;
 import com.enonic.vertical.engine.VerticalCreateException;
@@ -65,8 +65,6 @@ import com.enonic.cms.core.security.userstore.UserStoreKey;
 import com.enonic.cms.core.service.UserServicesService;
 import com.enonic.cms.store.dao.UserDao;
 
-import com.enonic.cms.business.DeploymentPathResolver;
-import com.enonic.cms.business.SiteContext;
 import com.enonic.cms.core.preference.PreferenceAccessException;
 
 import com.enonic.cms.core.security.SecurityHolder;
@@ -89,9 +87,9 @@ import com.enonic.cms.core.security.user.UpdateUserCommand;
 import com.enonic.cms.core.security.user.UserStorageExistingEmailException;
 
 import com.enonic.cms.core.security.userstore.UserStoreNotFoundException;
-import com.enonic.cms.domain.user.field.UserFieldMap;
-import com.enonic.cms.domain.user.field.UserFieldTransformer;
-import com.enonic.cms.domain.user.field.UserInfoTransformer;
+import com.enonic.cms.core.user.field.UserFieldMap;
+import com.enonic.cms.core.user.field.UserFieldTransformer;
+import com.enonic.cms.core.user.field.UserInfoTransformer;
 
 public class UserHandlerController
     extends AbstractUserServicesHandlerController
@@ -734,7 +732,7 @@ public class UserHandlerController
 
     private String fixLinebreaks( String mailBody )
     {
-        mailBody = RegexpUtil.substituteAll( "\\\\n", "\n", mailBody );
+        mailBody = mailBody.replaceAll("\\\\n", "\n");
         return mailBody;
     }
 
@@ -853,12 +851,6 @@ public class UserHandlerController
             VerticalUserServicesLogger.warn(e.getMessage(), null );
             redirectToErrorPage( request, response, formItems, ERR_NOT_ALLOWED, null );
         }
-        else if ( e instanceof ESLException )
-        {
-            String message = "Not able to send mail: %t";
-            VerticalUserServicesLogger.error(message, e );
-            redirectToErrorPage( request, response, formItems, ERR_EMAIL_SEND_FAILED, null );
-        }
         else if ( e instanceof UnsupportedEncodingException )
         {
             String message = "Un-supported encoding: %t";
@@ -874,7 +866,7 @@ public class UserHandlerController
         else if ( e instanceof UserStoreNotFoundException )
         {
             String message = "Userstore not found";
-            VerticalUserServicesLogger.warn(message, e );
+            VerticalUserServicesLogger.warn(message, e);
             redirectToErrorPage( request, response, formItems, ERR_USERSTORE_NOT_FOUND, null );
         }
         else if ( e instanceof UserStoreConnectorPolicyBrokenException )
@@ -1645,7 +1637,7 @@ public class UserHandlerController
             {
 
                 String regexp = "%" + key + "%";
-                outText = RegexpUtil.substituteAll( regexp, formItems.getString( key, "" ), outText );
+                outText = outText.replaceAll(regexp, formItems.getString(key, ""));
             }
         }
 

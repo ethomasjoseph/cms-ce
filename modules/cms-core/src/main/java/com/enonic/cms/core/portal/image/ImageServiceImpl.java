@@ -15,7 +15,7 @@ import com.google.common.base.Preconditions;
 import com.enonic.cms.framework.blob.BlobKey;
 import com.enonic.cms.framework.blob.BlobRecord;
 import com.enonic.cms.framework.blob.BlobStore;
-import com.enonic.cms.framework.time.TimeService;
+import com.enonic.cms.core.time.TimeService;
 import com.enonic.cms.framework.util.GenericConcurrencyLock;
 import com.enonic.cms.framework.util.ImageHelper;
 
@@ -27,13 +27,12 @@ import com.enonic.cms.core.image.cache.ImageCache;
 import com.enonic.cms.core.portal.livetrace.ImageRequestTrace;
 import com.enonic.cms.core.portal.livetrace.ImageRequestTracer;
 import com.enonic.cms.core.portal.livetrace.LivePortalTraceService;
+import com.enonic.cms.core.preview.PreviewService;
 import com.enonic.cms.core.security.user.UserEntity;
 import com.enonic.cms.core.security.user.UserKey;
 import com.enonic.cms.store.dao.ContentDao;
 import com.enonic.cms.store.dao.GroupDao;
 import com.enonic.cms.store.dao.UserDao;
-
-import com.enonic.cms.business.preview.PreviewService;
 
 public final class ImageServiceImpl
     implements ImageService

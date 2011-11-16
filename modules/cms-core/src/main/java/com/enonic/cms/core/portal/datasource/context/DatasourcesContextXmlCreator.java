@@ -12,7 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.enonic.cms.framework.util.JDOMUtil;
 import com.enonic.cms.framework.xml.XMLDocumentFactory;
 
-import com.enonic.cms.core.LanguageEntity;
+import com.enonic.cms.core.language.LanguageEntity;
+import com.enonic.cms.core.SiteURLResolver;
 import com.enonic.cms.core.portal.PageRequestType;
 import com.enonic.cms.core.portal.VerticalSession;
 import com.enonic.cms.core.portal.datasource.DatasourceExecutorContext;
@@ -22,8 +23,6 @@ import com.enonic.cms.core.resource.ResourceService;
 import com.enonic.cms.core.structure.SiteEntity;
 import com.enonic.cms.core.structure.SiteProperties;
 import com.enonic.cms.store.dao.GroupDao;
-
-import com.enonic.cms.business.SiteURLResolver;
 
 /**
  * May 15, 2009

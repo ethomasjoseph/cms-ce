@@ -14,6 +14,7 @@ import java.sql.Types;
 import java.util.*;
 
 import com.enonic.cms.core.content.*;
+import com.enonic.cms.core.language.LanguageKey;
 import com.enonic.cms.store.dao.ContentHandlerDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
@@ -44,7 +45,6 @@ import com.enonic.cms.framework.xml.XMLDocument;
 import com.enonic.cms.framework.xml.XMLDocumentFactory;
 
 import com.enonic.cms.core.CalendarUtil;
-import com.enonic.cms.core.LanguageKey;
 import com.enonic.cms.core.content.category.CategoryKey;
 import com.enonic.cms.core.content.contenttype.ContentTypeEntity;
 import com.enonic.cms.core.resource.ResourceKey;
@@ -267,7 +267,6 @@ public final class ContentHandler
         finally
         {
             close( preparedStmt );
-            close( con );
         }
 
         return key;
@@ -441,7 +440,6 @@ public final class ContentHandler
         finally
         {
             close( preparedStmt );
-            close( con );
         }
     }
 
@@ -522,7 +520,6 @@ public final class ContentHandler
         finally
         {
             close( preparedStmt );
-            close( con );
         }
     }
 
@@ -860,7 +857,6 @@ public final class ContentHandler
             close( childResultSet );
             close( childPreparedStmt );
 
-            close( con );
         }
 
         return doc;
@@ -1061,7 +1057,6 @@ public final class ContentHandler
         {
             close( resultSet );
             close( preparedStmt );
-            close( con );
         }
 
         return contentTypeKeys.toArray();
@@ -1254,7 +1249,6 @@ public final class ContentHandler
         finally
         {
             close( preparedStmt );
-            close( con );
         }
 
         return key;
@@ -1321,7 +1315,6 @@ public final class ContentHandler
         finally
         {
             close( preparedStmt );
-            close( con );
         }
     }
 
@@ -1349,7 +1342,6 @@ public final class ContentHandler
         finally
         {
             close( preparedStmt );
-            close( con );
         }
     }
 
@@ -1462,7 +1454,6 @@ public final class ContentHandler
         {
             close( resultSet );
             close( preparedStmt );
-            close( con );
         }
 
         return doc;

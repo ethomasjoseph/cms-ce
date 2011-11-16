@@ -74,6 +74,7 @@ import com.enonic.vertical.engine.criteria.CategoryCriteria;
 import com.enonic.cms.framework.xml.XMLDocument;
 import com.enonic.cms.framework.xml.XMLDocumentFactory;
 
+import com.enonic.cms.core.DeploymentPathResolver;
 import com.enonic.cms.core.SiteKey;
 import com.enonic.cms.core.content.AssignContentResult;
 import com.enonic.cms.core.content.AssignmentAction;
@@ -144,12 +145,11 @@ import com.enonic.cms.core.xslt.XsltResource;
 import com.enonic.cms.store.dao.ContentDao;
 import com.enonic.cms.store.dao.UserDao;
 
-import com.enonic.cms.business.DeploymentPathResolver;
 import com.enonic.cms.core.portal.cache.SiteCachesService;
-import com.enonic.cms.business.preview.NoLazyInitializationEnforcerForPreview;
+import com.enonic.cms.core.preview.NoLazyInitializationEnforcerForPreview;
 
 import com.enonic.cms.core.portal.rendering.RenderedPageResult;
-import com.enonic.cms.domain.stylesheet.StylesheetNotFoundException;
+import com.enonic.cms.core.stylesheet.StylesheetNotFoundException;
 
 /**
  * Base servlet for servlets handling content. Provides common methods.
@@ -1410,7 +1410,7 @@ public class ContentBaseHandlerServlet
 
         for ( String extraFormXMLFile : extraFormXMLFiles )
         {
-            Document tmpDoc = XMLTool.domparse( AdminStore.getXML( session, extraFormXMLFile ) );
+            Document tmpDoc = AdminStore.getXml( session, extraFormXMLFile ).getAsDOMDocument();
             XMLTool.mergeDocuments( doc, tmpDoc, true );
         }
 
@@ -2887,7 +2887,7 @@ public class ContentBaseHandlerServlet
         XMLTool.mergeDocuments( verticalDoc, headerDoc, true );
 
         // Default browse config
-        Document defaultBrowseConfig = XMLTool.domparse( AdminStore.getXML( session, "defaultbrowseconfig.xml" ) );
+        Document defaultBrowseConfig = AdminStore.getXml( session, "defaultbrowseconfig.xml" ).getAsDOMDocument();
         XMLTool.mergeDocuments( verticalDoc, defaultBrowseConfig, true );
 
         // Feedback

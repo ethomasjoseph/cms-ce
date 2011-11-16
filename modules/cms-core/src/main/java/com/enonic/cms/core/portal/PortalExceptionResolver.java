@@ -18,21 +18,17 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.enonic.vertical.VerticalProperties;
 
-import com.enonic.cms.core.AbstractBaseError;
 import com.enonic.cms.core.Attribute;
 import com.enonic.cms.core.BadRequestErrorType;
-import com.enonic.cms.core.ClientError;
-import com.enonic.cms.core.ContentNameMismatchClientError;
-import com.enonic.cms.core.ForbiddenErrorType;
 import com.enonic.cms.core.InvalidKeyException;
 import com.enonic.cms.core.NotFoundErrorType;
 import com.enonic.cms.core.Path;
-import com.enonic.cms.core.ServerError;
-import com.enonic.cms.core.SiteErrorDetails;
 import com.enonic.cms.core.SiteKey;
 import com.enonic.cms.core.SitePath;
+import com.enonic.cms.core.SitePathResolver;
+import com.enonic.cms.core.SiteRedirectAndForwardHelper;
+import com.enonic.cms.core.SiteURLResolver;
 import com.enonic.cms.core.StacktraceLoggingUnrequired;
-import com.enonic.cms.core.UnauthorizedErrorType;
 import com.enonic.cms.core.portal.mvc.controller.AttachmentRequestException;
 import com.enonic.cms.core.portal.mvc.controller.DefaultRequestException;
 import com.enonic.cms.core.portal.mvc.controller.ImageRequestException;
@@ -41,10 +37,6 @@ import com.enonic.cms.core.structure.SiteEntity;
 import com.enonic.cms.core.structure.menuitem.MenuItemEntity;
 import com.enonic.cms.store.dao.MenuItemDao;
 import com.enonic.cms.store.dao.SiteDao;
-
-import com.enonic.cms.business.SitePathResolver;
-import com.enonic.cms.business.SiteRedirectAndForwardHelper;
-import com.enonic.cms.business.SiteURLResolver;
 
 public class PortalExceptionResolver
     implements HandlerExceptionResolver

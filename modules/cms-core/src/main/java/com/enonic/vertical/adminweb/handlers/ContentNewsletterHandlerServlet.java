@@ -32,12 +32,10 @@ import org.joda.time.DateTime;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.enonic.esl.ESLException;
 import com.enonic.esl.containers.ExtendedMap;
 import com.enonic.esl.net.Mail;
 import com.enonic.esl.servlet.http.HttpServletRequestWrapper;
 import com.enonic.esl.util.DateUtil;
-import com.enonic.esl.util.RegexpUtil;
 import com.enonic.esl.xml.XMLTool;
 import com.enonic.vertical.adminweb.AdminStore;
 import com.enonic.vertical.adminweb.VerticalAdminException;
@@ -50,6 +48,7 @@ import com.enonic.cms.framework.util.URLUtils;
 import com.enonic.cms.core.Attribute;
 import com.enonic.cms.core.RequestParameters;
 import com.enonic.cms.core.SitePath;
+import com.enonic.cms.core.language.LanguageEntity;
 import com.enonic.cms.core.resolver.ResolverContext;
 import com.enonic.cms.core.security.user.User;
 import com.enonic.cms.core.security.user.UserEntity;
@@ -58,14 +57,13 @@ import com.enonic.cms.core.servlet.ServletRequestAccessor;
 import com.enonic.cms.core.structure.menuitem.MenuItemEntity;
 import com.enonic.cms.core.structure.menuitem.MenuItemKey;
 
-import com.enonic.cms.business.SitePropertyNames;
+import com.enonic.cms.core.SitePropertyNames;
 import com.enonic.cms.core.portal.rendering.PageRenderer;
 import com.enonic.cms.core.portal.rendering.PageRendererContext;
 import com.enonic.cms.core.portal.rendering.RegionsResolver;
-import com.enonic.cms.business.preview.PreviewContext;
+import com.enonic.cms.core.preview.PreviewContext;
 
-import com.enonic.cms.core.LanguageEntity;
-import com.enonic.cms.core.LanguageResolver;
+import com.enonic.cms.core.language.LanguageResolver;
 import com.enonic.cms.core.RequestParametersMerger;
 
 import com.enonic.cms.core.portal.PageRequestType;
@@ -78,6 +76,8 @@ import com.enonic.cms.core.structure.page.template.PageTemplateType;
 public class ContentNewsletterHandlerServlet
     extends ContentBaseHandlerServlet
 {
+    private final static String REG_EXP_VALID_EMAIL =
+        "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
 
     protected String SEND_XSL = null;
 
@@ -269,7 +269,7 @@ public class ContentNewsletterHandlerServlet
                 for ( String paramName : paramMap.keySet() )
                 {
                     String paramValue = paramMap.get( paramName );
-                    mailBody = RegexpUtil.substituteAll( "\\%" + paramName + "\\%", paramValue, mailBody );
+                    mailBody = mailBody.replaceAll("\\%" + paramName + "\\%", paramValue);
                 }
                 String name = paramMap.get( "recipientName" );
                 mail.clearRecipients();
@@ -295,7 +295,7 @@ public class ContentNewsletterHandlerServlet
                     parameterElem.setAttribute( "name", paramName );
                 }
             }
-            catch ( ESLException esle )
+            catch ( Exception esle )
             {
                 String msg = "Failed to send email: {0}";
                 VerticalAdminLogger.warn(msg, esle.getMessage(), null );
@@ -397,7 +397,7 @@ public class ContentNewsletterHandlerServlet
         {
             String otherRecipients = formItems.getString( FORM_ITEM_KEY_OTHER_RECIPIENTS );
 
-            Pattern p = Pattern.compile( RegexpUtil.REG_EXP_VALID_EMAIL, Pattern.CASE_INSENSITIVE );
+            Pattern p = Pattern.compile( REG_EXP_VALID_EMAIL, Pattern.CASE_INSENSITIVE );
 
             Matcher m = p.matcher( otherRecipients );
 

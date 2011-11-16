@@ -15,11 +15,7 @@ import java.util.Set;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.joda.time.DateTime;
-import org.springframework.core.style.ToStringCreator;
-
 import com.google.common.collect.Maps;
-
-import com.enonic.cms.framework.CmsToStringStyler;
 
 import com.enonic.cms.api.client.model.user.UserInfo;
 import com.enonic.cms.core.security.group.GroupEntity;
@@ -28,9 +24,9 @@ import com.enonic.cms.core.security.group.GroupType;
 import com.enonic.cms.core.security.userstore.UserStoreEntity;
 import com.enonic.cms.core.security.userstore.UserStoreKey;
 
-import com.enonic.cms.domain.user.field.UserFieldMap;
-import com.enonic.cms.domain.user.field.UserFieldTransformer;
-import com.enonic.cms.domain.user.field.UserInfoTransformer;
+import com.enonic.cms.core.user.field.UserFieldMap;
+import com.enonic.cms.core.user.field.UserFieldTransformer;
+import com.enonic.cms.core.user.field.UserInfoTransformer;
 
 public class UserEntity
     implements User, Serializable
@@ -491,14 +487,6 @@ public class UserEntity
         final UserInfo newInfo = doGetUserInfo();
 
         return !oldInfo.equals( newInfo );
-    }
-
-    @Override
-    public String toString()
-    {
-        ToStringCreator toString = new ToStringCreator( this, CmsToStringStyler.DEFAULT );
-        toString.append( "qualifiedName", getQualifiedName() );
-        return toString.toString();
     }
 
     public byte[] getPhoto()

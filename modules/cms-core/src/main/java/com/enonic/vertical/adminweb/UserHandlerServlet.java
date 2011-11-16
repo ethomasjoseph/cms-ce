@@ -39,7 +39,6 @@ import com.enonic.esl.net.Mail;
 import com.enonic.esl.servlet.http.CookieUtil;
 import com.enonic.esl.util.DateUtil;
 import com.enonic.esl.util.StringUtil;
-import com.enonic.esl.util.TStringArrayList;
 import com.enonic.esl.xml.XMLTool;
 import com.enonic.vertical.VerticalException;
 import com.enonic.vertical.adminweb.handlers.ListCountResolver;
@@ -51,6 +50,8 @@ import com.enonic.cms.framework.xml.XMLDocumentFactory;
 
 import com.enonic.cms.api.client.model.user.UserInfo;
 import com.enonic.cms.core.AbstractPagedXmlCreator;
+import com.enonic.cms.core.AdminConsoleTranslationService;
+import com.enonic.cms.core.DeploymentPathResolver;
 import com.enonic.cms.core.country.Country;
 import com.enonic.cms.core.locale.LocaleXmlCreator;
 import com.enonic.cms.core.resource.ResourceFile;
@@ -80,8 +81,6 @@ import com.enonic.cms.core.xslt.XsltProcessorManagerAccessor;
 import com.enonic.cms.core.xslt.XsltResource;
 import com.enonic.cms.store.dao.GroupQuery;
 
-import com.enonic.cms.business.AdminConsoleTranslationService;
-import com.enonic.cms.business.DeploymentPathResolver;
 import com.enonic.cms.core.security.PasswordGenerator;
 
 import com.enonic.cms.core.country.CountryXmlCreator;
@@ -96,11 +95,11 @@ import com.enonic.cms.core.security.user.UserType;
 import com.enonic.cms.core.security.userstore.UserStoreEntity;
 import com.enonic.cms.core.security.userstore.UserStoreXmlCreator;
 import com.enonic.cms.core.security.userstore.connector.config.InvalidUserStoreConnectorConfigException;
-import com.enonic.cms.domain.stylesheet.StylesheetNotFoundException;
-import com.enonic.cms.domain.user.field.UserFieldMap;
-import com.enonic.cms.domain.user.field.UserFieldTransformer;
-import com.enonic.cms.domain.user.field.UserFieldType;
-import com.enonic.cms.domain.user.field.UserInfoTransformer;
+import com.enonic.cms.core.stylesheet.StylesheetNotFoundException;
+import com.enonic.cms.core.user.field.UserFieldMap;
+import com.enonic.cms.core.user.field.UserFieldTransformer;
+import com.enonic.cms.core.user.field.UserFieldType;
+import com.enonic.cms.core.user.field.UserInfoTransformer;
 
 
 public class UserHandlerServlet
@@ -999,7 +998,6 @@ public class UserHandlerServlet
         }
 
         // Update user with group memberships
-        TStringArrayList groupMemberships = new TStringArrayList();
         if ( formItems.containsKey( "member" ) )
         {
             String[] groupArray;
@@ -1016,7 +1014,6 @@ public class UserHandlerServlet
             {
                 if ( isEnterpriseAdmin )
                 {
-                    groupMemberships.add( aGroupArray );
                     command.addMembership( new GroupKey( aGroupArray ) );
                 }
                 else if ( !isEnterpriseAdmin && isUserstoreAdmin && enterpriseAdminGroupKey.toString().equalsIgnoreCase( aGroupArray ) )
@@ -1025,7 +1022,6 @@ public class UserHandlerServlet
                 }
                 else if ( !isEnterpriseAdmin && isUserstoreAdmin && !enterpriseAdminGroupKey.toString().equalsIgnoreCase( aGroupArray ) )
                 {
-                    groupMemberships.add( aGroupArray );
                     command.addMembership( new GroupKey( aGroupArray ) );
                 }
             }
@@ -1040,7 +1036,6 @@ public class UserHandlerServlet
                     if ( isEnterpriseAdmin )
                     {
                         // access to all groups/users
-                        groupMemberships.add( aGroupArray );
                         command.addMembership( new GroupKey( aGroupArray ) );
                     }
                     else if ( !isEnterpriseAdmin && isUserstoreAdmin && enterpriseAdminGroupKey.toString().equalsIgnoreCase( aGroupArray ) )
@@ -1050,7 +1045,6 @@ public class UserHandlerServlet
                     else if ( !isEnterpriseAdmin && isUserstoreAdmin &&
                         !enterpriseAdminGroupKey.toString().equalsIgnoreCase( aGroupArray ) )
                     {
-                        groupMemberships.add( aGroupArray );
                         command.addMembership( new GroupKey( aGroupArray ) );
                     }
                 }
@@ -1577,7 +1571,6 @@ public class UserHandlerServlet
         command.setSyncMemberships( syncMembershipsOnlyIfAllowed );
         command.setRemovePhoto( formItems.getBoolean( "remove_photo", false ) );
 
-        TStringArrayList groupMemberships = new TStringArrayList();
         if ( formItems.containsKey( "member" ) )
         {
             String[] groupArray;
@@ -1607,17 +1600,14 @@ public class UserHandlerServlet
                 if ( isEnterpriseAdmin )
                 {
                     // access to all groups/users
-                    groupMemberships.add( aGroupArray );
                     command.addMembership( new GroupKey( aGroupArray ) );
                 }
                 else if ( !isEnterpriseAdmin && isUserstoreAdmin && enterpriseAdminGroupKey.toString().equalsIgnoreCase( aGroupArray ) )
                 {
                     throw new SecurityException( "No access to enterprise administrators group" );
                 }
-//                else if ( !isEnterpriseAdmin && isUserstoreAdmin && !enterpriseAdminGroupKey.toString().equalsIgnoreCase( aGroupArray ) )
                 else if ( !isEnterpriseAdmin && !enterpriseAdminGroupKey.toString().equalsIgnoreCase( aGroupArray ) )
                 {
-                    groupMemberships.add( aGroupArray );
                     command.addMembership( new GroupKey( aGroupArray ) );
                 }
             }

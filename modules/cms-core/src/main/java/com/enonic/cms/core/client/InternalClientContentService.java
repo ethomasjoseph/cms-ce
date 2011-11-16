@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.enonic.esl.util.Base64Util;
 
 import com.enonic.cms.framework.blob.BlobRecord;
-import com.enonic.cms.framework.time.TimeService;
+import com.enonic.cms.core.time.TimeService;
 
 import com.enonic.cms.api.client.ClientException;
 import com.enonic.cms.api.client.model.AssignContentParams;
@@ -74,6 +74,8 @@ import com.enonic.cms.core.content.image.ImageUtil;
 import com.enonic.cms.core.portal.PrettyPathNameCreator;
 import com.enonic.cms.core.portal.cache.PageCacheService;
 import com.enonic.cms.core.portal.cache.SiteCachesService;
+import com.enonic.cms.core.preview.PreviewContext;
+import com.enonic.cms.core.preview.PreviewService;
 import com.enonic.cms.core.security.SecurityService;
 import com.enonic.cms.core.security.UserParser;
 import com.enonic.cms.core.security.user.UserEntity;
@@ -84,9 +86,6 @@ import com.enonic.cms.store.dao.ContentDao;
 import com.enonic.cms.store.dao.ContentTypeDao;
 import com.enonic.cms.store.dao.ContentVersionDao;
 import com.enonic.cms.store.dao.GroupDao;
-
-import com.enonic.cms.business.preview.PreviewContext;
-import com.enonic.cms.business.preview.PreviewService;
 
 
 public class InternalClientContentService

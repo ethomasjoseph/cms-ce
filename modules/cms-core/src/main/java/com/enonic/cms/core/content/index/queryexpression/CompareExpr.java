@@ -33,6 +33,9 @@ public final class CompareExpr
 
     public final static int NOT_IN = 9;
 
+    public final static int FT = 10;
+
+
     /**
      * Operator type.
      */
@@ -98,6 +101,8 @@ public final class CompareExpr
                 return "NOT LIKE";
             case NOT_IN:
                 return "NOT IN";
+            case FT:
+                return "FT";
             default:
                 return null;
         }

@@ -9,8 +9,8 @@ import java.util.Date;
 import org.jdom.Document;
 import org.joda.time.DateTime;
 
-import com.enonic.cms.core.LanguageEntity;
-import com.enonic.cms.core.LanguageKey;
+import com.enonic.cms.core.language.LanguageEntity;
+import com.enonic.cms.core.language.LanguageKey;
 import com.enonic.cms.core.content.ContentAccessEntity;
 import com.enonic.cms.core.content.ContentAccessType;
 import com.enonic.cms.core.content.ContentEntity;
@@ -53,7 +53,7 @@ import com.enonic.cms.core.structure.page.template.PageTemplateEntity;
 import com.enonic.cms.core.structure.page.template.PageTemplateType;
 import com.enonic.cms.itest.MockKeyService;
 
-import com.enonic.cms.domain.user.field.UserFieldType;
+import com.enonic.cms.core.user.field.UserFieldType;
 
 /**
  * Nov 26, 2009

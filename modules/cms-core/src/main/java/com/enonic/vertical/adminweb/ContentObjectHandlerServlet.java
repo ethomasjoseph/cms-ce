@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.enonic.cms.core.AdminConsoleTranslationService;
 import com.enonic.cms.core.plugin.PluginManager;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,21 +41,20 @@ import com.enonic.cms.framework.xml.XMLException;
 import com.enonic.cms.core.RequestParameters;
 import com.enonic.cms.core.SiteKey;
 import com.enonic.cms.core.SitePath;
-import com.enonic.cms.core.internal.service.DataSourceFailedXmlCreator;
+import com.enonic.cms.core.service.DataSourceFailedXmlCreator;
 import com.enonic.cms.core.resource.ResourceFile;
 import com.enonic.cms.core.resource.ResourceKey;
 import com.enonic.cms.core.security.user.UserEntity;
 import com.enonic.cms.core.service.AdminService;
 import com.enonic.cms.core.service.DataSourceService;
 
-import com.enonic.cms.business.AdminConsoleTranslationService;
 import com.enonic.cms.core.portal.InvocationCache;
 import com.enonic.cms.core.portal.datasource.DatasourceExecutor;
 import com.enonic.cms.core.portal.datasource.DatasourceExecutorContext;
 import com.enonic.cms.core.portal.datasource.DatasourceExecutorFactory;
 import com.enonic.cms.core.portal.datasource.processor.DataSourceProcessor;
 import com.enonic.cms.core.portal.datasource.processor.NonDoingDataSourceProcessor;
-import com.enonic.cms.business.preview.PreviewContext;
+import com.enonic.cms.core.preview.PreviewContext;
 
 import com.enonic.cms.core.portal.PageRequestType;
 import com.enonic.cms.core.portal.datasource.DataSourceResult;
@@ -63,7 +63,7 @@ import com.enonic.cms.core.portal.datasource.DatasourcesType;
 import com.enonic.cms.core.security.user.User;
 import com.enonic.cms.core.structure.SiteEntity;
 
-import com.enonic.cms.domain.stylesheet.StylesheetNotFoundException;
+import com.enonic.cms.core.stylesheet.StylesheetNotFoundException;
 
 /**
  * This class handles all content object related functionality in administration console.
