@@ -9,8 +9,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         'App.view.wizard.WizardStepLoginInfoPanel',
         'App.view.wizard.WizardStepMembershipPanel',
         'App.view.wizard.WizardStepSummaryPanel',
-        'Common.fileupload.PhotoUploadButton',
-        'App.view.wizard.WizardStepProfilePanel'
+        'Common.fileupload.PhotoUploadButton'
     ],
 
     layout: 'column',
@@ -29,6 +28,15 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
     initComponent: function()
     {
         var me = this;
+        var photoUrl;
+        var userGroups = [];
+        var displayNameValue = 'Display name';
+        if ( me.userFields )
+        {
+            photoUrl = 'data/user/photo?key=' + me.userFields.key;
+            userGroups = me.userFields.groups;
+            displayNameValue = me.userFields.displayName;
+        }
 
         me.items = [
             {
@@ -40,6 +48,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                         width: 111,
                         height: 111,
                         url: 'data/user/photo',
+                        photoUrl: photoUrl,
                         progressBarHeight: 6
                     }
                 ]
@@ -59,14 +68,18 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                                 fn: function()
                                 {
                                     var me = this;
-                                    me.getEl().addListener( 'click', function( event, target, eOpts ){
+                                    me.getEl().addListener( 'click', function( event, target, eOpts )
+                                    {
                                         me.toggleDisplayNameField( event, target );
-                                    });
+                                    } );
                                 },
                                 scope: this
                             }
                         },
-                        html: Templates.account.newUserPanelHeader
+                        tpl: Templates.account.newUserPanelHeader,
+                        data: {
+                            value: displayNameValue
+                        }
                     },
                     {
                         xtype: 'wizardPanel',
@@ -75,13 +88,16 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                             {
                                 stepNumber: 1,
                                 stepTitle: "Profile",
-                                xtype: 'wizardStepProfilePanel'
+                                xtype: 'editUserFormPanel',
+                                userFields: me.userFields,
+                                enableToolbar: false
                             },
                             {
                                 stepNumber: 2,
                                 stepTitle: "User",
                                 itemId: "userPanel",
                                 xtype: 'editUserFormPanel',
+                                userFields: me.userFields,
                                 includedFields: ['username', 'email', 'password', 'repeat-password', 'photo',
                                     'country', 'locale', 'timezone', 'global-position'],
                                 enableToolbar: false
@@ -92,11 +108,13 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                                 itemId: 'placesPanel',
                                 xtype: 'editUserFormPanel',
                                 includedFields: ['address'],
+                                userFields: me.userFields,
                                 enableToolbar: false
                             },
                             {
                                 stepNumber: 4,
                                 stepTitle: "Memberships",
+                                groups: userGroups,
                                 xtype: 'wizardStepMembershipPanel'
                             },
                             {
@@ -111,6 +129,10 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         ];
 
         this.callParent( arguments );
+        if ( this.userFields && this.userFields.userStore )
+        {
+            this.renderUserForms( this.userFields.userStore );
+        }
     },
 
     toggleDisplayNameField: function( event, target )
@@ -144,16 +166,25 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
 
     resizeFileUpload: function( file )
     {
-        file.el.down( 'input[type=file]' ).setStyle({
-             width: file.getWidth(),
-             height: file.getHeight()
-        });
+        file.el.down( 'input[type=file]' ).setStyle( {
+                                                         width: file.getWidth(),
+                                                         height: file.getHeight()
+                                                     } );
     },
 
     setFileUploadDisabled: function( disable )
     {
         //TODO: disable image upload
         //this.uploadForm.setDisabled( disable );
+    },
+
+    renderUserForms: function( userStore )
+    {
+        var userForms = this.query( 'editUserFormPanel' );
+        Ext.Array.each( userForms, function( userForm )
+        {
+            userForm.renderUserForm( {userStore: userStore} );
+        } );
     }
 
 } );
