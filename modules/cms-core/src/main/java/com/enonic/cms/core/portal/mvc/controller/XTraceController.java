@@ -20,7 +20,6 @@ import org.springframework.web.servlet.mvc.AbstractController;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -28,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.io.ByteStreams;
+
+import com.enonic.esl.servlet.http.CookieUtil;
 
 import com.enonic.cms.framework.util.MimeTypeResolver;
 
@@ -72,8 +73,8 @@ public class XTraceController extends AbstractController
             try
             {
                 authenticateUser( request );
-                HttpSession httpSession = request.getSession( true );
-                httpSession.setAttribute( "X-Trace-Server-Enabled", "true" );
+
+                CookieUtil.setCookie( response, "X-Trace-Server-Enabled", "true", -1, "/");
 
                 response.sendRedirect( (String) request.getAttribute( "xtrace.originalUrl" ) );
 

@@ -4,8 +4,11 @@ import org.apache.commons.codec.binary.Base64;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.enonic.esl.servlet.http.CookieUtil;
 
 import com.enonic.cms.core.portal.livetrace.PageRenderingTrace;
 import com.enonic.cms.core.portal.xtrace.JsonSerializer;
@@ -34,7 +37,8 @@ public class XTraceInterceptor
 
     private boolean clientIsAuthenticated( HttpServletRequest request )
     {
-        return "true".equals( request.getSession().getAttribute( "X-Trace-Server-Enabled") );
+        Cookie cookie = CookieUtil.getCookie( request, "X-Trace-Server-Enabled" );
+        return cookie != null && "true".equals( cookie.getValue() );
     }
 
     private void forwardToAuthenticationForm( HttpServletRequest request, HttpServletResponse response )
