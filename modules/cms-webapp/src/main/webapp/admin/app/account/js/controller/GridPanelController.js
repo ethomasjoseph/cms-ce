@@ -118,53 +118,9 @@ Ext.define( 'App.controller.GridPanelController', {
 
     showEditUserForm: function( el, e )
     {
-        if ( el.action == 'newUser' )
-        {
-            var tab = {
-                id: Ext.id(null, 'new-user-'),
-                title: 'New User',
-                iconCls: 'icon-new-user',
-                closable: true,
-                autoScroll: true,
-                layout: 'fit',
-                items: [
-                    {
-                        xtype: 'userWizardPanel'
-                    }
-                ]
-            };
-            this.getCmsTabPanel().addTab( tab );
-        }
-        else
-        {
-            var accountDetail = this.getAccountDetailPanel();
-            var tabPane = this.getCmsTabPanel();
-            var currentUser = accountDetail.getCurrentUser();
-            Ext.Ajax.request( {
-                    url: 'data/user/userinfo',
-                    method: 'GET',
-                    params: {key: currentUser.key},
-                    success: function( response )
-                    {
-                        var jsonObj = Ext.JSON.decode( response.responseText );
-                        var tab = {
-                            id: currentUser.userStore + '-' + currentUser.name,
-                            title: currentUser.displayName + ' (' + currentUser.qualifiedName + ')',
-                            iconCls: 'icon-edit-user',
-                            closable: true,
-                            autoScroll: true,
-                            items: [
-                                {
-                                                  xtype: 'panel',
-                                                  border: false
-                                }
-                            ]
-                        };
-                        tabPane.addTab( tab );
-                    }
-                }
-            );
-
+        var ctrl = this.getController('EditUserPanelController');
+        if ( ctrl ) {
+            ctrl.showEditUserForm( el, e );
         }
     },
 

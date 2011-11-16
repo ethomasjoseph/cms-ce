@@ -257,6 +257,74 @@ Ext.define( 'App.controller.EditUserPanelController', {
         }
     },
 
+    showEditUserForm: function( el, e )
+    {
+        if ( el.action == 'newUser' )
+        {
+            var tab = {
+                id: Ext.id( null, 'new-user-' ),
+                title: 'New User',
+                iconCls: 'icon-new-user',
+                closable: true,
+                autoScroll: true,
+                layout: 'fit',
+                items: [
+                    {
+                        xtype: 'userWizardPanel'
+                    }
+                ]
+            };
+            var tabItem = this.getCmsTabPanel().addTab( tab );
+            var window = new Ext.window.Window( {
+                                                    title: 'Select user store',
+                                                    layout: 'fit',
+                                                    modal: 'true',
+                                                    items: [
+                                                        {
+                                                            xtype: 'userStoreListPanel'
+                                                        }
+                                                    ],
+                                                    cancelled: true,
+                                                    listeners: {
+                                                        close: function()
+                                                        {
+                                                            if ( this.cancelled )
+                                                            {
+                                                                tabItem.close();
+                                                            }
+                                                        }
+                                                    }
+                                                } );
+            window.show();
+
+        }
+        else
+        {
+            var accountDetail = this.getAccountDetailPanel();
+            var tabPane = this.getCmsTabPanel();
+            var currentUser = accountDetail.getCurrentUser();
+            Ext.Ajax.request( {
+                                  url: 'data/user/userinfo',
+                                  method: 'GET',
+                                  params: {key: currentUser.key},
+                                  success: function( response )
+                                  {
+                                      var jsonObj = Ext.JSON.decode( response.responseText );
+                                      var tab = {
+                                          xtype: 'userWizardPanel',
+                                          id: currentUser.userStore + '-' + currentUser.name,
+                                          title: currentUser.displayName + ' (' + currentUser.qualifiedName + ')',
+                                          iconCls: 'icon-edit-user',
+                                          closable: true,
+                                          userFields: jsonObj,
+                                          autoScroll: true
+                                      };
+                                      tabPane.addTab( tab );
+                                  }
+                              } );
+        }
+    },
+
     closeUserForm: function( button )
     {
         var tabPane = this.getCmsTabPanel();
@@ -293,6 +361,11 @@ Ext.define( 'App.controller.EditUserPanelController', {
         if ( !win )
             win = Ext.create('widget.userDeleteWindow');
         return win;
+    },
+
+    getAccountDetailPanel: function()
+    {
+        return Ext.ComponentQuery.query( 'accountDetail' )[0];
     }
 
 } );
