@@ -3,7 +3,7 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
     alias: 'widget.photoUploadButton',
     width: 132,
     height: 132,
-    url: '',
+    uploadUrl: 'data/user/photo',
     progressBarHeight: 8,
 
     // TODO: Move markup to template file
@@ -74,7 +74,7 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
                                                   runtimes                : 'html5,flash,silverlight',
                                                   multi_selection         :false,
                                                   browse_button           : buttonId,
-                                                  url                     : this.url,
+                                                  url                     : this.uploadUrl,
                                                   multipart               : true,
                                                   drop_element            : buttonId,
                                                   flash_swf_url           : 'common/js/fileupload/plupload/js/plupload.flash.swf',

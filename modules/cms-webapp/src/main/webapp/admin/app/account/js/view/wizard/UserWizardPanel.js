@@ -47,7 +47,6 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                         xtype: 'photoUploadButton',
                         width: 111,
                         height: 111,
-                        url: 'data/user/photo',
                         photoUrl: photoUrl,
                         progressBarHeight: 6
                     }
