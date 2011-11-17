@@ -857,12 +857,12 @@ ul.cms-wizard-navigation a.last-current {
     font-weight: bold !important;
 }
 
-/*****   Notify User Window   *****/
-.cms-notify-user-window .notify-header h3 {
+/*****   Base dialog Window   *****/
+.cms-dialog-window .dialog-header h3 {
     margin-top: 0;
 }
 
-.cms-notify-user-window .notify-user {
+.cms-dialog-window .dialog-info {
     color: #555;
     border: 1px solid #B5B8C8;
     padding:  10px;
