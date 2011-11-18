@@ -44,7 +44,12 @@ Ext.define( 'Common.view.BaseDialogWindow', {
                     iconAlign: 'top',
                     text: 'Close',
                     action: 'close',
-                    iconCls: 'icon-close'
+                    iconCls: 'icon-close',
+                    listeners: {
+                        click: function( btn, evt ) {
+                            btn.up( 'baseDialogWindow' ).close();
+                        }
+                    }
                 }
             ]
         }
@@ -63,6 +68,10 @@ Ext.define( 'Common.view.BaseDialogWindow', {
             var form = cmp.down( 'form' );
             if ( form ){
                 form.doLayout();
+                var firstField = form.down( 'field' );
+                if ( firstField ) {
+                    firstField.focus();
+                }
             }
         }
     },
