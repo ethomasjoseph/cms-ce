@@ -17,22 +17,7 @@ Ext.define( 'Common.view.BaseDialogWindow', {
     bodyStyle: 'background: #fff;',
 
     dialogTitle: 'Base dialog',
-    dialogHeaderCfg: {
-        itemId: 'dialogHeader',
-        xtype: 'container',
-        cls: 'dialog-header',
-        styleHtmlContent: true,
-        tpl: new Ext.XTemplate('<h3>{title}</h3>')
-    },
-    dialogInfoCfg: {
-        itemId: 'dialogInfo',
-        cls: 'dialog-info',
-        xtype: 'container',
-        border: false,
-        height: 80,
-        styleHtmlContent: true,
-        tpl: new Ext.XTemplate(Templates.common.userInfo)
-    },
+    dialogInfoTpl: Templates.common.userInfo,
 
     dockedItems: [
         {
@@ -80,18 +65,26 @@ Ext.define( 'Common.view.BaseDialogWindow', {
     {
         var me = this;
         Ext.Array.insert( this.items, 0, [
-            this.dialogHeaderCfg,
-            this.dialogInfoCfg
+            {
+                itemId: 'dialogHeader',
+                xtype: 'container',
+                cls: 'dialog-header',
+                styleHtmlContent: true,
+                html: '<h3>' + me.dialogTitle + '</h3>'
+            },
+            {
+                itemId: 'dialogInfo',
+                cls: 'dialog-info',
+                xtype: 'container',
+                border: false,
+                height: 80,
+                styleHtmlContent: true,
+                tpl: new Ext.XTemplate( me.dialogInfoTpl )
+            }
         ]);
 
         this.callParent( arguments );
 
-        var header = this.down( '#dialogHeader' );
-        if ( header ) {
-            header.update( {
-                title: me.dialogTitle
-            } );
-        }
     },
 
     doShow: function( model ) {
