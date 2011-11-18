@@ -1,32 +1,18 @@
 Ext.define( 'App.view.ChangePasswordWindow', {
-    extend: 'Ext.window.Window',
+    extend: 'Common.view.BaseDialogWindow',
     alias: 'widget.userChangePasswordWindow',
 
-    title: 'Change Password',
-    width: 400,
-    plain: true,
-    modal: true,
+    dialogTitle: 'Change Password',
 
     initComponent: function()
     {
         this.items = [
             {
-                id: 'userChangePasswordUserInfo',
-                bodyPadding: 10,
-                border: false,
-                tpl: new Ext.XTemplate(Templates.common.userInfo),
-                listeners: {
-                    'render': function() {
-                        this.update(this.up().modelData);
-                    }
-                }
-            },
-            {
                 xtype: 'form',
                 id: 'userChangePasswordForm',
                 method: 'POST',
                 url: 'data/user/changepassword',
-                bodyPadding: '0 10 10 10',
+                bodyPadding: '10 0',
                 bodyCls: 'cms-no-border',
                 layout: 'anchor',
                 defaults: {
@@ -50,44 +36,42 @@ Ext.define( 'App.view.ChangePasswordWindow', {
                     itemId: 'cpw_password2',
                     submitValue: false,
                     allowBlank: false
+                },{
+                    margin: '0 0 10px 105px',
+                    xtype: 'container',
+                    defaults: {
+                        xtype: 'button',
+                        scale: 'medium',
+                        margin: '0 10 0 0'
+                    },
+                    items: [
+                        {
+                            text: 'Cancel',
+                            iconCls: 'icon-cancel',
+                            action: 'close',
+                            handler: function() {
+                                this.up('window').close();
+                            }
+                        },
+                        {
+                            text: 'Change Password',
+                            iconCls: 'icon-btn-tick-24',
+                            itemId: 'changePasswordButton',
+                            disabled: true,
+                            handler: function() {
+                                var form = Ext.getCmp( 'userChangePasswordForm' ).getForm();
+                                if ( form.isValid() )
+                                {
+                                    form.submit();
+                                }
+                            }
+                        }
+                    ]
                 }]
             }
         ];
 
-        this.buttons = [
-            {
-                text: 'Cancel',
-                handler: function() {
-                    this.up('window').close();
-                }
-            },
-            {
-                text: 'Change Password',
-                itemId: 'changePasswordButton',
-                disabled: true,
-                handler: function() {
-                    var form = Ext.getCmp( 'userChangePasswordForm' ).getForm();
-                    if ( form.isValid() )
-                    {
-                        form.submit();
-                    }
-                }
-            }
-        ];
-
-        this.listeners = {
-            afterrender: function() {
-                Ext.ComponentQuery.query('#cpw_password')[0].focus();
-            }
-        },
-
         this.callParent( arguments );
-    },
-
-    doShow: function( model )
-    {
-        this.modelData = model.data;
-        this.show();
     },
 
     doChange: function( e )
