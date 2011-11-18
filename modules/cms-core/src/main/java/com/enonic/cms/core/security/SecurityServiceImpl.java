@@ -4,6 +4,7 @@
  */
 package com.enonic.cms.core.security;
 
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -540,9 +541,23 @@ public class SecurityServiceImpl
     {
         HttpServletRequest request = ServletRequestAccessor.getRequest();
         HttpSession session = request.getSession( false );
+
         if ( null != session )
         {
-            session.invalidate();
+            clearSession( session );
+        }
+    }
+
+    private void clearSession( HttpSession session )
+    {
+        Enumeration attributeNames = session.getAttributeNames();
+        while ( attributeNames.hasMoreElements() )
+        {
+            String attributeName = (String) attributeNames.nextElement();
+            if ( !attributeName.equals( "X-Trace-Server-Enabled" ) )
+            {
+                session.removeAttribute( attributeName );
+            }
         }
     }
 
