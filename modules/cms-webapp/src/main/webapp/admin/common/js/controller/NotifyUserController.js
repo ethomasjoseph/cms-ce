@@ -10,9 +10,6 @@ Ext.define( 'Common.controller.NotifyUserController', {
         this.control( {
             'notifyUserWindow *[action=send]':{
                 click: this.doSend
-            },
-            'notifyUserWindow *[action=close]': {
-                click: this.closeWindow
             }
         } );
         this.application.on({
