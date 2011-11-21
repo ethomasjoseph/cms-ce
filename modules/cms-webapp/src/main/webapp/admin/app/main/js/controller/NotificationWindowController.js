@@ -42,7 +42,7 @@ Ext.define('App.controller.NotificationWindowController', {
         notificationWindow.center();
         notificationWindow.animate(
             {
-                duration: 400,
+                duration: 300,
                 from: {
                     opacity: 0
                 },
@@ -93,6 +93,7 @@ Ext.define('App.controller.NotificationWindowController', {
 
         notificationWindow.getEl().on('mouseenter', function() {
             notificationWindow.getActiveAnimation().paused = true;
+            notificationWindow.getEl().setOpacity(1);
         }, this);
 
         notificationWindow.getEl().on('mouseleave', function() {
