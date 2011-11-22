@@ -1,8 +1,8 @@
 <html>
 <head>
     <title>Enonic CMS Admin</title>
-    <link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css">
-    <link rel="stylesheet" type="text/css" href="resources/css/main.css">
+    <link rel="stylesheet" type="text/css" href="../../ext/resources/css/ext-all.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/main.css">
     <style type="text/css">
         h1 {
             font-size: 21px;
@@ -17,24 +17,24 @@
         }
 
         .icon-browse {
-            background-image: url("resources/images/folder_explore.png");
+            background-image: url("../../resources/images/folder_explore.png");
         }
 
         .icon-upload {
-            background-image: url("resources/images/up-icon.png");
+            background-image: url("../../resources/images/up-icon.png");
         }
 
         .icon-remove {
-            background-image: url("resources/images/delete.png");
+            background-image: url("../../resources/images/delete.png");
         }
     </style>
-    <script type="text/javascript" src="common/js/fileupload/plupload/js/plupload.full.js"></script>
-    <script type="text/javascript" src="ext/ext-all-debug.js"></script>
+    <script type="text/javascript" src="../../common/js/fileupload/plupload/js/plupload.full.js"></script>
+    <script type="text/javascript" src="../../ext/ext-all-debug.js"></script>
     <script type="text/javascript">
         Ext.Loader.setConfig({
             enabled: true,
             paths: {
-                'Common' : 'common/js'
+                'Common' : '../../common/js'
             }
         });
 
@@ -65,7 +65,7 @@
                                 {
                                     xtype: 'container',
                                     margin: '15 15 15 15',
-                                    html: '<h1>File Upload</h1><div>File upload components using <a href="http://www.plupload.com/">Plupload</a></div>'
+                                    html: '<h1>File Upload</h1><div>File upload components using <a href="http://www.plupload.com/">Plupload</a></div><p>Uploaded photo is not shown in this example at the moment.</p>'
                                 },
                                 {
                                     xtype: 'container',
@@ -74,7 +74,9 @@
                                     },
                                     defaults: {
                                         margin: '0 5 0 0',
-                                        url: 'data/user/photo'
+                                        uploadUrl: '../../data/user/photo',
+                                        photoUrl: '../../resources/images/x-user-photo.png'
+
                                     },
                                     html: '<h2>Photo Upload Button</h2>',
                                     items: [

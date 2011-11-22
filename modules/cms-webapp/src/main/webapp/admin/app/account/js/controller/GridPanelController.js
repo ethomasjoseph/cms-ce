@@ -62,7 +62,7 @@ Ext.define( 'App.controller.GridPanelController', {
             {
                 detailPanel.setCurrentUser( user.data );
             }
-
+            //TODO: can fail
             detailPanel.showUserPreview( user.data )
         }
         else

@@ -52,6 +52,7 @@ Ext.define( 'Common.WizardPanel', {
                         {
                             text: isLast ? 'Finish' : 'Next',
                             itemId: isLast ? 'finish' : 'next',
+                            formBind: true,
                             iconCls: isLast ? 'icon-btn-finish-24' : 'icon-btn-arrow-right-24',
                             handler: function( btn, evt )
                             {

@@ -172,7 +172,7 @@ public final class UsersResource
 
     @POST
     @Path("changepassword")
-    public Map<String, Object> changePassword( @FormParam("pwd") final String password,
+    public Map<String, Object> changePassword( @FormParam("cpw_password") final String password,
                                                @FormParam("userKey") final String userKey )
     {
 
