@@ -39,6 +39,7 @@ Ext.define( 'Common.WizardPanel', {
                     },
                     items: [
                         {
+                            itemId: 'prev',
                             text: 'Previous',
                             iconCls: 'icon-btn-arrow-left-24',
                             hideMode: 'display',
