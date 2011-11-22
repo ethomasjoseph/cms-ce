@@ -267,12 +267,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
                 iconCls: 'icon-new-user',
                 closable: true,
                 autoScroll: true,
-                layout: 'fit',
-                items: [
-                    {
-                        xtype: 'userWizardPanel'
-                    }
-                ]
+                xtype: 'userWizardPanel'
             };
             var tabItem = this.getCmsTabPanel().addTab( tab );
             var window = new Ext.window.Window( {
