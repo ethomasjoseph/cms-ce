@@ -1,4 +1,4 @@
-Ext.define('App.view.wizard.UserWizardToolbar', {
+Ext.define( 'App.view.wizard.UserWizardToolbar', {
     extend: 'Ext.toolbar.Toolbar',
     alias : 'widget.userWizardToolbar',
 
@@ -6,7 +6,8 @@ Ext.define('App.view.wizard.UserWizardToolbar', {
 
     isNewUser: true,
 
-    initComponent: function() {
+    initComponent: function()
+    {
 
         var buttonDefaults = {
             scale: 'medium',
@@ -14,76 +15,51 @@ Ext.define('App.view.wizard.UserWizardToolbar', {
             minWidth: 64
         };
 
-        this.items = [
-            {
-                xtype: 'buttongroup',
-                columns: 1,
-                defaults: buttonDefaults,
-                items: [
-                    {
-                        text: 'Save',
-                        action: 'saveNewUser',
-                        itemId: 'save',
-                        iconCls: 'icon-btn-save-24'
-                    }
-                ]
-            },
-            {
-                xtype: 'buttongroup',
-                columns: 1,
-                defaults: buttonDefaults,
-                items: [
-                    {
-                        text: 'Delete',
-                        action: 'showDeleteWindow',
-                        iconCls: 'icon-delete-user-24',
-                        disabled: this.isNewUser
-                    }
-                ]
-            },
-            {
-                xtype: 'buttongroup',
-                columns: 1,
-                defaults: buttonDefaults,
-                items: [
-                    {
-                        text: 'Change Password',
-                        action: 'changePassword',
-                        iconCls: 'icon-change-password-24',
-                        disabled: this.isNewUser
-                    }
-                ]
-            }/*,
-            '->',
-            {
-                xtype: 'buttongroup',
-                columns: 3,
-                defaults: buttonDefaults,
-                items: [
-                    {
-                        text: 'Previous',
-                        iconCls: 'icon-btn-arrow-left-24',
-                        itemId: 'prev',
-                        disabled: true,
-                        action: 'wizardPrev'
-                    },
-                    {
-                        text: 'Next',
-                        iconCls: 'icon-btn-arrow-right-24',
-                        itemId: 'next',
-                        action: 'wizardNext'
-                    },
-                    {
-                        text: 'Finish',
-                        iconCls: 'icon-btn-finish-24',
-                        disabled: true,
-                        itemId: 'finish',
-                        action: 'wizardNext'
-                    }
-                ]
-            }*/
-        ];
-        this.callParent(arguments);
+        var saveBtn = {
+            xtype: 'buttongroup',
+            columns: 1,
+            defaults: buttonDefaults,
+            items: [
+                {
+                    text: 'Save',
+                    action: 'saveNewUser',
+                    itemId: 'save',
+                    iconCls: 'icon-btn-save-24'
+                }
+            ]};
+        var deleteBtn = {
+            xtype: 'buttongroup',
+            columns: 1,
+            defaults: buttonDefaults,
+            items: [
+                {
+                    text: 'Delete',
+                    action: 'showDeleteWindow',
+                    iconCls: 'icon-delete-user-24',
+                    disabled: this.isNewUser
+                }
+            ]};
+        var changePasswordBtn = {
+            xtype: 'buttongroup',
+            columns: 1,
+            defaults: buttonDefaults,
+            items: [
+                {
+                    text: 'Change Password',
+                    action: 'changePassword',
+                    iconCls: 'icon-change-password-24',
+                    disabled: this.isNewUser
+                }
+            ]};
+        if ( this.isNewUser )
+        {
+            this.items = [ saveBtn ];
+        }
+        else
+        {
+            this.items = [ saveBtn, deleteBtn, changePasswordBtn];
+        }
+        this.callParent( arguments );
     }
 
-});
+} );
