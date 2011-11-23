@@ -61,9 +61,9 @@ Ext.define( 'App.controller.EditUserPanelController', {
         );
     },
 
-    deleteUser: function()
+    deleteUser: function(button)
     {
-        var deleteUserWindow = this.getUserDeleteWindow();
+        var deleteUserWindow = button.up('deleteAccountWindow');
 
         Ext.Ajax.request(
             {
@@ -73,11 +73,11 @@ Ext.define( 'App.controller.EditUserPanelController', {
                 success: function( response, opts )
                 {
                     deleteUserWindow.close();
-                    Ext.Msg.alert( 'Info', 'User was deleted' );
+                    Ext.Msg.alert( 'Info', 'Account(s) was(were) deleted' );
                 },
                 failure: function( response, opts )
                 {
-                    Ext.Msg.alert( 'Info', 'User wasn\'t deleted' );
+                    Ext.Msg.alert( 'Info', 'Account(s) was(were) not deleted' );
                 }
             }
         );

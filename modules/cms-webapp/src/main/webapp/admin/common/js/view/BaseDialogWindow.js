@@ -31,7 +31,8 @@ Ext.define( 'Common.view.BaseDialogWindow', {
                     action: 'close',
                     iconCls: 'icon-close',
                     listeners: {
-                        click: function( btn, evt ) {
+                        click: function( btn, evt )
+                        {
                             btn.up( 'baseDialogWindow' ).close();
                         }
                     }
@@ -41,20 +42,25 @@ Ext.define( 'Common.view.BaseDialogWindow', {
     ],
 
     listeners: {
-        show: function( cmp ) {
+        show: function( cmp )
+        {
             var header = this.down( '#dialogHeader' );
-            if ( header ) {
+            if ( header )
+            {
                 header.doLayout();
             }
             var info = this.down( '#dialogInfo' );
-            if ( info ) {
+            if ( info )
+            {
                 info.doLayout();
             }
             var form = cmp.down( 'form' );
-            if ( form ){
+            if ( form )
+            {
                 form.doLayout();
                 var firstField = form.down( 'field' );
-                if ( firstField ) {
+                if ( firstField )
+                {
                     firstField.focus();
                 }
             }
@@ -81,23 +87,33 @@ Ext.define( 'Common.view.BaseDialogWindow', {
                 styleHtmlContent: true,
                 tpl: new Ext.XTemplate( me.dialogInfoTpl )
             }
-        ]);
+        ] );
 
         this.callParent( arguments );
 
     },
 
-    doShow: function( model ) {
-        if ( model ) {
+    setDialogInfoTpl: function( tpl )
+    {
+        var dialogInfo = this.down( '#dialogInfo' )
+        dialogInfo.tpl = new Ext.XTemplate( tpl );
+    },
+
+    doShow: function( model )
+    {
+        if ( model )
+        {
             this.modelData = model.data;
             var info = this.down( '#dialogInfo' );
-            if ( info ) {
+            if ( info )
+            {
                 info.update( this.modelData );
             }
         }
-        var form = this.down( 'form' ).getForm();
-        if ( form ) {
-            form.reset();
+        var form = this.down( 'form' );
+        if ( form )
+        {
+            form.getForm().reset();
         }
         this.show();
     }
