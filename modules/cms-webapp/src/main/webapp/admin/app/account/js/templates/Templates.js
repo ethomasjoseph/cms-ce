@@ -28,7 +28,10 @@ Templates.account = {
             '<div class="cms-wizard-header-container">' + '<div class="cms-wizard-header clearfix">' +
                     '<input type="text" value="{value}" readonly="true" id="cms-display-name" class="cms-display-name"/>' +
                     '</div>' +
-                    '<div class="clearfix user-store-user-name">New User: <span id="q-userstore"></span><span id="q-username"></span></div>' +
+                    '<div class="clearfix user-store-user-name">' +
+                    '<tpl if="isNewUser">New User:</tpl>' +
+                    '<tpl if="isNewUser == false">User:</tpl>' +
+                    '<span id="q-userstore"></span><span id="q-username"></span></div>' +
                     '</div>'
 
     ,noUserSelected:

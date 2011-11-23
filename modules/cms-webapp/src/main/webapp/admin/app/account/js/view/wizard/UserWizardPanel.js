@@ -21,10 +21,6 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         border: false
     },
 
-    tbar: {
-        xtype: 'userWizardToolbar'
-    },
-
     initComponent: function()
     {
         var me = this;
@@ -38,6 +34,10 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
             displayNameValue = me.userFields.displayName;
         }
 
+        me.tbar = {
+            xtype: 'userWizardToolbar',
+            isNewUser: this.userFields == undefined
+        };
         me.items = [
             {
                 width: 121,
@@ -77,7 +77,8 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                         },
                         tpl: Templates.account.newUserPanelHeader,
                         data: {
-                            value: displayNameValue
+                            value: displayNameValue,
+                            isNewUser: this.userFields == undefined
                         }
                     },
                     {
