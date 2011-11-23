@@ -728,6 +728,10 @@ ul.cms-wizard-navigation a.next {
     color: #acacac;
 }
 
+.edit-user ul.cms-wizard-navigation a.next {
+    color: #222222;
+}
+
 ul.cms-wizard-navigation a.last {
     color: #acacac;
 }
