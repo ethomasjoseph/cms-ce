@@ -29,21 +29,21 @@ Ext.define( 'Common.WizardPanel', {
                     isLast = ( index == ( all.length - 1 ) );
                 item.bbar = {
                     xtype: 'container',
-                    margin: '20 10 10',
+                    margin: '10 20',
                     height: 40,
                     itemId: 'controls',
                     defaults: {
                         xtype: 'button',
+                        width: 90,
                         scale: 'medium'
                     },
                     items: [
                         {
-                            text: 'Previous',
                             itemId: 'prev',
+                            text: 'Previous',
                             iconCls: 'icon-btn-arrow-left-24',
+                            hideMode: 'display',
                             hidden: isFirst,
-                            hideMode: 'visibility',
-                            margin: '0 10 0 0',
                             handler: function( btn, evt )
                             {
                                 wizard.prev();
@@ -52,6 +52,7 @@ Ext.define( 'Common.WizardPanel', {
                         {
                             text: isLast ? 'Finish' : 'Next',
                             itemId: isLast ? 'finish' : 'next',
+                            margin: isFirst ? '0 0 0 100' : '0 0 0 10',
                             formBind: true,
                             iconCls: isLast ? 'icon-btn-finish-24' : 'icon-btn-arrow-right-24',
                             handler: function( btn, evt )
