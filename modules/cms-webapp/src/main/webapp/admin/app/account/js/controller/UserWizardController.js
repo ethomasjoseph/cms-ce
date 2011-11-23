@@ -93,7 +93,7 @@ Ext.define( 'App.controller.UserWizardController', {
 
     wizardFinished: function( wizard, data )
     {
-        var tab = wizard.up( 'userWizardPanel' ).ownerCt;
+        var tab = wizard.up( 'userWizardPanel' );
         if ( tab )
         {
             tab.close();
