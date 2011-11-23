@@ -4,6 +4,8 @@ Ext.define('App.view.wizard.UserWizardToolbar', {
 
     border: false,
 
+    isNewUser: true,
+
     initComponent: function() {
 
         var buttonDefaults = {
@@ -35,7 +37,7 @@ Ext.define('App.view.wizard.UserWizardToolbar', {
                         text: 'Delete',
                         action: 'showDeleteWindow',
                         iconCls: 'icon-delete-user-24',
-                        disabled: true
+                        disabled: this.isNewUser
                     }
                 ]
             },
@@ -48,7 +50,7 @@ Ext.define('App.view.wizard.UserWizardToolbar', {
                         text: 'Change Password',
                         action: 'changePassword',
                         iconCls: 'icon-change-password-24',
-                        disabled: true
+                        disabled: this.isNewUser
                     }
                 ]
             }/*,
