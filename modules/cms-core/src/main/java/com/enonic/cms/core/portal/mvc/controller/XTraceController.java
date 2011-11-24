@@ -1,6 +1,10 @@
 package com.enonic.cms.core.portal.mvc.controller;
 
 import com.enonic.cms.api.Version;
+import com.enonic.cms.core.portal.livetrace.LivePortalTraceService;
+import com.enonic.cms.core.portal.livetrace.PastPortalRequestTrace;
+import com.enonic.cms.core.portal.livetrace.PortalRequestTrace;
+import com.enonic.cms.core.portal.xtrace.JsonSerializer;
 import com.enonic.cms.core.security.InvalidCredentialsException;
 import com.enonic.cms.core.security.SecurityService;
 import com.enonic.cms.core.security.user.QualifiedUsername;
@@ -23,10 +27,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Strings;
 import com.google.common.io.ByteStreams;
 
 import com.enonic.cms.framework.util.MimeTypeResolver;
@@ -48,6 +54,9 @@ public class XTraceController extends AbstractController
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private LivePortalTraceService livePortalTraceService;
+
     @Override
     protected ModelAndView handleRequestInternal( HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
@@ -57,6 +66,12 @@ public class XTraceController extends AbstractController
             handleResource( request, response );
             return null;
         }
+        if ( path.endsWith( "/info" ) )
+        {
+            handleXTraceInfo( request, response );
+            return null;
+        }
+
 
         return handleAuthenticationForm( request, response );
     }
@@ -151,5 +166,40 @@ public class XTraceController extends AbstractController
         ByteStreams.copy( inputStream, outputStream );
 
         response.setContentType( mimeType );
+    }
+
+    private void handleXTraceInfo( HttpServletRequest request, HttpServletResponse response )
+            throws Exception
+    {
+        boolean isAuthenticated = "true".equals( request.getSession().getAttribute( "X-Trace-Server-Enabled") );
+        if ( !isAuthenticated )
+        {
+            response.setStatus( HttpServletResponse.SC_FORBIDDEN );
+            return;
+        }
+
+        String id = request.getParameter( "id" );
+        if ( Strings.isNullOrEmpty( id ) )
+        {
+            response.setStatus( HttpServletResponse.SC_NOT_FOUND );
+            return;
+        }
+
+        for ( PastPortalRequestTrace pastPortalRequestTrace : livePortalTraceService.getHistorySince( 0 ) )
+        {
+            PortalRequestTrace portalRequestTrace = pastPortalRequestTrace.getPortalRequestTrace();
+            if ( portalRequestTrace.getId().equals( id ) )
+            {
+                JsonSerializer jsonSerializer = new JsonSerializer();
+
+                PrintWriter writer = response.getWriter();
+                writer.println( jsonSerializer.serialize( portalRequestTrace.getPageRenderingTrace() ) );
+
+                response.setContentType( "application/json" );
+                return;
+            }
+        }
+
+        response.setStatus( HttpServletResponse.SC_NOT_FOUND );
     }
 }

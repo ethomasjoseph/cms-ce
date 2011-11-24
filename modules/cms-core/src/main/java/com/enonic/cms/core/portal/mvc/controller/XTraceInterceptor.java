@@ -59,31 +59,7 @@ public class XTraceInterceptor
             return;
         }
 
-        final String traceInfo = new JsonSerializer().serialize( currentPageRenderingTrace );
-        final String traceInfoEncoded = new String( Base64.encodeBase64( traceInfo.getBytes() ) );
-
-        setResponseHeaders( response, traceInfoEncoded );
+        String portalRequestId = currentPageRenderingTrace.getPortalRequestTrace().getId();
+        response.setHeader( "X-Trace-Info-Id", portalRequestId );
     }
-
-    private void setResponseHeaders( HttpServletResponse response, String traceInfo )
-    {
-        final Integer charsPrHeader = 1000;
-        final int traceInfoCharLength = traceInfo.length();
-
-        final double numberOfHeadersAsDouble = Math.ceil( traceInfoCharLength / charsPrHeader.doubleValue() );
-        final int numberOfHeaders = (int) ( numberOfHeadersAsDouble );
-
-        for ( int i = 0; i < numberOfHeaders; i++ )
-        {
-            final int beginIndex = charsPrHeader * i;
-            int endIndex = beginIndex + charsPrHeader;
-            if ( endIndex >= traceInfoCharLength )
-                endIndex = beginIndex + ( traceInfoCharLength - beginIndex );
-
-            final String headerValue = traceInfo.substring( beginIndex, endIndex );
-
-            response.setHeader( "X-Trace-Info-" + i, headerValue );
-        }
-    }
-
 }
