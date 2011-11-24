@@ -66,12 +66,12 @@ public class XTraceController extends AbstractController
             handleResource( request, response );
             return null;
         }
+
         if ( path.endsWith( "/info" ) )
         {
             handleXTraceInfo( request, response );
             return null;
         }
-
 
         return handleAuthenticationForm( request, response );
     }
@@ -171,8 +171,7 @@ public class XTraceController extends AbstractController
     private void handleXTraceInfo( HttpServletRequest request, HttpServletResponse response )
             throws Exception
     {
-        boolean isAuthenticated = "true".equals( request.getSession().getAttribute( "X-Trace-Server-Enabled") );
-        if ( !isAuthenticated )
+        if ( !clientIsAuthenticated( request ) )
         {
             response.setStatus( HttpServletResponse.SC_FORBIDDEN );
             return;
@@ -201,5 +200,10 @@ public class XTraceController extends AbstractController
         }
 
         response.setStatus( HttpServletResponse.SC_NOT_FOUND );
+    }
+
+    private boolean clientIsAuthenticated( HttpServletRequest request )
+    {
+        return "true".equals( request.getSession().getAttribute( "X-Trace-Server-Enabled") );
     }
 }
