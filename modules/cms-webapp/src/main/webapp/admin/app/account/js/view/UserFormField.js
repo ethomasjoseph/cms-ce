@@ -26,6 +26,7 @@ Ext.define( 'App.view.UserFormField', {
             'birthday': 300,
             'gender': 200,
             'country': 400,
+            'timezone': 400,
             'global-position': 200,
             'locale': 200,
             'fax': 300,
