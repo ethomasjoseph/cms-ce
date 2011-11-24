@@ -53,11 +53,6 @@
                     padding: 5,
                     items: [
                         {
-                            region: 'west',
-                            xtype: 'accountFilter',
-                            width: 200
-                        },
-                        {
                             region: 'center',
                             xtype: 'cmsTabPanel',
                             items: [
@@ -73,6 +68,11 @@
                                             dock: 'top'
                                         }],
                                     items: [
+                                        {
+                                            region: 'west',
+                                            xtype: 'accountFilter',
+                                            width: 200
+                                        },
                                         {
                                             region: 'center',
                                             xtype: 'accountShow'
