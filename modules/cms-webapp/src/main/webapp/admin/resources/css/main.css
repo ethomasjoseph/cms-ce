@@ -779,20 +779,23 @@ ul.cms-wizard-navigation a.last-current {
     box-shadow: 0 0 3px #98c9f2;
 }
 
+.cms-wizard-header-container input:focus {
+    color: #000 !important;
+    border: 1px solid #99BCE8 !important;
+}
+
 .user-store-user-name {
     padding-left: 3px;
 }
 
 .cms-edited-field {
     color: #000 !important;
-    border: 1px solid #99BCE8 !important;
 }
 
 /*----- Image Upload Button -----*/
 
 .cms-image-upload-button-container {
     position: relative;
-    border: 1px solid #dbeeff;
     cursor: pointer;
 }
 
