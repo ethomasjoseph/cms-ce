@@ -62,6 +62,19 @@ Ext.define( 'Common.WizardPanel', {
                         }
                     ]
                 };
+
+                item.getBoundItems = function() {
+                    var boundItems = this._boundItems;
+                    if (!boundItems) {
+                        boundItems = this._boundItems = Ext.create('Ext.util.MixedCollection');
+                        boundItems.addAll(this.owner.query('[formBind]'));
+                        // also add a top nav to bound items of a current step
+                        if ( wizard.getLayout().getActiveItem() == this.owner ) {
+                            boundItems.add( this.owner.up( 'wizardPanel' ).down( '#progressBar' ) );
+                        }
+                    }
+                    return boundItems;
+                }
             });
         }
 
@@ -81,6 +94,8 @@ Ext.define( 'Common.WizardPanel', {
         this.dockedItems = [{
             xtype: 'panel',
             dock: 'top',
+            cls: 'cms-wizard-toolbar',
+            itemId: 'progressBar',
             listeners: {
                 click: {
                     fn: wizard.changeStep,
@@ -141,13 +156,15 @@ Ext.define( 'Common.WizardPanel', {
 
     changeStep: function(event, target)
     {
-        var element = Ext.fly(target);
-        if (element.hasCls('text')){
-            element = element.up('a');
-        }
-        if (element.hasCls('step')){
-            var step = Number(element.getAttribute('wizardStep'));
-            this.navigate(step - 1);
+        if( !this.down( '#progressBar' ).isDisabled() ) {
+            var element = Ext.fly(target);
+            if (element.hasCls('text')){
+                element = element.up('a');
+            }
+            if (element.hasCls('step')){
+                var step = Number(element.getAttribute('wizardStep'));
+                this.navigate(step - 1);
+            }
         }
     },
 
@@ -218,7 +235,7 @@ Ext.define( 'Common.WizardPanel', {
     {
         if ( newStep )
         {
-            this.updateProgress();
+            this.updateProgress( newStep );
             this.fireEvent( "stepchanged", this, oldStep, newStep );
             if ( this.showControls ) {
                 // update internal controls if shown
@@ -232,9 +249,16 @@ Ext.define( 'Common.WizardPanel', {
         }
     },
 
-    updateProgress: function()
+    updateProgress: function( newStep )
     {
-        this.dockedItems.items[0].update( this.items.items );
+        var progressBar = this.dockedItems.items[0];
+        progressBar.update( this.items.items );
+
+        var step = newStep || this.getLayout().getActiveItem();
+        var form = step instanceof Ext.form.Panel ? step : step.down( 'form' );
+        if ( form ) {
+            progressBar.setDisabled( !form.getForm().isValid() );
+        }
     },
 
     updateButtons: function( toolbar, disable )

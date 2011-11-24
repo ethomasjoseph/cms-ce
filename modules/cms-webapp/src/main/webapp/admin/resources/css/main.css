@@ -665,6 +665,10 @@ div.cms-userstore-active {
 
 /*----- Wizard navigation -----*/
 
+.cms-wizard-toolbar .x-mask {
+    display: none;
+}
+
 ul.cms-wizard-navigation {
     list-style-type: none !important;
     margin-left: 6px;
