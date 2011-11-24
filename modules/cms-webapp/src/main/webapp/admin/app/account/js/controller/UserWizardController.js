@@ -5,13 +5,15 @@ Ext.define( 'App.controller.UserWizardController', {
         'UserstoreConfigStore',
         'CountryStore',
         'RegionStore',
-        'TimezoneStore'
+        'TimezoneStore',
+        'LocaleStore'
     ],
     models: [
         'UserstoreConfigModel',
         'CountryModel',
         'RegionModel',
-        'TimezoneModel'
+        'TimezoneModel',
+        'LocaleModel'
     ],
     views: [],
 

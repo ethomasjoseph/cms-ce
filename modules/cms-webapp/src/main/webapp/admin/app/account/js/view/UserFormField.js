@@ -28,7 +28,7 @@ Ext.define( 'App.view.UserFormField', {
             'country': 400,
             'timezone': 400,
             'global-position': 200,
-            'locale': 200,
+            'locale': 300,
             'fax': 300,
             'mobile': 300,
             'phone': 300
