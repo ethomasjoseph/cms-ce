@@ -3,6 +3,7 @@ Ext.define( 'App.view.ShowPanel', {
     alias : 'widget.accountShow',
 
     requires: [
+        'App.view.BrowseToolbar',
         'App.view.GridPanel',
         'App.view.DetailPanel'
     ],
@@ -14,6 +15,10 @@ Ext.define( 'App.view.ShowPanel', {
     initComponent: function()
     {
         this.items = [
+            {
+                region: 'north',
+                xtype: 'browseToolbar'
+            },
             {
                 region: 'center',
                 xtype: 'accountGrid',
