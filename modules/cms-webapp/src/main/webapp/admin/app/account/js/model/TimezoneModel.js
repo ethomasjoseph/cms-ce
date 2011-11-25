@@ -5,6 +5,12 @@ Ext.define('App.model.TimezoneModel', {
         'id',
         'shortName',
         'name',
-        'offset'
+        'offset',
+        {
+            name: 'nameAndOffset',
+            convert: function(value, record) {
+                return record.get('name') + ' (' + record.get('offset') + ')';
+            }
+        }
     ]
 });

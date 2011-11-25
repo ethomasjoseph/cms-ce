@@ -302,7 +302,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
         {
             fieldStore = Ext.data.StoreManager.lookup( 'TimezoneStore' );
             valueField = 'id';
-            displayField = 'name';
+            displayField = 'nameAndOffset';
             displayConfig = {
                 getInnerTpl: function()
                 {
