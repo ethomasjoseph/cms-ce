@@ -7,9 +7,9 @@ Ext.define('App.model.TimezoneModel', {
         'name',
         'offset',
         {
-            name: 'nameAndOffset',
+            name: 'idAndOffset',
             convert: function(value, record) {
-                return record.get('name') + ' (' + record.get('offset') + ')';
+                return record.get('id') + ' (' + record.get('offset') + ')';
             }
         }
     ]
