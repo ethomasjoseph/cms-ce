@@ -4,7 +4,8 @@ Ext.define( 'App.controller.EditUserPanelController', {
     stores: [],
     models: [],
     views: [
-        'DeleteWindow'
+        'DeleteWindow',
+        'SelectUserStoreWindow'
     ],
 
     init: function()
@@ -270,26 +271,17 @@ Ext.define( 'App.controller.EditUserPanelController', {
                 xtype: 'userWizardPanel'
             };
             var tabItem = this.getCmsTabPanel().addTab( tab );
-            var window = new Ext.window.Window( {
-                                                    title: 'Select user store',
-                                                    layout: 'fit',
-                                                    modal: 'true',
-                                                    items: [
-                                                        {
-                                                            xtype: 'userStoreListPanel'
-                                                        }
-                                                    ],
-                                                    cancelled: true,
-                                                    listeners: {
-                                                        close: function()
-                                                        {
-                                                            if ( this.cancelled )
-                                                            {
-                                                                tabItem.close();
-                                                            }
-                                                        }
-                                                    }
-                                                } );
+            var window = Ext.create( 'widget.selectUserStoreWindow', {
+                                         listeners: {
+                                             close: function()
+                                             {
+                                                 if ( this.cancelled )
+                                                 {
+                                                     tabItem.close();
+                                                 }
+                                             }
+                                         }
+                                     } );
             window.show();
 
         }

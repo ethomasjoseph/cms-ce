@@ -77,8 +77,11 @@ Ext.define( 'Common.view.BaseDialogWindow', {
                 cls: 'dialog-header',
                 styleHtmlContent: true,
                 html: '<h3>' + me.dialogTitle + '</h3>'
-            },
-            {
+            }
+
+        ] );
+        if (this.dialogInfoTpl) {
+            Ext.Array.insert( this.items, 1, {
                 itemId: 'dialogInfo',
                 cls: 'dialog-info',
                 xtype: 'container',
@@ -86,8 +89,8 @@ Ext.define( 'Common.view.BaseDialogWindow', {
                 height: 80,
                 styleHtmlContent: true,
                 tpl: new Ext.XTemplate( me.dialogInfoTpl )
-            }
-        ] );
+            });
+        }
 
         this.callParent( arguments );
 

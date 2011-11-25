@@ -1,0 +1,24 @@
+Ext.define( 'App.view.SelectUserStoreWindow', {
+    extend: 'Common.view.BaseDialogWindow',
+    alias: 'widget.selectUserStoreWindow',
+
+    requires: ['App.view.wizard.UserStoreListPanel'],
+
+    dialogTitle: 'Select user store',
+    dialogInfoTpl: undefined,
+    layout: 'fit',
+    modal: 'true',
+    items: [
+        {
+            xtype: 'userStoreListPanel'
+        }
+    ],
+    cancelled: true,
+
+    initComponent: function()
+    {
+        this.callParent( arguments );
+    }
+
+
+});
