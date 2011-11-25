@@ -156,16 +156,16 @@ Ext.define( 'Common.WizardPanel', {
 
     changeStep: function(event, target)
     {
-        if( !this.down( '#progressBar' ).isDisabled() ) {
-            var element = Ext.fly(target);
-            if (element.hasCls('text')){
-                element = element.up('a');
-            }
-            if (element.hasCls('step')){
-                var step = Number(element.getAttribute('wizardStep'));
-                this.navigate(step - 1);
-            }
+        var progressBar = this.dockedItems.items[0];
+        var isDisabled = progressBar.isDisabled();
+
+        var li = Ext.fly( target ).up( 'li' );
+
+        if ( !isDisabled || ( isDisabled && li.hasCls( 'previous' ) )  ){
+            var step = Number( li.getAttribute( 'wizardStep' ) );
+            this.navigate( step - 1 );
         }
+        event.stopEvent()
     },
 
     next: function( btn )

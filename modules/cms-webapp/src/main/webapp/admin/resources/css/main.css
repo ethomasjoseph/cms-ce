@@ -668,6 +668,10 @@ div.cms-userstore-active {
 .cms-wizard-toolbar .x-mask {
     display: none;
 }
+.cms-wizard-toolbar.x-item-disabled {
+    opacity: 1;
+    filter: none;
+}
 
 ul.cms-wizard-navigation {
     list-style-type: none !important;
@@ -714,6 +718,7 @@ ul.cms-wizard-navigation li a {
     padding: 8px 15px 8px 15px;
     color: #222;
     text-decoration: none !important;
+    cursor: pointer;
     background-color: #eee;
 }
 
@@ -736,12 +741,11 @@ ul.cms-wizard-navigation a.next {
     color: #222222;
 }
 
-ul.cms-wizard-navigation a.last {
+.cms-wizard-toolbar.x-item-disabled ul.cms-wizard-navigation a.next,
+ul.cms-wizard-navigation li a.last,
+ul.cms-wizard-navigation li a.last-current {
     color: #acacac;
-}
-
-ul.cms-wizard-navigation a.last-current {
-    color: #acacac;
+    cursor: default;
 }
 
 .cms-wizard>div>.x-panel-body {
