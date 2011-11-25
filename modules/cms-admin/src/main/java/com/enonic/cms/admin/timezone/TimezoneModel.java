@@ -5,7 +5,7 @@ public final class TimezoneModel
     private String id;
     private String shortName;
     private String name;
-    private int offset;
+    private String offset;
 
     public String getId()
     {
@@ -37,12 +37,12 @@ public final class TimezoneModel
         this.name = name;
     }
 
-    public int getOffset()
+    public String getOffset()
     {
         return offset;
     }
 
-    public void setOffset( int offset )
+    public void setOffset( String offset )
     {
         this.offset = offset;
     }

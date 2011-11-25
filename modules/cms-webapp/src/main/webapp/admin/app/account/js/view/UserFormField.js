@@ -26,8 +26,9 @@ Ext.define( 'App.view.UserFormField', {
             'birthday': 300,
             'gender': 200,
             'country': 400,
+            'timezone': 400,
             'global-position': 200,
-            'locale': 200,
+            'locale': 300,
             'fax': 300,
             'mobile': 300,
             'phone': 300
@@ -116,7 +117,8 @@ Ext.define( 'App.view.UserFormField', {
                 displayField: me.displayField,
                 queryMode: me.queryMode,
                 minChars: me.minChars,
-                emptyText: me.emptyText
+                emptyText: me.emptyText,
+                listConfig: me.displayConfig
             };
         }
         else
