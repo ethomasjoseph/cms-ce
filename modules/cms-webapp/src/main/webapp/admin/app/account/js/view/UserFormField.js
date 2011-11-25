@@ -117,7 +117,8 @@ Ext.define( 'App.view.UserFormField', {
                 displayField: me.displayField,
                 queryMode: me.queryMode,
                 minChars: me.minChars,
-                emptyText: me.emptyText
+                emptyText: me.emptyText,
+                listConfig: me.displayConfig
             };
         }
         else
