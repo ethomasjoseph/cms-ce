@@ -297,11 +297,23 @@ Ext.define( 'App.view.EditUserFormPanel', {
         var fieldStore;
         var valueField;
         var displayField;
+        var displayConfig;
         if ( field.type == 'timezone' )
         {
             fieldStore = Ext.data.StoreManager.lookup( 'TimezoneStore' );
             valueField = 'id';
-            displayField = 'name';
+            displayField = 'idAndOffset';
+            displayConfig = {
+                getInnerTpl: function()
+                {
+                    return '{id} ({offset})';
+                }
+            };
+        } else if ( field.type == 'locale' )
+        {
+            fieldStore = Ext.data.StoreManager.lookup( 'LocaleStore' );
+            valueField = 'id';
+            displayField = 'displayName';
         } else if ( field.type == 'country' )
         {
             fieldStore = Ext.data.StoreManager.lookup( 'CountryStore' );
@@ -337,7 +349,8 @@ Ext.define( 'App.view.EditUserFormPanel', {
             emptyText: 'Please select',
             fieldStore: fieldStore,
             valueField: valueField,
-            displayField: displayField
+            displayField: displayField,
+            displayConfig: displayConfig
         };
     },
 

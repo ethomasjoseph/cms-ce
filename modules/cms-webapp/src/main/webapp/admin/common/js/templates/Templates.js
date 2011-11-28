@@ -7,8 +7,8 @@ Templates.common = {
     wizardPanelSteps:
         '<ul class="cms-wizard-navigation clearfix">' +
             '<tpl for=".">' +
-                '<li class="{[ this.resolveClsName( xindex, xcount ) ]}">' +
-                '<a wizardStep="{[xindex]}" href="#" class="step {[ this.resolveClsName( xindex, xcount ) ]}">{[xindex]}. {[  (values.stepTitle || values.title) ]}</a></li>' +
+                '<li class="{[ this.resolveClsName( xindex, xcount ) ]}" wizardStep="{[xindex]}" >' +
+                '<a href="#" class="step {[ this.resolveClsName( xindex, xcount ) ]}">{[xindex]}. {[  (values.stepTitle || values.title) ]}</a></li>' +
             '</tpl>' +
         '</ul>'
 

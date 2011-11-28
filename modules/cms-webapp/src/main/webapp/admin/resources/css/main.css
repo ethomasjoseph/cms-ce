@@ -631,7 +631,6 @@ img.photo {
 }
 
 .cms-userstore {
-    width: 500px;
     padding-left: 10px;
     margin-bottom: 2px;
     border: 1px solid transparent;
@@ -664,6 +663,14 @@ div.cms-userstore-active {
 }
 
 /*----- Wizard navigation -----*/
+
+.cms-wizard-toolbar .x-mask {
+    display: none;
+}
+.cms-wizard-toolbar.x-item-disabled {
+    opacity: 1;
+    filter: none;
+}
 
 ul.cms-wizard-navigation {
     list-style-type: none !important;
@@ -710,6 +717,7 @@ ul.cms-wizard-navigation li a {
     padding: 8px 15px 8px 15px;
     color: #222;
     text-decoration: none !important;
+    cursor: pointer;
     background-color: #eee;
 }
 
@@ -732,12 +740,11 @@ ul.cms-wizard-navigation a.next {
     color: #222222;
 }
 
-ul.cms-wizard-navigation a.last {
+.cms-wizard-toolbar.x-item-disabled ul.cms-wizard-navigation a.next,
+ul.cms-wizard-navigation li a.last,
+ul.cms-wizard-navigation li a.last-current {
     color: #acacac;
-}
-
-ul.cms-wizard-navigation a.last-current {
-    color: #acacac;
+    cursor: default;
 }
 
 .cms-wizard>div>.x-panel-body {
@@ -779,20 +786,23 @@ ul.cms-wizard-navigation a.last-current {
     box-shadow: 0 0 3px #98c9f2;
 }
 
+.cms-wizard-header-container input:focus {
+    color: #000 !important;
+    border: 1px solid #99BCE8 !important;
+}
+
 .user-store-user-name {
     padding-left: 3px;
 }
 
 .cms-edited-field {
     color: #000 !important;
-    border: 1px solid #99BCE8 !important;
 }
 
 /*----- Image Upload Button -----*/
 
 .cms-image-upload-button-container {
     position: relative;
-    border: 1px solid #dbeeff;
     cursor: pointer;
 }
 
