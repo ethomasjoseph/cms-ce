@@ -2,6 +2,8 @@ Ext.define( 'App.view.UserFormField', {
     extend: 'Ext.form.FieldContainer',
     alias: 'widget.userFormField',
 
+    requires: ['App.view.PasswordMeter'],
+
     layout: {
         type: 'hbox'
     },
@@ -148,12 +150,23 @@ Ext.define( 'App.view.UserFormField', {
         return Ext.apply( fieldConfig, autoCompleteConfig );
     },
 
-    createPasswordConfig: function( fieldConfig )
+    createPasswordConfig: function( fieldConfig, me )
     {
-        var passwordConfig = {
-            xtype: 'textfield',
-            inputType: 'password'
-        };
+        var passwordConfig
+        if (me.fieldname == 'password')
+        {
+            passwordConfig = {
+                xtype: 'passwordMeter'
+            }
+        }
+        else
+        {
+            passwordConfig = {
+                xtype: 'textfield',
+                inputType: 'password'
+            };
+        }
+
         return Ext.apply( fieldConfig, passwordConfig );
     },
 
