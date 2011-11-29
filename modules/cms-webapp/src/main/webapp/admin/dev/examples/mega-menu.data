@@ -3,12 +3,16 @@
         "minWidth": 160,
         "items": [
             {
-                "id": "app-0",
-                "text": "Dashboard",
-                "cms": {
-                    "appUrl": "app-dashboard.html"
-                },
-                "icon": "app/main/images/launcher/dashboard.png"
+                "menu": {
+                    "items": [{
+                        "id": "app-0",
+                        "text": "Dashboard",
+                        "cms": {
+                            "appUrl": "app-dashboard.html"
+                        },
+                        "icon": "app/main/images/launcher/dashboard.png"
+                    }]
+                }
             },
             "-",
             {
@@ -138,8 +142,7 @@
                             "text": "Sites",
                             "cms": {
                                 "appUrl": "blank.html"
-                            },
-                            "icon": "app/main/images/launcher/sites.png"
+                            }
                         },
                         {
                             "id": "app-860",

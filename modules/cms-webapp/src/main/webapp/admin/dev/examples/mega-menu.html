@@ -4,51 +4,35 @@
     <link rel="stylesheet" type="text/css" href="../../ext/resources/css/ext-all.css">
     <link rel="stylesheet" type="text/css" href="../../resources/css/main.css">
     <style type="text/css">
-        h1 {
-            font-size: 21px;
-            margin-bottom: .5em;
-            font-weight: normal;
+
+        .cms-mega-menu {
+            background-color: #fff;
         }
 
-        h2 {
+        .cms-mega-menu h2 {
+            border-bottom: 1px solid #cccccc;
             font-size: 18px;
             margin-bottom: .5em;
             font-weight: normal;
         }
-
-        .cms-mega-menu {
-            background-color: #fff !important;
+        .cms-mega-menu-view ul {
+            padding:  0;
+            margin:  0;
+        }
+        .cms-mega-menu-view ul li {
+            list-style: none;
+            padding:  0;
+            margin:  0;
         }
 
-        .cms-mega-menu h2 {
-            margin: 0;
-            font-size: 16px;
+        .cms-mega-menu-view li.cms-mega-menu-item {
+            float: left;
+            padding:  6px 20px;
+            width: 120px;
         }
 
-        .cms-mega-menu table {
-            width: 100%;
-        }
-
-        .cms-mega-menu table th {
-            text-align: left;
-            padding: 6px;
-        }
-
-        .cms-mega-menu table td {
-            font-size: 13px;
-        }
-
-        .cms-mega-menu table td a {
-            display: block;
-            padding: 6px 6px 6px 24px;
-            text-decoration: none;
-            color: #000;
-
-        }
-
-        .cms-mega-menu table td a:hover,
-        .menu-item:focus {
-            background-color: #efefef;
+        .cms-mega-menu-view li.cms-mega-menu-item a.x-menu-item-link {
+            position: relative;
         }
 
     </style>
@@ -56,33 +40,13 @@
     <script type="text/javascript" src="../../ext/ext-all-debug.js"></script>
     <script type="text/javascript">
 
-        // Temporary model and store for testing purposes
-
-        Ext.define('MegaMenuModel', {
-            extend: 'Ext.data.Model',
-            fields: [
-                { name:'name' }
-            ]
-        });
-
-        Ext.create('Ext.data.Store', {
-            id:'megaMenuStore',
-            model: 'MegaMenuModel',
-            data: [
-                { name:'App 1' },
-                { name:'App 2' },
-                { name:'App 3' },
-                { name:'App 4' },
-                { name:'App 5' }
-            ]
-        });
-
         Ext.Loader.setConfig({
             enabled: true,
             paths: {
                 // Temporary path for development purposes
                 'Common' : './'
-            }
+            },
+            disableCaching: false
         });
 
         Ext.application({
