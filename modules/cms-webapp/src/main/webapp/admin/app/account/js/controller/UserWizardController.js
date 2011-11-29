@@ -318,8 +318,12 @@ Ext.define( 'App.controller.UserWizardController', {
 
     userFieldValidityChange: function(field, isValid)
     {
-        var greenMark = field.down('#greenMark');
-        greenMark.setVisibility(isValid);
+        if (field.fieldname == 'repeat-password')
+        {
+            var greenMark = field.down('#greenMark');
+            greenMark.setVisibility(isValid);
+        }
+
     },
 
     updateTabTitle: function ( field, event )
