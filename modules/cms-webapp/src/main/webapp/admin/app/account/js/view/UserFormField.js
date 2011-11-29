@@ -14,6 +14,7 @@ Ext.define( 'App.view.UserFormField', {
 
     initComponent: function()
     {
+        var me = this;
         this.fieldConfigBuilders = {
             'date': this.createDateConfig,
             'file': this.createFileConfig,
@@ -38,12 +39,16 @@ Ext.define( 'App.view.UserFormField', {
         this.items = [];
         var fieldConfig = {
             flex: 1,
+            enableKeyEvents: true,
             disabled: this.readonly,
             allowBlank: !this.required,
             name: this.fieldname,
             itemId: this.fieldname,
             action: this.actionName,
-            value: this.fieldValue
+            value: this.fieldValue,
+            listeners: {
+                'validitychange': me.validityChanged
+            }
         };
         if ( this.fieldWidth[this.fieldname] )
         {
@@ -86,8 +91,29 @@ Ext.define( 'App.view.UserFormField', {
         {
             this.fieldLabel += "<span style=\"color:red;\" ext:qtip=\"This field is required\">*</span>";
         }
-
+        var greenLabel = {
+            xtype: 'image',
+            itemId: 'greenMark',
+            src: 'resources/icons/16x16/finish.png',
+            height: 16,
+            width: 16,
+            style: {
+                visibility:'hidden'
+            },
+            setVisibility: function(isVisible){
+                if (isVisible)
+                {
+                    this.el.setStyle({visibility: 'visible'});
+                }
+                else
+                {
+                    this.el.setStyle({visibility: 'hidden'});
+                }
+            }
+        }
+        Ext.Array.include(this.items, greenLabel);
         this.callParent( arguments );
+        this.addEvents('validitychange');
     },
 
     createCheckBoxConfig: function( fieldConfig )
@@ -152,7 +178,12 @@ Ext.define( 'App.view.UserFormField', {
 
     createPasswordConfig: function( fieldConfig, me )
     {
-        var passwordConfig
+        var passwordConfig, validator;
+        if (fieldConfig.itemId == 'repeat-password')
+        {
+            validator = me.validatePassword;
+        }
+        
         if (me.fieldname == 'password')
         {
             passwordConfig = {
@@ -163,7 +194,8 @@ Ext.define( 'App.view.UserFormField', {
         {
             passwordConfig = {
                 xtype: 'textfield',
-                inputType: 'password'
+                inputType: 'password',
+                validator: validator
             };
         }
 
@@ -184,5 +216,24 @@ Ext.define( 'App.view.UserFormField', {
             bubbleEvents: ['keyup']
         };
         return Ext.apply( fieldConfig, textConfig );
+    },
+
+    validatePassword: function(value)
+    {
+        var passwordFieldValue = this.up('fieldset').down('#password').getValue();
+        if (passwordFieldValue == value )
+        {
+            return true;
+        } else {
+            return 'Passwords don\'t match';
+        }
+    },
+
+    validityChanged: function(field, isValid, opts)
+    {
+        var parentField = field.up('userFormField');
+        parentField.fireEvent('validitychange', parentField, isValid, opts);
     }
+
+
 } );

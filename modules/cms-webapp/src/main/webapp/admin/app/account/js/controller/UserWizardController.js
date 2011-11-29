@@ -48,6 +48,9 @@ Ext.define( 'App.controller.UserWizardController', {
                           },
                           'userWizardPanel': {
                               afterrender: this.bindDisplayNameEvents
+                          },
+                          'userFormField': {
+                              validitychange: this.userFieldValidityChange
                           }
                       } );
     },
@@ -311,6 +314,16 @@ Ext.define( 'App.controller.UserWizardController', {
         {
             firstField.focus();
         }
+    },
+
+    userFieldValidityChange: function(field, isValid)
+    {
+        if (field.fieldname == 'repeat-password')
+        {
+            var greenMark = field.down('#greenMark');
+            greenMark.setVisibility(isValid);
+        }
+
     },
 
     updateTabTitle: function ( field, event )
