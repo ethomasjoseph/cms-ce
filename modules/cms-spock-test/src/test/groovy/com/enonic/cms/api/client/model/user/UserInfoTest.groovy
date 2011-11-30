@@ -28,6 +28,6 @@ class UserInfoTest extends Specification {
         info.addresses.length == 3
         info.primaryAddress == a2
 
-
     }
+
 }
