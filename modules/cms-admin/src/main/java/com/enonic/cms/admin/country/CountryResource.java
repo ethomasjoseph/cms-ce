@@ -8,13 +8,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.sun.jersey.api.core.InjectParam;
-
-import com.enonic.cms.admin.common.LoadStoreRequest;
 import com.enonic.cms.core.country.Country;
 import com.enonic.cms.core.country.CountryCode;
 import com.enonic.cms.core.country.CountryService;
@@ -22,7 +19,7 @@ import com.enonic.cms.core.country.Region;
 
 @Component
 @Path("/admin/data/misc")
-@Produces("application/json")
+@Produces(MediaType.APPLICATION_JSON)
 public final class CountryResource
 {
 
@@ -31,8 +28,7 @@ public final class CountryResource
 
     @GET
     @Path("country/list")
-    public CountriesModel getCountries( @QueryParam("query") final String query,
-                                        @InjectParam final LoadStoreRequest req )
+    public CountriesModel getCountries( @QueryParam("query") final String query )
     {
         Collection<Country> list = this.countryService.getCountries();
         if ( query != null )
@@ -44,8 +40,7 @@ public final class CountryResource
 
     @GET
     @Path("country")
-    public CountryModel getCountry( @QueryParam("countryCode") @DefaultValue("") final String countryCode,
-                                    @InjectParam final LoadStoreRequest req )
+    public CountryModel getCountry( @QueryParam("countryCode") @DefaultValue("") final String countryCode )
     {
         Country country = this.countryService.getCountry( new CountryCode( countryCode ) );
         return CountryModelHelper.toModel( country );
@@ -54,8 +49,7 @@ public final class CountryResource
     @GET
     @Path("region/list")
     public RegionsModel getRegions( @QueryParam("query") final String query,
-                                    @QueryParam("countryCode") @DefaultValue("") final String countryCode,
-                                    @InjectParam final LoadStoreRequest req )
+                                    @QueryParam("countryCode") @DefaultValue("") final String countryCode )
     {
         Country country = this.countryService.getCountry( new CountryCode( countryCode ) );
         RegionsModel model;
@@ -76,8 +70,7 @@ public final class CountryResource
     @GET
     @Path("region")
     public RegionModel getRegion( @QueryParam("countryCode") @DefaultValue("") final String countryCode,
-                                  @QueryParam("regionCode") @DefaultValue("") final String regionCode,
-                                  @InjectParam final LoadStoreRequest req )
+                                  @QueryParam("regionCode") @DefaultValue("") final String regionCode )
     {
         final Country country = this.countryService.getCountry( new CountryCode( countryCode ) );
         return country != null ? CountryModelHelper.toModel( country.getRegion( regionCode ) ) : new RegionModel();

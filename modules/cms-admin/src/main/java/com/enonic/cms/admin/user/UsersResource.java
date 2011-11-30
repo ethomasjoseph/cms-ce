@@ -47,7 +47,7 @@ import com.enonic.cms.domain.EntityPageList;
 
 @Component
 @Path("/admin/data/user")
-@Produces("application/json")
+@Produces(MediaType.APPLICATION_JSON)
 public final class UsersResource
 {
 

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -13,7 +12,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,7 +24,7 @@ import com.enonic.cms.portal.cache.SiteCachesService;
 
 @Component
 @Path("/admin/data/system/cache")
-@Produces("application/json")
+@Produces(MediaType.APPLICATION_JSON)
 public final class CacheResource
 {
     @Autowired
@@ -35,7 +34,7 @@ public final class CacheResource
 
     @GET
     @Path("list")
-    public CachesModel getAll( @Context HttpServletRequest request )
+    public CachesModel getAll()
     {
         List<CacheFacade> list = new ArrayList<CacheFacade>();
         for ( String cacheName : cacheManager.getCacheNames() )
@@ -47,8 +46,7 @@ public final class CacheResource
 
     @GET
     @Path("info")
-    public CacheModel getCache( @QueryParam("name") @DefaultValue("") final String name,
-                                @Context HttpServletRequest request )
+    public CacheModel getCache( @QueryParam("name") @DefaultValue("") final String name )
     {
         return CacheModelTranslator.toModel( cacheManager.getCache( name ) );
     }
