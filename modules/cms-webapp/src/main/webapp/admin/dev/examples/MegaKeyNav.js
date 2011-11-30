@@ -26,7 +26,10 @@ Ext.define('Common.MegaKeyNav', {
         if (fi && e.getKey() == Ext.EventObject.DOWN && me.isWhitelisted(fi)) {
             return true;
         }
-        me.focusNextItem(1);
+        var ni = me.menu.getItemBelow( fi );
+        if (me.menu.canActivateItem( ni )) {
+            me.menu.setActiveItem( ni );
+        }
     },
 
     enter: function(e) {
@@ -81,9 +84,9 @@ Ext.define('Common.MegaKeyNav', {
             return true;
         }
 
-        //menu.hide();
-        if (menu.parentMenu) {
-            menu.parentMenu.focus();
+        var ni = menu.getItemLeft( fi );
+        if (menu.canActivateItem( ni )) {
+            menu.setActiveItem( ni );
         }
     },
 
@@ -97,14 +100,9 @@ Ext.define('Common.MegaKeyNav', {
             return true;
         }
 
-        if (ai) {
-            am = menu.activeItem.menu;
-            if (am) {
-                ai.expandMenu(0);
-                Ext.defer(function() {
-                    am.setActiveItem(am.items.getAt(0));
-                }, 25);
-            }
+        var ni = menu.getItemRight( fi );
+        if (menu.canActivateItem( ni )) {
+            menu.setActiveItem( ni );
         }
     },
 
@@ -125,6 +123,9 @@ Ext.define('Common.MegaKeyNav', {
         if (fi && e.getKey() == Ext.EventObject.UP && me.isWhitelisted(fi)) {
             return true;
         }
-        me.focusNextItem(-1);
+        var ni = me.menu.getItemAbove( fi );
+        if (me.menu.canActivateItem( ni )) {
+            me.menu.setActiveItem( ni );
+        }
     }
 });

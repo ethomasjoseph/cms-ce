@@ -83,6 +83,7 @@ Ext.define( 'Common.MegaMenu', {
         if( this.keyNav )
             this.keyNav.destroy();
         this.keyNav = new Ext.create( 'Common.MegaKeyNav', me );
+        this.createItemMap();
     },
 
     getAllItems: function() {
@@ -94,28 +95,78 @@ Ext.define( 'Common.MegaMenu', {
         return result;
     },
 
-    getItemAbove: function( item ) {
-
+    createItemMap: function() {
+        var result = new Array();
+        var line = 0;
+        for ( var i = 0; i < this.items.items.length; i++ ) {
+            var container = this.items.items[i];
+            if( container.items.length > 0 ) {
+                var col = 0;
+                result[line] = new Array();
+                for ( var j = 0; j < container.items.items.length; j++ ) {
+                    var obj = container.items.items[j];
+                    if( col >= this.maxColumns ) {
+                        line++;
+                        col = 0;
+                        result[line] = new Array();
+                    }
+                    result[line][col] = obj;
+                    col++;
+                }
+                line++;
+            }
+        }
+        this.itemMap = result;
     },
 
-    getItemBelow: function( item ) {
-        var container = item.up( 'container' );
-        var rowCount = Math.ceil( container.items.items.length / this.maxColumns );
-        var columnCount = this.maxColumns;
-        var currentIdx = container.items.indexOf( item );
-        var currentRow = Math.floor( currentIdx / this.maxColumns );
-        var currentColumn = currentIdx % this.maxColumns;
-        if( rowCount > (currentRow + 1) ) {
-
+    getItemPosition: function( item ) {
+        for ( var i = 0; i < this.itemMap.length; i++ ) {
+            for ( var j = 0; j < this.itemMap[i].length; j++ ) {
+                if( this.itemMap[i][j] == item )
+                    return [i, j];
+            }
         }
     },
 
-    getItemLeft: function( item ) {
+    getItemAbove: function( item ) {
+        return this.getItemBy( item, -1, 0 );
+    },
 
+    getItemBelow: function( item ) {
+        return this.getItemBy( item, 1, 0 );
+    },
+
+    getItemLeft: function( item ) {
+        return this.getItemBy( item, 0, -1 );
     },
 
     getItemRight: function( item ) {
+        return this.getItemBy( item, 0, 1 );
+    },
 
+    getItemBy: function( item, ver, hor ) {
+
+        var xy = this.getItemPosition( item );
+        var y = xy[0] + ver;
+        var x = xy[1] + hor;
+
+        // handle y edges
+        var yLength = this.itemMap.length;
+        if ( y < 0 ) {
+            y += yLength;
+        } else if ( y >= yLength ) {
+            y -= yLength;
+        }
+        // handle x edges, should be done aftery because we need to know the row first
+        var xLength = this.itemMap[y].length;
+        if ( x < 0 ) {
+            x += xLength;
+        } else if ( x >= xLength ) {
+            x -= xLength;
+        }
+
+
+        return this.itemMap[y][x];
     },
 
     getItemFromEvent: function( e ) {
