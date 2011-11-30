@@ -1,64 +1,17 @@
 Ext.define( 'Common.MegaMenu', {
     extend: 'Ext.menu.Menu',
     alias: 'megaMenu',
-    cls: 'cms-mega-menu',
+
+    cls: 'cmsmegamenu',
+    bodyCls: 'cms-mega-menu',
+    plain: true,
+    showSeparator: false,
     styleHtmlContent: true,
+    bodyPadding: 10,
 
-     /*
-    items: [{
-        xtype: 'container',
-        itemId: 'menuView',
-        cls: 'cms-mega-menu-view',
-        autoHeight: true,
-        maxWidth: 300,
-        layout: {
-            type: 'auto',
-            bindToOwnerCtComponent: true
-        },
-        listeners: {
-            afterrender: function( view ) {
-                console.log( 'view afterrender' );
-                Ext.defer( function() {
-                    var h = view.getEl().down( 'ul' ).getHeight();
-                    console.log('h=' +h);
-                    view.up( 'menu' ).setHeight( h );
-                }, 10 );
-            }
-        },
-        styleHtmlContent: true,
+    maxColumns: 5,
 
-        tpl: new Ext.XTemplate(
-
-            '<ul><tpl for="menu.items"><li class="cms-mega-menu-section">',
-                '<tpl if="text">',
-                    '<h2>{text}</h2>',
-                '</tpl>',
-                '<tpl if="menu">',
-                    '<ul><tpl for="menu.items">',
-                        '<li class="cms-mega-menu-item">',
-                            '<a class="x-menu-item-link {[ !(values.icon || values.iconCls) ? \"no-icon\" : \"\" ]}" href="#" hidefocus="true" unselectable="on">',
-                                '<tpl if="icon || iconCls">',
-                                    '<img src="{icon}" class="x-menu-item-icon {iconCls}">',
-                                '</tpl>',
-                                '<span class="x-menu-item-text">{text}</span>',
-                            '</a>',
-                        '</li>',
-                    '</tpl></ul>',
-                    '<div style="height: 0; line-height: 0; clear: both;"/>',
-                '</tpl>',
-            '</li></tpl></ul>'
-
-        )
-    }],
-    */
-
-    listeners: {
-       click: {
-            fn: function(menu, item, e, eOpts ) {
-                console.log('item', item);
-            }
-        }
-    },
+    requires: [ 'Common.MegaKeyNav'],
 
     loader: {
         url: 'mega-menu.data',
@@ -66,61 +19,137 @@ Ext.define( 'Common.MegaMenu', {
         renderer: function(loader, response, active) {
             var menu = loader.getTarget();
             var data = Ext.decode( response.responseText );
+            if ( data && data.menu ) {
 
-            for ( var i = 0; i < data.menu.items.length; i++ ) {
+                for ( var i = 0; i < data.menu.items.length; i++ ) {
 
-                var section = data.menu.items[i];
-                var sectionItems = [];
+                    var section = data.menu.items[i];
+                    var sectionItems = [];
+                    var sectionMenu = [];
 
-                var sectionChildren = [];
-                if (section.menu) {
-                    for ( var j = 0; j < section.menu.items.length; j++ ) {
-                        var item = section.menu.items[j];
-                        sectionChildren.push({
-                            xtype: 'menuitem',
-                            text: item.text,
-                            iconCls: item.iconCls,
-                            icon: item.icon
-                        });
+                    if(section.menu) {
+                        for ( var j = 0; j < section.menu.items.length; j++ ) {
+                            var item = section.menu.items[j];
+                            sectionMenu.push({
+                                xtype: 'menuitem',
+                                cls: 'cms-mega-menu-item',
+                                text: item.text,
+                                iconCls: item.iconCls,
+                                icon: item.icon,
+                                handler: menu.onMegaMenuItemClick
+                            });
+                        }
                     }
+
+                    if( section.text ) {
+                        sectionItems.push({
+                                xtype: 'container',
+                                cls: 'cms-mega-menu-header',
+                                html: '<h2>' + section.text + '</h2>'
+                             });
+                    }
+
+                    if( sectionMenu.length > 0 ) {
+                        sectionItems.push({
+                                xtype: 'container',
+                                cls: 'cms-mega-menu-section',
+                                layout: {
+                                    type: 'table',
+                                    columns: menu.maxColumns,
+                                    bindToOwnerCtComponent: true,
+                                    autoSize: true
+                                },
+                                items: sectionMenu
+                             });
+                    }
+
+                    menu.add(sectionItems);
                 }
 
-                if( section.text ) {
-                    sectionItems.push({
-                            xtype: 'container',
-                            html: '<h2>' + section.text + '</h2>'
-                         });
-                }
-                if( sectionChildren.length > 0 ) {
-                    sectionItems.push({
-                            xtype: 'container',
-                            layout: {
-                                type: 'hbox',
-                                bindToOwnerCtComponent: true,
-                                autoSize: true
-                            },
-                            items: sectionChildren
-                         });
-                }
-
-                menu.add(sectionItems);
             }
-            //menu.down( '#menuView' ).update( data );
-            console.log( 'updated menu' );
             return true;
         }
+    },
+
+    initComponent: function() {
+
+        this.callParent( arguments );
+
+    },
+
+    afterRender: function ( ct ) {
+        var me = this;
+        this.callParent( arguments );
+        if( this.keyNav )
+            this.keyNav.destroy();
+        this.keyNav = new Ext.create( 'Common.MegaKeyNav', me );
+    },
+
+    getAllItems: function() {
+        var result = new Ext.util.MixedCollection();
+        for ( var i = 0; i < this.items.items.length; i++ ) {
+            var container = this.items.items[i];
+            result.addAll( container.items.items );
+        }
+        return result;
+    },
+
+    getItemAbove: function( item ) {
+
+    },
+
+    getItemBelow: function( item ) {
+        var container = item.up( 'container' );
+        var rowCount = Math.ceil( container.items.items.length / this.maxColumns );
+        var columnCount = this.maxColumns;
+        var currentIdx = container.items.indexOf( item );
+        var currentRow = Math.floor( currentIdx / this.maxColumns );
+        var currentColumn = currentIdx % this.maxColumns;
+        if( rowCount > (currentRow + 1) ) {
+
+        }
+    },
+
+    getItemLeft: function( item ) {
+
+    },
+
+    getItemRight: function( item ) {
+
+    },
+
+    getItemFromEvent: function( e ) {
+        var firstLevelChild = this.getChildByElement( e.getTarget() );
+        if ( firstLevelChild && firstLevelChild.getXTypes().indexOf( 'menuitem' ) < 0 ) {
+             firstLevelChild = firstLevelChild.getChildByElement( e.getTarget() );
+        }
+        return firstLevelChild;
+    },
+
+    setActiveItem: function(item) {
+        var me = this;
+
+        if (item && (item != me.activeItem && item != me.focusedItem)) {
+            me.deactivateActiveItem();
+            if (me.canActivateItem(item)) {
+                if (item.activate) {
+                    item.activate();
+                    if (item.activated) {
+                        me.activeItem = item;
+                        me.focusedItem = item;
+                        me.focus();
+                    }
+                } else {
+                    item.focus();
+                    me.focusedItem = item;
+                }
+            }
+            item.el.scrollIntoView(me.layout.getRenderTarget());
+        }
+    },
+
+    onMegaMenuItemClick: function( item, event ) {
+        console.log( 'click item ' + (item ? item.text : 'undefined'), item );
     }
-
-
-/*     initComponent: function() {
-
-         this.callParent( arguments );
-
-         var view = this.down( '#menuView' );
-         var menu = this;
-
-     }*/
-
-
 
 } );

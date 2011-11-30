@@ -85,7 +85,27 @@
                 "cms": {
                     "appUrl": "blank.html"
                 },
-                "icon": "app/main/images/launcher/chat.png"
+                "icon": "app/main/images/launcher/chat.png",
+                "menu": {
+                    "items": [
+                        {
+                            "id": "app-81454560",
+                            "text": "WebDAV",
+                            "cms": {
+                                "appUrl": "blank.html"
+                            },
+                            "icon": "app/main/images/launcher/webdav.png"
+                        },
+                        {
+                            "id": "app-824564560",
+                            "text": "Applications",
+                            "cms": {
+                                "appUrl":"blank.html"
+                            },
+                            "icon": "app/main/images/launcher/applications.png"
+                        }
+                    ]
+                }
             },
             {
                 "id": "app-700",

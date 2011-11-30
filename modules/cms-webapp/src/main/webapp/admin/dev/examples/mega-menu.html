@@ -9,30 +9,16 @@
             background-color: #fff;
         }
 
-        .cms-mega-menu h2 {
+        .cms-mega-menu-header h2 {
             border-bottom: 1px solid #cccccc;
             font-size: 18px;
             margin-bottom: .5em;
             font-weight: normal;
         }
-        .cms-mega-menu-view ul {
-            padding:  0;
-            margin:  0;
-        }
-        .cms-mega-menu-view ul li {
-            list-style: none;
-            padding:  0;
-            margin:  0;
-        }
 
-        .cms-mega-menu-view li.cms-mega-menu-item {
-            float: left;
-            padding:  6px 20px;
-            width: 120px;
-        }
-
-        .cms-mega-menu-view li.cms-mega-menu-item a.x-menu-item-link {
+        .cms-mega-menu-item a {
             position: relative;
+            padding-right: 10px;
         }
 
     </style>
@@ -84,7 +70,7 @@
                                         {
                                             xtype: 'button',
                                             text: 'Start',
-                                            menu: new Common.MegaMenu()
+                                            menu: Ext.createByAlias('megaMenu')
                                         }
                                     ]
 
