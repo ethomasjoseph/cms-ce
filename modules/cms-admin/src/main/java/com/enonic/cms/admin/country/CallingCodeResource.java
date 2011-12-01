@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,7 @@ import com.enonic.cms.core.country.CountryService;
 
 @Component
 @Path("/admin/data/misc/callingcodes")
-@Produces("application/json")
+@Produces(MediaType.APPLICATION_JSON)
 public class CallingCodeResource
 {
 
@@ -32,7 +33,7 @@ public class CallingCodeResource
 
     @GET
     @Path("list")
-    public CallingCodesModel getAll( @InjectParam LoadStoreRequest req )
+    public CallingCodesModel getAll()
     {
         List<CallingCodeModel> list = new ArrayList<CallingCodeModel>();
         for ( Country c : countryService.getCountries() )
