@@ -128,7 +128,7 @@ Ext.define( 'App.controller.UserWizardController', {
 
     userStoreFieldsLoaded: function( target )
     {
-        this.getUserWizardPanel().doLayout();
+        target.up('userWizardPanel').doLayout();
         this.focusFirstField();
         this.bindFormEvents( target );
     },
