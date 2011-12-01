@@ -278,6 +278,8 @@ Ext.define( 'App.view.EditUserFormPanel', {
         var valueField;
         var displayField;
         var displayConfig;
+        var listeners = null;
+
         if ( field.type == 'timezone' )
         {
             fieldStore = Ext.data.StoreManager.lookup( 'TimezoneStore' );
@@ -289,6 +291,24 @@ Ext.define( 'App.view.EditUserFormPanel', {
                     return '{id} ({offset})';
                 }
             };
+            listeners = {
+                beforequery: {
+                    fn: function(query)
+                    {
+                        var queryText = query.query;
+                        if ( queryText.length > 0 )
+                        {
+                            var pattern = new RegExp(queryText, 'gim');
+                            fieldStore.clearFilter();
+                            fieldStore.filter('id', pattern);
+
+                            query.combo.expand();
+                        }
+                        return false;
+                    }
+                }
+            }
+
         } else if ( field.type == 'locale' )
         {
             fieldStore = Ext.data.StoreManager.lookup( 'LocaleStore' );
@@ -330,7 +350,8 @@ Ext.define( 'App.view.EditUserFormPanel', {
             fieldStore: fieldStore,
             valueField: valueField,
             displayField: displayField,
-            displayConfig: displayConfig
+            displayConfig: displayConfig,
+            listeners: listeners
         };
     },
 
