@@ -53,4 +53,4 @@ Ext.define( 'App.view.DeleteAccountWindow', {
                              ] );
         }
     }
-} )
+} );

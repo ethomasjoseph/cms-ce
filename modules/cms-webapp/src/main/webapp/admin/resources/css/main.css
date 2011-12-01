@@ -197,7 +197,7 @@ img.photo {
 /*----- Icons -----*/
 
 .icon-user {
-    background-image: url("../images/user.png");
+    background-image: url("../icons/16x16/user.png");
 }
 
 .icon-new-user {
@@ -206,6 +206,10 @@ img.photo {
 
 .icon-edit-user {
     background-image: url("../icons/16x16/user_edit.png");
+}
+
+.icon-user-24 {
+    background-image: url("../icons/24x24/user.png");
 }
 
 .icon-add-24 {
