@@ -7,9 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -141,7 +143,8 @@ public final class AccountResource
 
     @GET
     @Path("export")
-    public Response exportAsCsv( @InjectParam final AccountLoadRequest req )
+    public Response exportAsCsv( @InjectParam final AccountLoadRequest req,
+                                 @DefaultValue("ISO-8859-1") @QueryParam("encoding") String characterEncoding )
         throws UnsupportedEncodingException
     {
         final int accountsExportLimit = 5000;
@@ -153,7 +156,6 @@ public final class AccountResource
         final String filename = csvExport.getExportFileName( new Date() );
         final String attachmentHeader = "attachment; filename=" + filename;
 
-        final String characterEncoding = "ISO-8859-1";
         final byte[] data = content.getBytes( characterEncoding );
 
         return Response.ok( data )
