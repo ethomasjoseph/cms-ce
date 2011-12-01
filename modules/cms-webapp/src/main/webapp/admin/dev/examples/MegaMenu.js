@@ -2,12 +2,15 @@ Ext.define( 'Common.MegaMenu', {
     extend: 'Ext.menu.Menu',
     alias: 'megaMenu',
 
-    cls: 'cmsmegamenu',
+    //TODO: move to css when bodyCls 4.0 bug is fixed
+    bodyStyle: {
+        background: '#fff !important',
+        padding: '10px'
+    },
     bodyCls: 'cms-mega-menu',
     plain: true,
     showSeparator: false,
     styleHtmlContent: true,
-    bodyPadding: 10,
 
     maxColumns: 5,
 
@@ -30,14 +33,11 @@ Ext.define( 'Common.MegaMenu', {
                     if(section.menu) {
                         for ( var j = 0; j < section.menu.items.length; j++ ) {
                             var item = section.menu.items[j];
-                            sectionMenu.push({
+                            sectionMenu.push(Ext.apply({
                                 xtype: 'menuitem',
                                 cls: 'cms-mega-menu-item',
-                                text: item.text,
-                                iconCls: item.iconCls,
-                                icon: item.icon,
                                 handler: menu.onMegaMenuItemClick
-                            });
+                            }, item));
                         }
                     }
 
@@ -123,7 +123,7 @@ Ext.define( 'Common.MegaMenu', {
         for ( var i = 0; i < this.itemMap.length; i++ ) {
             for ( var j = 0; j < this.itemMap[i].length; j++ ) {
                 if( this.itemMap[i][j] == item )
-                    return [i, j];
+                    return [j, i];
             }
         }
     },
@@ -144,11 +144,18 @@ Ext.define( 'Common.MegaMenu', {
         return this.getItemBy( item, 0, 1 );
     },
 
-    getItemBy: function( item, ver, hor ) {
-
+    getItemBy: function( item, ver, hor )
+    {
         var xy = this.getItemPosition( item );
-        var y = xy[0] + ver;
-        var x = xy[1] + hor;
+        var x,y;
+        if ( xy ) {
+            x = xy[0] + hor;
+            y = xy[1] + ver;
+        } else {
+            // set the first item selected by default
+            x = 0;
+            y = 0;
+        }
 
         // handle y edges
         var yLength = this.itemMap.length;
@@ -162,9 +169,14 @@ Ext.define( 'Common.MegaMenu', {
         if ( x < 0 ) {
             x += xLength;
         } else if ( x >= xLength ) {
-            x -= xLength;
+            if( !hor || hor == 0 ) {
+                // came from the row with more items, so set to the last
+                x = xLength - 1;
+            } else {
+                // went out of right horizontal limit, so start over
+                x -= xLength;
+            }
         }
-
 
         return this.itemMap[y][x];
     },
