@@ -1,9 +1,6 @@
 
-.size24 .icon-dashboard {
+.icon-dashboard-24 {
     background: transparent url("../icons/24x24/gauge.png") 0 0 no-repeat;
-}
-.size16 .icon-dashboard {
-
 }
 .icon-content-manager-24 {
     background: transparent url("../icons/24x24/data_blue.png") 0 0 no-repeat;

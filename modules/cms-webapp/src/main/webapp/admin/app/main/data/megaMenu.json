@@ -100,7 +100,7 @@
                         },
                         "iconCls": "icon-store-manager-24"
                     }, {
-                        "text": "Catalog",
+                        "text": "Catalogs",
                         "id": "app-611",
                         "cms": {
                             "appUrl": "blank.html"
