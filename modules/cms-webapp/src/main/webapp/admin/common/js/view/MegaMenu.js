@@ -1,6 +1,8 @@
-Ext.define( 'Common.MegaMenu', {
+Ext.define( 'Common.view.MegaMenu', {
     extend: 'Ext.menu.Menu',
     alias: 'megaMenu',
+
+    requires: [ 'Common.MegaKeyNav'],
 
     //TODO: move to css when bodyCls 4.0 bug is fixed
     bodyStyle: {
@@ -12,12 +14,10 @@ Ext.define( 'Common.MegaMenu', {
     showSeparator: false,
     styleHtmlContent: true,
 
-    maxColumns: 5,
-
-    requires: [ 'Common.MegaKeyNav'],
+    maxColumns: 4,
+    url: undefined,
 
     loader: {
-        url: 'mega-menu.data',
         autoLoad: true,
         renderer: function(loader, response, active) {
             var menu = loader.getTarget();
@@ -35,8 +35,7 @@ Ext.define( 'Common.MegaMenu', {
                             var item = section.menu.items[j];
                             sectionMenu.push(Ext.apply({
                                 xtype: 'menuitem',
-                                cls: 'cms-mega-menu-item',
-                                handler: menu.onMegaMenuItemClick
+                                cls: 'cms-mega-menu-item medium'
                             }, item));
                         }
                     }
@@ -72,6 +71,9 @@ Ext.define( 'Common.MegaMenu', {
     },
 
     initComponent: function() {
+        Ext.apply( this.loader, {
+            url: this.url
+        } );
 
         this.callParent( arguments );
 
@@ -129,23 +131,22 @@ Ext.define( 'Common.MegaMenu', {
     },
 
     getItemAbove: function( item ) {
-        return this.getItemBy( item, -1, 0 );
+        return this.getItemNear( item, -1, 0 );
     },
 
     getItemBelow: function( item ) {
-        return this.getItemBy( item, 1, 0 );
+        return this.getItemNear( item, 1, 0 );
     },
 
     getItemLeft: function( item ) {
-        return this.getItemBy( item, 0, -1 );
+        return this.getItemNear( item, 0, -1 );
     },
 
     getItemRight: function( item ) {
-        return this.getItemBy( item, 0, 1 );
+        return this.getItemNear( item, 0, 1 );
     },
 
-    getItemBy: function( item, ver, hor )
-    {
+    getItemNear: function( item, ver, hor ) {
         var xy = this.getItemPosition( item );
         var x,y;
         if ( xy ) {
@@ -187,32 +188,6 @@ Ext.define( 'Common.MegaMenu', {
              firstLevelChild = firstLevelChild.getChildByElement( e.getTarget() );
         }
         return firstLevelChild;
-    },
-
-    setActiveItem: function(item) {
-        var me = this;
-
-        if (item && (item != me.activeItem && item != me.focusedItem)) {
-            me.deactivateActiveItem();
-            if (me.canActivateItem(item)) {
-                if (item.activate) {
-                    item.activate();
-                    if (item.activated) {
-                        me.activeItem = item;
-                        me.focusedItem = item;
-                        me.focus();
-                    }
-                } else {
-                    item.focus();
-                    me.focusedItem = item;
-                }
-            }
-            item.el.scrollIntoView(me.layout.getRenderTarget());
-        }
-    },
-
-    onMegaMenuItemClick: function( item, event ) {
-        console.log( 'click item ' + (item ? item.text : 'undefined'), item );
     }
 
 } );
