@@ -15,6 +15,8 @@ Ext.define( 'App.view.EditUserFormPanel', {
     defaultUserStoreName: 'default',
     enableToolbar: true,
 
+    store: 'UserstoreConfigStore',
+
     fieldLabels: {
         'username': 'User Name',
         'email': 'E-mail',
@@ -48,17 +50,10 @@ Ext.define( 'App.view.EditUserFormPanel', {
         'address': 'Address'
     },
 
-    listeners: {
-        show: function( me )
-        {
-            me.el.mask( "Loading..." );
-            me.renderUserForm( me.currentUser );
-        }
-    },
-
     initComponent: function()
     {
         var me = this;
+        me.store = Ext.data.StoreManager.lookup( me.store );
         if ( !this.staticFields )
         {
             this.staticFields = [
@@ -190,9 +185,6 @@ Ext.define( 'App.view.EditUserFormPanel', {
             'initials': this.createTextField,
             'nick-name': this.createTextField
         };
-        /*        this.photoFieldSet = {
-         'photo': this.createPhotoField
-         };*/
         this.detailsFieldSet = {
             'personal-id': this.createTextField,
             'member-id': this.createTextField,
@@ -224,7 +216,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
                     var tabs = [];
                     for ( var index in addresses )
                     {
-                        Ext.Array.include( tabs, me.generateAddressPanel( field, true, addresses[index] ) );
+                        Ext.Array.include( tabs, me.generateAddressPanel( field, index != 0, addresses[index] ) );
                     }
                     return {
                         sourceField: field,
@@ -253,23 +245,11 @@ Ext.define( 'App.view.EditUserFormPanel', {
     {
         var me = this;
         me.currentUser = user;
-        Ext.Ajax.request( {
-                              url: 'data/userstore/detail',
-                              method: 'GET',
-                              params: {
-                                  name: user ? user.userStore : me.defaultUserStoreName
-                              },
-                              success: function( response )
-                              {
-                                  var obj = Ext.decode( response.responseText, true );
-                                  if ( obj )
-                                  {
-                                      me.removeAll();
-                                      me.generateForm( obj );
-                                  }
-                                  me.el.unmask();
-                              }
-                          } );
+        var userStoreName = user ? user.userStore : me.defaultUserStoreName;
+        var userStore = me.store.findRecord('name', userStoreName).raw;
+        me.removeAll();
+        me.generateForm( userStore );
+        me.doLayout();
     },
 
     createAutoCompleteField: function ( field )
@@ -419,9 +399,11 @@ Ext.define( 'App.view.EditUserFormPanel', {
             }, this );
             fields = Ext.Array.merge( this.staticFields, fields );
             this.add( this.generateFieldSet( 'User', this.userFieldSet, fields ) );
-            this.add( this.generateFieldSet( 'Security', this.securityFieldSet, fields ) );
+            if (!this.userFields)
+            {
+                this.add( this.generateFieldSet( 'Security', this.securityFieldSet, fields ) );
+            }
             this.add( this.generateFieldSet( 'Name', this.nameFieldSet, fields ) );
-//            this.add( this.generateFieldSet( 'Photo', this.photoFieldSet, fields ) );
             this.add( this.generateFieldSet( 'Personal Information', this.detailsFieldSet, fields ) );
             this.add( this.generateFieldSet( 'Settings', this.locationFieldSet, fields ) );
             this.add( this.generateFieldSet( 'Communication', this.communicationFieldSet, fields ) );
