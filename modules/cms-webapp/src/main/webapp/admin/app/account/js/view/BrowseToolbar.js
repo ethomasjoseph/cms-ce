@@ -64,6 +64,19 @@ Ext.define( 'App.view.BrowseToolbar', {
                         disableOnMultipleSelection: true
                     }
                 ]
+            },
+            {
+                xtype: 'buttongroup',
+                columns: 1,
+                defaults: buttonDefaults,
+                items: [
+                    {
+                        text: 'View',
+                        action: 'viewUser',
+                        iconCls: 'icon-user-24',
+                        disableOnMultipleSelection: true
+                    }
+                ]
             }
         ];
 
