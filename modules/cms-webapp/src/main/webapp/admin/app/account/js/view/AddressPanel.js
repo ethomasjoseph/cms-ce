@@ -144,5 +144,28 @@ Ext.define( 'App.view.AddressPanel', {
             }
         };
         this.callParent( arguments );
+    },
+
+    setClosable: function( isClosable )
+    {
+        if (isClosable) {
+            if (!this.closable)
+            {
+                this.addClsWithUI('closable');
+                this.addTool({
+                    type: 'close',
+                    handler: Ext.Function.bind(this.close, this, [])
+                });
+            }
+        }
+        else
+        {
+            if (this.closable)
+            {
+                this.tools.close.destroy();
+            }
+        }
+        this.closable = isClosable;
+
     }
 } );

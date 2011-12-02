@@ -52,6 +52,11 @@ Ext.define( 'App.view.AddressContainer', {
             this.dd.unreg()
         }
         this.callParent();
+    },
+
+    getItems: function()
+    {
+        return this.query('addressPanel');
     }
 
 } );

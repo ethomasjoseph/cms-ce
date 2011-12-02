@@ -10,6 +10,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
 import org.hibernate.criterion.MatchMode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ import com.enonic.cms.store.dao.UserDao;
 
 @Component
 @Path("/admin/data/group")
-@Produces("application/json")
+@Produces(MediaType.APPLICATION_JSON)
 public final class GroupResource
 {
 

@@ -881,3 +881,8 @@ ul.cms-wizard-navigation li a.last-current {
     border: 1px solid #B5B8C8;
     padding:  10px;
 }
+
+.cms-password-meter > .x-progress-bar {
+    background: url("../images/meter.gif") repeat;
+    background-size: 600px;
+}

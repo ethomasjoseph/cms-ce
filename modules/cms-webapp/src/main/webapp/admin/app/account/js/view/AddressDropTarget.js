@@ -144,6 +144,18 @@ Ext.define( 'App.view.AddressDropTarget', {
             }
         }
         delete this.lastPos;
+        var containerItems = this.portal.getItems();
+        Ext.Array.each(containerItems, function(item, index)
+                       {
+                           if (index == 0)
+                           {
+                               item.setClosable( false );
+                           }
+                           else
+                           {
+                               item.setClosable( true );
+                           }
+                       });
         return true
     },
     getGrid: function () {

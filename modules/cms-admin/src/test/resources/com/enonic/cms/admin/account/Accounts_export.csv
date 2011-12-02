@@ -1,0 +1,5 @@
+Type,Display Name,Local Name,User Store,Last Modified,Description,Email,First Name,Middle Name,Last Name,Initials,Title,Prefix,Suffix,Nickname,Gender,Birthdate,Organization,Country,Global Position,Home Page,Locale,Member Id,Personal Id,Phone,Mobile,Fax,Time Zone,Address Label,Address Street,Address Postal Address,Address Postal Code,Address Region,Address ISO Region,Address Country,Address ISO Country
+User,Enterprise Administrator,admin,System,2009-09-30 15:00 +02:00,,,,,,,,,,,,,,,,,,,,,,,
+User,John Developer,dev,demo,2011-08-04 10:28 +02:00,desc,dev@example.com,John,mid,Developer,Mr,title,pre,suf,Enonic Travels,FEMALE,2011-08-03,Enonic Travels,NO,,,no,123,456,123456,6548978,123456789,,home,kirkegata,Oslo,1234,,02,Norway,NO
+Group,Authenticated Users,Authenticated Users,demo,,
+Group,Contributors,Contributors,System,,

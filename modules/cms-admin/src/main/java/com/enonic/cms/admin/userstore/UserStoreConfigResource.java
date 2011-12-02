@@ -11,19 +11,17 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.sun.jersey.api.core.InjectParam;
-
 import com.enonic.esl.containers.ExtendedMap;
 
 import com.enonic.cms.framework.xml.XMLDocumentFactory;
 
-import com.enonic.cms.admin.common.LoadStoreRequest;
 import com.enonic.cms.core.security.SecurityService;
 import com.enonic.cms.core.security.user.QualifiedUsername;
 import com.enonic.cms.core.security.user.User;
@@ -40,7 +38,7 @@ import com.enonic.cms.core.security.userstore.connector.config.UserStoreConnecto
 
 @Component
 @Path("/admin/data/userstore")
-@Produces("application/json")
+@Produces(MediaType.APPLICATION_JSON)
 public final class UserStoreConfigResource
 {
     @Autowired
@@ -55,7 +53,7 @@ public final class UserStoreConfigResource
 
     @GET
     @Path("list")
-    public UserStoreConfigsModel getAll( @InjectParam final LoadStoreRequest req )
+    public UserStoreConfigsModel getAll()
     {
         final List<UserStoreEntity> list = userStoreService.findAll();
         return UserStoreConfigModelTranslator.toModel( list );
@@ -63,8 +61,7 @@ public final class UserStoreConfigResource
 
     @GET
     @Path("detail")
-    public UserStoreConfigModel getDetail( @QueryParam("name") @DefaultValue("") final String name,
-                                           @InjectParam final LoadStoreRequest req )
+    public UserStoreConfigModel getDetail( @QueryParam("name") @DefaultValue("") final String name)
     {
         final UserStoreEntity store = userStoreService.findByName( name );
         return UserStoreConfigModelTranslator.toModelWithFields( store );
@@ -72,8 +69,7 @@ public final class UserStoreConfigResource
 
     @GET
     @Path("config")
-    public UserStoreConfigModel getConfig( @QueryParam("name") @DefaultValue("") final String name,
-                                           @InjectParam final LoadStoreRequest req )
+    public UserStoreConfigModel getConfig( @QueryParam("name") @DefaultValue("") final String name)
     {
         final UserStoreEntity store = userStoreService.findByName( name );
         return UserStoreConfigModelTranslator.toModelWithXML( store );
@@ -130,7 +126,7 @@ public final class UserStoreConfigResource
 
     @GET
     @Path("connectors")
-    public UserStoreConnectorsModel getConnectors( @InjectParam final LoadStoreRequest req ) {
+    public UserStoreConnectorsModel getConnectors() {
         Map<String, UserStoreConnectorConfig> map
                 = userStoreConnectorManager.getUserStoreConnectorConfigs();
         return UserStoreConfigModelTranslator.toModel( map );
