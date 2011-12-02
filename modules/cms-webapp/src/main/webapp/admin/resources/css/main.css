@@ -886,3 +886,33 @@ ul.cms-wizard-navigation li a.last-current {
     background: url("../images/meter.gif") repeat;
     background-size: 600px;
 }
+
+
+/*****  Mega Menu   *****/
+
+.cms-mega-menu {
+    background-color: #fff !important;
+    padding:  10px;
+}
+
+.cms-mega-menu-header h2 {
+    border-bottom: 1px solid #cccccc;
+    font-size: 18px;
+    margin-bottom: .5em;
+    padding-left: 6px;
+    font-weight: normal;
+    color: #15428B;
+}
+
+.cms-mega-menu-item a {
+    position: relative;
+    padding-right: 10px;
+}
+
+.cms-mega-menu-item.medium .x-menu-item-link {
+    line-height: 24px;
+}
+.cms-mega-menu-item.medium .x-menu-item-icon {
+    width: 24px;
+    height: 24px;
+}

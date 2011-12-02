@@ -1,0 +1,162 @@
+{
+    "menu": {
+        "minWidth": 160,
+        "items": [
+            {
+                "menu": {
+                    "items": [{
+                        "id": "app-0",
+                        "text": "Dashboard",
+                        "cms": {
+                            "appUrl": "app-dashboard.html"
+                        },
+                        "iconCls": "icon-dashboard-24"
+                    }]
+                }
+            },
+            {
+                "text": "Content",
+                "menu": {
+                    "items": [{
+                        "text": "Content Manager",
+                        "id": "app-200",
+                        "cms": {
+                            "appUrl": "blank.html"
+                        },
+                        "iconCls": "icon-content-manager-24"
+                    }, {
+                        "text": "Data Designer",
+                        "id": "app-22345",
+                        "cms": {
+                            "appUrl": "blank.html"
+                        },
+                        "iconCls": "icon-data-designer-24"
+                    }, {
+                        "text": "Optimizer",
+                        "id": "app-620",
+                        "cms": {
+                            "appUrl": "blank.html"
+                        },
+                        "iconCls": "icon-optimizer-24"
+                    }, {
+                        "text": "Search",
+                        "id": "app-500",
+                        "cms": {
+                            "appUrl": "blank.html"
+                        },
+                        "iconCls": "icon-search-24"
+                    }, {
+                        "text": "WebDav",
+                        "id": "app-810",
+                        "cms": {
+                            "appUrl": "blank.html"
+                        },
+                        "iconCls": "icon-webdav-24"
+                    }, {
+                        "text": "Sites",
+                        "id": "app-850",
+                        "cms": {
+                            "appUrl": "blank.html"
+                        },
+                        "iconCls": "icon-site-24"
+                    }]
+                }
+            },
+            {
+                "text": "Marketing",
+                "menu": {
+                    "items": [{
+                        "text": "Accounts",
+                        "id": "app-100",
+                        "cms": {
+                            "appUrl": "app-account.html"
+                        },
+                        "iconCls": "icon-account-24"
+                    }, {
+                        "text": "Segments",
+                        "id": "app-600",
+                        "cms": {
+                            "appUrl": "blank.html"
+                        },
+                        "iconCls": "icon-segment-24"
+                    }, {
+                        "text": "Campaigns",
+                        "id": "app-300",
+                        "cms": {
+                            "appUrl": "blank.html"
+                        },
+                        "iconCls": "icon-campaign-24"
+                    }]
+                }
+            },
+            {
+                "text": "Commerce",
+                "menu": {
+                    "items": [{
+                        "text": "Store Manager",
+                        "id": "app-610",
+                        "cms": {
+                            "appUrl": "blank.html"
+                        },
+                        "iconCls": "icon-store-manager-24"
+                    }, {
+                        "text": "Catalogs",
+                        "id": "app-611",
+                        "cms": {
+                            "appUrl": "blank.html"
+                        },
+                        "iconCls": "icon-catalog-24"
+                    }, {
+                        "text": "Promotions",
+                        "id": "app-612",
+                        "cms": {
+                            "appUrl": "blank.html"
+                        },
+                        "iconCls": "icon-promotion-24"
+                    }]
+                }
+            },
+            {
+                "text": "System",
+                "menu": {
+                    "items": [{
+                        "text": "Cache",
+                        "id": "app-860",
+                        "cms": {
+                            "appUrl": "app-systemCache.html"
+                        },
+                        "iconCls": "icon-cache-24"
+                    }, {
+                        "text": "Cluster",
+                        "id": "app-830",
+                        "cms": {
+                            "appUrl": "blank.html"
+                        },
+                        "iconCls": "icon-cluster-24"
+                    }, {
+                        "text": "Live Trace",
+                        "id": "app-840",
+                        "cms": {
+                            "appUrl": "blank.html"
+                        },
+                        "iconCls": "icon-live-trace-24"
+                    }, {
+                        "text": "Plugins",
+                        "id": "app-845",
+                        "cms": {
+                            "appUrl": "blank.html"
+                        },
+                        "iconCls": "icon-plugin-24"
+                    }, {
+                        "text": "Applications",
+                        "id": "app-820",
+                        "cms": {
+                            "appUrl":"blank.html"
+                        },
+                        "iconCls": "icon-application-24"
+                    }]
+                }
+            }
+        ]
+    }
+}
