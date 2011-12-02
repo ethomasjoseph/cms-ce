@@ -143,6 +143,7 @@ Ext.define( 'App.view.UserFormField', {
                 store: me.fieldStore,
                 valueField: me.valueField,
                 displayField: me.displayField,
+                listeners: me.listeners,
                 queryMode: me.queryMode,
                 minChars: me.minChars,
                 emptyText: me.emptyText,

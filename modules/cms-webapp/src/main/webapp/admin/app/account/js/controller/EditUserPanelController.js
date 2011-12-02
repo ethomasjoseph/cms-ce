@@ -329,7 +329,8 @@ Ext.define( 'App.controller.EditUserPanelController', {
     addNewTab: function( button, event )
     {
         var tabPanel = button.up( 'addressContainer' );
-        var newTab = this.getEditUserFormPanel().generateAddressPanel( tabPanel.sourceField, true );
+        var closable = tabPanel.down( 'addressColumn' ).items.getCount() != 0;
+        var newTab = this.getEditUserFormPanel().generateAddressPanel( tabPanel.sourceField, closable );
         newTab = tabPanel.down( 'addressColumn' ).add( newTab );
     },
 

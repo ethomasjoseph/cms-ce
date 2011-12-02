@@ -14,6 +14,16 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
 
     layout: 'column',
 
+    //Moved to afterrender event to fix missed bbar
+    listeners: {
+        afterrender: function(){
+            if ( this.userFields && this.userFields.userStore )
+            {
+                this.renderUserForms( this.userFields.userStore );
+            }
+        }
+    },
+
     border: 0,
     autoScroll: true,
 
@@ -129,10 +139,6 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         ];
 
         this.callParent( arguments );
-        if ( this.userFields && this.userFields.userStore )
-        {
-            this.renderUserForms( this.userFields.userStore );
-        }
     },
 
     toggleDisplayNameField: function( event, target )
