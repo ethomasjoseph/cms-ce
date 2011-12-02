@@ -88,6 +88,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                         tpl: Templates.account.newUserPanelHeader,
                         data: {
                             value: displayNameValue,
+                            userstoreName: me.userstore,
                             isNewUser: this.userFields == undefined
                         }
                     },
@@ -164,12 +165,6 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         }
     },
 
-    updateQualifiedNameHeader: function( userStoreName )
-    {
-        Ext.get( 'q-userstore' ).dom.innerHTML = userStoreName + '\\';
-        Ext.get( 'q-username' ).dom.innerHTML = '';
-    },
-
     resizeFileUpload: function( file )
     {
         file.el.down( 'input[type=file]' ).setStyle( {
@@ -184,12 +179,13 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         //this.uploadForm.setDisabled( disable );
     },
 
-    renderUserForms: function( userStore )
+    renderUserForms: function( )
     {
+        var me = this;
         var userForms = this.query( 'editUserFormPanel' );
         Ext.Array.each( userForms, function( userForm )
         {
-            userForm.renderUserForm( {userStore: userStore} );
+            userForm.renderUserForm( {userStore: me.userstore} );
         } );
     }
 

@@ -31,7 +31,7 @@ Templates.account = {
                     '<div class="clearfix user-store-user-name">' +
                     '<tpl if="isNewUser">New User:</tpl>' +
                     '<tpl if="isNewUser == false">User:</tpl>' +
-                    '<span id="q-userstore"></span><span id="q-username"></span></div>' +
+                    '<span id="q-userstore"><tpl if="userstoreName">{userstoreName}\\\\</tpl></span><span id="q-username"></span></div>' +
                     '</div>'
 
     ,noUserSelected:

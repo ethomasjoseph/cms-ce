@@ -160,16 +160,11 @@ Ext.define( 'App.controller.UserWizardController', {
                 iconCls: 'icon-new-user',
                 closable: true,
                 autoScroll: true,
+                userstore: userStoreName,
                 xtype: 'userWizardPanel'
             };
         var tabItem = this.getCmsTabPanel().addTab( tab );
-        var userForms = tabItem.query( 'editUserFormPanel' );
-        Ext.Array.each( userForms, function( userForm )
-        {
-            var curUser = {userStore: userStoreName};
-            userForm.renderUserForm( curUser );
-        } );
-        this.getUserWizardPanel().updateQualifiedNameHeader( userStoreName );
+        tabItem.renderUserForms();
         var window = view.up( 'window' );
         window.close();
     },
