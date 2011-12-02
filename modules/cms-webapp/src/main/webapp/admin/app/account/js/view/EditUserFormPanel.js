@@ -284,11 +284,11 @@ Ext.define( 'App.view.EditUserFormPanel', {
         {
             fieldStore = Ext.data.StoreManager.lookup( 'TimezoneStore' );
             valueField = 'id';
-            displayField = 'idAndOffset';
+            displayField = 'humanizedIdAndOffset';
             displayConfig = {
                 getInnerTpl: function()
                 {
-                    return '{id} ({offset})';
+                    return '{humanizedId} ({offset})';
                 }
             };
             listeners = {
@@ -298,9 +298,11 @@ Ext.define( 'App.view.EditUserFormPanel', {
                         var queryText = query.query;
                         if ( queryText.length > 0 )
                         {
-                            var pattern = new RegExp(queryText, 'gim');
+                            queryText = queryText.split('(')[0];
+
+                            var pattern = new RegExp(queryText, 'gi');
                             fieldStore.clearFilter();
-                            fieldStore.filter('id', pattern);
+                            fieldStore.filter('humanizedIdAndOffset', pattern);
 
                             query.combo.expand();
                         }

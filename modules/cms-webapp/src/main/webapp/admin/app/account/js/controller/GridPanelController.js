@@ -29,7 +29,7 @@ Ext.define( 'App.controller.GridPanelController', {
                   },
                   beforeitemmousedown: this.cancelItemContextClickOnMultipleSelection,
                   itemcontextmenu: this.popupMenu,
-                  itemdblclick: this.showEditUserForm
+                  itemdblclick: this.showUserPreviewWindow
             }
         } );
     },
@@ -89,6 +89,7 @@ Ext.define( 'App.controller.GridPanelController', {
         components2d.push( Ext.ComponentQuery.query( '*[action=edit]' ) );
         components2d.push( Ext.ComponentQuery.query( '*[action=showDeleteWindow]' ) );
         components2d.push( Ext.ComponentQuery.query( '*[action=changePassword]' ) );
+        components2d.push( Ext.ComponentQuery.query( '*[action=viewUser]' ) );
 
         var items = [];
         var selectionCount = this.getPersistentGridSelectionPlugin().getSelectionCount();
@@ -139,6 +140,14 @@ Ext.define( 'App.controller.GridPanelController', {
         return true;
     },
 
+    showUserPreviewWindow: function( el, e )
+    {
+        var ctrl = this.getController( 'BrowseToolbarController' );
+        if ( ctrl )
+        {
+            ctrl.showUserPreviewWindow( el, e );
+        }
+    },
 
     getPersistentGridSelectionPlugin: function()
     {

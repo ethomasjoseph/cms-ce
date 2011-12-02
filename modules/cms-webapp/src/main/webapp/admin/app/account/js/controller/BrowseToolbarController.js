@@ -13,7 +13,8 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         'EditUserPanel',
         'ChangePasswordWindow',
         'DeleteAccountWindow',
-        'wizard.UserWizardPanel'
+        'wizard.UserWizardPanel',
+        'UserPreviewWindow'
     ],
 
     init: function()
@@ -33,6 +34,9 @@ Ext.define( 'App.controller.BrowseToolbarController', {
                           },
                           '*[action=changePassword]': {
                               click: this.showChangePasswordWindow
+                          },
+                          '*[action=viewUser]': {
+                              click: this.showUserPreviewWindow
                           }
                       } );
     },
@@ -65,6 +69,15 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         {
             ctrl.showEditUserForm( el, e );
         }
+    },
+
+    showUserPreviewWindow: function( el, e )
+    {
+        var selected = this.getUserGrid().getSelectionModel().selected.get( 0 );
+        var window = Ext.create('widget.userPreviewWindow',{
+            modelData: selected.data
+        });
+        window.show();
     },
 
     getPersistentGridSelectionPlugin: function()
