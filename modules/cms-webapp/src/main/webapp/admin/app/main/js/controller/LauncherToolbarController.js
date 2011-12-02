@@ -12,12 +12,15 @@ Ext.define('App.controller.LauncherToolbarController', {
         this.control(
             {
                 'viewport': {
-                    afterrender: this.loadDefaultApplication
+                    afterrender: {
+                        fn: this.loadDefaultApplication,
+                        delay: 10
+                    }
                 },
                 'launcherToolbar *[id=app-launcher-logo]': {
                     render: this.onLogoRendered
                 },
-                'launcherToolbar *[itemId=app-launcher-button] menu > menuitem': {
+                'launcherToolbar *[itemId=app-launcher-button] menu menuitem': {
                     click: this.loadApplication
                 }
             }
@@ -26,8 +29,10 @@ Ext.define('App.controller.LauncherToolbarController', {
 
     loadDefaultApplication: function()
     {
-        var defaultApplication = this.getStartMenuButton().menu.items.items[0];
-        this.loadApplication( defaultApplication, null, null );
+        var container = this.getStartMenuButton().menu.items.items[0];
+        if ( container && container.items.length > 0) {
+            this.loadApplication( container.items.items[0], null, null );
+        }
     },
 
     loadApplication: function( selectedMenuItem, e, options )
@@ -78,7 +83,7 @@ Ext.define('App.controller.LauncherToolbarController', {
 
         var startMenuButton = this.getStartMenuButton();
         startMenuButton.setText( selectedMenuItem.text );
-        startMenuButton.setIcon( selectedMenuItem.icon );
+        startMenuButton.setIconCls( selectedMenuItem.iconCls );
     },
 
     setDocumentTitle: function( title )
