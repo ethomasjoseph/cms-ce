@@ -4,11 +4,11 @@ import spock.lang.*
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.beans.factory.annotation.Autowired
 
-@ContextConfiguration( locations = "CountryServiceImplTest.xml")
+@ContextConfiguration
 class CountryServiceImplTest extends Specification
 {
     @Autowired
-    CountryService countryService
+    CountryServiceImpl countryService
 
     def "spring context test"()
     {
