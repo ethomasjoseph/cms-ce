@@ -13,6 +13,7 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         'EditUserPanel',
         'ChangePasswordWindow',
         'DeleteAccountWindow',
+        'ExportAccountsWindow',
         'wizard.UserWizardPanel'
     ],
 
@@ -33,6 +34,9 @@ Ext.define( 'App.controller.BrowseToolbarController', {
                           },
                           '*[action=changePassword]': {
                               click: this.showChangePasswordWindow
+                          },
+                          '*[action=exportAccounts]': {
+                              click: this.showExportAccountsWindow
                           }
                       } );
     },
@@ -56,6 +60,16 @@ Ext.define( 'App.controller.BrowseToolbarController', {
     {
         var selected = this.getUserGrid().getSelectionModel().selected.get( 0 );
         this.getUserChangePasswordWindow().doShow( selected );
+    },
+
+    showExportAccountsWindow: function()
+    {
+        var grid = this.getUserGrid();
+        var data = {
+            selected: grid.getSelectionModel().selected,
+            searched: grid.getStore().getRange()
+        };
+        this.getExportAccountsWindow().doShow( data );
     },
 
     showEditUserForm: function( el, e )
@@ -98,6 +112,16 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         if ( !win )
         {
             win = Ext.create( 'widget.userChangePasswordWindow' );
+        }
+        return win;
+    },
+
+    getExportAccountsWindow: function()
+    {
+        var win = Ext.ComponentQuery.query( 'exportAccountsWindow' )[0];
+        if ( !win )
+        {
+            win = Ext.create( 'widget.exportAccountsWindow' );
         }
         return win;
     },
