@@ -3,13 +3,14 @@ Ext.define('App.model.TimezoneModel', {
 
     fields: [
         'id',
+        'humanizedId',
         'shortName',
         'name',
         'offset',
         {
-            name: 'idAndOffset',
+            name: 'humanizedIdAndOffset',
             convert: function(value, record) {
-                return record.get('id') + ' (' + record.get('offset') + ')';
+                return record.get('humanizedId') + ' (' + record.get('offset') + ')';
             }
         }
     ]

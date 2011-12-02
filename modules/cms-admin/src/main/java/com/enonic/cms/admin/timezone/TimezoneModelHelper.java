@@ -15,6 +15,7 @@ public final class TimezoneModelHelper
         long currTime = System.currentTimeMillis();
         if (entity != null) {
             model.setId( entity.getID() );
+            model.setHumanizedId( entity.getID().replaceAll( "_", " " ) );
             model.setShortName( entity.getShortName( currTime ) );
             model.setName( entity.getName( currTime ) );
             DateTime now = new DateTime(  );
