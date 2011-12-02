@@ -154,7 +154,16 @@ Ext.define( 'App.controller.UserWizardController', {
         radioButton.dom.checked = true;
 
         var userStoreName = record.get( 'name' );
-        var userForms = this.getUserWizardPanel().query( 'editUserFormPanel' );
+        var tab = {
+                id: Ext.id( null, 'new-user-' ),
+                title: 'New User',
+                iconCls: 'icon-new-user',
+                closable: true,
+                autoScroll: true,
+                xtype: 'userWizardPanel'
+            };
+        var tabItem = this.getCmsTabPanel().addTab( tab );
+        var userForms = tabItem.query( 'editUserFormPanel' );
         Ext.Array.each( userForms, function( userForm )
         {
             var curUser = {userStore: userStoreName};
@@ -162,7 +171,6 @@ Ext.define( 'App.controller.UserWizardController', {
         } );
         this.getUserWizardPanel().updateQualifiedNameHeader( userStoreName );
         var window = view.up( 'window' );
-        window.cancelled = false;
         window.close();
     },
 
@@ -340,6 +348,11 @@ Ext.define( 'App.controller.UserWizardController', {
     getWizardPanel: function()
     {
         return Ext.ComponentQuery.query( 'wizardPanel' )[0];
+    },
+
+    getCmsTabPanel: function()
+    {
+        return Ext.ComponentQuery.query( 'cmsTabPanel' )[0];
     }
 
 } );
