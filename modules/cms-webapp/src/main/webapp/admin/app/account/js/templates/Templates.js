@@ -61,7 +61,7 @@ Templates.account = {
                     '<div class="photo-placeholder"><img src="data/user/photo?key={key}" alt="{displayName}"/></div>' +
                     '</div><div class="center"><div class="container">' +
                     '<h1>{displayName}</h1><div><span>{userStore}\\\\{name}</span>' +
-                    '<span class="email">{email}</span></div></div>' +
+                    '<span class="email">&nbsp;{email}</span></div></div>' +
                     '<div class="navigation"><ul><li>Activities</li>' +
                     '<li class="active">Profile</li><li>Places</li>' +
                     '<li>Memberships</li><li>Advanced</li></ul></div><div><table><thead>' +

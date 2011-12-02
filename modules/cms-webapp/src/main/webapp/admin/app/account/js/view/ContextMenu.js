@@ -14,6 +14,11 @@ Ext.define('App.view.ContextMenu', {
             iconCls: 'icon-delete',
             action: 'showDeleteWindow'
         },
+        {
+            text: 'View',
+            iconCls: 'icon-user',
+            action: 'viewUser'
+        },
         '-',
         {
             text: 'Change Password',

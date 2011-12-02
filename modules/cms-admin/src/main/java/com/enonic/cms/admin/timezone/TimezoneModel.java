@@ -3,6 +3,7 @@ package com.enonic.cms.admin.timezone;
 public final class TimezoneModel
 {
     private String id;
+    private String humanizedId;
     private String shortName;
     private String name;
     private String offset;
@@ -15,6 +16,16 @@ public final class TimezoneModel
     public void setId( String id )
     {
         this.id = id;
+    }
+
+    public String getHumanizedId()
+    {
+        return humanizedId;
+    }
+
+    public void setHumanizedId( String humanizedId )
+    {
+        this.humanizedId = humanizedId;
     }
 
     public String getShortName()

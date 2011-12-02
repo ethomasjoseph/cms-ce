@@ -3,6 +3,7 @@ Ext.define( 'App.view.ExportAccountsWindow', {
     alias: 'widget.exportAccountsWindow',
 
     dialogTitle: 'Export Accounts',
+    dialogInfoTpl: false,
 
     items: [
         {
