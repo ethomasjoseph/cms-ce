@@ -224,19 +224,26 @@ public class JsonSerializer
         return datasourceArray;
     }
 
-    private void createDatasource( JsonArray jsonArray, DatasourceExecutionTrace datasource )
+    private void createDatasource( JsonArray datasourceArray, DatasourceExecutionTrace datasource )
     {
         JsonObject datasourceObject = new JsonObject();
         datasourceObject.addProperty( "name", datasource.getMethodName() );
 
         JsonObject duration = new JsonObject();
-
         duration.addProperty( "start_time_ms", datasource.getDuration().getStartTime().getMillis() - timeZero );
         duration.addProperty( "stop_time_ms", datasource.getDuration().getStopTime().getMillis() - timeZero );
         duration.addProperty( "total_time_ms", datasource.getDuration().getExecutionTimeInMilliseconds() );
         datasourceObject.add( "duration", duration );
 
-        jsonArray.add( datasourceObject );
+        JsonObject parameters = new JsonObject();
+        for( DatasourceMethodArgument parameter : datasource.getDatasourceMethodArgumentList() )
+        {
+            parameters.addProperty( parameter.getName(), parameter.getValue() );
+        }
+
+        datasourceObject.add( "parameters", parameters );
+
+        datasourceArray.add( datasourceObject );
     }
 
     private String resolveQualifiedUsernameAsString( QualifiedUsername qualifiedUsername )
