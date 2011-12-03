@@ -1,5 +1,7 @@
 package com.enonic.cms.core.portal.xtrace;
 
+// TODO: rename occurrences of xslt to "xsl". The t in xslt stands for transformations (http://en.wikipedia.org/wiki/XSLT)
+
 import java.util.List;
 
 import com.enonic.cms.core.portal.livetrace.*;
@@ -76,6 +78,7 @@ public class JsonSerializer
         pageObject.addProperty( "name", pageTrace.getPortalRequestTrace().getUrl() );
         pageObject.addProperty( "cache_hit", pageTrace.isUsedCachedResult() );
         pageObject.addProperty( "ran_as_user", resolveQualifiedUsernameAsString( pageTrace.getRenderer() ) );
+        pageObject.addProperty( "view", pageTrace.getViewTransformationTrace().getView() );
 
         JsonObject duration = new JsonObject();
 
@@ -124,6 +127,7 @@ public class JsonSerializer
         windowObject.addProperty( "name", windowTrace.getPortletName() );
         windowObject.addProperty( "cache_hit", windowTrace.isUsedCachedResult() );
         windowObject.addProperty( "ran_as_user", resolveQualifiedUsernameAsString( windowTrace.getRenderer() ) );
+        windowObject.addProperty( "view", windowTrace.getViewTransformationTrace().getView() );
 
         JsonObject duration = new JsonObject();
 
