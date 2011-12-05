@@ -12,8 +12,8 @@ Ext.define( 'App.view.ExportAccountsWindow', {
             items:[
                 {
                     itemId: 'exportType',
-                    xtype      : 'radiogroup',
-                    fieldLabel : 'Export',
+                    xtype: 'radiogroup',
+                    fieldLabel: 'Export',
                     defaults: {
                         name: 'exportType',
                         anchor: '100%'
@@ -21,11 +21,13 @@ Ext.define( 'App.view.ExportAccountsWindow', {
                     layout: 'anchor',
                     items: [
                         {
+                            id: 'selectedCount',
                             boxLabel: 'Selection (<span class="count">0</span>)',
                             inputValue: 'selection',
                             checked: true
                         },
                         {
+                            id: 'searchCount',
                             boxLabel: 'Search result (<span class="count">0</span>)',
                             inputValue: 'search'
                         }
@@ -56,11 +58,33 @@ Ext.define( 'App.view.ExportAccountsWindow', {
                             handler: function( btn, evt ) {
                                 var win = btn.up( 'window' );
 
+                                var query = {};
                                 var type = win.down( '#exportType' );
-                                var url = Ext.urlAppend( '/admin/data/account/export', Ext.urlEncode( type.getValue() ) );
+                                if ( type.getValue()['exportType'] == 'selection' ) {
+                                    // iterate through selected records and pluck keys
+                                    query.keys = Ext.Array.pluck( win.modelData.selected, 'internalId' );
+                                } else {
+                                    // pass last filter params
+                                    query = win.modelData.searched.lastQuery;
+                                }
 
                                 win.close();
-                                window.open( url, "_blank")
+
+                                var form = Ext.get( 'accountsExportForm' );
+                                if ( form ) {
+                                    form.destroy();
+                                }
+
+                                // Create a form in order to do a post request
+                                var frameData = "<form id='accountsExportForm' action='/admin/data/account/export' method='post'>";
+                                for (var param in query) {
+                                    frameData += "<input type='hidden' name='" +param+ "' value='" +query[param]+ "' />";
+                                }
+                                frameData += "</form>";
+
+                                form = Ext.core.DomHelper.append( Ext.getBody(), frameData );
+
+                                form.submit();
 
                             }
                         }
@@ -79,13 +103,21 @@ Ext.define( 'App.view.ExportAccountsWindow', {
     doShow: function( model )
     {
         this.callParent( arguments );
-        if ( model )
+        if ( this.modelData )
         {
-            var form = this.down('form');
+            var form = this.down('form').getForm();
+            var selectedField = form.findField( 'selectedCount' );
+            var searchField = form.findField( 'searchCount' );
 
-            var counts = Ext.query( 'span.count', form.el.dom );
-            counts[0].innerHTML = model.selected.length;
-            counts[1].innerHTML = model.searched.length;
+            if( this.modelData.selected.length > 0 ) {
+                selectedField.setDisabled( false );
+            } else {
+                selectedField.setDisabled( true );
+                searchField.setValue( true );
+            }
+
+            selectedField.el.down( 'span.count' ).dom.innerHTML = this.modelData.selected.length;
+            searchField.el.down( 'span.count' ).dom.innerHTML = this.modelData.searched.count;
         }
     }
 

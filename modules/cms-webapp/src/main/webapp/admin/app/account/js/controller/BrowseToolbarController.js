@@ -69,11 +69,16 @@ Ext.define( 'App.controller.BrowseToolbarController', {
     showExportAccountsWindow: function()
     {
         var grid = this.getUserGrid();
+        var lastQuery = this.getAccountFilter().lastQuery;
+        var selected = this.getPersistentGridSelectionPlugin().getSelection();
         var data = {
-            selected: grid.getSelectionModel().selected,
-            searched: grid.getStore().getRange()
+            selected: selected,
+            searched: {
+                count: grid.getStore().getTotalCount(),
+                lastQuery: lastQuery
+            }
         };
-        this.getExportAccountsWindow().doShow( data );
+        this.getExportAccountsWindow().doShow( { data: data } );
     },
 
     showEditUserForm: function( el, e )
@@ -92,6 +97,11 @@ Ext.define( 'App.controller.BrowseToolbarController', {
             modelData: selected.data
         });
         window.show();
+    },
+
+    getAccountFilter: function()
+    {
+        return Ext.ComponentQuery.query( 'accountFilter' )[0];
     },
 
     getPersistentGridSelectionPlugin: function()
