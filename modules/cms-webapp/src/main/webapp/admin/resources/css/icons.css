@@ -53,3 +53,11 @@
 .icon-application-24 {
     background: transparent url("../icons/24x24/application.png") 0 0 no-repeat;
 }
+
+.icon-user-add-24 {
+    background: transparent url("../icons/24x24/user_add.png") 0 0 no-repeat;
+}
+
+.icon-group-add-24 {
+    background: transparent url("../icons/24x24/group_add.png") 0 0 no-repeat;
+}
