@@ -19,27 +19,6 @@ Ext.define( 'Common.view.BaseDialogWindow', {
     dialogTitle: 'Base dialog',
     dialogInfoTpl: Templates.common.userInfo,
 
-    dockedItems: [
-        {
-            xtype: 'toolbar',
-            dock: 'right',
-            items: [
-                {
-                    scale: 'medium',
-                    iconAlign: 'top',
-                    text: 'Close',
-                    action: 'close',
-                    iconCls: 'icon-close',
-                    listeners: {
-                        click: function( btn, evt )
-                        {
-                            btn.up( 'baseDialogWindow' ).close();
-                        }
-                    }
-                }
-            ]
-        }
-    ],
 
     listeners: {
         show: function( cmp )
@@ -70,6 +49,27 @@ Ext.define( 'Common.view.BaseDialogWindow', {
     initComponent: function()
     {
         var me = this;
+        me.dockedItems = [];
+        Ext.Array.insert(this.dockedItems, 0, [{
+            xtype: 'toolbar',
+            dock: 'right',
+            autoHeight: true,
+            items: [
+                {
+                    scale: 'medium',
+                    iconAlign: 'top',
+                    text: 'Close',
+                    action: 'close',
+                    iconCls: 'icon-close',
+                    listeners: {
+                        click: function( btn, evt )
+                        {
+                            btn.up( 'baseDialogWindow' ).close();
+                        }
+                    }
+                }
+            ]
+        }]);
         Ext.Array.insert( this.items, 0, [
             {
                 itemId: 'dialogHeader',
