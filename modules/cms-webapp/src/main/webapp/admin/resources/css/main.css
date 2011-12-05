@@ -902,6 +902,7 @@ ul.cms-wizard-navigation li a.last-current {
 .cms-mega-menu-header h2 {
     border-bottom: 1px solid #cccccc;
     font-size: 18px;
+    margin-top: .2em;
     margin-bottom: .5em;
     padding-left: 6px;
     font-weight: normal;
