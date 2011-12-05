@@ -98,6 +98,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                             {
                                 stepNumber: 1,
                                 stepTitle: "Profile",
+                                itemId: "profilePanel",
                                 xtype: 'editUserFormPanel',
                                 userFields: me.userFields,
                                 enableToolbar: false
