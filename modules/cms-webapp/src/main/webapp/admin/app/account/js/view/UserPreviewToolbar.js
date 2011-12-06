@@ -1,10 +1,7 @@
-Ext.define( 'App.view.wizard.UserWizardToolbar', {
+Ext.define( 'App.view.UserPreviewToolbar', {
     extend: 'Ext.toolbar.Toolbar',
-    alias : 'widget.userWizardToolbar',
+    alias : 'widget.userPreviewToolbar',
 
-    border: false,
-
-    isNewUser: true,
 
     initComponent: function()
     {
@@ -15,18 +12,6 @@ Ext.define( 'App.view.wizard.UserWizardToolbar', {
             minWidth: 64
         };
 
-        var saveBtn = {
-            xtype: 'buttongroup',
-            columns: 1,
-            defaults: buttonDefaults,
-            items: [
-                {
-                    text: 'Save',
-                    action: 'saveNewUser',
-                    itemId: 'save',
-                    iconCls: 'icon-btn-save-24'
-                }
-            ]};
         var deleteBtn = {
             xtype: 'buttongroup',
             columns: 1,
@@ -49,14 +34,18 @@ Ext.define( 'App.view.wizard.UserWizardToolbar', {
                     iconCls: 'icon-change-password-24'
                 }
             ]};
-        if ( this.isNewUser )
-        {
-            this.items = [ saveBtn ];
-        }
-        else
-        {
-            this.items = [ saveBtn, deleteBtn, changePasswordBtn];
-        }
+        var ediUser = {
+            xtype: 'buttongroup',
+            columns: 1,
+            defaults: buttonDefaults,
+            items: [
+                {
+                    text: 'Edit User',
+                    action: 'edit',
+                    iconCls: 'icon-edit-user-24'
+                }
+            ]};
+        this.items = [ ediUser, deleteBtn, changePasswordBtn];
         this.callParent( arguments );
     }
 

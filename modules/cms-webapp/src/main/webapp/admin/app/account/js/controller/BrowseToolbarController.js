@@ -14,7 +14,8 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         'ChangePasswordWindow',
         'DeleteAccountWindow',
         'wizard.UserWizardPanel',
-        'UserPreviewWindow'
+        'UserPreviewWindow',
+        'ExportAccountsWindow'
     ],
 
     init: function()
@@ -37,7 +38,10 @@ Ext.define( 'App.controller.BrowseToolbarController', {
                           },
                           '*[action=viewUser]': {
                               click: this.showUserPreviewWindow
-                          }
+                          },
+                            '*[action=exportAccounts]': {
+                                click: this.showExportAccountsWindow
+                            }
                       } );
     },
 
@@ -62,11 +66,31 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         this.getUserChangePasswordWindow().doShow( selected );
     },
 
+    showExportAccountsWindow: function()
+    {
+        var grid = this.getUserGrid();
+        var lastQuery = this.getAccountFilter().lastQuery;
+        var selected = this.getPersistentGridSelectionPlugin().getSelection();
+        var data = {
+            selected: selected,
+            searched: {
+                count: grid.getStore().getTotalCount(),
+                lastQuery: lastQuery
+            }
+        };
+        this.getExportAccountsWindow().doShow( { data: data } );
+    },
+
     showEditUserForm: function( el, e )
     {
         var ctrl = this.getController( 'EditUserPanelController' );
         if ( ctrl )
         {
+            var previewWindow = Ext.ComponentQuery.query( 'userPreviewWindow' )[0];
+            if (previewWindow)
+            {
+                previewWindow.close();
+            }
             ctrl.showEditUserForm( el, e );
         }
     },
@@ -74,10 +98,13 @@ Ext.define( 'App.controller.BrowseToolbarController', {
     showUserPreviewWindow: function( el, e )
     {
         var selected = this.getUserGrid().getSelectionModel().selected.get( 0 );
-        var window = Ext.create('widget.userPreviewWindow',{
-            modelData: selected.data
-        });
-        window.show();
+        var window = this.getUserPreviewWindow();
+        window.doShow(selected.data);
+    },
+
+    getAccountFilter: function()
+    {
+        return Ext.ComponentQuery.query( 'accountFilter' )[0];
     },
 
     getPersistentGridSelectionPlugin: function()
@@ -115,12 +142,32 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         return win;
     },
 
+    getExportAccountsWindow: function()
+    {
+        var win = Ext.ComponentQuery.query( 'exportAccountsWindow' )[0];
+        if ( !win )
+        {
+            win = Ext.create( 'widget.exportAccountsWindow' );
+        }
+        return win;
+    },
+
     getDeleteAccountWindow: function()
     {
         var win = Ext.ComponentQuery.query( 'deleteAccountWindow' )[0];
         if ( !win )
         {
             win = Ext.create( 'widget.deleteAccountWindow' );
+        }
+        return win;
+    },
+
+    getUserPreviewWindow: function()
+    {
+        var win = Ext.ComponentQuery.query( 'userPreviewWindow' )[0];
+        if ( !win )
+        {
+            win = Ext.create( 'widget.userPreviewWindow' );
         }
         return win;
     }

@@ -2,6 +2,8 @@ Ext.define( 'App.view.UserPreviewWindow', {
     extend: 'Common.view.BaseDialogWindow',
     alias: 'widget.userPreviewWindow',
 
+    requires: ['App.view.UserPreviewToolbar'],
+
     dialogTitle: 'User Preview',
 
     autoWidth: true,
@@ -12,11 +14,21 @@ Ext.define( 'App.view.UserPreviewWindow', {
 
     initComponent: function()
     {
-        this.items = [{
-            data: this.modelData,
-            tpl: new Ext.XTemplate( Templates.account.userPreview )
+        this.items = [
+            {
+                tbar: {
+                    xtype: 'userPreviewToolbar'
+                },
+                itemId: 'userPreview',
+                tpl: new Ext.XTemplate( Templates.account.userPreview )
         }];
         this.callParent( arguments );
+    },
+
+    doShow: function(model)
+    {
+        this.down('#userPreview').update(model);
+        this.show();
     }
 
 } );

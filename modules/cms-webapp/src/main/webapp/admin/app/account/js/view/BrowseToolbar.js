@@ -24,12 +24,10 @@ Ext.define( 'App.view.BrowseToolbar', {
                         action: 'newUser',
                         iconCls: 'icon-add-24',
                         cls: 'x-btn-as-arrow',
-                        menu: new Ext.menu.Menu({
-                            items: [
-                                {text: 'User', iconCls: 'icon-new-user', action: 'newUser'},
-                                {text: 'Group', iconCls: 'icon-new-group', action: 'newGroup'}
-                            ]
-                        })
+                        menu: Ext.create( 'Common.view.MegaMenu', {
+                            maxColumns: 1,
+                            url: 'app/account/js/data/accountMenu.json'
+                        } )
                     }
                 ]
             },
@@ -75,6 +73,19 @@ Ext.define( 'App.view.BrowseToolbar', {
                         action: 'viewUser',
                         iconCls: 'icon-user-24',
                         disableOnMultipleSelection: true
+                    }
+                ]
+            },
+            {
+                xtype: 'buttongroup',
+                columns: 1,
+                defaults: buttonDefaults,
+                items: [
+                    {
+                        text: 'Export',
+                        action: 'exportAccounts',
+                        iconCls: 'icon-export-24',
+                        disableOnMultipleSelection: false
                     }
                 ]
             }

@@ -84,16 +84,31 @@ Ext.define( 'App.controller.UserWizardController', {
         this.getUserWizardPanel().doLayout();
         this.focusFirstField();
 
-        if ( newStep.getXType() == 'wizardStepProfilePanel' )
+        if ( newStep.getXType() === 'wizardStepProfilePanel' )
         {
             // move to 1st step
             this.getUserWizardPanel().setFileUploadDisabled( true );
         }
         // oldStep can be null for first page
-        if ( oldStep && oldStep.getXType() == 'userStoreListPanel' )
+        if ( oldStep && oldStep.getXType() === 'userStoreListPanel' )
         {
             // move from 1st step
             this.getUserWizardPanel().setFileUploadDisabled( false );
+        }
+
+        // auto-suggest username
+        if ( ( oldStep && oldStep.itemId === 'profilePanel' ) && newStep.itemId === 'userPanel' )
+        {
+            var formPanel = this.getUserWizardPanel().down( 'editUserFormPanel' );
+            var firstName = formPanel.down( '#first-name' );
+            var firstNameValue = firstName ? Ext.String.trim( firstName.getValue() ) : '';
+            var lastName = formPanel.down( '#last-name' );
+            var lastNameValue = lastName ? Ext.String.trim( lastName.getValue() ) : '';
+            var userStoreName = wizard.getData()['userStoreName'];
+            if ( firstNameValue || lastNameValue )
+            {
+                this.autoSuggestUsername(firstNameValue, lastNameValue, userStoreName);
+            }
         }
     },
 
@@ -164,6 +179,8 @@ Ext.define( 'App.controller.UserWizardController', {
             };
         var tabItem = this.getCmsTabPanel().addTab( tab );
         tabItem.renderUserForms();
+        tabItem.addData( {'userStoreName': userStoreName} );
+        tabItem.updateQualifiedNameHeader( userStoreName );
         var window = view.up( 'window' );
         window.close();
     },
@@ -316,7 +333,7 @@ Ext.define( 'App.controller.UserWizardController', {
 
     userFieldValidityChange: function(field, isValid)
     {
-        if (field.fieldname == 'repeat-password')
+        if (field.fieldname === 'repeat-password')
         {
             var greenMark = field.down('#greenMark');
             greenMark.setVisibility(isValid);
@@ -349,6 +366,34 @@ Ext.define( 'App.controller.UserWizardController', {
     getCmsTabPanel: function()
     {
         return Ext.ComponentQuery.query( 'cmsTabPanel' )[0];
+    },
+
+    autoSuggestUsername: function(firstName, lastName, userStoreName)
+    {
+        var userPanel = this.getUserWizardPanel().down( '#userPanel' );
+        var usernameField = userPanel.down( '#username' );
+        if ( usernameField.getValue() !== '' )
+        {
+            return;
+        }
+
+        Ext.Ajax.request( {
+            url: '/admin/data/account/suggestusername',
+            method: 'GET',
+            params: {
+                'firstname': firstName,
+                'lastname': lastName,
+                'userstore': userStoreName
+            },
+            success: function( response )
+            {
+                var respObj = Ext.decode( response.responseText, true );
+                if (usernameField.getValue() === '')
+                {
+                    usernameField.setValue(respObj.username);
+                }
+            }
+        } );
     }
 
 } );
