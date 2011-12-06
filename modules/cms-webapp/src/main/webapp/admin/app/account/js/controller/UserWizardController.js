@@ -179,8 +179,7 @@ Ext.define( 'App.controller.UserWizardController', {
             };
         var tabItem = this.getCmsTabPanel().addTab( tab );
         tabItem.renderUserForms();
-        tabItem.addData( {'userStoreName': userStoreName} );
-        tabItem.updateQualifiedNameHeader( userStoreName );
+        tabItem.down('wizardPanel').addData( {'userStoreName': userStoreName} );
         var window = view.up( 'window' );
         window.close();
     },
