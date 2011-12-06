@@ -15,6 +15,9 @@ Ext.define( 'Common.view.MegaMenu', {
     styleHtmlContent: true,
 
     maxColumns: 4,
+    tableAttrs: undefined,
+    trAttrs: undefined,
+    tdAttrs: undefined,
     url: undefined,
 
     loader: {
@@ -55,6 +58,9 @@ Ext.define( 'Common.view.MegaMenu', {
                                 layout: {
                                     type: 'table',
                                     columns: menu.maxColumns,
+                                    tableAttrs: menu.tableAttrs,
+                                    trAttrs: menu.trAttrs,
+                                    tdAttrs: menu.tdAttrs,
                                     bindToOwnerCtComponent: true,
                                     autoSize: true
                                 },
