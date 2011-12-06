@@ -61,3 +61,17 @@
 .icon-group-add-24 {
     background: transparent url("../icons/24x24/group_add.png") 0 0 no-repeat;
 }
+
+.icon-export-24 {
+    background: transparent url("../icons/24x24/export.png") 0 0 no-repeat;
+}
+
+.icon-ok-24 {
+    background: transparent url("../icons/24x24/check.png") 0 0 no-repeat;
+}
+.icon-cancel-24 {
+    background: transparent url("../icons/24x24/delete.png") 0 0 no-repeat;
+}
+.icon-delete-24 {
+    background: transparent url("../icons/24x24/garbage_delete.png") 0 0 no-repeat;
+}
