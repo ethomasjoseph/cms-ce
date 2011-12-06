@@ -21,7 +21,7 @@ Templates.account = {
     ,editUserPanelHeader:
             '<div class="cms-edit-form-header clearfix">' + '<div class="left">' +
                     '<img alt="User" src="data/user/photo?key={key}"/></div>' + '<div class="right">' +
-                    '<h1><input id="display-name" type="text" value="{displayName}" readonly="true" class="cms-display-name"/></h1><a href="javascript:;" class="edit-button"></a>' +
+                    '<h1><input id="display-name" type="text" value="{displayName}" readonly="true" class="cms-display-name {[edited ? "cms-edited-field" : ""]}"/></h1><a href="javascript:;" class="edit-button"></a>' +
                     '<p>{qualifiedName}</p></div></div>'
 
     ,newUserPanelHeader:
@@ -31,7 +31,7 @@ Templates.account = {
                     '<div class="clearfix user-store-user-name">' +
                     '<tpl if="isNewUser">New User:</tpl>' +
                     '<tpl if="isNewUser == false">User:</tpl>' +
-                    '<span id="q-userstore"><tpl if="userstoreName">{userstoreName}\\\\</tpl></span><span id="q-username"></span></div>' +
+                    '<span><tpl if="userstoreName">{userstoreName}\\\\</tpl></span><span>{qUserName}</span></div>' +
                     '</div>'
 
     ,noUserSelected:

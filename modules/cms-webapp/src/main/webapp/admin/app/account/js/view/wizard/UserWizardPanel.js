@@ -36,7 +36,15 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         var me = this;
         var photoUrl;
         var userGroups = [];
-        var displayNameValue = 'Display name';
+        var displayNameValue = 'Display Name';
+        me.displayNameAutoGenerate = true;
+        me.headerData = {
+                            value: displayNameValue,
+                            userstoreName: me.userstore,
+                            qUserName: me.qUserName,
+                            isNewUser: this.userFields == undefined,
+                            edited: false
+                        };
         if ( me.userFields )
         {
             photoUrl = 'data/user/photo?key=' + me.userFields.key;
@@ -71,6 +79,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                 items: [
                     {
                         xtype: 'panel',
+                        id: 'wizardHeader',
                         styleHtmlContent: true,
                         listeners: {
                             afterrender: {
@@ -86,11 +95,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                             }
                         },
                         tpl: Templates.account.newUserPanelHeader,
-                        data: {
-                            value: displayNameValue,
-                            userstoreName: me.userstore,
-                            isNewUser: this.userFields == undefined
-                        }
+                        data: me.headerData
                     },
                     {
                         xtype: 'wizardPanel',
@@ -187,6 +192,12 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         {
             userForm.renderUserForm( {userStore: me.userstore} );
         } );
+    },
+
+    updateHeader: function( data )
+    {
+        Ext.apply(this.headerData, data);
+        this.down('#wizardHeader').update(this.headerData);
     }
 
 } );
