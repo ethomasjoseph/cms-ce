@@ -75,6 +75,19 @@ Ext.define( 'App.view.BrowseToolbar', {
                         disableOnMultipleSelection: true
                     }
                 ]
+            },
+            {
+                xtype: 'buttongroup',
+                columns: 1,
+                defaults: buttonDefaults,
+                items: [
+                    {
+                        text: 'Export',
+                        action: 'exportAccounts',
+                        iconCls: 'icon-export-24',
+                        disableOnMultipleSelection: false
+                    }
+                ]
             }
         ];
 

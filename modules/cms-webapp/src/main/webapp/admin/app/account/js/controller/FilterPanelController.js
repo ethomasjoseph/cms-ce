@@ -60,13 +60,27 @@ Ext.define( 'App.controller.FilterPanelController', {
         var userStoreField = this.getFilterUserStoreField();
         var accountTypeField = this.getFilterAccountTypeField();
         var organizationsField = this.getFilterOrganizationField();
-        var organizationsValues = [];
 
+        var values = [];
         Ext.Object.each( organizationsField.getValue(), function( key, val )
         {
-            organizationsValues.push( val );
+            values.push( val );
         } );
-        organizationsField = organizationsValues.join( ',' );
+        organizationsField = values.join( ',' );
+
+        values = [];
+        Ext.Object.each( accountTypeField.getValue(), function( key, val )
+        {
+            values.push( val );
+        } );
+        accountTypeField = values.join( ',' );
+
+        values = [];
+        Ext.Object.each( userStoreField.getValue(), function( key, val )
+        {
+            values.push( val );
+        } );
+        userStoreField = values.join( ',' );
 
         if (textField.getValue().length > 0) {
             this.getAccountFilter().updateTitle();
@@ -74,13 +88,18 @@ Ext.define( 'App.controller.FilterPanelController', {
 
         this.facetSelected = facetSelected ? facetSelected : '';
 
-        usersStore.clearFilter();
-        usersStore.getProxy().extraParams = {
+        var filterQuery = {
             query: textField.getValue(),
-            type: accountTypeField.getValue(),
-            userstores: userStoreField.getValue(),
+            type: accountTypeField,
+            userstores: userStoreField,
             organizations: organizationsField
         };
+
+        // save the last filter query
+        this.getAccountFilter().lastQuery = filterQuery;
+
+        usersStore.clearFilter();
+        usersStore.getProxy().extraParams = filterQuery;
 
         // move to page 1 when search filter updated
         var pagingToolbar = this.getUserGrid().down( 'pagingtoolbar' );

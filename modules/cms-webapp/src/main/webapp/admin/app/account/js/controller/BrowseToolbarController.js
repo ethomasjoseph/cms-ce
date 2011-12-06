@@ -14,7 +14,8 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         'ChangePasswordWindow',
         'DeleteAccountWindow',
         'wizard.UserWizardPanel',
-        'UserPreviewWindow'
+        'UserPreviewWindow',
+        'ExportAccountsWindow'
     ],
 
     init: function()
@@ -37,7 +38,10 @@ Ext.define( 'App.controller.BrowseToolbarController', {
                           },
                           '*[action=viewUser]': {
                               click: this.showUserPreviewWindow
-                          }
+                          },
+                            '*[action=exportAccounts]': {
+                                click: this.showExportAccountsWindow
+                            }
                       } );
     },
 
@@ -62,6 +66,21 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         this.getUserChangePasswordWindow().doShow( selected );
     },
 
+    showExportAccountsWindow: function()
+    {
+        var grid = this.getUserGrid();
+        var lastQuery = this.getAccountFilter().lastQuery;
+        var selected = this.getPersistentGridSelectionPlugin().getSelection();
+        var data = {
+            selected: selected,
+            searched: {
+                count: grid.getStore().getTotalCount(),
+                lastQuery: lastQuery
+            }
+        };
+        this.getExportAccountsWindow().doShow( { data: data } );
+    },
+
     showEditUserForm: function( el, e )
     {
         var ctrl = this.getController( 'EditUserPanelController' );
@@ -81,6 +100,11 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         var selected = this.getUserGrid().getSelectionModel().selected.get( 0 );
         var window = this.getUserPreviewWindow();
         window.doShow(selected.data);
+    },
+
+    getAccountFilter: function()
+    {
+        return Ext.ComponentQuery.query( 'accountFilter' )[0];
     },
 
     getPersistentGridSelectionPlugin: function()
@@ -114,6 +138,16 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         if ( !win )
         {
             win = Ext.create( 'widget.userChangePasswordWindow' );
+        }
+        return win;
+    },
+
+    getExportAccountsWindow: function()
+    {
+        var win = Ext.ComponentQuery.query( 'exportAccountsWindow' )[0];
+        if ( !win )
+        {
+            win = Ext.create( 'widget.exportAccountsWindow' );
         }
         return win;
     },
