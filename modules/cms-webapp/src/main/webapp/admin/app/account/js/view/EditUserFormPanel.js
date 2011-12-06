@@ -299,12 +299,17 @@ Ext.define( 'App.view.EditUserFormPanel', {
                         if ( queryText.length > 0 )
                         {
                             queryText = queryText.split('(')[0];
-
                             var pattern = new RegExp(queryText, 'gi');
                             fieldStore.clearFilter();
                             fieldStore.filter('humanizedIdAndOffset', pattern);
-
                             query.combo.expand();
+
+                            var picker = query.combo.getPicker();
+                            var firstItem = picker.getNode(0);
+                            if ( firstItem )
+                            {
+                                picker.highlightItem(firstItem);
+                            }
                         }
                         return false;
                     }

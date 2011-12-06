@@ -30,6 +30,8 @@ import com.enonic.cms.core.search.account.AccountSearchService;
 import com.enonic.cms.core.security.group.GroupEntity;
 import com.enonic.cms.core.security.group.GroupKey;
 import com.enonic.cms.core.security.user.UserEntity;
+import com.enonic.cms.core.security.userstore.UserStoreEntity;
+import com.enonic.cms.core.security.userstore.UserStoreService;
 import com.enonic.cms.store.dao.GroupDao;
 import com.enonic.cms.store.dao.UserDao;
 
@@ -47,6 +49,9 @@ public final class AccountResource
 
     @Autowired
     private GroupDao groupDao;
+
+    @Autowired
+    private UserStoreService userStoreService;
 
     @Autowired
     private AccountSearchService searchService;
@@ -67,7 +72,7 @@ public final class AccountResource
                 req.isSelectUsers() + ", selectGroups=" + req.isSelectGroups() + ", userstores=" + req.getUserstores() + ", orgs=" +
                 req.getOrganizations() );
 
-        final AccountSearchResults searchResults = search(req);
+        final AccountSearchResults searchResults = search( req );
 
         final List list = new ArrayList();
 
@@ -105,17 +110,11 @@ public final class AccountResource
         final String organizations = req.getOrganizations();
         final String[] organizationList = ( organizations == null ) ? new String[0] : organizations.split( "," );
 
-        final AccountSearchQuery searchQueryCountFacets = new AccountSearchQuery()
-            .setIncludeResults( true )
-            .setCount( req.getLimit() )
-            .setFrom( req.getStart() )
-            .setQuery( req.getQuery() )
-            .setGroups( req.isSelectGroups() )
-            .setUsers( req.isSelectUsers() )
-            .setUserStores( userstoreList )
-            .setOrganizations( organizationList )
-            .setSortField( AccountIndexField.parse( req.getSort() ) )
-            .setSortOrder( SearchSortOrder.valueOf( req.getSortDir() ) );
+        final AccountSearchQuery searchQueryCountFacets =
+            new AccountSearchQuery().setIncludeResults( true ).setCount( req.getLimit() ).setFrom( req.getStart() ).setQuery(
+                req.getQuery() ).setGroups( req.isSelectGroups() ).setUsers( req.isSelectUsers() ).setUserStores(
+                userstoreList ).setOrganizations( organizationList ).setSortField( AccountIndexField.parse( req.getSort() ) ).setSortOrder(
+                SearchSortOrder.valueOf( req.getSortDir() ) );
 
         final AccountSearchResults searchResults = searchService.search( searchQueryCountFacets );
         return searchResults;
@@ -145,7 +144,7 @@ public final class AccountResource
     {
         final int accountsExportLimit = 5000;
         req.setLimit( accountsExportLimit );
-        final AccountSearchResults searchResults = search(req);
+        final AccountSearchResults searchResults = search( req );
 
         final AccountsCsvExport csvExport = new AccountsCsvExport( groupDao, userDao );
         final String content = csvExport.generateCsv( searchResults );
@@ -154,11 +153,29 @@ public final class AccountResource
 
         final byte[] data = content.getBytes( characterEncoding );
 
-        return Response.ok( data )
-            .type( "text/csv; charset=" + characterEncoding )
-            .header( "Content-Encoding", characterEncoding )
-            .header( "Content-Disposition", attachmentHeader )
-            .build();
+        return Response.ok( data ).type( "text/csv; charset=" + characterEncoding ).header( "Content-Encoding", characterEncoding ).header(
+            "Content-Disposition", attachmentHeader ).build();
+    }
+
+    @GET
+    @Path("suggestusername")
+    public Response suggestUsername( @QueryParam("firstname") @DefaultValue("") final String firstName,
+                                     @QueryParam("lastname") @DefaultValue("") final String lastName,
+                                     @QueryParam("userstore") @DefaultValue("") final String userStoreName )
+    {
+        final UserIdGenerator userIdGenerator = new UserIdGenerator( userDao );
+
+        final UserStoreEntity store = userStoreService.findByName( userStoreName );
+
+        if ( store == null )
+        {
+            return Response.status( Response.Status.NOT_FOUND ).build();
+        }
+
+        final String suggestedUserName = userIdGenerator.generateUserId( firstName.trim(), lastName.trim(), store.getKey() );
+        final Map<String, String> response = new HashMap<String, String>();
+        response.put( "username", suggestedUserName );
+        return Response.ok( response ).build();
     }
 
 }

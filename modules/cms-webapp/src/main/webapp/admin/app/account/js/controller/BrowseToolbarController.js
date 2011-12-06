@@ -86,6 +86,11 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         var ctrl = this.getController( 'EditUserPanelController' );
         if ( ctrl )
         {
+            var previewWindow = Ext.ComponentQuery.query( 'userPreviewWindow' )[0];
+            if (previewWindow)
+            {
+                previewWindow.close();
+            }
             ctrl.showEditUserForm( el, e );
         }
     },
@@ -93,10 +98,8 @@ Ext.define( 'App.controller.BrowseToolbarController', {
     showUserPreviewWindow: function( el, e )
     {
         var selected = this.getUserGrid().getSelectionModel().selected.get( 0 );
-        var window = Ext.create('widget.userPreviewWindow',{
-            modelData: selected.data
-        });
-        window.show();
+        var window = this.getUserPreviewWindow();
+        window.doShow(selected.data);
     },
 
     getAccountFilter: function()
@@ -155,6 +158,16 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         if ( !win )
         {
             win = Ext.create( 'widget.deleteAccountWindow' );
+        }
+        return win;
+    },
+
+    getUserPreviewWindow: function()
+    {
+        var win = Ext.ComponentQuery.query( 'userPreviewWindow' )[0];
+        if ( !win )
+        {
+            win = Ext.create( 'widget.userPreviewWindow' );
         }
         return win;
     }

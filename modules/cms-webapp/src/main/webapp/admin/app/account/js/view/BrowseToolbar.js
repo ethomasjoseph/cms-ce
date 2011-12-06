@@ -24,12 +24,10 @@ Ext.define( 'App.view.BrowseToolbar', {
                         action: 'newUser',
                         iconCls: 'icon-add-24',
                         cls: 'x-btn-as-arrow',
-                        menu: new Ext.menu.Menu({
-                            items: [
-                                {text: 'User', iconCls: 'icon-new-user', action: 'newUser'},
-                                {text: 'Group', iconCls: 'icon-new-group', action: 'newGroup'}
-                            ]
-                        })
+                        menu: Ext.create( 'Common.view.MegaMenu', {
+                            maxColumns: 1,
+                            url: 'app/account/js/data/accountMenu.json'
+                        } )
                     }
                 ]
             },
