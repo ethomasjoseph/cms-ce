@@ -369,7 +369,7 @@ Ext.define( 'App.controller.UserWizardController', {
         }
 
         Ext.Ajax.request( {
-            url: '/admin/data/account/suggestusername',
+            url: 'data/account/suggestusername',
             method: 'GET',
             params: {
                 'firstname': firstName,
