@@ -81,33 +81,35 @@ Ext.define( 'App.controller.UserWizardController', {
 
     stepChanged: function( wizard, oldStep, newStep )
     {
-        this.getUserWizardPanel().doLayout();
+        var userWizard = wizard.up('userWizardPanel');
+        userWizard.doLayout();
         this.focusFirstField();
 
         if ( newStep.getXType() === 'wizardStepProfilePanel' )
         {
             // move to 1st step
-            this.getUserWizardPanel().setFileUploadDisabled( true );
+            userWizard.setFileUploadDisabled( true );
         }
         // oldStep can be null for first page
         if ( oldStep && oldStep.getXType() === 'userStoreListPanel' )
         {
             // move from 1st step
-            this.getUserWizardPanel().setFileUploadDisabled( false );
+            userWizard.setFileUploadDisabled( false );
         }
 
         // auto-suggest username
         if ( ( oldStep && oldStep.itemId === 'profilePanel' ) && newStep.itemId === 'userPanel' )
         {
-            var formPanel = this.getUserWizardPanel().down( 'editUserFormPanel' );
+            var formPanel = wizard.down( 'editUserFormPanel' );
             var firstName = formPanel.down( '#first-name' );
             var firstNameValue = firstName ? Ext.String.trim( firstName.getValue() ) : '';
             var lastName = formPanel.down( '#last-name' );
             var lastNameValue = lastName ? Ext.String.trim( lastName.getValue() ) : '';
             var userStoreName = wizard.getData()['userStoreName'];
+            var usernameField = wizard.down('#username')
             if ( firstNameValue || lastNameValue )
             {
-                this.autoSuggestUsername(firstNameValue, lastNameValue, userStoreName);
+                this.autoSuggestUsername(firstNameValue, lastNameValue, userStoreName, usernameField);
             }
         }
     },
@@ -352,11 +354,6 @@ Ext.define( 'App.controller.UserWizardController', {
         addressPanel.setTitle( field.getValue() );
     },
 
-    getUserWizardPanel: function()
-    {
-        return Ext.ComponentQuery.query( 'userWizardPanel' )[0];
-    },
-
     getWizardPanel: function()
     {
         return Ext.ComponentQuery.query( 'wizardPanel' )[0];
@@ -367,10 +364,8 @@ Ext.define( 'App.controller.UserWizardController', {
         return Ext.ComponentQuery.query( 'cmsTabPanel' )[0];
     },
 
-    autoSuggestUsername: function(firstName, lastName, userStoreName)
+    autoSuggestUsername: function(firstName, lastName, userStoreName, usernameField)
     {
-        var userPanel = this.getUserWizardPanel().down( '#userPanel' );
-        var usernameField = userPanel.down( '#username' );
         if ( usernameField.getValue() !== '' )
         {
             return;

@@ -79,7 +79,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                 items: [
                     {
                         xtype: 'panel',
-                        id: 'wizardHeader',
+                        itemId: 'wizardHeader',
                         styleHtmlContent: true,
                         listeners: {
                             afterrender: {
@@ -94,7 +94,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                                 scope: this
                             }
                         },
-                        tpl: Templates.account.newUserPanelHeader,
+                        tpl: new Ext.XTemplate(Templates.account.newUserPanelHeader),
                         data: me.headerData
                     },
                     {
