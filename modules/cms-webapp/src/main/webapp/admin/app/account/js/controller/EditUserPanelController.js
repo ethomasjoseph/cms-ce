@@ -262,26 +262,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
     {
         if ( el.action == 'newUser' )
         {
-            var tab = {
-                id: Ext.id( null, 'new-user-' ),
-                title: 'New User',
-                iconCls: 'icon-new-user',
-                closable: true,
-                autoScroll: true,
-                xtype: 'userWizardPanel'
-            };
-            var tabItem = this.getCmsTabPanel().addTab( tab );
-            var window = Ext.create( 'widget.selectUserStoreWindow', {
-                                         listeners: {
-                                             close: function()
-                                             {
-                                                 if ( this.cancelled )
-                                                 {
-                                                     tabItem.close();
-                                                 }
-                                             }
-                                         }
-                                     } );
+            var window = Ext.create( 'widget.selectUserStoreWindow', {} );
             window.show();
 
         }
