@@ -39,7 +39,7 @@ Ext.define( 'App.view.wizard.group.GroupWizardToolbar', {
                 }
             ]};
 
-        if( this.isNewGroup ) {
+        if( this.isNew ) {
             this.items = [ saveBtn ];
         } else {
             this.items = [ saveBtn, deleteBtn ];

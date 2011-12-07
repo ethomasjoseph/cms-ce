@@ -777,12 +777,14 @@ ul.cms-wizard-navigation li a.last-current {
 
 .cms-wizard-header-container input {
     width: 99%;
-    margin: 3px 0 0 3px;
     border: 1px solid TRANSPARENT;
     color: #555555;
     font-size: 26px;
+    line-height: 36px;
+    height: 36px;
     font-weight: normal;
     border-radius: 2px;
+    background: transparent none;
 }
 
 .cms-wizard-header-container input:hover {

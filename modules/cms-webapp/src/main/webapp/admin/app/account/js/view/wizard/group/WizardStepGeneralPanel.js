@@ -2,8 +2,6 @@ Ext.define( 'App.view.wizard.group.WizardStepGeneralPanel', {
     extend: 'Ext.form.Panel',
     alias : 'widget.wizardStepGeneralPanel',
 
-    clientValidation: true,
-
     items: [{
         xtype: 'fieldset',
         title: 'General',
@@ -11,12 +9,7 @@ Ext.define( 'App.view.wizard.group.WizardStepGeneralPanel', {
         defaults: {
             width: 600
         },
-        items: [{
-                xtype: 'textfield',
-                fieldLabel: 'Name',
-                allowBlank: false,
-                name: 'name'
-            },
+        items: [
             {
                 xtype: 'checkbox',
                 fieldLabel: 'Restricted enrollment',
@@ -26,6 +19,7 @@ Ext.define( 'App.view.wizard.group.WizardStepGeneralPanel', {
                 xtype: 'textarea',
                 fieldLabel: 'Description',
                 rows: 5,
+                allowBlank: false,
                 name: 'description'
             }
         ]

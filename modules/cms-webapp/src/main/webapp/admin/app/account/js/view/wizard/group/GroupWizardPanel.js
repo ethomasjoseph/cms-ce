@@ -22,31 +22,25 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
     initComponent: function()
     {
         var me = this;
-        var photoUrl;
-        var userGroups = [];
-        var displayNameValue = 'Display name';
-        if ( me.userFields )
-        {
-            photoUrl = 'data/user/photo?key=' + me.userFields.key;
-            userGroups = me.userFields.groups;
-            displayNameValue = me.userFields.displayName;
-        }
+        var isNew = this.modelData == undefined;
+        var displayNameValue = 'Group name';
 
         me.tbar = {
-            xtype: 'userWizardToolbar',
-            isNewGroup: this.userFields == undefined
+            xtype: 'groupWizardToolbar',
+            isNew: isNew
         };
         me.items = [
             {
-                width: 121,
+                width: 138,
                 padding: '5 5 5 5',
+                border: false,
                 items: [
                     {
-                        xtype: 'photoUploadButton',
-                        width: 111,
-                        height: 111,
-                        photoUrl: photoUrl,
-                        progressBarHeight: 6
+                        xtype: 'image',
+                        border: false,
+                        width: 128,
+                        height: 128,
+                        cls: 'icon-group-128'
                     }
                 ]
             },
@@ -58,26 +52,26 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
                 },
                 items: [
                     {
-                        xtype: 'panel',
-                        styleHtmlContent: true,
-                        listeners: {
-                            afterrender: {
-                                fn: function()
-                                {
-                                    var me = this;
-                                    me.getEl().addListener( 'click', function( event, target, eOpts )
-                                    {
-                                        me.toggleDisplayNameField( event, target );
-                                    } );
-                                },
-                                scope: this
+                        xtype: 'form',
+                        itemId: 'wizardHeader',
+                        cls: 'cms-wizard-header-container',
+                        onValidityChange: function( valid ) {
+                            console.log( 'onvaliditychange = ' + valid );
+                            if ( this.owner && this.owner.rendered ) {
+                                var form = this.owner.up( 'groupWizardPanel' ).down( 'wizardPanel' ).getLayout().getActiveItem().getForm();
+                                if( form ) {
+                                    form.onValidityChange( valid && form.isValid() );
+                                }
                             }
                         },
-                        tpl: Templates.account.newUserPanelHeader,
-                        data: {
-                            value: displayNameValue,
-                            isNewGroup: this.userFields == undefined
-                        }
+                        items: [{
+                            xtype: 'textfield',
+                            cls: 'cms-display-name',
+                            anchor: '100%',
+                            height: 46,
+                            allowBlank: false,
+                            value: displayNameValue
+                        }]
                     },
                     {
                         xtype: 'wizardPanel',
@@ -105,43 +99,6 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
         ];
 
         this.callParent( arguments );
-    },
-
-    toggleDisplayNameField: function( event, target )
-    {
-        var clickedElement = new Ext.Element( target );
-        var parentToClickedElementIsHeader = clickedElement.findParent( '.cms-wizard-header' );
-        var displayNameField = Ext.DomQuery.select( 'input.cms-display-name', this.getEl().dom )[0];
-        var displayNameFieldElement = new Ext.Element( displayNameField );
-
-        if ( parentToClickedElementIsHeader )
-        {
-            displayNameFieldElement.dom.removeAttribute( 'readonly' );
-            displayNameFieldElement.addCls( 'cms-edited-field' );
-        }
-        else
-        {
-            displayNameFieldElement.set( {readonly: true} );
-            var value = Ext.String.trim( displayNameFieldElement.getValue() );
-            if ( value === '' || value === 'Display Name' )
-            {
-                displayNameFieldElement.removeCls( 'cms-edited-field' );
-            }
-        }
-    },
-
-    resizeFileUpload: function( file )
-    {
-        file.el.down( 'input[type=file]' ).setStyle( {
-                                                         width: file.getWidth(),
-                                                         height: file.getHeight()
-                                                     } );
-    },
-
-    setFileUploadDisabled: function( disable )
-    {
-        //TODO: disable image upload
-        //this.uploadForm.setDisabled( disable );
     }
 
 } );
