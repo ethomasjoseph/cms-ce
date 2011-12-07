@@ -36,7 +36,15 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
         var me = this;
         var photoUrl;
         var userGroups = [];
-        var displayNameValue = 'Display name';
+        var displayNameValue = 'Display Name';
+        me.displayNameAutoGenerate = true;
+        me.headerData = {
+                            value: displayNameValue,
+                            userstoreName: me.userstore,
+                            qUserName: me.qUserName,
+                            isNewUser: this.userFields == undefined,
+                            edited: false
+                        };
         if ( me.userFields )
         {
             photoUrl = 'data/user/photo?key=' + me.userFields.key;
@@ -71,6 +79,7 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
                 items: [
                     {
                         xtype: 'panel',
+                        itemId: 'wizardHeader',
                         styleHtmlContent: true,
                         listeners: {
                             afterrender: {
@@ -85,11 +94,8 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
                                 scope: this
                             }
                         },
-                        tpl: Templates.account.newUserPanelHeader,
-                        data: {
-                            value: displayNameValue,
-                            isNewUser: this.userFields == undefined
-                        }
+                        tpl: new Ext.XTemplate(Templates.account.newUserPanelHeader),
+                        data: me.headerData
                     },
                     {
                         xtype: 'wizardPanel',
@@ -165,12 +171,6 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
         }
     },
 
-    updateQualifiedNameHeader: function( userStoreName )
-    {
-        Ext.get( 'q-userstore' ).dom.innerHTML = userStoreName + '\\';
-        Ext.get( 'q-username' ).dom.innerHTML = '';
-    },
-
     resizeFileUpload: function( file )
     {
         file.el.down( 'input[type=file]' ).setStyle( {
@@ -187,11 +187,18 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
 
     renderUserForms: function( userStore )
     {
+        var me = this;
         var userForms = this.query( 'editUserFormPanel' );
         Ext.Array.each( userForms, function( userForm )
         {
             userForm.renderUserForm( {userStore: userStore} );
         } );
+    },
+
+    updateHeader: function( data )
+    {
+        Ext.apply(this.headerData, data);
+        this.down('#wizardHeader').update(this.headerData);
     }
 
 } );

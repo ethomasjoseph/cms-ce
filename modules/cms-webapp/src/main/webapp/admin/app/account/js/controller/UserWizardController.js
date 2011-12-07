@@ -18,7 +18,6 @@ Ext.define( 'App.controller.UserWizardController', {
     views: [],
 
     EMPTY_DISPLAY_NAME_TEXT: 'Display Name',
-    displayNameAutoGenerate: true,
 
     init: function()
     {
@@ -81,31 +80,32 @@ Ext.define( 'App.controller.UserWizardController', {
     stepChanged: function( wizard, oldStep, newStep )
     {
         this.focusFirstField();
-
+        var userWizard = wizard.up('userWizardPanel');
         if ( newStep.getXType() === 'wizardStepProfilePanel' )
         {
             // move to 1st step
-            this.getUserWizardPanel().setFileUploadDisabled( true );
+            userWizard.setFileUploadDisabled( true );
         }
         // oldStep can be null for first page
         if ( oldStep && oldStep.getXType() === 'userStoreListPanel' )
         {
             // move from 1st step
-            this.getUserWizardPanel().setFileUploadDisabled( false );
+            userWizard.setFileUploadDisabled( false );
         }
 
         // auto-suggest username
         if ( ( oldStep && oldStep.itemId === 'profilePanel' ) && newStep.itemId === 'userPanel' )
         {
-            var formPanel = this.getUserWizardPanel().down( 'editUserFormPanel' );
+            var formPanel = wizard.down( 'editUserFormPanel' );
             var firstName = formPanel.down( '#first-name' );
             var firstNameValue = firstName ? Ext.String.trim( firstName.getValue() ) : '';
             var lastName = formPanel.down( '#last-name' );
             var lastNameValue = lastName ? Ext.String.trim( lastName.getValue() ) : '';
             var userStoreName = wizard.getData()['userStoreName'];
+            var usernameField = wizard.down('#username')
             if ( firstNameValue || lastNameValue )
             {
-                this.autoSuggestUsername(firstNameValue, lastNameValue, userStoreName);
+                this.autoSuggestUsername(firstNameValue, lastNameValue, userStoreName, usernameField);
             }
         }
     },
@@ -140,6 +140,7 @@ Ext.define( 'App.controller.UserWizardController', {
 
     userStoreFieldsLoaded: function( target )
     {
+        target.up('userWizardPanel').doLayout();
         this.focusFirstField();
         this.bindFormEvents( target );
     },
@@ -165,17 +166,19 @@ Ext.define( 'App.controller.UserWizardController', {
         radioButton.dom.checked = true;
 
         var userStoreName = record.get( 'name' );
-        this.getWizardPanel().addData( {'userStoreName': userStoreName} );
-
-        var userForms = this.getUserWizardPanel().query( 'editUserFormPanel' );
-        Ext.Array.each( userForms, function( userForm )
-        {
-            var curUser = {userStore: userStoreName};
-            userForm.renderUserForm( curUser );
-        } );
-        this.getUserWizardPanel().updateQualifiedNameHeader( userStoreName );
+        var tab = {
+                id: Ext.id( null, 'new-user-' ),
+                title: 'New User',
+                iconCls: 'icon-new-user',
+                closable: true,
+                autoScroll: true,
+                userstore: userStoreName,
+                xtype: 'userWizardPanel'
+            };
+        var tabItem = this.getCmsTabPanel().addTab( tab );
+        tabItem.renderUserForms( userStoreName );
+        tabItem.down('wizardPanel').addData( {'userStoreName': userStoreName} );
         var window = view.up( 'window' );
-        window.cancelled = false;
         window.close();
     },
 
@@ -214,14 +217,15 @@ Ext.define( 'App.controller.UserWizardController', {
         }
     },
 
-    bindDisplayNameEvents: function()
+    bindDisplayNameEvents: function( wizard )
     {
-        var displayName = Ext.get( 'cms-display-name' );
+        var wizardId = wizard.getId();
+        var displayName = Ext.query( '#' + wizardId + ' input.cms-display-name' );
         if ( displayName )
         {
-            Ext.Element.get( displayName ).on( 'blur', this.displayNameBlur, this );
+            Ext.Element.get( displayName ).on( 'blur', this.displayNameBlur, this, {wizard: wizard} );
             Ext.Element.get( displayName ).on( 'focus', this.displayNameFocus, this );
-            Ext.Element.get( displayName ).on( 'change', this.displayNameChanged, this );
+            Ext.Element.get( displayName ).on( 'change', this.displayNameChanged, this, {wizard: wizard} );
         }
     },
 
@@ -231,10 +235,9 @@ Ext.define( 'App.controller.UserWizardController', {
         return (text === this.EMPTY_DISPLAY_NAME_TEXT);
     },
 
-    setDefaultDisplayName: function( displayNameInputField )
+    setDefaultDisplayName: function( wizard )
     {
-        displayNameInputField.value = this.EMPTY_DISPLAY_NAME_TEXT;
-        Ext.Element.get( displayNameInputField ).removeCls( 'cms-edited-field' );
+        this.updateWizardHeader(wizard, {value: this.EMPTY_DISPLAY_NAME_TEXT, edited: false});
     },
 
     displayNameFocus: function( event, element )
@@ -245,78 +248,74 @@ Ext.define( 'App.controller.UserWizardController', {
         }
     },
 
-    displayNameBlur: function( event, element )
+    displayNameBlur: function( event, element, opts )
     {
         var text = Ext.String.trim( element.value );
         if ( text === '' )
         {
-            var autogeneratedDispName = this.autoGenerateDisplayName();
+            var autogeneratedDispName = this.autoGenerateDisplayName( opts.wizard );
             if ( autogeneratedDispName === '' )
             {
-                this.setDefaultDisplayName( element );
+                this.setDefaultDisplayName( opts.wizard );
             }
             else
             {
-                element.value = autogeneratedDispName;
-                Ext.Element.get( element ).addCls( 'cms-edited-field' );
+                this.updateWizardHeader(opts.wizard, {value: autogeneratedDispName, edited: true});
             }
         }
     },
 
-    displayNameChanged: function( event, element )
+    displayNameChanged: function( event, element, opts )
     {
         if ( element.value === '' )
         {
-            this.displayNameAutoGenerate = true;
+            opts.wizard.displayNameAutoGenerate = true;
         }
         else
         {
-            this.displayNameAutoGenerate = false;
+            opts.wizard.displayNameAutoGenerate = false;
         }
     },
 
-    autoGenerateDisplayName: function()
+    autoGenerateDisplayName: function( wizard )
     {
-        var formPanel = this.getUserWizardPanel().down( 'editUserFormPanel' );
-        var prefix = formPanel.down( '#prefix' ) ? Ext.String.trim( formPanel.down( '#prefix' ).getValue() ) : '';
-        var firstName = formPanel.down( '#first-name' ) ? Ext.String.trim( formPanel.down( '#first-name' ).getValue() )
+        var prefix = wizard.down( '#prefix' ) ? Ext.String.trim( wizard.down( '#prefix' ).getValue() ) : '';
+        var firstName = wizard.down( '#first-name' ) ? Ext.String.trim( wizard.down( '#first-name' ).getValue() )
                 : '';
-        var middleName = formPanel.down( '#middle-name' )
-                ? Ext.String.trim( formPanel.down( '#middle-name' ).getValue() ) : '';
-        var lastName = formPanel.down( '#last-name' ) ? Ext.String.trim( formPanel.down( '#last-name' ).getValue() )
+        var middleName = wizard.down( '#middle-name' )
+                ? Ext.String.trim( wizard.down( '#middle-name' ).getValue() ) : '';
+        var lastName = wizard.down( '#last-name' ) ? Ext.String.trim( wizard.down( '#last-name' ).getValue() )
                 : '';
-        var suffix = formPanel.down( '#suffix' ) ? Ext.String.trim( formPanel.down( '#suffix' ).getValue() ) : '';
+        var suffix = wizard.down( '#suffix' ) ? Ext.String.trim( wizard.down( '#suffix' ).getValue() ) : '';
         var displayNameValue = prefix + ' ' + firstName + ' ' + middleName + ' ' + lastName + ' ' + suffix;
         return Ext.String.trim( displayNameValue.replace( /  /g, ' ' ) );
     },
 
     profileNameFieldChanged: function( field )
     {
-        if ( !this.displayNameAutoGenerate )
+        var userWizard = field.up('userWizardPanel');
+
+        if ( !userWizard.displayNameAutoGenerate )
         {
             return;
         }
 
-        var displayNameField = Ext.get( 'cms-display-name' );
-        if ( displayNameField )
-        {
-            var displayNameValue = this.autoGenerateDisplayName();
+        var displayNameValue = this.autoGenerateDisplayName( userWizard );
 
-            if ( displayNameValue !== '' )
-            {
-                displayNameField.dom.value = displayNameValue;
-                displayNameField.addCls( 'cms-edited-field' );
-            }
-            else
-            {
-                this.setDefaultDisplayName( displayNameField.dom );
-            }
+        if ( displayNameValue !== '' )
+        {
+            this.updateWizardHeader(userWizard, {value: displayNameValue, edited: true});
+        }
+        else
+        {
+            this.updateWizardHeader(userWizard, {value: this.EMPTY_DISPLAY_NAME_TEXT, edited: false});
         }
     },
 
     usernameFieldChanged: function( field )
     {
-        Ext.get( 'q-username' ).dom.innerHTML = field.value;
+        var userWizard = field.up('userWizardPanel');
+        this.updateWizardHeader( userWizard, {qUserName: field.value});
     },
 
     focusFirstField: function()
@@ -339,15 +338,16 @@ Ext.define( 'App.controller.UserWizardController', {
 
     },
 
+    updateWizardHeader: function ( wizard, data )
+    {
+        wizard.updateHeader(data);
+        this.bindDisplayNameEvents( wizard );
+    },
+
     updateTabTitle: function ( field, event )
     {
         var addressPanel = field.up( 'addressPanel' );
         addressPanel.setTitle( field.getValue() );
-    },
-
-    getUserWizardPanel: function()
-    {
-        return Ext.ComponentQuery.query( 'userWizardPanel' )[0];
     },
 
     getWizardPanel: function()
@@ -355,17 +355,20 @@ Ext.define( 'App.controller.UserWizardController', {
         return Ext.ComponentQuery.query( 'wizardPanel' )[0];
     },
 
-    autoSuggestUsername: function(firstName, lastName, userStoreName)
+    getCmsTabPanel: function()
     {
-        var userPanel = this.getUserWizardPanel().down( '#userPanel' );
-        var usernameField = userPanel.down( '#username' );
+        return Ext.ComponentQuery.query( 'cmsTabPanel' )[0];
+    },
+
+    autoSuggestUsername: function(firstName, lastName, userStoreName, usernameField)
+    {
         if ( usernameField.getValue() !== '' )
         {
             return;
         }
 
         Ext.Ajax.request( {
-            url: '/admin/data/account/suggestusername',
+            url: 'data/account/suggestusername',
             method: 'GET',
             params: {
                 'firstname': firstName,

@@ -13,7 +13,6 @@ Ext.define( 'App.view.SelectUserStoreWindow', {
             xtype: 'userStoreListPanel'
         }
     ],
-    cancelled: true,
 
     initComponent: function()
     {

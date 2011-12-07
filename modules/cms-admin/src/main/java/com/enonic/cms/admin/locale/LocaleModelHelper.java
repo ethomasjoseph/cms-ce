@@ -8,7 +8,7 @@ public class LocaleModelHelper
     public static LocaleModel toModel(final Locale entity)
     {
         final LocaleModel model = new LocaleModel();
-        model.setId( entity.getISO3Language() );
+        model.setId( entity.toString() );
         model.setDisplayName( entity.getDisplayName() );
         return model;
     }
