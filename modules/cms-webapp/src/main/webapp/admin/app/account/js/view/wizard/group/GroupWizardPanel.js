@@ -4,9 +4,9 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
     requires: [
         'Common.WizardPanel',
         'App.view.wizard.group.GroupWizardToolbar',
-        'App.view.wizard.group.WizardStepGroupPanel',
+        'App.view.wizard.group.WizardStepGeneralPanel',
         'App.view.wizard.group.WizardStepMembersPanel',
-        'App.view.wizard.user.WizardStepSummaryPanel',
+        'App.view.wizard.group.WizardStepGroupSummaryPanel',
         'Common.fileupload.PhotoUploadButton'
     ],
 
@@ -85,18 +85,18 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
                         items: [
                             {
                                 stepNumber: 1,
-                                stepTitle: "Group",
-                                xtype: 'wizardStepGroupPanel'
+                                stepTitle: "General",
+                                xtype: 'wizardStepGeneralPanel'
                             },
                             {
                                 stepNumber: 2,
-                                stepTitle: "Memberships",
+                                stepTitle: "Members",
                                 xtype: 'wizardStepMembersPanel'
                             },
                             {
                                 stepNumber: 3,
                                 stepTitle: "Summary",
-                                xtype: 'wizardStepSummaryPanel'
+                                xtype: 'wizardStepGroupSummaryPanel'
                             }
                         ]
                     }
@@ -130,12 +130,6 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
         }
     },
 
-    updateQualifiedNameHeader: function( userStoreName )
-    {
-        Ext.get( 'q-userstore' ).dom.innerHTML = userStoreName + '\\';
-        Ext.get( 'q-username' ).dom.innerHTML = '';
-    },
-
     resizeFileUpload: function( file )
     {
         file.el.down( 'input[type=file]' ).setStyle( {
@@ -148,15 +142,6 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
     {
         //TODO: disable image upload
         //this.uploadForm.setDisabled( disable );
-    },
-
-    renderUserForms: function( userStore )
-    {
-        var userForms = this.query( 'editUserFormPanel' );
-        Ext.Array.each( userForms, function( userForm )
-        {
-            userForm.renderUserForm( {userStore: userStore} );
-        } );
     }
 
 } );

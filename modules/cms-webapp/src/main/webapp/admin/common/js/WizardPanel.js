@@ -66,7 +66,7 @@ Ext.define( 'Common.WizardPanel', {
 
                 item.getBoundItems = function() {
                     var boundItems = this._boundItems;
-                    if (!boundItems) {
+                    if ( !boundItems && this.owner.rendered ) {
                         boundItems = this._boundItems = Ext.create('Ext.util.MixedCollection');
                         boundItems.addAll(this.owner.query('[formBind]'));
                         // also add a top nav to bound items of a current step

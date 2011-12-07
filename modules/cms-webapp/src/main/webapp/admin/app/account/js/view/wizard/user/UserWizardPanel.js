@@ -8,7 +8,7 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
         'App.view.EditUserFormPanel',
         'App.view.wizard.user.WizardStepLoginInfoPanel',
         'App.view.wizard.user.WizardStepMembershipPanel',
-        'App.view.wizard.user.WizardStepSummaryPanel',
+        'App.view.wizard.user.WizardStepUserSummaryPanel',
         'Common.fileupload.PhotoUploadButton'
     ],
 
@@ -137,7 +137,7 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
                             {
                                 stepNumber: 5,
                                 stepTitle: "Summary",
-                                xtype: 'wizardStepSummaryPanel'
+                                xtype: 'wizardStepUserSummaryPanel'
                             }
                         ]
                     }

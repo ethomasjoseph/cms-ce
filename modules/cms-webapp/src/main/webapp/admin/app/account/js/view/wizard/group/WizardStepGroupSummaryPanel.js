@@ -1,13 +1,13 @@
-Ext.define( 'App.view.wizard.user.WizardStepSummaryPanel', {
+Ext.define( 'App.view.wizard.group.WizardStepGroupSummaryPanel', {
     extend: 'Ext.form.Panel',
-    alias : 'widget.wizardStepSummaryPanel',
+    alias : 'widget.wizardStepGroupSummaryPanel',
 
     border: false,
 
     items: [
         {
             xtype: 'component',
-            html: 'A nice summary will come here'
+            html: 'A nice group summary will come here'
         }
     ],
 

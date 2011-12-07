@@ -108,10 +108,9 @@ Ext.define( 'Common.WizardLayout', {
                     oldCard.hide();
                 }
                 this.activeItem = newCard;
-                this.owner.doLayout();
+                owner.doLayout();
                 newCard.show(null, function() {
                     owner.fireEvent( "animationfinished", newCard, oldCard );
-                    console.log( 'anim finished' );
                 });
 
             }
@@ -152,6 +151,6 @@ Ext.define( 'Common.WizardLayout', {
         }
         item.setCalculatedSize(width, height, this.owner);
     }
-*/
+    */
 
 });
