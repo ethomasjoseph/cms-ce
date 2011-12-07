@@ -14,7 +14,7 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         'ChangePasswordWindow',
         'DeleteAccountWindow',
         'wizard.UserWizardPanel',
-        'UserPreviewWindow',
+        'UserPreviewPanel',
         'ExportAccountsWindow'
     ],
 
@@ -98,8 +98,11 @@ Ext.define( 'App.controller.BrowseToolbarController', {
     showUserPreviewWindow: function( el, e )
     {
         var selected = this.getUserGrid().getSelectionModel().selected.get( 0 );
-        var window = this.getUserPreviewWindow();
-        window.doShow(selected.data);
+        this.getCmsTabPanel().addTab( {
+            title: selected.data.displayName + ' (' + selected.data.qualifiedName + ')',
+            xtype: 'userPreviewPanel',
+            data: selected.data
+        } );
     },
 
     getAccountFilter: function()
