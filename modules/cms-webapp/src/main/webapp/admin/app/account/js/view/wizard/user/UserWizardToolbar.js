@@ -1,4 +1,4 @@
-Ext.define( 'App.view.wizard.UserWizardToolbar', {
+Ext.define( 'App.view.wizard.user.UserWizardToolbar', {
     extend: 'Ext.toolbar.Toolbar',
     alias : 'widget.userWizardToolbar',
 

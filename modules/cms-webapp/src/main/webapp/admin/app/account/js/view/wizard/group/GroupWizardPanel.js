@@ -1,28 +1,16 @@
-Ext.define( 'App.view.wizard.UserWizardPanel', {
+Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
     extend: 'Ext.panel.Panel',
-    alias: 'widget.userWizardPanel',
+    alias: 'widget.groupWizardPanel',
     requires: [
         'Common.WizardPanel',
-        'App.view.wizard.UserStoreListPanel',
-        'App.view.wizard.UserWizardToolbar',
-        'App.view.EditUserFormPanel',
-        'App.view.wizard.WizardStepLoginInfoPanel',
-        'App.view.wizard.WizardStepMembershipPanel',
-        'App.view.wizard.WizardStepSummaryPanel',
+        'App.view.wizard.group.GroupWizardToolbar',
+        'App.view.wizard.group.WizardStepGroupPanel',
+        'App.view.wizard.group.WizardStepMembersPanel',
+        'App.view.wizard.user.WizardStepSummaryPanel',
         'Common.fileupload.PhotoUploadButton'
     ],
 
     layout: 'column',
-
-    //Moved to afterrender event to fix missed bbar
-    listeners: {
-        afterrender: function(){
-            if ( this.userFields && this.userFields.userStore )
-            {
-                this.renderUserForms( this.userFields.userStore );
-            }
-        }
-    },
 
     border: 0,
     autoScroll: true,
@@ -46,7 +34,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
 
         me.tbar = {
             xtype: 'userWizardToolbar',
-            isNewUser: this.userFields == undefined
+            isNewGroup: this.userFields == undefined
         };
         me.items = [
             {
@@ -88,7 +76,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                         tpl: Templates.account.newUserPanelHeader,
                         data: {
                             value: displayNameValue,
-                            isNewUser: this.userFields == undefined
+                            isNewGroup: this.userFields == undefined
                         }
                     },
                     {
@@ -97,39 +85,16 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                         items: [
                             {
                                 stepNumber: 1,
-                                stepTitle: "Profile",
-                                itemId: "profilePanel",
-                                xtype: 'editUserFormPanel',
-                                userFields: me.userFields,
-                                enableToolbar: false
+                                stepTitle: "Group",
+                                xtype: 'wizardStepGroupPanel'
                             },
                             {
                                 stepNumber: 2,
-                                stepTitle: "User",
-                                itemId: "userPanel",
-                                xtype: 'editUserFormPanel',
-                                userFields: me.userFields,
-                                includedFields: ['username', 'email', 'password', 'repeat-password', 'photo',
-                                    'country', 'locale', 'timezone', 'global-position'],
-                                enableToolbar: false
+                                stepTitle: "Memberships",
+                                xtype: 'wizardStepMembersPanel'
                             },
                             {
                                 stepNumber: 3,
-                                stepTitle: "Places",
-                                itemId: 'placesPanel',
-                                xtype: 'editUserFormPanel',
-                                includedFields: ['address'],
-                                userFields: me.userFields,
-                                enableToolbar: false
-                            },
-                            {
-                                stepNumber: 4,
-                                stepTitle: "Memberships",
-                                groups: userGroups,
-                                xtype: 'wizardStepMembershipPanel'
-                            },
-                            {
-                                stepNumber: 5,
                                 stepTitle: "Summary",
                                 xtype: 'wizardStepSummaryPanel'
                             }

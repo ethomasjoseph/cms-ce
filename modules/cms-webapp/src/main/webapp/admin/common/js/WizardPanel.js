@@ -17,6 +17,7 @@ Ext.define( 'Common.WizardPanel', {
     externalControls: undefined,
     showControls: true,
     data: {},
+    bubbleEvents: [ "beforestepchanged", "stepchanged", "animationstarted", "animationfinished", "finished" ],
 
     initComponent: function()
     {
@@ -84,7 +85,7 @@ Ext.define( 'Common.WizardPanel', {
             Ext.apply( ls, {
                 afterrender: {
                     fn: function( firstStep ) {
-                        wizard.fireEvent('stepchanged', this, null, firstStep );
+                        wizard.fireEvent('stepchanged', wizard, null, firstStep );
                     }
                 }
             });

@@ -109,21 +109,49 @@ Ext.define( 'Common.WizardLayout', {
                 }
                 this.activeItem = newCard;
                 this.owner.doLayout();
-                newCard.show();
-                owner.fireEvent( "animationfinished", newCard, oldCard );
+                newCard.show(null, function() {
+                    owner.fireEvent( "animationfinished", newCard, oldCard );
+                    console.log( 'anim finished' );
+                });
+
             }
             if ( newCard && Ext.isFunction( newCard.doLayout ) ) {
                 newCard.doLayout();
             }
             return newCard;
         }
-    },
+    }
 
+/*
     // restrain item's width only to not exceed maxWidth
+    // TODO: breaks the height if the item is smaller that container
     setItemBox : function( item, size ) {
         if( this.owner.restrainWidth ) {
             item.setWidth( Ext.Array.min( [ this.owner.restrainWidth, size.width ] ) )
         }
     }
+
+    // default methods
+    setItemBox : function(item, box) {
+        var me = this;
+        if (item && box.height > 0) {
+            if (!me.owner.isFixedWidth()) {
+                box.width = undefined;
+            }
+            if (!me.owner.isFixedHeight()) {
+                box.height = undefined;
+            }
+            me.setItemSize(item, box.width, box.height);
+        }
+    },
+
+    setItemSize: function(item, width, height) {
+        if (Ext.isObject(width)) {
+            height = width.height;
+            width = width.width;
+        }
+        item.setCalculatedSize(width, height, this.owner);
+    }
+*/
 
 });

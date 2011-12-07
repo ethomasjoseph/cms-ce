@@ -32,7 +32,8 @@ Ext.define( 'App.controller.UserWizardController', {
                           '*[action=wizardNext]': {
                               click: this.wizardNext
                           },
-                          'wizardPanel': {
+                          'userWizardPanel': {
+                              afterrender: this.bindDisplayNameEvents,
                               beforestepchanged: this.validateStep,
                               stepchanged: this.stepChanged,
                               finished: this.wizardFinished
@@ -45,9 +46,6 @@ Ext.define( 'App.controller.UserWizardController', {
                           },
                           'editUserFormPanel': {
                               fieldsloaded: this.userStoreFieldsLoaded
-                          },
-                          'userWizardPanel': {
-                              afterrender: this.bindDisplayNameEvents
                           },
                           'userFormField': {
                               validitychange: this.userFieldValidityChange
@@ -82,7 +80,6 @@ Ext.define( 'App.controller.UserWizardController', {
 
     stepChanged: function( wizard, oldStep, newStep )
     {
-        this.getUserWizardPanel().doLayout();
         this.focusFirstField();
 
         if ( newStep.getXType() === 'wizardStepProfilePanel' )
@@ -143,7 +140,6 @@ Ext.define( 'App.controller.UserWizardController', {
 
     userStoreFieldsLoaded: function( target )
     {
-        target.up('userWizardPanel').doLayout();
         this.focusFirstField();
         this.bindFormEvents( target );
     },

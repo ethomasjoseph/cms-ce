@@ -13,7 +13,8 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         'EditUserPanel',
         'ChangePasswordWindow',
         'DeleteAccountWindow',
-        'wizard.UserWizardPanel',
+        'wizard.user.UserWizardPanel',
+        'wizard.group.GroupWizardPanel',
         'UserPreviewWindow',
         'ExportAccountsWindow'
     ],
@@ -49,8 +50,8 @@ Ext.define( 'App.controller.BrowseToolbarController', {
     {
         this.getCmsTabPanel().addTab( {
                                           title: 'New Group',
-                                          html: 'New Group Form',
-                                          iconCls: 'icon-new-group'
+                                          iconCls: 'icon-new-group',
+                                          xtype: 'groupWizardPanel'
                                       } );
     },
 
