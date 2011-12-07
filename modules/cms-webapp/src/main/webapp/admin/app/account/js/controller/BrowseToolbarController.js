@@ -97,12 +97,23 @@ Ext.define( 'App.controller.BrowseToolbarController', {
 
     showUserPreviewWindow: function( el, e )
     {
-        var selected = this.getUserGrid().getSelectionModel().selected.get( 0 );
-        this.getCmsTabPanel().addTab( {
-            title: selected.data.displayName + ' (' + selected.data.qualifiedName + ')',
-            xtype: 'userPreviewPanel',
-            data: selected.data
-        } );
+        var me = this;
+        var selected = me.getUserGrid().getSelectionModel().selected.get( 0 );
+        Ext.Ajax.request( {
+                      url: 'data/user/userinfo',
+                      method: 'GET',
+                      params: {key: selected.get('key')},
+                      success: function( response )
+                      {
+                          var jsonObj = Ext.JSON.decode( response.responseText );
+                          me.getCmsTabPanel().addTab( {
+                            title: jsonObj.displayName + ' (' + jsonObj.qualifiedName + ')',
+                            xtype: 'userPreviewPanel',
+                            data: jsonObj
+                          } );
+
+                      }
+                  } );
     },
 
     getAccountFilter: function()

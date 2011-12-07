@@ -29,7 +29,6 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         var photoUrl;
         var userGroups = [];
         var displayNameValue = 'Display Name';
-//        me.displayNameAutoGenerate = true;
         me.headerData = {
             value: displayNameValue,
             userstoreName: me.userstore,

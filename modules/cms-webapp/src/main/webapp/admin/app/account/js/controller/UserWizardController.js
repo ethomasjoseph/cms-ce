@@ -31,7 +31,7 @@ Ext.define( 'App.controller.UserWizardController', {
                           '*[action=wizardNext]': {
                               click: this.wizardNext
                           },
-                          'wizardPanel': {
+                          'userWizardPanel wizardPanel': {
                               beforestepchanged: this.validateStep,
                               stepchanged: this.stepChanged,
                               finished: this.wizardFinished

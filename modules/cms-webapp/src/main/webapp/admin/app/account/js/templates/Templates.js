@@ -57,7 +57,7 @@ Templates.account = {
                     '</div>' + '</div>' + '</tpl>'
 
     ,userPreview:
-            '<div id="cms-user-preview" class="clearfix"><div class="west cms-left">' +
+            '<div id="cms-user-preview" class="clearfix cms-user-preview"><div class="west cms-left">' +
                     '<div class="photo-placeholder"><img src="data/user/photo?key={key}" alt="{displayName}"/></div>' +
                     '</div><div class="center"><div class="container">' +
                     '<h1>{displayName}</h1><div><span>{userStore}\\\\{name}</span>' +
@@ -94,9 +94,7 @@ Templates.account = {
                     '<div><table><thead><tr><th>Last position</th></tr></thead></table></div></div></div>'
 
         ,userPreviewStub:
-            '<div class="navigation"><ul><li>Activities</li>' +
-            '<li class="active">Profile</li><li>Places</li>' +
-            '<li>Memberships</li><li>Advanced</li></ul></div><div><table><thead>' +
+            '<div><table><thead>' +
             '<tr><th colspan="2">Name</th></tr></thead><tbody>' +
             '<tr><td class="label">Prefix:</td><td>Mr</td></tr><tr>' +
             '<td class="label">First Name:</td><td>John</td></tr><tr>' +
@@ -125,15 +123,18 @@ Templates.account = {
 
     ,userPreviewCommonInfo:
             '<div><table><thead><tr>' +
-            '<th>Roles</th></tr></thead><tbody><tr><td>Enterprise Administrator</td></tr>' +
-            '<tr><td>Expert</td></tr></tbody></table></div><div><table><thead>' +
+            '<th>Roles</th></tr></thead><tbody>' +
+                    '<tpl for="groups">' +
+                    '<tr><td>{name}</td></tr>' +
+                    '</tpl>' +
+            '</tbody></table></div><div><table><thead>' +
             '<tr><th colspan="2">Settings</th></tr></thead><tbody><tr>' +
             '<td class="label">Locale:</td><td>Norwegian (no)</td></tr><tr>' +
             '<td class="label">Country:</td><td>Norway (NO)</td></tr><tr>' +
             '<td class="label">TimeZone:</td><td>GMT+1</td></tr></tbody></table>' +
             '</div><div><table><thead><tr><th colspan="2">Statistics</th></tr></thead>' +
-            '<tbody><tr><td class="label">Last login:</td><td>2011-10-25 23:05</td>' +
-            '</tr><tr><td class="label">Created:</td><td>2011-10-24 08:59</td></tr><tr>' +
+            '<tbody><tr><td class="label">Last login:</td><td>{lastLogged}</td>' +
+            '</tr><tr><td class="label">Created:</td><td>{created}</td></tr><tr>' +
             '<td class="label">Owner of:</td><td>394</td></tr></tbody></table></div>' +
             '<div><table><thead><tr><th>Last position</th></tr></thead></table></div>'
 
