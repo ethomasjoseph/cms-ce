@@ -285,6 +285,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
                                           iconCls: 'icon-edit-user',
                                           cls: 'edit-user',
                                           closable: true,
+                                          userstore: jsonObj.userStore,
                                           userFields: jsonObj,
                                           autoScroll: true
                                       };
