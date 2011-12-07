@@ -5,7 +5,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <context:annotation-config/>
-    
+
     <!-- Create the view resolver. -->
     <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
         <property name="templateLoaderPath" value="/WEB-INF/freemarker/"/>
@@ -231,7 +231,6 @@
           abstract="true">
         <property name="captchaService" ref="captchaService"/>
         <property name="userServicesRedirectHelper" ref="userServicesRedirectHelper"/>
-        <property name="userStoreParser" ref="userStoreParser"/>
         <property name="userServicesAccessManager" ref="userServicesAccessManager"/>
         <property name="siteService" ref="siteService"/>
         <property name="sitePathResolver" ref="sitePathResolver"/>
@@ -270,6 +269,7 @@
         <property name="preferenceService" ref="preferenceService"/>
         <property name="loginService" ref="loginService"/>
         <property name="userDao" ref="userDao"/>
+        <property name="userStoreDao" ref="userStoreDao"/>
         <property name="logService" ref="logService"/>
     </bean>
 

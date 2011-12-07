@@ -12,10 +12,11 @@ import com.enonic.cms.core.portal.xtrace.JsonSerializer;
 import com.enonic.cms.core.portal.xtrace.XTraceHelper;
 
 public class XTraceInterceptor
-        extends HandlerInterceptorAdapter
+    extends HandlerInterceptorAdapter
 {
     @Override
-    public boolean preHandle( HttpServletRequest request, HttpServletResponse response, Object handler ) throws Exception
+    public boolean preHandle( HttpServletRequest request, HttpServletResponse response, Object handler )
+        throws Exception
     {
         if ( !XTraceHelper.clientIsEnabled( request ) )
         {
@@ -34,11 +35,11 @@ public class XTraceInterceptor
 
     private boolean clientIsAuthenticated( HttpServletRequest request )
     {
-        return "true".equals( request.getSession().getAttribute( "X-Trace-Server-Enabled") );
+        return "true".equals( request.getSession().getAttribute( "X-Trace-Server-Enabled" ) );
     }
 
     private void forwardToAuthenticationForm( HttpServletRequest request, HttpServletResponse response )
-            throws Exception
+        throws Exception
     {
         request.setAttribute( "xtrace.originalUrl", request.getRequestURL().toString() );
         request.getRequestDispatcher( request.getRequestURI() + "/_xtrace/login" ).forward( request, response );
@@ -59,7 +60,7 @@ public class XTraceInterceptor
             return;
         }
 
-        String portalRequestId = currentPageRenderingTrace.getPortalRequestTrace().getId();
+        String portalRequestId = String.valueOf( currentPageRenderingTrace.getPortalRequestTrace().getCompletedNumber() );
         response.setHeader( "X-Trace-Info-Id", portalRequestId );
     }
 }

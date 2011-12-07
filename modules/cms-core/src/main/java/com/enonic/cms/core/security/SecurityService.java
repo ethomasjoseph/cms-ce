@@ -75,7 +75,7 @@ public interface SecurityService
     void authenticateUser( final QualifiedUsername qualifiedUsername, final String password )
             throws InvalidCredentialsException;
 
-    User loginAdminUser( final QualifiedUsername qualifiedUsername, final String password );
+    User loginAdminUser( LoginAdminUserCommand command );
 
     void loginPortalUser( final QualifiedUsername qualifiedUsername, final String password );
 

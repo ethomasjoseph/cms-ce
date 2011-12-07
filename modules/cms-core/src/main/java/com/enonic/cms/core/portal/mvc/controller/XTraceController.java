@@ -2,7 +2,6 @@ package com.enonic.cms.core.portal.mvc.controller;
 
 import com.enonic.cms.api.Version;
 import com.enonic.cms.core.portal.livetrace.LivePortalTraceService;
-import com.enonic.cms.core.portal.livetrace.PastPortalRequestTrace;
 import com.enonic.cms.core.portal.livetrace.PortalRequestTrace;
 import com.enonic.cms.core.portal.xtrace.JsonSerializer;
 import com.enonic.cms.core.security.InvalidCredentialsException;
@@ -15,6 +14,7 @@ import com.enonic.cms.core.security.userstore.UserStoreKey;
 import com.enonic.cms.core.security.userstore.UserStoreService;
 
 import com.enonic.cms.store.dao.UserDao;
+
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
@@ -37,7 +37,8 @@ import com.google.common.io.ByteStreams;
 
 import com.enonic.cms.framework.util.MimeTypeResolver;
 
-public class XTraceController extends AbstractController
+public class XTraceController
+    extends AbstractController
 {
     @Autowired
     protected ResourceLoader resourceLoader;
@@ -58,7 +59,8 @@ public class XTraceController extends AbstractController
     private LivePortalTraceService livePortalTraceService;
 
     @Override
-    protected ModelAndView handleRequestInternal( HttpServletRequest request, HttpServletResponse response ) throws Exception
+    protected ModelAndView handleRequestInternal( HttpServletRequest request, HttpServletResponse response )
+        throws Exception
     {
         final String path = request.getRequestURI();
         if ( path.matches( ".+/resources/.+" ) )
@@ -77,7 +79,7 @@ public class XTraceController extends AbstractController
     }
 
     private ModelAndView handleAuthenticationForm( HttpServletRequest request, HttpServletResponse response )
-            throws Exception
+        throws Exception
     {
         final Map<String, Object> model = new HashMap<String, Object>();
         model.put( "authenticationFailed", false );
@@ -107,7 +109,7 @@ public class XTraceController extends AbstractController
     }
 
     private void authenticateUser( HttpServletRequest request )
-            throws InvalidCredentialsException
+        throws InvalidCredentialsException
     {
         final String userName = request.getParameter( "_xtrace_username" );
         final String password = request.getParameter( "_xtrace_password" );
@@ -128,13 +130,13 @@ public class XTraceController extends AbstractController
 
     private boolean isAuthenticationFormSubmitted( HttpServletRequest request )
     {
-        if( !"POST".equalsIgnoreCase( request.getMethod() ) )
+        if ( !"POST".equalsIgnoreCase( request.getMethod() ) )
         {
             return false;
         }
         String xtraceAuthentication = request.getParameter( "_xtrace_authentication" );
 
-        if( "true".equalsIgnoreCase( xtraceAuthentication ) )
+        if ( "true".equalsIgnoreCase( xtraceAuthentication ) )
         {
             return true;
         }
@@ -156,7 +158,7 @@ public class XTraceController extends AbstractController
     }
 
     private void handleResource( HttpServletRequest request, HttpServletResponse response )
-            throws Exception
+        throws Exception
     {
         final String fileName = FilenameUtils.getName( request.getRequestURI() );
         final String mimeType = MimeTypeResolver.getInstance().getMimeType( fileName );
@@ -169,7 +171,7 @@ public class XTraceController extends AbstractController
     }
 
     private void handleXTraceInfo( HttpServletRequest request, HttpServletResponse response )
-            throws Exception
+        throws Exception
     {
         if ( !clientIsAuthenticated( request ) )
         {
@@ -177,17 +179,17 @@ public class XTraceController extends AbstractController
             return;
         }
 
-        String id = request.getParameter( "id" );
-        if ( Strings.isNullOrEmpty( id ) )
+        final String requestedCompletedNumberAsString = request.getParameter( "id" );
+        if ( Strings.isNullOrEmpty( requestedCompletedNumberAsString ) )
         {
-            response.setStatus( HttpServletResponse.SC_NOT_FOUND );
+            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
             return;
         }
+        final Long requestedCompletedNumber = new Long( requestedCompletedNumberAsString );
 
-        for ( PastPortalRequestTrace pastPortalRequestTrace : livePortalTraceService.getHistorySince( 0 ) )
+        for ( PortalRequestTrace portalRequestTrace : livePortalTraceService.getHistorySince( 0 ) )
         {
-            PortalRequestTrace portalRequestTrace = pastPortalRequestTrace.getPortalRequestTrace();
-            if ( portalRequestTrace.getId().equals( id ) )
+            if ( requestedCompletedNumber.equals( portalRequestTrace.getCompletedNumber() ) )
             {
                 JsonSerializer jsonSerializer = new JsonSerializer();
 
@@ -204,6 +206,6 @@ public class XTraceController extends AbstractController
 
     private boolean clientIsAuthenticated( HttpServletRequest request )
     {
-        return "true".equals( request.getSession().getAttribute( "X-Trace-Server-Enabled") );
+        return "true".equals( request.getSession().getAttribute( "X-Trace-Server-Enabled" ) );
     }
 }
