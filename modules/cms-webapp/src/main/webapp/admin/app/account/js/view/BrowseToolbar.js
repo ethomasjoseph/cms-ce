@@ -26,6 +26,11 @@ Ext.define( 'App.view.BrowseToolbar', {
                         cls: 'x-btn-as-arrow',
                         menu: Ext.create( 'Common.view.MegaMenu', {
                             maxColumns: 1,
+                            tableAttrs: {
+                                style: {
+                                    width: '100%'
+                                }
+                            },
                             url: 'app/account/js/data/accountMenu.json'
                         } )
                     }
