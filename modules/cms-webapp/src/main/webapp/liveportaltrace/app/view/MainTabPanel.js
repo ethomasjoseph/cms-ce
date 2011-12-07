@@ -6,7 +6,8 @@ Ext.define( 'LPT.view.MainTabPanel', {
         'Ext.tab.*',
         'LPT.view.requests.PerformancePanel',
         'LPT.view.requests.InfoPanel',
-        'LPT.view.GeoMapPanel'
+        'LPT.view.GeoMapPanel',
+        'LPT.view.LiveChartPanel'
     ],
     layout: 'fit',
     activeTab: 0,
@@ -31,7 +32,15 @@ Ext.define( 'LPT.view.MainTabPanel', {
                 id: 'geomapPanel',
                 title: 'Location Map',
                 closable: false
-            }/*,
+            },
+            {
+                region: 'center',
+                xtype: 'liveChartPanel',
+                id: 'liveChartPanel',
+                title: 'Live Traffic',
+                closable: false
+            }
+            /*,
             {
                 region: 'center',
                 xtype: 'performancePanel',

@@ -33,9 +33,17 @@ public final class GeolocationResource
 
     private RandomIpAddressGenerator randomIp;
 
+    private final GeolocationInfo locationLocal;
+
     GeolocationResource()
     {
         randomIp = new RandomIpAddressGenerator();
+        locationLocal = new GeolocationInfo();
+        locationLocal.setCountry( "N/A" );
+        locationLocal.setIpAddress( "127.0.0.1" );
+        locationLocal.setCity( "" );
+        locationLocal.setLatitude( 0 );
+        locationLocal.setLongitude( 0 );
     }
 
     @GET
@@ -71,7 +79,7 @@ public final class GeolocationResource
         String ipAddress = request.getPortalRequestTrace().getHttpRequestRemoteAddress();
         if ( isLocalAddress( ipAddress ) )
         {
-            ipAddress = getRandomIpAddress();
+            return locationLocal;
         }
         GeolocationInfo location = geoResolving.resolveIpLocation( ipAddress, requestNumber );
         return location;

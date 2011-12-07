@@ -158,7 +158,6 @@ Ext.define('LPT.view.GeoMapPanel', {
         }
 
         if (featuresToBeRemoved.length > 0) {
-            console.log('remove points ' + featuresToBeRemoved);
             this.pointsLayer.removeFeatures(featuresToBeRemoved);
         }
         this.pointsLayer.redraw();
@@ -196,7 +195,7 @@ Ext.define('LPT.view.GeoMapPanel', {
             },
             failure: function( response, opts )
             {
-                console.log('Could not retrieve locations');
+                //console.log('Could not retrieve locations');
                 me.startAutoRefreshTimer(); // restart timer
             }
         } );

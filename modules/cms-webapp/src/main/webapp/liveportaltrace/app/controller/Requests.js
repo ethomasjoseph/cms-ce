@@ -34,7 +34,8 @@ Ext.define('LPT.controller.Requests', {
         {ref: 'memoryGaugePanel', selector: 'memoryGaugePanel', xtype: 'memoryGaugePanel'},
         {ref: 'entityCacheGaugePanel', selector: 'entityCacheGaugePanel', xtype: 'entityCacheGaugePanel'},
         {ref: 'pageCacheGaugePanel', selector: 'pageCacheGaugePanel', xtype: 'pageCacheGaugePanel'},
-        {ref: 'threadsGaugePanel', selector: 'threadsGaugePanel', xtype: 'threadsGaugePanel'}
+        {ref: 'threadsGaugePanel', selector: 'threadsGaugePanel', xtype: 'threadsGaugePanel'},
+        {ref: 'liveChartPanel', selector: 'liveChartPanel', xtype: 'liveChartPanel'}
     ],
 
     init: function() {
@@ -164,7 +165,11 @@ Ext.define('LPT.controller.Requests', {
                         }
                         requestArray.push(requestObject);
                     }
-                    store.insert(0, requestArray);
+                    try  {
+                        store.insert(0, requestArray);
+                    } catch (e) {
+                        console.log(e);
+                    }
                     controller.showRequestsPerSecond(requestArray.length);
 
                     // collecting statistics
@@ -392,6 +397,12 @@ Ext.define('LPT.controller.Requests', {
     showRequestsPerSecond: function (value) {
         var requestsGaugePanel = this.getRequestsGaugePanel();
         requestsGaugePanel.updateData( [{
+            name: 'requests',
+            data: ( value )
+        }] );
+
+        var liveChartPanel = this.getLiveChartPanel();
+        liveChartPanel.updateData( [{
             name: 'requests',
             data: ( value )
         }] );
