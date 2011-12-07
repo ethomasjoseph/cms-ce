@@ -78,7 +78,10 @@ public class JsonSerializer
         pageObject.addProperty( "name", pageTrace.getPortalRequestTrace().getUrl() );
         pageObject.addProperty( "cache_hit", pageTrace.isUsedCachedResult() );
         pageObject.addProperty( "ran_as_user", resolveQualifiedUsernameAsString( pageTrace.getRenderer() ) );
-        pageObject.addProperty( "view", pageTrace.getViewTransformationTrace().getView() );
+        if (pageTrace.hasViewTransformationTrace())
+        {
+            pageObject.addProperty( "view", pageTrace.getViewTransformationTrace().getView() );
+        }
 
         JsonObject duration = new JsonObject();
 
@@ -127,7 +130,10 @@ public class JsonSerializer
         windowObject.addProperty( "name", windowTrace.getPortletName() );
         windowObject.addProperty( "cache_hit", windowTrace.isUsedCachedResult() );
         windowObject.addProperty( "ran_as_user", resolveQualifiedUsernameAsString( windowTrace.getRenderer() ) );
-        windowObject.addProperty( "view", windowTrace.getViewTransformationTrace().getView() );
+        if ( windowTrace.hasViewTransformationTrace() )
+        {
+            windowObject.addProperty( "view", windowTrace.getViewTransformationTrace().getView() );
+        }
 
         JsonObject duration = new JsonObject();
 
