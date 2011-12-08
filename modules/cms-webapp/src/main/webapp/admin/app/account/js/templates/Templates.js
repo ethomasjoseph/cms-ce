@@ -96,13 +96,15 @@ Templates.account = {
         ,userPreviewStub:
             '<div>' +
             '<tpl for=".">' +
-                '<table><thead>' +
-                '<tr><th colspan="2">{title}</th></tr>' +
-                '</thead><tbody>' +
+                '<fieldset class="x-fieldset x-fieldset-default">' +
+                '<legend class="x-fieldset-header x-fieldset-header-default">' +
+                '<div class="x-component x-fieldset-header-text x-component-default">{title}</div>' +
+                '</legend>' +
+                '<table><tbody>' +
                 '<tpl for="fields">' +
                     '<tr><td class="label">{title}</td><td>{value}</td></tr>' +
                 '</tpl>' +
-                '</tbody></table>' +
+                '</tbody></table></fieldset>' +
             '</tpl></div>'
 
     ,userPreviewPhoto:
