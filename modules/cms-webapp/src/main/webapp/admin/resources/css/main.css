@@ -784,7 +784,7 @@ ul.cms-wizard-navigation li a.last-current {
     height: 36px;
     font-weight: normal;
     border-radius: 2px;
-    background: transparent none;
+    background: white none;
 }
 
 .cms-wizard-header-container input:hover {
@@ -795,6 +795,14 @@ ul.cms-wizard-navigation li a.last-current {
 .cms-wizard-header-container input:focus {
     color: #000 !important;
     border: 1px solid #99BCE8 !important;
+}
+
+.cms-wizard-header-container .x-form-invalid-field {
+    background-color: white;
+    background-image: url('../../ext/resources/themes/images/default/grid/invalid_line.gif');
+    background-repeat: repeat-x;
+    background-position: bottom;
+    border-color: #C30;
 }
 
 .user-store-user-name {

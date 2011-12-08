@@ -37,7 +37,7 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
                 items: [
                     {
                         xtype: 'image',
-                        border: false,
+                        plain: true,
                         width: 128,
                         height: 128,
                         cls: 'icon-group-128'
@@ -55,12 +55,12 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
                         xtype: 'form',
                         itemId: 'wizardHeader',
                         cls: 'cms-wizard-header-container',
-                        onValidityChange: function( valid ) {
-                            console.log( 'onvaliditychange = ' + valid );
-                            if ( this.owner && this.owner.rendered ) {
-                                var form = this.owner.up( 'groupWizardPanel' ).down( 'wizardPanel' ).getLayout().getActiveItem().getForm();
-                                if( form ) {
-                                    form.onValidityChange( valid && form.isValid() );
+                        listeners: {
+                            // add validity change event to update validity of the active form
+                            validitychange: function( headerForm, valid, opts ) {
+                                var activeForm = me.getActiveItemForm();
+                                if( activeForm ) {
+                                    activeForm.onValidityChange( valid && activeForm.isValid() );
                                 }
                             }
                         },
@@ -68,7 +68,7 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
                             xtype: 'textfield',
                             cls: 'cms-display-name',
                             anchor: '100%',
-                            height: 46,
+                            height: 36,
                             allowBlank: false,
                             value: displayNameValue
                         }]
@@ -99,6 +99,30 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
         ];
 
         this.callParent( arguments );
+
+        // add validity change event on each form to check the validity of the header as well
+        var wizardPanel = me.down( 'wizardPanel' );
+        for (var i = 0; i < wizardPanel.items.items.length; i++) {
+            var item = wizardPanel.items.items[i];
+            var itemForm = Ext.isFunction( item.getForm ) ? item.getForm() : undefined;
+            if ( itemForm ) {
+                itemForm.on( 'validitychange', function( activeForm, valid, opts ) {
+                    var headerForm = me.getHeaderForm();
+                    if( headerForm && activeForm.owner.isVisible() ) {
+                        activeForm.onValidityChange( valid && headerForm.isValid() );
+                    }
+                } );
+            }
+        }
+
+    },
+
+    getHeaderForm: function() {
+        return this.down( '#wizardHeader' ).getForm();
+    },
+
+    getActiveItemForm: function() {
+        return this.down( 'wizardPanel' ).getLayout().getActiveItem().getForm();
     }
 
 } );
