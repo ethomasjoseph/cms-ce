@@ -8,6 +8,41 @@ Ext.define( 'App.view.EditUserFormPanel', {
         'App.view.UserFormField'
     ],
 
+    statics: {
+            fieldLabels: {
+                'username': 'User Name',
+                'email': 'E-mail',
+                'password': 'Password',
+                'repeat-password': 'Repeat Password',
+                'timezone': 'Timezone',
+                /* general fields */
+                'prefix': 'Prefix',
+                'first-name': 'First Name',
+                'middle-name': 'Middle Name',
+                'last-name': 'Last Name',
+                'suffix': 'Suffix',
+                'initials': 'Initials',
+                'nick-name': 'Nick Name',
+                'personal-id': 'Personal ID',
+                'member-id': 'Member ID',
+                'organization': 'Organisation',
+                'birthday': 'Birthday',
+                'gender': 'Gender',
+                'title': 'Title',
+                'description': 'Descripion',
+                'html-email': 'E-mail',
+                'home-page': 'Web Page',
+                'time-zone': 'Time Zone',
+                'locale': 'Locale',
+                'country': 'Country',
+                'global-position': 'Global Position',
+                'phone': 'Phone Number',
+                'mobile': 'Mobile Number',
+                'fax': 'Fax Number',
+                'address': 'Address'
+            }
+    },
+
     autoScroll: false,
     autoHeight: true,
     border: false,
@@ -16,39 +51,6 @@ Ext.define( 'App.view.EditUserFormPanel', {
     enableToolbar: true,
 
     store: 'UserstoreConfigStore',
-
-    fieldLabels: {
-        'username': 'User Name',
-        'email': 'E-mail',
-        'password': 'Password',
-        'repeat-password': 'Repeat Password',
-        'timezone': 'Timezone',
-        /* general fields */
-        'prefix': 'Prefix',
-        'first-name': 'First Name',
-        'middle-name': 'Middle Name',
-        'last-name': 'Last Name',
-        'suffix': 'Suffix',
-        'initials': 'Initials',
-        'nick-name': 'Nick Name',
-        'personal-id': 'Personal ID',
-        'member-id': 'Member ID',
-        'organization': 'Organisation',
-        'birthday': 'Birthday',
-        'gender': 'Gender',
-        'title': 'Title',
-        'description': 'Descripion',
-        'html-email': 'E-mail',
-        'home-page': 'Web Page',
-        'time-zone': 'Time Zone',
-        'locale': 'Locale',
-        'country': 'Country',
-        'global-position': 'Global Position',
-        'phone': 'Phone Number',
-        'mobile': 'Mobile Number',
-        'fax': 'Fax Number',
-        'address': 'Address'
-    },
 
     initComponent: function()
     {
@@ -442,6 +444,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
 
     generateFieldSet: function( title, fieldSet, storeConfig )
     {
+        var self = App.view.EditUserFormPanel;
         var me = this;
         var fieldSetItem = {
             defaults: {
@@ -484,7 +487,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
                     }
                 }
                 var baseConfig = {
-                    fieldLabel: me.fieldLabels[item.type] || item.type,
+                    fieldLabel: self.fieldLabels[item.type] || item.type,
                     fieldname: item.type,
                     required: item.required || false,
                     remote: item.remote || false,

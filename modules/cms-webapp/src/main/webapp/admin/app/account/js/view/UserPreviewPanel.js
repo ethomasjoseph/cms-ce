@@ -13,7 +13,7 @@ Ext.define( 'App.view.UserPreviewPanel', {
         xtype: 'userPreviewToolbar'
     },
 
-    cls: 'cms-user-preview',
+    cls: 'cms-user-preview-panel',
     layout: 'fit',
     width: undefined,
 
@@ -21,10 +21,6 @@ Ext.define( 'App.view.UserPreviewPanel', {
     initComponent: function()
     {
         this.fieldSets = [
-            {
-                title: 'User',
-                fields: ['username', 'email']
-            },
             {
                 title: 'Name',
                 fields: [ 'prefix', 'first-name', 'middle-name',
@@ -44,6 +40,8 @@ Ext.define( 'App.view.UserPreviewPanel', {
                 fields: ['phone', 'mobile', 'fax']
             }
         ];
+        var profileData = this.generateProfileData(this.data);
+        console.log(profileData);
         this.items = [
             {
                 xtype: 'panel',
@@ -56,10 +54,10 @@ Ext.define( 'App.view.UserPreviewPanel', {
                 },
                 items: [
                     {
-                        width: 120,
+                        width: 100,
                         tpl: Templates.account.userPreviewPhoto,
                         data: this.data,
-                        cls: 'west'
+                        margin: 5
                     },
                     {
                         flex: 1,
@@ -91,7 +89,7 @@ Ext.define( 'App.view.UserPreviewPanel', {
                                         stepNumber: 2,
                                         stepTitle: "Profile",
                                         tpl: Templates.account.userPreviewStub,
-                                        data: {}
+                                        data: profileData
                                     },
                                     {
                                         stepNumber: 3,
@@ -108,13 +106,42 @@ Ext.define( 'App.view.UserPreviewPanel', {
                             }]
                     },
                     {
-                        flex: 0.5,
+                        width: 300,
+                        margin: 5,
                         cls: 'east',
                         tpl: Templates.account.userPreviewCommonInfo,
                         data: this.data
                     }]
         }];
         this.callParent( arguments );
+    },
+
+    generateProfileData: function( userData )
+    {
+        var fieldSetEmpty = true;
+        var profileData = [];
+        Ext.Array.each(this.fieldSets, function( fieldSet){
+            var fieldSetData = { title: fieldSet.title};
+            fieldSetData.fields = [];
+            Ext.Array.each(fieldSet.fields, function(field){
+                var value = userData[field] ? userData[field] : userData.userInfo[field];
+                var title = App.view.EditUserFormPanel.fieldLabels[field] ?
+                        App.view.EditUserFormPanel.fieldLabels[field] : field
+                if (value)
+                {
+                    Ext.Array.include(fieldSetData.fields, {title: title, value: value});
+                    fieldSetEmpty = false;
+                }
+            });
+            if (!fieldSetEmpty)
+            {
+                Ext.Array.include(profileData, fieldSetData);
+                fieldSetEmpty = true;
+            }
+        });
+        return profileData;
     }
+
+
 
 } );

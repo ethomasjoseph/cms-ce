@@ -94,23 +94,16 @@ Templates.account = {
                     '<div><table><thead><tr><th>Last position</th></tr></thead></table></div></div></div>'
 
         ,userPreviewStub:
-            '<div><table><thead>' +
-            '<tr><th colspan="2">Name</th></tr></thead><tbody>' +
-            '<tr><td class="label">Prefix:</td><td>Mr</td></tr><tr>' +
-            '<td class="label">First Name:</td><td>John</td></tr><tr>' +
-            '<td class="label">Middle Name:</td><td>Enok</td></tr><tr>' +
-            '<td class="label">Last Name:</td><td>Vollestad</td></tr>' +
-            '<tr><td class="label">Suffix:</td><td>Jr</td></tr></tbody>' +
-            '</table></div><div><table><thead><tr>' + '<th colspan="2">Details</th></tr></thead><tbody><tr>' +
-            '<td class="label">Organization:</td><td>Norsk Regnesentral</td></tr>' +
-            '<tr><td class="label">Homepage:</td><td><a href="http://www.nr.no">http://www.nr.no</a></td>' +
-            '</tr><tr><td class="label">Gender:</td><td>Male</td>' +
-            '</tr></tbody></table></div><div><table><thead><tr>' +
-            '<th colspan="2">Communication</th></tr></thead><tbody><tr>' +
-            '<td class="label">Mobile:</td><td>12345678</td></tr><tr>' +
-            '<td class="label">Phone:</td><td>01234567</td></tr><tr>' +
-            '<td class="label">Fax:</td><td>98765432</td>' +
-            '</tr></tbody></table></div>'
+            '<div>' +
+            '<tpl for=".">' +
+                '<table><thead>' +
+                '<tr><th colspan="2">{title}</th></tr>' +
+                '</thead><tbody>' +
+                '<tpl for="fields">' +
+                    '<tr><td class="label">{title}</td><td>{value}</td></tr>' +
+                '</tpl>' +
+                '</tbody></table>' +
+            '</tpl></div>'
 
     ,userPreviewPhoto:
             '<div class="west cms-left">' +
@@ -129,9 +122,9 @@ Templates.account = {
                     '</tpl>' +
             '</tbody></table></div><div><table><thead>' +
             '<tr><th colspan="2">Settings</th></tr></thead><tbody><tr>' +
-            '<td class="label">Locale:</td><td>Norwegian (no)</td></tr><tr>' +
-            '<td class="label">Country:</td><td>Norway (NO)</td></tr><tr>' +
-            '<td class="label">TimeZone:</td><td>GMT+1</td></tr></tbody></table>' +
+            '<td class="label">Locale:</td><td>{locale}</td></tr><tr>' +
+            '<td class="label">Country:</td><td>{country}</td></tr><tr>' +
+            '<td class="label">TimeZone:</td><td>{timezone}</td></tr></tbody></table>' +
             '</div><div><table><thead><tr><th colspan="2">Statistics</th></tr></thead>' +
             '<tbody><tr><td class="label">Last login:</td><td>{lastLogged}</td>' +
             '</tr><tr><td class="label">Created:</td><td>{created}</td></tr><tr>' +

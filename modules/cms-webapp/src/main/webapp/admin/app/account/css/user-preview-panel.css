@@ -1,0 +1,113 @@
+#cms-user-preview-panel {}
+/*--- Generic ---*/
+.cms-user-preview-panel,
+.cms-user-preview-panel td,
+.cms-user-preview-panel th {
+    font-size: 11px;
+}
+
+.cms-user-preview-panel h1 {
+    font-size: 26px;
+    font-weight: normal;
+}
+
+.cms-user-preview-panel td,
+.cms-user-preview-panel th {
+    padding: 1px;
+    text-align: left;
+}
+
+.cms-user-preview-panel ul {
+    margin: 0;
+}
+
+.cms-user-preview-panel th {
+    font-weight: bold;
+    color: #555;
+}
+
+.cms-user-preview-panel td.label {
+    width: 100px;
+    color: #777;
+}
+
+.cms-user-preview-panel .photo-placeholder img {
+    width: 100px;
+    height: 100px;
+}
+
+.cms-user-preview-panel .center {
+    border-left: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+}
+
+.cms-user-preview-panel .center,
+.cms-user-preview-panel .center th,
+.cms-user-preview-panel .center td {
+    font-size: 12px;
+}
+
+.cms-user-preview-panel .center th,
+.cms-user-preview-panel .center td {
+    padding: 2px;
+}
+
+.cms-user-preview-panel .center th,
+.cms-user-preview-panel .center td,
+.cms-user-preview-panel .center .container,
+.cms-user-preview-panel .center .navigation {
+    padding-left: 10px !important;
+}
+
+.cms-user-preview-panel .center th {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.cms-user-preview-panel .center .container {
+    padding:  5px;
+}
+
+.cms-user-preview-panel .center .navigation {
+    background-color: #f0f0f0;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.cms-user-preview-panel .center .navigation li {
+    display: inline;
+    list-style-type: none;
+    padding-right: 20px;
+    color: #777;
+}
+
+.cms-user-preview-panel .center .navigation li.active {
+    color: #000;
+}
+
+.cms-user-preview-panel .center .email {
+    color: #777;
+}
+
+.cms-user-preview-panel .east {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 221px;
+}
+
+.cms-user-preview-panel ul.cms-wizard-navigation a.next,
+.cms-user-preview-panel ul.cms-wizard-navigation a.last
+{
+    color: #222222;
+}
+
+.cms-user-preview-panel ul.cms-wizard-navigation li {
+    background: none;
+    padding-right: 0px;
+    border-right: 1px solid #d3d3d3;
+}
+
+.cms-user-preview-panel ul.cms-wizard-navigation li a {
+    margin-right: 0px;
+}
