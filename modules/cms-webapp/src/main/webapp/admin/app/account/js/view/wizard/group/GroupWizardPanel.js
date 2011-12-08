@@ -36,7 +36,7 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
                 border: false,
                 items: [
                     {
-                        xtype: 'image',
+                        xtype: 'container',
                         plain: true,
                         width: 128,
                         height: 128,
