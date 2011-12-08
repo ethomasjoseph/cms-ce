@@ -42,6 +42,7 @@ Ext.define( 'App.view.UserFormField', {
             enableKeyEvents: true,
             disabled: this.readonly,
             allowBlank: !this.required,
+            vtype: this.vtype,
             name: this.fieldname,
             itemId: this.fieldname,
             action: this.actionName,

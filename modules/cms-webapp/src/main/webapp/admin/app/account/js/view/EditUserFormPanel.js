@@ -82,6 +82,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
                     label: 'E-mail',
                     type: 'email',
                     required: true,
+                    vtype: 'email',
                     remote: false,
                     readonly: false
                 },
@@ -489,6 +490,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
                     required: item.required || false,
                     remote: item.remote || false,
                     readonly: item.readOnly || false,
+                    vtype: item.vtype,
                     fieldValue: fieldValue,
                     currentUser: me.currentUser
                 };
