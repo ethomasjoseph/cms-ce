@@ -1,14 +1,14 @@
-Ext.define( 'App.view.wizard.UserWizardPanel', {
+Ext.define( 'App.view.wizard.user.UserWizardPanel', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.userWizardPanel',
     requires: [
         'Common.WizardPanel',
-        'App.view.wizard.UserStoreListPanel',
-        'App.view.wizard.UserWizardToolbar',
+        'App.view.wizard.user.UserStoreListPanel',
+        'App.view.wizard.user.UserWizardToolbar',
         'App.view.EditUserFormPanel',
-        'App.view.wizard.WizardStepLoginInfoPanel',
-        'App.view.wizard.WizardStepMembershipPanel',
-        'App.view.wizard.WizardStepSummaryPanel',
+        'App.view.wizard.user.WizardStepLoginInfoPanel',
+        'App.view.wizard.user.WizardStepMembershipPanel',
+        'App.view.wizard.user.WizardStepUserSummaryPanel',
         'Common.fileupload.PhotoUploadButton'
     ],
 
@@ -137,7 +137,7 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
                             {
                                 stepNumber: 5,
                                 stepTitle: "Summary",
-                                xtype: 'wizardStepSummaryPanel'
+                                xtype: 'wizardStepUserSummaryPanel'
                             }
                         ]
                     }
@@ -185,13 +185,13 @@ Ext.define( 'App.view.wizard.UserWizardPanel', {
         //this.uploadForm.setDisabled( disable );
     },
 
-    renderUserForms: function( )
+    renderUserForms: function( userStore )
     {
         var me = this;
         var userForms = this.query( 'editUserFormPanel' );
         Ext.Array.each( userForms, function( userForm )
         {
-            userForm.renderUserForm( {userStore: me.userstore} );
+            userForm.renderUserForm( {userStore: userStore} );
         } );
     },
 

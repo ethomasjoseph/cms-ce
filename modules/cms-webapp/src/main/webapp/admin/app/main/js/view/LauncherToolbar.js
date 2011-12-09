@@ -6,6 +6,8 @@ Ext.define('App.view.LauncherToolbar', {
     requires: ['App.view.LoggedInUserButton',
                 'Common.view.MegaMenu'],
 
+    height: 42,
+
     items: [
         {
             xtype: 'tbspacer', width: 5
@@ -30,9 +32,11 @@ Ext.define('App.view.LauncherToolbar', {
             itemId: 'app-launcher-button',
             cls: 'app-launcher-button',
             xtype: 'button',
+            scale: 'medium',
             text: 'Dashboard',
             icon: Ext.BLANK_IMAGE_URL, // TODO: (bug fix) Remove icon when Ext is upgraded to >= 4.0.7
             menu: Ext.create( 'Common.view.MegaMenu', {
+                maxColumns: 6,
                 url: 'app/main/data/megaMenu.json'
             } )
         },
