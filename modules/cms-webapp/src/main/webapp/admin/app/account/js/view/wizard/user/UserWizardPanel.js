@@ -14,16 +14,6 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
 
     layout: 'column',
 
-    //Moved to afterrender event to fix missed bbar
-    listeners: {
-        afterrender: function(){
-            if ( this.userFields && this.userFields.userStore )
-            {
-                this.renderUserForms( this.userFields.userStore );
-            }
-        }
-    },
-
     border: 0,
     autoScroll: true,
 
@@ -31,20 +21,21 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
         border: false
     },
 
+    displayNameAutoGenerate: true,
+
     initComponent: function()
     {
         var me = this;
         var photoUrl;
         var userGroups = [];
         var displayNameValue = 'Display Name';
-        me.displayNameAutoGenerate = true;
         me.headerData = {
-                            value: displayNameValue,
-                            userstoreName: me.userstore,
-                            qUserName: me.qUserName,
-                            isNewUser: this.userFields == undefined,
-                            edited: false
-                        };
+            value: displayNameValue,
+            userstoreName: me.userstore,
+            qUserName: me.qUserName,
+            isNewUser: this.userFields == undefined,
+            edited: false
+        };
         if ( me.userFields )
         {
             photoUrl = 'data/user/photo?key=' + me.userFields.key;
@@ -146,6 +137,16 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
         ];
 
         this.callParent( arguments );
+
+        //Render all user forms
+        if ( me.userFields && me.userFields.userStore )
+        {
+            me.renderUserForms( me.userFields.userStore );
+        }
+        else
+        {
+            me.renderUserForms( me.userstore );
+        }
     },
 
     toggleDisplayNameField: function( event, target )
@@ -187,7 +188,6 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
 
     renderUserForms: function( userStore )
     {
-        var me = this;
         var userForms = this.query( 'editUserFormPanel' );
         Ext.Array.each( userForms, function( userForm )
         {

@@ -57,7 +57,7 @@ Templates.account = {
                     '</div>' + '</div>' + '</tpl>'
 
     ,userPreview:
-            '<div id="cms-user-preview" class="clearfix"><div class="west cms-left">' +
+            '<div id="cms-user-preview" class="clearfix cms-user-preview"><div class="west cms-left">' +
                     '<div class="photo-placeholder"><img src="data/user/photo?key={key}" alt="{displayName}"/></div>' +
                     '</div><div class="center"><div class="container">' +
                     '<h1>{displayName}</h1><div><span>{userStore}\\\\{name}</span>' +
@@ -92,6 +92,46 @@ Templates.account = {
                     '</tr><tr><td class="label">Created:</td><td>2011-10-24 08:59</td></tr><tr>' +
                     '<td class="label">Owner of:</td><td>394</td></tr></tbody></table></div>' +
                     '<div><table><thead><tr><th>Last position</th></tr></thead></table></div></div></div>'
+
+        ,userPreviewProfile:
+            '<div>' +
+            '<tpl for=".">' +
+                '<fieldset class="x-fieldset x-fieldset-default">' +
+                '<legend class="x-fieldset-header x-fieldset-header-default">' +
+                '<div class="x-component x-fieldset-header-text x-component-default">{title}</div>' +
+                '</legend>' +
+                '<table><tbody>' +
+                '<tpl for="fields">' +
+                    '<tr><td class="label">{title}</td><td>{value}</td></tr>' +
+                '</tpl>' +
+                '</tbody></table></fieldset>' +
+            '</tpl></div>'
+
+    ,userPreviewPhoto:
+            '<div class="west cms-left">' +
+            '<div class="photo-placeholder"><img src="data/user/photo?key={key}" alt="{displayName}"/></div>' +
+            '</div>'
+    ,userPreviewHeader:
+            '<div class="container">' +
+            '<h1>{displayName}</h1><div><span>{userStore}\\\\{name}</span>' +
+            '<span class="email">&nbsp;{email}</span></div></div>'
+
+    ,userPreviewCommonInfo:
+            '<div><table><thead><tr>' +
+            '<th>Roles</th></tr></thead><tbody>' +
+                    '<tpl for="groups">' +
+                    '<tr><td>{name}</td></tr>' +
+                    '</tpl>' +
+            '</tbody></table></div><div><table><thead>' +
+            '<tr><th colspan="2">Settings</th></tr></thead><tbody><tr>' +
+            '<td class="label">Locale:</td><td>{locale}</td></tr><tr>' +
+            '<td class="label">Country:</td><td>{country}</td></tr><tr>' +
+            '<td class="label">TimeZone:</td><td>{timezone}</td></tr></tbody></table>' +
+            '</div><div><table><thead><tr><th colspan="2">Statistics</th></tr></thead>' +
+            '<tbody><tr><td class="label">Last login:</td><td>{lastLogged}</td>' +
+            '</tr><tr><td class="label">Created:</td><td>{created}</td></tr><tr>' +
+            '<td class="label">Owner of:</td><td>394</td></tr></tbody></table></div>' +
+            '<div><table><thead><tr><th>Last position</th></tr></thead></table></div>'
 
     ,deleteManyUsers:
             '<div class="cms-delete-user-confirmation-message">' +

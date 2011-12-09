@@ -29,7 +29,7 @@ Ext.define( 'App.controller.GridPanelController', {
                   },
                   beforeitemmousedown: this.cancelItemContextClickOnMultipleSelection,
                   itemcontextmenu: this.popupMenu,
-                  itemdblclick: this.showUserPreviewWindow
+                  itemdblclick: this.showUserPreviewPanel
             }
         } );
     },
@@ -140,12 +140,12 @@ Ext.define( 'App.controller.GridPanelController', {
         return true;
     },
 
-    showUserPreviewWindow: function( el, e )
+    showUserPreviewPanel: function( el, e )
     {
         var ctrl = this.getController( 'BrowseToolbarController' );
         if ( ctrl )
         {
-            ctrl.showUserPreviewWindow( el, e );
+            ctrl.showUserPreviewPanel( el, e );
         }
     },
 

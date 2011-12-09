@@ -13,9 +13,10 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         'EditUserPanel',
         'ChangePasswordWindow',
         'DeleteAccountWindow',
+        'UserPreviewPanel',
         'wizard.user.UserWizardPanel',
         'wizard.group.GroupWizardPanel',
-        'UserPreviewWindow',
+        'UserPreviewPanel',
         'ExportAccountsWindow'
     ],
 
@@ -38,7 +39,7 @@ Ext.define( 'App.controller.BrowseToolbarController', {
                               click: this.showChangePasswordWindow
                           },
                           '*[action=viewUser]': {
-                              click: this.showUserPreviewWindow
+                              click: this.showUserPreviewPanel
                           },
                             '*[action=exportAccounts]': {
                                 click: this.showExportAccountsWindow
@@ -87,20 +88,29 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         var ctrl = this.getController( 'EditUserPanelController' );
         if ( ctrl )
         {
-            var previewWindow = Ext.ComponentQuery.query( 'userPreviewWindow' )[0];
-            if (previewWindow)
-            {
-                previewWindow.close();
-            }
             ctrl.showEditUserForm( el, e );
         }
     },
 
-    showUserPreviewWindow: function( el, e )
+    showUserPreviewPanel: function( el, e )
     {
-        var selected = this.getUserGrid().getSelectionModel().selected.get( 0 );
-        var window = this.getUserPreviewWindow();
-        window.doShow(selected.data);
+        var me = this;
+        var selected = me.getUserGrid().getSelectionModel().selected.get( 0 );
+        Ext.Ajax.request( {
+                      url: 'data/user/userinfo',
+                      method: 'GET',
+                      params: {key: selected.get('key')},
+                      success: function( response )
+                      {
+                          var jsonObj = Ext.JSON.decode( response.responseText );
+                          me.getCmsTabPanel().addTab( {
+                            title: jsonObj.displayName + ' (' + jsonObj.qualifiedName + ')',
+                            xtype: 'userPreviewPanel',
+                            data: jsonObj
+                          } );
+
+                      }
+                  } );
     },
 
     getAccountFilter: function()
@@ -159,16 +169,6 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         if ( !win )
         {
             win = Ext.create( 'widget.deleteAccountWindow' );
-        }
-        return win;
-    },
-
-    getUserPreviewWindow: function()
-    {
-        var win = Ext.ComponentQuery.query( 'userPreviewWindow' )[0];
-        if ( !win )
-        {
-            win = Ext.create( 'widget.userPreviewWindow' );
         }
         return win;
     }

@@ -176,7 +176,6 @@ Ext.define( 'App.controller.UserWizardController', {
                 xtype: 'userWizardPanel'
             };
         var tabItem = this.getCmsTabPanel().addTab( tab );
-        tabItem.renderUserForms( userStoreName );
         tabItem.down('wizardPanel').addData( {'userStoreName': userStoreName} );
         var window = view.up( 'window' );
         window.close();
