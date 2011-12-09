@@ -1,4 +1,4 @@
-Ext.define( 'App.view.wizard.WizardStepLoginInfoPanel', {
+Ext.define( 'App.view.wizard.user.WizardStepLoginInfoPanel', {
     extend: 'Ext.form.Panel',
     alias: 'widget.wizardStepLoginInfoPanel',
 

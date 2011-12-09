@@ -286,10 +286,11 @@ Ext.define( 'App.controller.EditUserPanelController', {
                                           cls: 'edit-user',
                                           closable: true,
                                           userstore: jsonObj.userStore,
+                                          qUserName: currentUser.name,
                                           userFields: jsonObj,
                                           autoScroll: true
                                       };
-                                      tabPane.addTab( tab );
+                                      tabPane.addTab( tab ).down('wizardPanel').addData( {'userStoreName': jsonObj.userStore} );
                                   }
                               } );
         }

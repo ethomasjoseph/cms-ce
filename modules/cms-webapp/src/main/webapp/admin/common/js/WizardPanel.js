@@ -17,6 +17,7 @@ Ext.define( 'Common.WizardPanel', {
     externalControls: undefined,
     showControls: true,
     data: {},
+    bubbleEvents: [ "beforestepchanged", "stepchanged", "animationstarted", "animationfinished", "finished" ],
 
     initComponent: function()
     {
@@ -65,7 +66,7 @@ Ext.define( 'Common.WizardPanel', {
 
                 item.getBoundItems = function() {
                     var boundItems = this._boundItems;
-                    if (!boundItems) {
+                    if ( !boundItems && this.owner.rendered ) {
                         boundItems = this._boundItems = Ext.create('Ext.util.MixedCollection');
                         boundItems.addAll(this.owner.query('[formBind]'));
                         // also add a top nav to bound items of a current step
@@ -84,7 +85,7 @@ Ext.define( 'Common.WizardPanel', {
             Ext.apply( ls, {
                 afterrender: {
                     fn: function( firstStep ) {
-                        wizard.fireEvent('stepchanged', this, null, firstStep );
+                        wizard.fireEvent('stepchanged', wizard, null, firstStep );
                     }
                 }
             });

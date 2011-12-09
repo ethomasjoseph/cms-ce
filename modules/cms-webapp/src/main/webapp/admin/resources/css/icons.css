@@ -75,3 +75,10 @@
 .icon-group-add-24 {
     background: transparent url("../icons/24x24/group_add.png") 0 0 no-repeat;
 }
+
+
+/*---- 128 px icons ----*/
+
+.icon-group-128 {
+    background: transparent url("../icons/128x128/group.png") 0 0 no-repeat;
+}

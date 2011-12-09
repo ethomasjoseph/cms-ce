@@ -13,7 +13,9 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         'EditUserPanel',
         'ChangePasswordWindow',
         'DeleteAccountWindow',
-        'wizard.UserWizardPanel',
+        'UserPreviewPanel',
+        'wizard.user.UserWizardPanel',
+        'wizard.group.GroupWizardPanel',
         'UserPreviewPanel',
         'ExportAccountsWindow'
     ],
@@ -37,7 +39,7 @@ Ext.define( 'App.controller.BrowseToolbarController', {
                               click: this.showChangePasswordWindow
                           },
                           '*[action=viewUser]': {
-                              click: this.showUserPreviewWindow
+                              click: this.showUserPreviewPanel
                           },
                             '*[action=exportAccounts]': {
                                 click: this.showExportAccountsWindow
@@ -49,8 +51,8 @@ Ext.define( 'App.controller.BrowseToolbarController', {
     {
         this.getCmsTabPanel().addTab( {
                                           title: 'New Group',
-                                          html: 'New Group Form',
-                                          iconCls: 'icon-new-group'
+                                          iconCls: 'icon-new-group',
+                                          xtype: 'groupWizardPanel'
                                       } );
     },
 
@@ -86,16 +88,11 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         var ctrl = this.getController( 'EditUserPanelController' );
         if ( ctrl )
         {
-            var previewWindow = Ext.ComponentQuery.query( 'userPreviewWindow' )[0];
-            if (previewWindow)
-            {
-                previewWindow.close();
-            }
             ctrl.showEditUserForm( el, e );
         }
     },
 
-    showUserPreviewWindow: function( el, e )
+    showUserPreviewPanel: function( el, e )
     {
         var me = this;
         var selected = me.getUserGrid().getSelectionModel().selected.get( 0 );
@@ -172,16 +169,6 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         if ( !win )
         {
             win = Ext.create( 'widget.deleteAccountWindow' );
-        }
-        return win;
-    },
-
-    getUserPreviewWindow: function()
-    {
-        var win = Ext.ComponentQuery.query( 'userPreviewWindow' )[0];
-        if ( !win )
-        {
-            win = Ext.create( 'widget.userPreviewWindow' );
         }
         return win;
     }
