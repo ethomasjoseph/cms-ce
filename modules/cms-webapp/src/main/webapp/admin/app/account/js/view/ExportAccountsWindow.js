@@ -76,7 +76,7 @@ Ext.define( 'App.view.ExportAccountsWindow', {
                                 }
 
                                 // Create a form in order to do a post request
-                                var frameData = "<form id='accountsExportForm' action='/admin/data/account/export' method='post'>";
+                                var frameData = "<form id='accountsExportForm' action='data/account/export' method='post'>";
                                 for (var param in query) {
                                     frameData += "<input type='hidden' name='" +param+ "' value='" +query[param]+ "' />";
                                 }
