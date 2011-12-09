@@ -41,6 +41,7 @@
         <module>modules/cms-itest</module>
         <module>modules/cms-webapp</module>
         <module>modules/cms-distro</module>
+        <module>modules/cms-spock-test</module>
     </modules>
 
     <dependencyManagement>
