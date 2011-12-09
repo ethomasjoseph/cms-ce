@@ -93,7 +93,7 @@ Templates.account = {
                     '<td class="label">Owner of:</td><td>394</td></tr></tbody></table></div>' +
                     '<div><table><thead><tr><th>Last position</th></tr></thead></table></div></div></div>'
 
-        ,userPreviewStub:
+        ,userPreviewProfile:
             '<div>' +
             '<tpl for=".">' +
                 '<fieldset class="x-fieldset x-fieldset-default">' +

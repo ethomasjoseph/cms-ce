@@ -88,7 +88,7 @@ Ext.define( 'App.view.UserPreviewPanel', {
                                     {
                                         stepNumber: 2,
                                         stepTitle: "Profile",
-                                        tpl: Templates.account.userPreviewStub,
+                                        tpl: Templates.account.userPreviewProfile,
                                         data: profileData
                                     },
                                     {
