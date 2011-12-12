@@ -66,7 +66,9 @@ Ext.define( 'App.view.ExportAccountsWindow', {
                                 } else {
                                     // pass last filter params
                                     query = win.modelData.searched.lastQuery;
+                                    query = query || {};
                                 }
+                                query['separator'] = 't'; // tab character
 
                                 win.close();
 

@@ -30,15 +30,20 @@ class AccountsCsvExport
 
     static final String ACCOUNT_TYPE_USER = "User";
 
-    
+    static final String DEFAULT_SEPARATOR = ",";
+
+
     private final GroupDao groupDao;
 
     private final UserDao userDao;
+
+    private String separator;
 
     public AccountsCsvExport( GroupDao groupDao, UserDao userDao )
     {
         this.groupDao = groupDao;
         this.userDao = userDao;
+        this.separator = DEFAULT_SEPARATOR;
     }
 
 
@@ -50,7 +55,7 @@ class AccountsCsvExport
 
     public String generateCsv( AccountSearchResults accounts )
     {
-        final CsvBuilder csvBuilder = new CsvBuilder().setSeparator( "," );
+        final CsvBuilder csvBuilder = new CsvBuilder().setSeparator( separator );
         addCsvHeader( csvBuilder );
 
         for ( AccountSearchHit accountHit : accounts )
@@ -207,6 +212,16 @@ class AccountsCsvExport
         final String lastModifStr = ( lastModif == null ) ? "" : csvTimestampFormatter.print( new DateTime( lastModif ) );
         csvBuilder.addValue( lastModifStr );
         csvBuilder.addValue( group.getDescription() );
+    }
+
+    public String getSeparator()
+    {
+        return separator;
+    }
+
+    public void setSeparator( String separator )
+    {
+        this.separator = separator;
     }
 
 }

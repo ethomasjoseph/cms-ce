@@ -46,6 +46,12 @@ public final class AccountResource
 {
     private static final Logger LOG = LoggerFactory.getLogger( AccountResource.class );
 
+    private static final String SEPARATOR_PARAM_COMMA = "c";
+
+    private static final String SEPARATOR_PARAM_SEMICOLON = "s";
+
+    private static final String SEPARATOR_PARAM_TAB = "t";
+
     @Autowired
     private UserDao userDao;
 
@@ -141,7 +147,8 @@ public final class AccountResource
     @POST
     @Path("export")
     public Response exportAsCsv( @InjectParam final AccountExportRequest req,
-                                 @DefaultValue("ISO-8859-1") @FormParam("encoding") String characterEncoding )
+                                 @DefaultValue("ISO-8859-1") @FormParam("encoding") String characterEncoding,
+                                 @DefaultValue(SEPARATOR_PARAM_COMMA) @FormParam("separator") String separator)
         throws UnsupportedEncodingException
     {
         final int accountsExportLimit = 5000;
@@ -165,6 +172,20 @@ public final class AccountResource
             searchResults = search( searchRequest );
         }
         final AccountsCsvExport csvExport = new AccountsCsvExport( groupDao, userDao );
+        final String separatorChar;
+        if ( SEPARATOR_PARAM_TAB.equals( separator ) )
+        {
+            separatorChar = "\t";
+        }
+        else if ( SEPARATOR_PARAM_SEMICOLON.equals( separator ) )
+        {
+            separatorChar = ";";
+        }
+        else
+        {
+            separatorChar = ",";
+        }
+        csvExport.setSeparator( separatorChar );
         final String content = csvExport.generateCsv( searchResults );
         final String filename = csvExport.getExportFileName( new Date() );
         final String attachmentHeader = "attachment; filename=" + filename;
