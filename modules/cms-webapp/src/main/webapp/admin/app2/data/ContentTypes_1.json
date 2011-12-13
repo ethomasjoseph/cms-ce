@@ -1,0 +1,40 @@
+{
+    "total": 5,
+    "contentTypes": [
+        {
+            "key": 1,
+            "name": "Content Type 1",
+            "description": "desc1",
+            "data": "data1",
+            "timestamp": "2010-01-01 10:10:10"
+        },
+        {
+            "key": 2,
+            "name": "Content Type 2",
+            "description": "desc2",
+            "data": "data2",
+            "timestamp": "2010-01-01 10:10:10"
+        },
+        {
+            "key": 3,
+            "name": "Content Type 3",
+            "description": "desc3",
+            "data": "data3",
+            "timestamp": "2010-01-01 10:10:10"
+        },
+        {
+            "key": 4,
+            "name": "Content Type 4",
+            "description": "desc4",
+            "data": "data4",
+            "timestamp": "2010-01-01 10:10:10"
+        },
+        {
+            "key": 5,
+            "name": "Content Type 5",
+            "description": "desc5",
+            "data": "data5",
+            "timestamp": "2010-01-01 10:10:10"
+        }
+    ]
+}
