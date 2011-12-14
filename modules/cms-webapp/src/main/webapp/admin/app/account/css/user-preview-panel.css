@@ -1,4 +1,6 @@
-#cms-user-preview-panel {}
+#cms-user-preview-panel {
+}
+
 /*--- Generic ---*/
 .cms-user-preview-panel,
 .cms-user-preview-panel td,
@@ -64,7 +66,7 @@
 }
 
 .cms-user-preview-panel .center .container {
-    padding:  5px;
+    padding: 5px;
 }
 
 .cms-user-preview-panel .center .navigation {
@@ -97,8 +99,7 @@
 }
 
 .cms-user-preview-panel ul.cms-wizard-navigation a.next,
-.cms-user-preview-panel ul.cms-wizard-navigation a.last
-{
+.cms-user-preview-panel ul.cms-wizard-navigation a.last {
     color: #222222;
 }
 
@@ -110,4 +111,23 @@
 
 .cms-user-preview-panel ul.cms-wizard-navigation li a {
     margin-right: 0px;
+}
+
+.cms-user-preview-panel li.user-el {
+    height: 32px;
+    margin: 10px 0 0;
+    padding: 10px 35px;
+    font: bold;
+    font-size: 15px;
+    background: url(/admin/resources/icons/32x32/user.png) no-repeat;
+}
+
+.cms-user-preview-panel li.group-el {
+    height: 32px;
+    margin: 10px 0 0;
+    padding: 10px 35px;
+    font: bold;
+    font-size: 15px;
+    background: url(/admin/resources/icons/32x32/group.png) no-repeat;
+
 }

@@ -2,10 +2,10 @@ Ext.define( 'App.controller.GridPanelController', {
     extend: 'Ext.app.Controller',
 
     stores: [
-        'UserStore'
+        'AccountStore'
     ],
     models: [
-        'UserModel'
+        'AccountModel'
     ],
     views: [
         'BrowseToolbar',
@@ -17,21 +17,23 @@ Ext.define( 'App.controller.GridPanelController', {
     init: function()
     {
         this.control( {
-            'cmsTabPanel': {
-                  afterrender: function( tabPanel, eOpts ) {
-                      this.updateActionItems();
-                  }
-            },
-            'accountGrid': {
-                  selectionchange: function() {
-                      this.updateDetailsPanel();
-                      this.updateActionItems();
-                  },
-                  beforeitemmousedown: this.cancelItemContextClickOnMultipleSelection,
-                  itemcontextmenu: this.popupMenu,
-                  itemdblclick: this.showUserPreviewPanel
-            }
-        } );
+                          'cmsTabPanel': {
+                              afterrender: function( tabPanel, eOpts )
+                              {
+                                  this.updateActionItems();
+                              }
+                          },
+                          'accountGrid': {
+                              selectionchange: function()
+                              {
+                                  this.updateDetailsPanel();
+                                  this.updateActionItems();
+                              },
+                              beforeitemmousedown: this.cancelItemContextClickOnMultipleSelection,
+                              itemcontextmenu: this.popupMenu,
+                              itemdblclick: this.showUserPreviewPanel
+                          }
+                      } );
     },
 
     updateDetailsPanel: function()
@@ -40,7 +42,7 @@ Ext.define( 'App.controller.GridPanelController', {
         var persistentGridSelectionPlugin = this.getPersistentGridSelectionPlugin();
         var persistentSelection = persistentGridSelectionPlugin.getSelection();
         var persistentSelectionCount = persistentGridSelectionPlugin.getSelectionCount();
-        var userStore = this.getStore('UserStore');
+        var userStore = this.getStore( 'AccountStore' );
         var pageSize = userStore.pageSize;
         var totalCount = userStore.totalCount;
 
@@ -53,8 +55,7 @@ Ext.define( 'App.controller.GridPanelController', {
         if ( persistentSelectionCount === 0 )
         {
             detailPanel.showNoneSelection();
-        }
-        else if ( showUserPreviewOnly )
+        } else if ( showUserPreviewOnly )
         {
             var user = selectionModel.getSelection()[0];
 
@@ -99,12 +100,12 @@ Ext.define( 'App.controller.GridPanelController', {
         for ( var i = 0; i < components2d.length; i++ )
         {
             items = components2d[i];
-            for (var j = 0; j < items.length; j++)
+            for ( var j = 0; j < items.length; j++ )
             {
-                items[j].setDisabled(disable);
+                items[j].setDisabled( disable );
                 if ( multipleSelection && items[j].disableOnMultipleSelection )
                 {
-                    items[j].setDisabled(true);
+                    items[j].setDisabled( true );
                 }
             }
         }
@@ -119,8 +120,9 @@ Ext.define( 'App.controller.GridPanelController', {
 
     showEditUserForm: function( el, e )
     {
-        var ctrl = this.getController('EditUserPanelController');
-        if ( ctrl ) {
+        var ctrl = this.getController( 'EditUserPanelController' );
+        if ( ctrl )
+        {
             ctrl.showEditUserForm( el, e );
         }
     },
@@ -151,7 +153,7 @@ Ext.define( 'App.controller.GridPanelController', {
 
     getPersistentGridSelectionPlugin: function()
     {
-        return this.getUserGrid().getPlugin('persistentGridSelection');
+        return this.getUserGrid().getPlugin( 'persistentGridSelection' );
     },
 
     getUserGrid: function()
@@ -173,7 +175,9 @@ Ext.define( 'App.controller.GridPanelController', {
     {
         var menu = Ext.ComponentQuery.query( 'accountContextMenu' )[0];
         if ( !menu )
-            menu = Ext.create('widget.accountContextMenu');
+        {
+            menu = Ext.create( 'widget.accountContextMenu' );
+        }
         return menu;
     }
 

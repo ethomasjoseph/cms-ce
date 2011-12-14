@@ -9,7 +9,7 @@ Ext.define( 'App.view.GridPanel', {
     loadMask: true,
     columnLines: true,
     frame: false,
-    store: 'UserStore',
+    store: 'AccountStore',
 
     initComponent: function()
     {
@@ -47,37 +47,39 @@ Ext.define( 'App.view.GridPanel', {
             plugins: ['slidingPagerPlugin']
         },
 
-        this.viewConfig = {
-            trackOver : true,
-            stripeRows: true
-        };
+                this.viewConfig = {
+                    trackOver : true,
+                    stripeRows: true
+                };
 
-        this.selModel = Ext.create('Ext.selection.CheckboxModel', {
-        });
+        this.selModel = Ext.create( 'Ext.selection.CheckboxModel', {
+        } );
 
         this.callParent( arguments );
     },
 
     nameRenderer: function( value, p, record )
     {
-        return Ext.String.format(
-                Templates.account.gridPanelNameRenderer,
-                record.data.key,
-                value,
-                record.data.name,
-                record.data.userStore
-                );
+        return Ext.String.format( Templates.account.gridPanelNameRenderer, record.data.key, value, record.data.name,
+                                  record.data.userStore );
     },
 
-    prettyDateRenderer: function( value, p, record ) {
-        try {
-            if( parent && Ext.isFunction( parent.humane_date ) ) {
+    prettyDateRenderer: function( value, p, record )
+    {
+        try
+        {
+            if ( parent && Ext.isFunction( parent.humane_date ) )
+            {
                 return parent.humane_date( value );
-            } else {
+            }
+            else
+            {
                 return value;
             }
-        } catch( e ) {
+        }
+        catch( e )
+        {
             return value;
         }
     }
-});
+} );

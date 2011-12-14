@@ -1,17 +1,31 @@
 package com.enonic.cms.admin.account;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.enonic.cms.core.security.group.GroupEntity;
+import com.enonic.cms.core.security.group.GroupType;
 import com.enonic.cms.core.security.user.UserEntity;
+import com.enonic.cms.store.dao.UserDao;
+import com.enonic.cms.store.dao.UserStoreDao;
 
 import com.enonic.cms.domain.EntityPageList;
 
+@Component
 public final class AccountModelTranslator
 {
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private UserStoreDao userStoreDao;
+
     AccountModel toAModel( final UserEntity entity )
     {
         final UserModel model = new UserModel();
@@ -25,9 +39,10 @@ public final class AccountModelTranslator
         model.setLastLogged( "2001-01-01" );
         //TODO: not implemented
         model.setCreated( "1998-09-13" );
-        List<Map<String, String>> groups = new ArrayList<Map<String, String>>(  );
-        for ( GroupEntity group : entity.getAllMembershipsGroups()){
-            Map <String, String> groupMap = new HashMap<String, String>();
+        List<Map<String, String>> groups = new ArrayList<Map<String, String>>();
+        for ( GroupEntity group : entity.getAllMembershipsGroups() )
+        {
+            Map<String, String> groupMap = new HashMap<String, String>();
             groupMap.put( "name", group.getDisplayName() );
             groupMap.put( "key", group.getGroupKey().toString() );
             groups.add( groupMap );
@@ -66,7 +81,7 @@ public final class AccountModelTranslator
         return model;
     }
 
-    AccountsModel toModel( final List<UserEntity> userList, final List<GroupEntity> groupList )
+    AccountsModel toModel( final Collection<UserEntity> userList, final Collection<GroupEntity> groupList )
     {
         final AccountsModel model = new AccountsModel();
         model.setTotal( userList.size() + groupList.size() );
@@ -109,5 +124,26 @@ public final class AccountModelTranslator
         }
 
         return model;
+    }
+
+    AccountModel toGroupInfo( GroupEntity group )
+    {
+        GroupModel groupModel = (GroupModel) toAModel( group );
+        List<AccountModel> members = new ArrayList<AccountModel>();
+        for ( GroupEntity member : group.getMembers( false ) )
+        {
+            AccountModel accountModel = null;
+            if ( member.getType().equals( GroupType.USER ) )
+            {
+                accountModel = toAModel( member.getUser() );
+            }
+            else
+            {
+                accountModel = toAModel( member );
+            }
+            members.add( accountModel );
+        }
+        groupModel.setMembers( members );
+        return groupModel;
     }
 }
