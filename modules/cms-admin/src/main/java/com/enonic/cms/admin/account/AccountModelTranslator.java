@@ -6,25 +6,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.enonic.cms.core.security.group.GroupEntity;
 import com.enonic.cms.core.security.group.GroupType;
 import com.enonic.cms.core.security.user.UserEntity;
-import com.enonic.cms.store.dao.UserDao;
-import com.enonic.cms.store.dao.UserStoreDao;
 
 import com.enonic.cms.domain.EntityPageList;
 
 @Component
 public final class AccountModelTranslator
 {
-    @Autowired
-    private UserDao userDao;
-
-    @Autowired
-    private UserStoreDao userStoreDao;
 
     AccountModel toAModel( final UserEntity entity )
     {
