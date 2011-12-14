@@ -34,7 +34,6 @@ Ext.define('App.view.LauncherToolbar', {
             xtype: 'button',
             scale: 'medium',
             text: 'Dashboard',
-            icon: Ext.BLANK_IMAGE_URL, // TODO: (bug fix) Remove icon when Ext is upgraded to >= 4.0.7
             menu: Ext.create( 'Common.view.MegaMenu', {
                 maxColumns: 6,
                 url: 'app/main/data/megaMenu.json'

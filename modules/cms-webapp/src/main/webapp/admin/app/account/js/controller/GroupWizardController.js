@@ -13,7 +13,7 @@ Ext.define( 'App.controller.GroupWizardController', {
             'groupWizardPanel *[action=deleteGroup]':{
                 click:this.deleteGroup
             },
-            'groupWizardPanel':{
+            'groupWizardPanel wizardPanel':{
                 beforestepchanged:this.validateStep,
                 stepchanged:this.stepChanged,
                 finished:this.wizardFinished

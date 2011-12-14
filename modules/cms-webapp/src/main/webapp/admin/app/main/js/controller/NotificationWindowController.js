@@ -8,6 +8,9 @@ Ext.define('App.controller.NotificationWindowController', {
         Ext.create('widget.notificationWindow');
 
         this.control({
+            'notificationWindow': {
+                afterrender: this.addWindowClickListener
+            }
         });
 
         this.application.on(
@@ -17,7 +20,7 @@ Ext.define('App.controller.NotificationWindowController', {
             }
         );
 
-        this.addWindowClickListener();
+
     },
 
     show: function(title, message, notifyUser)
@@ -37,7 +40,7 @@ Ext.define('App.controller.NotificationWindowController', {
     {
         var self = this;
         var notificationWindow = this.getNotificationWindow();
-
+        notificationWindow.show();
         notificationWindow.stopAnimation();
         notificationWindow.center();
         notificationWindow.animate(
@@ -125,7 +128,12 @@ Ext.define('App.controller.NotificationWindowController', {
 
     getNotificationWindow: function()
     {
-        return Ext.ComponentQuery.query('notificationWindow')[0];
+        var win = Ext.ComponentQuery.query('notificationWindow')[0];
+        if ( !win )
+        {
+            win = Ext.create( 'widget.notificationWindow' );
+        }
+        return win;
     }
 
 });

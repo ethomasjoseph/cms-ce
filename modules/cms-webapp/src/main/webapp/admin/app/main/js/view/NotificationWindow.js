@@ -4,7 +4,7 @@ Ext.define( 'App.view.NotificationWindow', {
     width: 370,
     autoHeight: true,
     floating: true,
-    autoShow: true,
+    autoRender: true,
 
     tpl: Templates.main.notificationWindow,
 
