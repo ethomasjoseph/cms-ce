@@ -55,9 +55,6 @@ public class XTraceController
     @Autowired
     private UserDao userDao;
 
-    @Autowired
-    private LivePortalTraceService livePortalTraceService;
-
     @Override
     protected ModelAndView handleRequestInternal( HttpServletRequest request, HttpServletResponse response )
         throws Exception
@@ -66,12 +63,6 @@ public class XTraceController
         if ( path.matches( ".+/resources/.+" ) )
         {
             handleResource( request, response );
-            return null;
-        }
-
-        if ( path.endsWith( "/info" ) )
-        {
-            handleXTraceInfo( request, response );
             return null;
         }
 
@@ -168,44 +159,5 @@ public class XTraceController
         ByteStreams.copy( inputStream, outputStream );
 
         response.setContentType( mimeType );
-    }
-
-    private void handleXTraceInfo( HttpServletRequest request, HttpServletResponse response )
-        throws Exception
-    {
-        if ( !clientIsAuthenticated( request ) )
-        {
-            response.setStatus( HttpServletResponse.SC_FORBIDDEN );
-            return;
-        }
-
-        final String requestedCompletedNumberAsString = request.getParameter( "id" );
-        if ( Strings.isNullOrEmpty( requestedCompletedNumberAsString ) )
-        {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return;
-        }
-        final Long requestedCompletedNumber = new Long( requestedCompletedNumberAsString );
-
-        for ( PortalRequestTrace portalRequestTrace : livePortalTraceService.getHistorySince( 0 ) )
-        {
-            if ( requestedCompletedNumber.equals( portalRequestTrace.getCompletedNumber() ) )
-            {
-                JsonSerializer jsonSerializer = new JsonSerializer();
-
-                PrintWriter writer = response.getWriter();
-                writer.println( jsonSerializer.serialize( portalRequestTrace.getPageRenderingTrace() ) );
-
-                response.setContentType( "application/json" );
-                return;
-            }
-        }
-
-        response.setStatus( HttpServletResponse.SC_NOT_FOUND );
-    }
-
-    private boolean clientIsAuthenticated( HttpServletRequest request )
-    {
-        return "true".equals( request.getSession().getAttribute( "X-Trace-Server-Enabled" ) );
     }
 }
