@@ -27,23 +27,23 @@ public class JsonSerializer
         JsonObject wrapper = new JsonObject();
 
         JsonObject xtrace = new JsonObject();
+
         appendVersion( xtrace );
 
-        appendPortal( xtrace );
+        appendRequest( xtrace );
 
         wrapper.add( "xtrace", xtrace );
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setPrettyPrinting();
-
         Gson gson = gsonBuilder.create();
 
         return gson.toJson( wrapper );
     }
 
-    private void appendPortal( JsonObject xtrace )
+    private void appendRequest( JsonObject xtrace )
     {
-        xtrace.add( "portal", createPortal() );
+        xtrace.add( "request", createRequest() );
     }
 
     private void appendVersion( JsonObject xtrace )
@@ -51,25 +51,25 @@ public class JsonSerializer
         xtrace.addProperty( "version", "1.0" );
     }
 
-    private JsonObject createPortal()
+    private JsonObject createRequest()
     {
-        JsonObject portalObject = new JsonObject();
+        JsonObject requestObject = new JsonObject();
 
         PortalRequestTrace portalRequestTrace = pageTrace.getPortalRequestTrace();
 
-        portalObject.addProperty( "id", String.valueOf( portalRequestTrace.getCompletedNumber() ) );
-        portalObject.addProperty( "request_number", portalRequestTrace.getRequestNumber() );
-        portalObject.addProperty( "url", portalRequestTrace.getUrl() );
-        portalObject.addProperty( "requester", portalRequestTrace.getRequester().toString() );
+        requestObject.addProperty( "id", String.valueOf( portalRequestTrace.getCompletedNumber() ) );
+        requestObject.addProperty( "number", portalRequestTrace.getRequestNumber() );
+        requestObject.addProperty( "requester", portalRequestTrace.getRequester().toString() );
+        requestObject.addProperty( "url", portalRequestTrace.getUrl() );
 
-        appendPage( portalObject );
+        appendPage( requestObject );
 
-        return portalObject;
+        return requestObject;
     }
 
-    private void appendPage( JsonObject portalObject )
+    private void appendPage( JsonObject requestObject )
     {
-        portalObject.add( "page", createPage() );
+        requestObject.add( "page", createPage() );
     }
 
     private JsonObject createPage()
@@ -78,11 +78,7 @@ public class JsonSerializer
 
         pageObject.addProperty( "name", pageTrace.getPortalRequestTrace().getUrl() );
         pageObject.addProperty( "cache_hit", pageTrace.isUsedCachedResult() );
-        pageObject.addProperty( "ran_as_user", resolveQualifiedUsernameAsString( pageTrace.getRenderer() ) );
-        if ( pageTrace.hasViewTransformationTrace() )
-        {
-            pageObject.addProperty( "view", pageTrace.getViewTransformationTrace().getView() );
-        }
+        pageObject.addProperty( "requester", resolveQualifiedUsernameAsString( pageTrace.getRenderer() ) );
 
         JsonObject duration = new JsonObject();
 
@@ -92,7 +88,20 @@ public class JsonSerializer
         pageObject.add( "duration", duration );
 
         appendPageDatasources( pageObject );
-        appendXsltTransformingObjectForPage( pageObject );
+
+        if ( !pageTrace.isUsedCachedResult() )
+        {
+            JsonObject viewObject = new JsonObject();
+
+            if ( pageTrace.hasViewTransformationTrace() )
+            {
+                viewObject.addProperty( "resource", pageTrace.getViewTransformationTrace().getView() );
+            }
+
+            appendXsltTransformingObjectForPageView( viewObject );
+            pageObject.add("view", viewObject);
+        }
+
         appendWindows( pageObject );
 
         pageObject.add( "instruction_post_processing",
@@ -130,11 +139,7 @@ public class JsonSerializer
 
         windowObject.addProperty( "name", windowTrace.getPortletName() );
         windowObject.addProperty( "cache_hit", windowTrace.isUsedCachedResult() );
-        windowObject.addProperty( "ran_as_user", resolveQualifiedUsernameAsString( windowTrace.getRenderer() ) );
-        if ( windowTrace.hasViewTransformationTrace() )
-        {
-            windowObject.addProperty( "view", windowTrace.getViewTransformationTrace().getView() );
-        }
+        windowObject.addProperty( "requester", resolveQualifiedUsernameAsString( windowTrace.getRenderer() ) );
 
         JsonObject duration = new JsonObject();
 
@@ -144,7 +149,18 @@ public class JsonSerializer
         windowObject.add( "duration", duration );
 
         appendWindowDatasources( windowObject, windowTrace );
-        appendXsltTransformingObjectForWindow( windowObject, windowTrace );
+
+        if ( !windowTrace.isUsedCachedResult() )
+        {
+            JsonObject viewObject = new JsonObject();
+            if ( windowTrace.hasViewTransformationTrace() )
+            {
+                viewObject.addProperty( "resource", windowTrace.getViewTransformationTrace().getView() );
+            }
+
+            appendXsltTransformingObjectForWindowView( viewObject, windowTrace );
+            windowObject.add( "view", viewObject );
+        }
 
         windowObject.add( "instruction_post_processing",
                           createInstructionPostProcessingObject( windowTrace.getInstructionPostProcessingTrace() ) );
@@ -152,7 +168,7 @@ public class JsonSerializer
         windowsArray.add( windowObject );
     }
 
-    private void appendXsltTransformingObjectForPage( JsonObject pageObject )
+    private void appendXsltTransformingObjectForPageView( JsonObject viewObject )
     {
         if ( !pageTrace.isUsedCachedResult() )
         {
@@ -169,11 +185,11 @@ public class JsonSerializer
             duration.addProperty( "total_time_ms", endTime - startTime );
             xsltTransformingObject.add( "duration", duration );
 
-            pageObject.add( "xslt_transforming", xsltTransformingObject );
+            viewObject.add( "xslt_transforming", xsltTransformingObject );
         }
     }
 
-    private void appendXsltTransformingObjectForWindow( JsonObject windowObject, WindowRenderingTrace windowTrace )
+    private void appendXsltTransformingObjectForWindowView( JsonObject viewObject, WindowRenderingTrace windowTrace )
     {
         if ( !windowTrace.isUsedCachedResult() )
         {
@@ -190,7 +206,7 @@ public class JsonSerializer
             duration.addProperty( "total_time_ms", endTime - startTime );
             xsltTransformingObject.add( "duration", duration );
 
-            windowObject.add( "xslt_transforming", xsltTransformingObject );
+            viewObject.add( "xslt_transforming", xsltTransformingObject );
         }
     }
 
