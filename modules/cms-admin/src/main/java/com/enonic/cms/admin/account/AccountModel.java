@@ -18,8 +18,8 @@ interface AccountModel
 
     public final static String USERSTORE = "userStore";
 
-    @JsonProperty("isUser")
-    public boolean isUser();
+    @JsonProperty("type")
+    public String getAccountType();
 
     public void setKey( String key );
 
@@ -44,4 +44,7 @@ interface AccountModel
     public void setLastModified( Date lastModified );
 
     public Date getLastModified();
+
+    @JsonProperty("hasPhoto")
+    public boolean hasPhoto();
 }

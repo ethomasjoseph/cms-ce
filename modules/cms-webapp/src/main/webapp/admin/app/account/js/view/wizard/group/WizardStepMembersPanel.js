@@ -17,6 +17,7 @@ Ext.define( 'App.view.wizard.group.WizardStepMembersPanel', {
                 },
                 items: [
                     {
+                        fieldLabel: 'Select members',
                         allowBlank:true,
                         minChars: 1,
                         forceSelection : true,

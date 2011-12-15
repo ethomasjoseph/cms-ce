@@ -56,6 +56,8 @@ public final class UserModel
 
     private Date lastModified;
 
+    @JsonProperty
+    private boolean hasPhoto = false;
 
     private UserInfoModel userInfo;
 
@@ -180,5 +182,15 @@ public final class UserModel
     public Date getLastModified()
     {
         return lastModified;
+    }
+
+    public boolean hasPhoto()
+    {
+        return this.hasPhoto;
+    }
+
+    public void setHasPhoto( boolean hasPhoto )
+    {
+        this.hasPhoto = hasPhoto;
     }
 }

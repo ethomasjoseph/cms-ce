@@ -6,11 +6,11 @@ Ext.define( 'App.view.SelectUserStoreWindow', {
 
     dialogTitle: 'Select user store',
     dialogInfoTpl: undefined,
-    layout: 'fit',
-    modal: 'true',
+
     items: [
         {
-            xtype: 'userStoreListPanel'
+            xtype: 'userStoreListPanel',
+            height: 400
         }
     ],
 

@@ -34,9 +34,9 @@ public class GroupModel
     }
 
     @Override
-    public boolean isUser()
+    public String getAccountType()
     {
-        return false;
+        return "group";
     }
 
     @Override
@@ -109,6 +109,12 @@ public class GroupModel
     public Date getLastModified()
     {
         return this.lastModified;
+    }
+
+    @Override
+    public boolean hasPhoto()
+    {
+        return false;
     }
 
     public List<AccountModel> getMembers()

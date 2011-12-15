@@ -32,6 +32,7 @@ public final class UserModel implements AccountModel
 
     private Date lastModified;
 
+    private boolean hasPhoto = false;
 
     private UserInfoModel userInfo;
 
@@ -83,9 +84,9 @@ public final class UserModel implements AccountModel
     }
 
     @Override
-    public boolean isUser()
+    public String getAccountType()
     {
-        return true;
+        return "user";
     }
 
     public void setKey( String key )
@@ -163,4 +164,16 @@ public final class UserModel implements AccountModel
     {
         return lastModified;
     }
+
+    @Override
+    public boolean hasPhoto()
+    {
+        return this.hasPhoto;
+    }
+
+    public void setHasPhoto( boolean hasPhoto )
+    {
+        this.hasPhoto = hasPhoto;
+    }
+
 }
