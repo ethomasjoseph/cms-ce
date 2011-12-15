@@ -55,7 +55,7 @@ Ext.define( 'App.controller.FilterPanelController', {
     {
         this.setBrowseTabActive();
 
-        var usersStore = this.getUserStoreStore();
+        var usersStore = this.getStore('AccountStore');
         var textField = this.getFilterTextField();
         var userStoreField = this.getFilterUserStoreField();
         var accountTypeField = this.getFilterAccountTypeField();
