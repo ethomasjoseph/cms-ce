@@ -4,11 +4,6 @@ Ext.define( 'Common.view.MegaMenu', {
 
     requires: [ 'Common.MegaKeyNav'],
 
-    //TODO: move to css when bodyCls 4.0 bug is fixed
-    bodyStyle: {
-        background: '#fff !important',
-        padding: '10px'
-    },
     bodyCls: 'cms-mega-menu',
     plain: true,
     showSeparator: false,

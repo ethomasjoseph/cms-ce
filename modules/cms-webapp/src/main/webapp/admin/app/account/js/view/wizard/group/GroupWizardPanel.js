@@ -6,8 +6,7 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
         'App.view.wizard.group.GroupWizardToolbar',
         'App.view.wizard.group.WizardStepGeneralPanel',
         'App.view.wizard.group.WizardStepMembersPanel',
-        'App.view.wizard.group.WizardStepGroupSummaryPanel',
-        'Common.fileupload.PhotoUploadButton'
+        'App.view.wizard.group.WizardStepGroupSummaryPanel'
     ],
 
     layout: 'column',
@@ -64,14 +63,14 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
                                 }
                             }
                         },
-                        items: [{
+                        items: {
                             xtype: 'textfield',
                             cls: 'cms-display-name',
                             anchor: '100%',
                             height: 36,
                             allowBlank: false,
                             value: displayNameValue
-                        }]
+                        }
                     },
                     {
                         xtype: 'wizardPanel',

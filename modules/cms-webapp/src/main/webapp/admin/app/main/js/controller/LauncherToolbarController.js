@@ -76,11 +76,6 @@ Ext.define('App.controller.LauncherToolbarController', {
 
     updateStartButton: function( selectedMenuItem )
     {
-        if ( !selectedMenuItem.icon || selectedMenuItem.icon === '' )
-        {
-            selectedMenuItem.icon = Ext.BLANK_IMAGE_URL
-        }
-
         var startMenuButton = this.getStartMenuButton();
         startMenuButton.setText( selectedMenuItem.text );
         startMenuButton.setIconCls( selectedMenuItem.iconCls );

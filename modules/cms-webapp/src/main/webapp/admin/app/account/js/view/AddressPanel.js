@@ -2,7 +2,7 @@ Ext.define( 'App.view.AddressPanel', {
     extend: 'Ext.form.Panel',
     alias: 'widget.addressPanel',
 
-    xtype: 'form',
+//    xtype: 'form',
     draggable: true,
     frame: true,
     layout: {
