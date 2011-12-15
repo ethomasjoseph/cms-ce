@@ -42,7 +42,7 @@ Ext.define( 'Common.WizardPanel', {
                         {
                             itemId: 'prev',
                             text: 'Previous',
-                            iconCls: 'icon-btn-arrow-left-24',
+                            iconCls: 'icon-left-24',
                             hideMode: 'display',
                             hidden: isFirst,
                             handler: function( btn, evt )
@@ -53,9 +53,10 @@ Ext.define( 'Common.WizardPanel', {
                         {
                             text: isLast ? 'Finish' : 'Next',
                             itemId: isLast ? 'finish' : 'next',
+                            iconAlign: 'right',
                             margin: isFirst ? '0 0 0 100' : '0 0 0 10',
                             formBind: true,
-                            iconCls: isLast ? 'icon-btn-finish-24' : 'icon-btn-arrow-right-24',
+                            iconCls: isLast ? 'icon-ok-24' : 'icon-right-24',
                             handler: function( btn, evt )
                             {
                                 wizard.next();
