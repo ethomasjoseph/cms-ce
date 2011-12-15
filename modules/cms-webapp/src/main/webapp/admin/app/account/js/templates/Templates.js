@@ -14,7 +14,7 @@ Templates.account = {
                     '</div>' + '</div>' + '</tpl>'
 
     ,gridPanelNameRenderer:
-            '<div style="float:left"><img src="data/user/photo?key={0}&thumb=true" class="cms-grid-thumbnail"></div>' +
+            '<div style="float:left"><img src="{0}" class="cms-grid-thumbnail"></div>' +
                     '<div style="float:left; padding: 1px 0 0 5px"><div class="cms-grid-title">{1}</div>' +
                     '<div class="cms-grid-description">{3}\\{2}</div>'
 
@@ -56,7 +56,10 @@ Templates.account = {
 
     ,userPreview:
             '<div id="cms-user-preview" class="clearfix cms-user-preview"><div class="west cms-left">' +
-                    '<div class="photo-placeholder"><img src="data/user/photo?key={key}" alt="{displayName}"/></div>' +
+                    '<div class="photo-placeholder">' +
+                    '<tpl if="hasPhoto"><img src="data/user/photo?key={key}" alt="{displayName}"/></tpl>' +
+                    '<tpl if="!hasPhoto"><img src="resources/icons/256x256/dummy-user.png" alt="{displayName}"/></tpl>' +
+                    '</div>' +
                     '</div><div class="center"><div class="container">' +
                     '<h1>{displayName}</h1><div><span>{userStore}\\\\{name}</span>' +
                     '<span class="email">&nbsp;{email}</span></div></div>' +
@@ -101,15 +104,18 @@ Templates.account = {
 
     ,userPreviewPhoto:
             '<div class="west cms-left">' +
-                    '<div class="photo-placeholder"><img src="data/user/photo?key={key}" alt="{displayName}"/></div>' +
-                    '</div>'
+                    '<div class="photo-placeholder">' +
+                    '<tpl if="hasPhoto"><img src="data/user/photo?key={key}" alt="{displayName}"/></tpl>' +
+                    '<tpl if="!hasPhoto"><img src="resources/icons/256x256/dummy-user.png" alt="{displayName}"/></tpl>' +
+                    '</div></div>'
+
     ,userPreviewHeader:
             '<div class="container">' + '<h1>{displayName}</h1><div><span>{userStore}\\\\{name}</span>' +
                     '<span class="email">&nbsp;{email}</span></div></div>'
 
     ,previewMemberships:
             '<div class="container">' + '<ul>' + '<tpl for="members">' +
-                    '<li class="{[values.isUser ? "user-el" : "group-el"]}">{displayName}</li>' + '</tpl></ul></div>'
+                    '<li class="{[values.type === \"user\" ? "user-el" : "group-el"]}">{displayName}</li>' + '</tpl></ul></div>'
 
     ,userPreviewCommonInfo:
             '<div><table><thead><tr>' + '<th>Roles</th></tr></thead><tbody>' + '<tpl for="groups">' +

@@ -142,6 +142,7 @@ public final class UserModelTranslator
             userInfoModel.getAddresses().add( toAddressModel( address ) );
         }
         userModel.setUserInfo( userInfoModel );
+        userModel.setHasPhoto( entity.hasPhoto() );
         return userModel;
     }
 

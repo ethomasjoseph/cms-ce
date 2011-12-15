@@ -38,7 +38,7 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
         };
         if ( me.userFields )
         {
-            photoUrl = 'data/user/photo?key=' + me.userFields.key;
+            photoUrl = me.hasPhoto ? 'data/user/photo?key=' + me.userFields.key : 'resources/icons/256x256/dummy-user.png';
             userGroups = me.userFields.groups;
             displayNameValue = me.userFields.displayName;
         }

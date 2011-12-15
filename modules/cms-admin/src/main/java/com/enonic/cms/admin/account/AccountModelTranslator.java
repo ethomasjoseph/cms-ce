@@ -48,6 +48,7 @@ public final class AccountModelTranslator
         {
             model.setUserStore( "system" );
         }
+        model.setHasPhoto( entity.hasPhoto() );
 
         return model;
     }

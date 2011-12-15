@@ -60,8 +60,17 @@ Ext.define( 'App.view.GridPanel', {
 
     nameRenderer: function( value, p, record )
     {
-        return Ext.String.format( Templates.account.gridPanelNameRenderer, record.data.key, value, record.data.name,
-                                  record.data.userStore );
+        var account = record.data;
+        var photoUrl;
+        if ( account.hasPhoto )
+        {
+            photoUrl = Ext.String.format( 'data/user/photo?key={0}&thumb=true', account.key );
+        }
+        else
+        {
+            photoUrl = account.type === 'user' ? 'resources/icons/256x256/dummy-user.png' : 'resources/icons/256x256/group.png';
+        }
+        return Ext.String.format( Templates.account.gridPanelNameRenderer, photoUrl, value, account.name, account.userStore );
     },
 
     prettyDateRenderer: function( value, p, record )
