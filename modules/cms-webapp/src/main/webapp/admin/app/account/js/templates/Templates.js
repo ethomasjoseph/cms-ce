@@ -38,7 +38,11 @@ Templates.account = {
     ,selectedUserLarge:
             '<tpl for="users">' +
                     '<div id="selected-item-box-{key}" class="cms-selected-item-box large x-btn-default-large clearfix">' +
-                    '<div class="left">' + '<img alt="User" src="data/user/photo?key={key}&thumb=true"/>' + '</div>' +
+                    '<div class="left">' +
+                    '<tpl if="hasPhoto"><img alt="User" src="data/user/photo?key={key}&thumb=true" alt="{displayName}"/></tpl>' +
+                    '<tpl if="(!hasPhoto) && type===\'user\'"><img alt="User" src="resources/icons/256x256/dummy-user.png" alt="{displayName}"/></tpl>' +
+                    '<tpl if="(!hasPhoto) && type===\'group\'"><img alt="Group" src="resources/icons/256x256/group.png" alt="{displayName}"/></tpl>' +
+                    '</div>' +
                     '<div class="center">' + '<h2>{displayName}</h2>' + '<p>{userStore}\\\\{name}</p>' + '</div>' +
                     '<div class="right">' +
                     ' <a id="remove-from-selection-button-{key}" class="remove-selection" href="javascript:;"></a>' +
@@ -48,7 +52,10 @@ Templates.account = {
             '<tpl for="users">' +
                     '<div id="selected-item-box-{key}" class="cms-selected-item-box small x-btn-default-small clearfix">' +
                     '<div class="cms-selected-item-box left">' +
-                    '<img alt="User" src="data/user/photo?key={key}&thumb=true"/>' + '</div>' +
+                    '<tpl if="hasPhoto"><img alt="User" src="data/user/photo?key={key}&thumb=true" alt="{displayName}"/></tpl>' +
+                    '<tpl if="(!hasPhoto) && type===\'user\'"><img alt="User" src="resources/icons/256x256/dummy-user.png" alt="{displayName}"/></tpl>' +
+                    '<tpl if="(!hasPhoto) && type===\'group\'"><img alt="Group" src="resources/icons/256x256/group.png" alt="{displayName}"/></tpl>' +
+                    '</div>' +
                     '<div class="cms-selected-item-box center">' + '<h2>{displayName}</h2>' + '</div>' +
                     '<div class="cms-selected-item-box right">' +
                     '<a id="remove-from-selection-button-{key}" class="remove-selection" href="javascript:;"></a>' +
@@ -58,7 +65,8 @@ Templates.account = {
             '<div id="cms-user-preview" class="clearfix cms-user-preview"><div class="west cms-left">' +
                     '<div class="photo-placeholder">' +
                     '<tpl if="hasPhoto"><img src="data/user/photo?key={key}" alt="{displayName}"/></tpl>' +
-                    '<tpl if="!hasPhoto"><img src="resources/icons/256x256/dummy-user.png" alt="{displayName}"/></tpl>' +
+                    '<tpl if="(!hasPhoto) && type===\'user\'"><img src="resources/icons/256x256/dummy-user.png" alt="{displayName}"/></tpl>' +
+                    '<tpl if="(!hasPhoto) && type===\'group\'"><img src="resources/icons/256x256/group.png" alt="{displayName}"/></tpl>' +
                     '</div>' +
                     '</div><div class="center"><div class="container">' +
                     '<h1>{displayName}</h1><div><span>{userStore}\\\\{name}</span>' +
@@ -106,7 +114,8 @@ Templates.account = {
             '<div class="west cms-left">' +
                     '<div class="photo-placeholder">' +
                     '<tpl if="hasPhoto"><img src="data/user/photo?key={key}" alt="{displayName}"/></tpl>' +
-                    '<tpl if="!hasPhoto"><img src="resources/icons/256x256/dummy-user.png" alt="{displayName}"/></tpl>' +
+                    '<tpl if="(!hasPhoto) && type===\'user\'"><img src="resources/icons/256x256/dummy-user.png" alt="{displayName}"/></tpl>' +
+                    '<tpl if="(!hasPhoto) && type===\'group\'"><img src="resources/icons/256x256/group.png" alt="{displayName}"/></tpl>' +
                     '</div></div>'
 
     ,userPreviewHeader:
