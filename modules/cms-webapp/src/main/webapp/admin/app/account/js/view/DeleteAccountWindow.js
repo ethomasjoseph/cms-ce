@@ -6,7 +6,7 @@ Ext.define( 'App.view.DeleteAccountWindow', {
 
     items: [
         {
-            margin: '10px 0 10px 105px',
+            margin: '10px 0 10px 0px',
             xtype: 'container',
             defaults: {
                 xtype: 'button',
@@ -14,15 +14,6 @@ Ext.define( 'App.view.DeleteAccountWindow', {
                 margin: '0 10 0 0'
             },
             items: [
-                {
-                    text: 'Cancel',
-                    iconCls: 'icon-cancel',
-                    action: 'close',
-                    handler: function()
-                    {
-                        this.up( 'window' ).close();
-                    }
-                },
                 {
                     text: 'Delete',
                     iconCls: 'icon-delete-user-24',
