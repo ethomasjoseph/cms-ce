@@ -45,12 +45,12 @@ Ext.define( 'App.view.GridPanel', {
             xtype: 'pagingtoolbar',
             store: this.store,
             plugins: ['slidingPagerPlugin']
-        },
+        };
 
-                this.viewConfig = {
-                    trackOver : true,
-                    stripeRows: true
-                };
+        this.viewConfig = {
+            trackOver : true,
+            stripeRows: true
+        };
 
         this.selModel = Ext.create( 'Ext.selection.CheckboxModel', {
         } );
