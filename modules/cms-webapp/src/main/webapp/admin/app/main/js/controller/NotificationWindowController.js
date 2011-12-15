@@ -96,7 +96,6 @@ Ext.define('App.controller.NotificationWindowController', {
 
         notificationWindow.getEl().on('mouseenter', function() {
             notificationWindow.getActiveAnimation().paused = true;
-            console.log(notificationWindow.getActiveAnimation());
         }, this);
 
         notificationWindow.getEl().on('mouseleave', function() {

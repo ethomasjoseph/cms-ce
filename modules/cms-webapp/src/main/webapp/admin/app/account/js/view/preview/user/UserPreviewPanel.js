@@ -41,7 +41,7 @@ Ext.define( 'App.view.preview.user.UserPreviewPanel', {
             }
         ];
         var profileData = this.generateProfileData( this.data );
-        console.log( profileData );
+
         this.items = [
             {
                 xtype: 'panel',

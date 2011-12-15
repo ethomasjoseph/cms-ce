@@ -124,7 +124,7 @@ Ext.define( 'App.controller.BrowseToolbarController', {
                                   success: function( response )
                                   {
                                       var jsonObj = Ext.JSON.decode( response.responseText );
-                                      console.log( jsonObj );
+
                                       me.getCmsTabPanel().addTab( {
                                                                       title: jsonObj.group.displayName,
                                                                       xtype: 'groupPreviewPanel',
