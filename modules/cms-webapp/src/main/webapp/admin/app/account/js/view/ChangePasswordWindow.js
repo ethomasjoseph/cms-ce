@@ -25,49 +25,46 @@ Ext.define( 'App.view.ChangePasswordWindow', {
                         scope: this
                     }
                 },
-                items: [{
-                    fieldLabel: 'New Password',
-                    name: 'cpw_password',
-                    itemId: 'cpw_password',
-                    allowBlank: false
-                },{
-                    fieldLabel: 'Confirm Password',
-                    name: 'cpw_password2',
-                    itemId: 'cpw_password2',
-                    submitValue: false,
-                    allowBlank: false
-                },{
-                    margin: '0 0 10px 105px',
-                    xtype: 'container',
-                    defaults: {
-                        xtype: 'button',
-                        scale: 'medium',
-                        margin: '0 10 0 0'
+                items: [
+                    {
+                        fieldLabel: 'New Password',
+                        name: 'cpw_password',
+                        itemId: 'cpw_password',
+                        allowBlank: false
                     },
-                    items: [
-                        {
-                            text: 'Cancel',
-                            iconCls: 'icon-cancel',
-                            action: 'close',
-                            handler: function() {
-                                this.up('window').close();
-                            }
+                    {
+                        fieldLabel: 'Confirm Password',
+                        name: 'cpw_password2',
+                        itemId: 'cpw_password2',
+                        submitValue: false,
+                        allowBlank: false
+                    },
+                    {
+                        margin: '0 0 10px 105px',
+                        xtype: 'container',
+                        defaults: {
+                            xtype: 'button',
+                            scale: 'medium',
+                            margin: '0 10 0 0'
                         },
-                        {
-                            text: 'Change Password',
-                            iconCls: 'icon-btn-tick-24',
-                            itemId: 'changePasswordButton',
-                            disabled: true,
-                            handler: function() {
-                                var form = Ext.getCmp( 'userChangePasswordForm' ).getForm();
-                                if ( form.isValid() )
+                        items: [
+                            {
+                                text: 'Change Password',
+                                iconCls: 'icon-btn-tick-24',
+                                itemId: 'changePasswordButton',
+                                disabled: true,
+                                handler: function()
                                 {
-                                    form.submit();
+                                    var form = Ext.getCmp( 'userChangePasswordForm' ).getForm();
+                                    if ( form.isValid() )
+                                    {
+                                        form.submit();
+                                    }
                                 }
                             }
-                        }
-                    ]
-                }]
+                        ]
+                    }
+                ]
             }
         ];
 
@@ -76,12 +73,12 @@ Ext.define( 'App.view.ChangePasswordWindow', {
 
     doChange: function( e )
     {
-        var password1 = Ext.ComponentQuery.query('#cpw_password')[0];
-        var password2 = Ext.ComponentQuery.query('#cpw_password2')[0];
-        var changePasswordButton = Ext.ComponentQuery.query('#changePasswordButton')[0];
+        var password1 = Ext.ComponentQuery.query( '#cpw_password' )[0];
+        var password2 = Ext.ComponentQuery.query( '#cpw_password2' )[0];
+        var changePasswordButton = Ext.ComponentQuery.query( '#changePasswordButton' )[0];
         var disable = password1.getValue() !== password2.getValue();
 
-        changePasswordButton.setDisabled(disable);
+        changePasswordButton.setDisabled( disable );
     }
 
 } );
