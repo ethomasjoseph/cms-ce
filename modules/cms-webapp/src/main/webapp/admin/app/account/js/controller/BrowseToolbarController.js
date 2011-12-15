@@ -13,10 +13,10 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         'EditUserPanel',
         'ChangePasswordWindow',
         'DeleteAccountWindow',
-        'UserPreviewPanel',
         'wizard.user.UserWizardPanel',
         'wizard.group.GroupWizardPanel',
-        'UserPreviewPanel',
+        'preview.user.UserPreviewPanel',
+        'preview.group.GroupPreviewPanel',
         'ExportAccountsWindow'
     ],
 
@@ -41,9 +41,9 @@ Ext.define( 'App.controller.BrowseToolbarController', {
                           '*[action=viewUser]': {
                               click: this.showUserPreviewPanel
                           },
-                            '*[action=exportAccounts]': {
-                                click: this.showExportAccountsWindow
-                            }
+                          '*[action=exportAccounts]': {
+                              click: this.showExportAccountsWindow
+                          }
                       } );
     },
 
@@ -96,21 +96,43 @@ Ext.define( 'App.controller.BrowseToolbarController', {
     {
         var me = this;
         var selected = me.getUserGrid().getSelectionModel().selected.get( 0 );
-        Ext.Ajax.request( {
-                      url: 'data/user/userinfo',
-                      method: 'GET',
-                      params: {key: selected.get('key')},
-                      success: function( response )
-                      {
-                          var jsonObj = Ext.JSON.decode( response.responseText );
-                          me.getCmsTabPanel().addTab( {
-                            title: jsonObj.displayName + ' (' + jsonObj.qualifiedName + ')',
-                            xtype: 'userPreviewPanel',
-                            data: jsonObj
-                          } );
+        if ( selected.get( 'isUser' ) )
+        {
+            Ext.Ajax.request( {
+                                  url: 'data/user/userinfo',
+                                  method: 'GET',
+                                  params: {key: selected.get( 'key' )},
+                                  success: function( response )
+                                  {
+                                      var jsonObj = Ext.JSON.decode( response.responseText );
+                                      me.getCmsTabPanel().addTab( {
+                                                                      title: jsonObj.displayName + ' (' +
+                                                                              jsonObj.qualifiedName + ')',
+                                                                      xtype: 'userPreviewPanel',
+                                                                      data: jsonObj
+                                                                  } );
 
-                      }
-                  } );
+                                  }
+                              } );
+        }
+        else
+        {
+            Ext.Ajax.request( {
+                                  url: 'data/account/groupinfo',
+                                  method: 'GET',
+                                  params: {key: selected.get( 'key' )},
+                                  success: function( response )
+                                  {
+                                      var jsonObj = Ext.JSON.decode( response.responseText );
+                                      console.log( jsonObj );
+                                      me.getCmsTabPanel().addTab( {
+                                                                      title: jsonObj.group.displayName,
+                                                                      xtype: 'groupPreviewPanel',
+                                                                      data: jsonObj.group
+                                                                  } );
+                                  }
+                              } );
+        }
     },
 
     getAccountFilter: function()

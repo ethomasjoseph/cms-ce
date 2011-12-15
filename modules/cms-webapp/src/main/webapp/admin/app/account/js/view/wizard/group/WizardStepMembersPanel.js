@@ -26,7 +26,7 @@ Ext.define( 'App.view.wizard.group.WizardStepMembersPanel', {
                         cls: 'cms-groups-boxselect',
                         resizable: false,
                         name: 'members',
-                        store: 'UserStore',
+                        store: 'AccountStore',
                         mode: 'local',
                         displayField: 'name',
                         listConfig: {

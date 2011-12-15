@@ -1,4 +1,4 @@
-Ext.define( 'App.view.UserPreviewToolbar', {
+Ext.define( 'App.view.preview.user.UserPreviewToolbar', {
     extend: 'Ext.toolbar.Toolbar',
     alias : 'widget.userPreviewToolbar',
 

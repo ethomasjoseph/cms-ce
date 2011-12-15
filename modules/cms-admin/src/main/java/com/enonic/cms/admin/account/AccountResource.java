@@ -7,7 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.ws.rs.*;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -64,21 +70,21 @@ public final class AccountResource
     @Autowired
     private AccountSearchService searchService;
 
+    @Autowired
     private AccountModelTranslator modelTranslator;
 
     public AccountResource()
     {
-        modelTranslator = new AccountModelTranslator();
     }
 
     @GET
     @Path("search")
     public Map<String, Object> list( @InjectParam final AccountLoadRequest req )
     {
-        LOG.info(
-            "Search accounts: query='" + req.getQuery() + "' , index=" + req.getStart() + ", count=" + req.getLimit() + ", selectUsers=" +
-                req.isSelectUsers() + ", selectGroups=" + req.isSelectGroups() + ", userstores=" + req.getUserstores() + ", orgs=" +
-                req.getOrganizations() );
+        LOG.info( "Search accounts: query='" + req.getQuery() + "' , index=" + req.getStart() + ", count=" +
+                          req.getLimit() + ", selectUsers=" + req.isSelectUsers() + ", selectGroups=" +
+                          req.isSelectGroups() + ", userstores=" + req.getUserstores() + ", orgs=" +
+                          req.getOrganizations() );
 
         final AccountSearchResults searchResults = search( req );
 
@@ -100,7 +106,8 @@ public final class AccountResource
             }
         }
 
-        final EntityPageList accountList = new EntityPageList( searchResults.getCount(), searchResults.getTotal(), list );
+        final EntityPageList accountList =
+                new EntityPageList( searchResults.getCount(), searchResults.getTotal(), list );
         AccountsModel accountsModel = modelTranslator.toModel( accountList );
 
         setFacets( accountsModel, searchResults );
@@ -119,10 +126,11 @@ public final class AccountResource
         final String[] organizationList = ( organizations == null ) ? new String[0] : organizations.split( "," );
 
         final AccountSearchQuery searchQueryCountFacets =
-            new AccountSearchQuery().setIncludeResults( true ).setCount( req.getLimit() ).setFrom( req.getStart() ).setQuery(
-                req.getQuery() ).setGroups( req.isSelectGroups() ).setUsers( req.isSelectUsers() ).setUserStores(
-                userstoreList ).setOrganizations( organizationList ).setSortField( AccountIndexField.parse( req.getSort() ) ).setSortOrder(
-                SearchSortOrder.valueOf( req.getSortDir() ) );
+                new AccountSearchQuery().setIncludeResults( true ).setCount( req.getLimit() ).setFrom(
+                        req.getStart() ).setQuery( req.getQuery() ).setGroups( req.isSelectGroups() ).setUsers(
+                        req.isSelectUsers() ).setUserStores( userstoreList ).setOrganizations(
+                        organizationList ).setSortField( AccountIndexField.parse( req.getSort() ) ).setSortOrder(
+                        SearchSortOrder.valueOf( req.getSortDir() ) );
 
         final AccountSearchResults searchResults = searchService.search( searchQueryCountFacets );
         return searchResults;
@@ -192,11 +200,9 @@ public final class AccountResource
 
         final byte[] data = content.getBytes( characterEncoding );
 
-        return Response.ok( data )
-            .type( "text/csv; charset=" + characterEncoding )
-            .header( "Content-Encoding", characterEncoding )
-            .header( "Content-Disposition", attachmentHeader )
-            .build();
+        return Response.ok( data ).type( "text/csv; charset=" + characterEncoding ).header( "Content-Encoding",
+                                                                                            characterEncoding ).header(
+                "Content-Disposition", attachmentHeader ).build();
     }
 
     private AccountSearchResults getAccountListForKeys( final String[] keys )
@@ -227,9 +233,25 @@ public final class AccountResource
             return Response.status( Response.Status.NOT_FOUND ).build();
         }
 
-        final String suggestedUserName = userIdGenerator.generateUserId( firstName.trim(), lastName.trim(), store.getKey() );
+        final String suggestedUserName =
+                userIdGenerator.generateUserId( firstName.trim(), lastName.trim(), store.getKey() );
         final Map<String, String> response = new HashMap<String, String>();
         response.put( "username", suggestedUserName );
+        return Response.ok( response ).build();
+    }
+
+    @GET
+    @Path("groupinfo")
+    public Response getGroupinfo( @QueryParam("key") @DefaultValue("") final String groupKey )
+    {
+        GroupEntity group = groupDao.find( groupKey );
+        if ( group == null )
+        {
+            return Response.status( Response.Status.NOT_FOUND ).build();
+        }
+        AccountModel groupModel = modelTranslator.toGroupInfo( group );
+        final Map<String, Object> response = new HashMap<String, Object>();
+        response.put( "group", groupModel );
         return Response.ok( response ).build();
     }
 

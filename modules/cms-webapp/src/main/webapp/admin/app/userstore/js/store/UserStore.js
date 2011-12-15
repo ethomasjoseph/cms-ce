@@ -1,7 +1,7 @@
-Ext.define('App.store.UserStore', {
+Ext.define( 'App.store.UserStore', {
     extend: 'Ext.data.Store',
 
-    model: 'App.model.UserModel',
+    model: 'App.model.AccountModel',
 
     pageSize: 100,
     autoLoad: true,
@@ -17,4 +17,4 @@ Ext.define('App.store.UserStore', {
             totalProperty : 'total'
         }
     }
-});
+} );

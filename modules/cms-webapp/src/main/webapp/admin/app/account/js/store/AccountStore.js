@@ -1,7 +1,7 @@
-Ext.define('App.store.UserStore', {
+Ext.define( 'App.store.AccountStore', {
     extend: 'Ext.data.Store',
 
-    model: 'App.model.UserModel',
+    model: 'App.model.AccountModel',
 
     pageSize: 50,
     remoteSort: true,
@@ -18,4 +18,4 @@ Ext.define('App.store.UserStore', {
             totalProperty : 'results.total'
         }
     }
-});
+} );

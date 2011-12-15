@@ -1,12 +1,14 @@
 package com.enonic.cms.admin.account;
 
 import java.util.Date;
+import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 @JsonAutoDetect
-public class GroupModel implements AccountModel
+public class GroupModel
+        implements AccountModel
 {
 
     private String key;
@@ -24,6 +26,8 @@ public class GroupModel implements AccountModel
     private Date lastModified;
 
     private String lastLogged;
+
+    private List<AccountModel> members;
 
     public GroupModel()
     {
@@ -105,5 +109,15 @@ public class GroupModel implements AccountModel
     public Date getLastModified()
     {
         return this.lastModified;
+    }
+
+    public List<AccountModel> getMembers()
+    {
+        return members;
+    }
+
+    public void setMembers( List<AccountModel> members )
+    {
+        this.members = members;
     }
 }
