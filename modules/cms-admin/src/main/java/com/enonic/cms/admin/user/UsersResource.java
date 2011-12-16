@@ -5,8 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,11 +18,15 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.Period;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +37,11 @@ import com.sun.jersey.api.core.InjectParam;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 
-import com.enonic.cms.core.security.group.GroupEntity;
 import com.enonic.cms.core.security.user.StoreNewUserCommand;
 import com.enonic.cms.core.security.user.UpdateUserCommand;
 import com.enonic.cms.core.security.user.User;
 import com.enonic.cms.core.security.user.UserEntity;
 import com.enonic.cms.core.security.userstore.UserStoreService;
-import com.enonic.cms.store.dao.GroupDao;
 import com.enonic.cms.store.dao.UserDao;
 
 import com.enonic.cms.domain.EntityPageList;
@@ -53,11 +54,10 @@ public final class UsersResource
 
     private static final Logger LOG = LoggerFactory.getLogger( UsersResource.class );
 
-    @Autowired
-    private UserDao userDao;
+    private static final int PHOTO_CACHE_TIMEOUT = Period.minutes( 5 ).getSeconds();
 
     @Autowired
-    private GroupDao groupDao;
+    private UserDao userDao;
 
     @Autowired
     private UserStoreService userStoreService;
@@ -68,21 +68,8 @@ public final class UsersResource
     @Autowired
     private UserModelTranslator userModelTranslator;
 
-    private final URI GROUP_PHOTO_ICON;
-
-    private final URI GROUP_PHOTO_THUMB_ICON;
-
-    private final URI USER_PHOTO_ICON;
-
-    private final URI USER_PHOTO_THUMB_ICON;
-
     public UsersResource()
-        throws URISyntaxException
     {
-        GROUP_PHOTO_ICON = new URI( "admin/resources/icons/128x128/group.png" );
-        GROUP_PHOTO_THUMB_ICON = new URI( "admin/resources/icons/32x32/group.png" );
-        USER_PHOTO_THUMB_ICON = new URI( "admin/resources/icons/256x256/dummy-user.png" );
-        USER_PHOTO_ICON = new URI( "admin/resources/icons/256x256/dummy-user.png" );
     }
 
     @GET
@@ -105,29 +92,29 @@ public final class UsersResource
     @GET
     @Path("photo")
     @Produces("image/png")
-    public Response getPhoto( @QueryParam("key") final String key, @QueryParam("thumb") @DefaultValue("false") final boolean thumb )
+    public Response getPhoto( @QueryParam("key") final String key, 
+                              @QueryParam("thumb") @DefaultValue("false") final boolean thumb,
+                              @Context final Request request)
         throws Exception
     {
-        try
+        final UserEntity entity = findEntity( key );
+        if ( entity.getPhoto() == null )
         {
-            final UserEntity entity = findEntity( key );
-            if ( entity.getPhoto() == null )
-            {
-                final URI iconUrl = thumb ? USER_PHOTO_THUMB_ICON : USER_PHOTO_ICON;
-                return Response.status( Response.Status.MOVED_PERMANENTLY ).location( iconUrl ).build();
-            }
-            byte[] photo = this.photoService.renderPhoto( entity, thumb ? 40 : 100 );
-            return Response.ok(photo).build();
+            return Response.status( Response.Status.NOT_FOUND ).build();
         }
-        catch ( NotFoundException e )
+        byte[] photo = this.photoService.renderPhoto( entity, thumb ? 40 : 100 );
+        final String photoHash = Integer.toHexString( Arrays.hashCode( photo ) );
+        final EntityTag eTag = new EntityTag( photoHash );
+
+        Response.ResponseBuilder builder = request.evaluatePreconditions( eTag );
+        if ( builder == null )
         {
-            if ( isGroup( key ) )
-            {
-                final URI iconUrl = thumb ? GROUP_PHOTO_THUMB_ICON : GROUP_PHOTO_ICON;
-                return Response.status( Response.Status.MOVED_PERMANENTLY ).location( iconUrl ).build();
-            }
-            throw e;
+            builder = Response.ok( photo );
         }
+
+        final CacheControl cc = new CacheControl();
+        cc.setMaxAge( PHOTO_CACHE_TIMEOUT );
+        return builder.cacheControl( cc ).tag( eTag ).build();
     }
 
     @POST
@@ -245,17 +232,6 @@ public final class UsersResource
         }
 
         return entity;
-    }
-
-    private boolean isGroup( final String key )
-    {
-        if ( key == null )
-        {
-            return false;
-        }
-
-        final GroupEntity groupEntity = this.groupDao.find( key );
-        return groupEntity != null;
     }
 
 }

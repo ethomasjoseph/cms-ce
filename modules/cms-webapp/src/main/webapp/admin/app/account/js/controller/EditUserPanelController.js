@@ -284,6 +284,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
                                           userstore: jsonObj.userStore,
                                           qUserName: currentUser.name,
                                           userFields: jsonObj,
+                                          hasPhoto: currentUser.hasPhoto,
                                           autoScroll: true
                                       };
                                       tabPane.addTab( tab ).down( 'wizardPanel' ).addData( {'userStoreName': jsonObj.userStore} );

@@ -96,7 +96,7 @@ Ext.define( 'App.controller.BrowseToolbarController', {
     {
         var me = this;
         var selected = me.getUserGrid().getSelectionModel().selected.get( 0 );
-        if ( selected.get( 'isUser' ) )
+        if ( selected.get( 'type' ) === 'user' )
         {
             Ext.Ajax.request( {
                                   url: 'data/user/userinfo',
