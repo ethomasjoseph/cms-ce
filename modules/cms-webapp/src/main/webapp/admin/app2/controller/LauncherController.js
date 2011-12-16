@@ -89,7 +89,7 @@ Ext.define( 'App.controller.LauncherController', {
                 {
                     tag: 'p',
                     style:'padding:5px 10px',
-                    html: 'Bot: @mer: Please review this item: "' + records[0].data.name + '"'
+                    html: 'Bot: @mer: Please review this item: "' + records[i].data.name + '"'
                 }
             );
         }
