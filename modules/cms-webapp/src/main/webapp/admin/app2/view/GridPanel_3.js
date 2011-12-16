@@ -5,6 +5,7 @@ Ext.define( 'App.view.GridPanel_3', {
     title: 'Module 3',
     requires: ['App.view.Toolbar_3'],
     layout: 'fit',
+    multiSelect: true,
     loadMask: true,
     columnLines: true,
     frame: false,
@@ -41,7 +42,11 @@ Ext.define( 'App.view.GridPanel_3', {
 
         this.viewConfig = {
             trackOver : true,
-            stripeRows: true
+            stripeRows: true,
+            plugins: {
+                ptype: 'gridviewdragdrop',
+                dragGroup: 'global_activityStreamDragGroup'
+            }
         };
 
         this.callParent( arguments );

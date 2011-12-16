@@ -5,6 +5,11 @@ Ext.define( 'App.controller.LauncherController', {
     {
         this.control(
             {
+                'viewport': {
+                    render: function() {
+                        this.activityStreamSetupDropListener()
+                    }
+                },
                 '*[action=loadModule-1]': {
                     click: function(button, event) {
                         this.loadModule('Module_1_Controller', button, event);
@@ -49,12 +54,56 @@ Ext.define( 'App.controller.LauncherController', {
             Ext.destroy(this.application.controllers.remove(this));
         }, this, options);
 
-        this.getApplicationPanel().getLayout().setActiveItem(view);
+        this.getModulePanel().getLayout().setActiveItem(view);
     },
 
-    getApplicationPanel: function()
+    activityStreamSetupDropListener: function()
+    {
+        var self = this;
+        var activityStreamPanel = this.getActivityStreamPanel();
+        activityStreamPanel.mon(activityStreamPanel, 'render', function(panel, options) {
+            var dropTargetEl = panel.body.dom;
+            Ext.create('Ext.dd.DropTarget', dropTargetEl, {
+                ddGroup: 'global_activityStreamDragGroup',
+                notifyEnter: function(ddSource, e, data) {
+                    panel.body.stopAnimation();
+                    panel.body.highlight();
+                },
+                notifyDrop: function(ddSource, e, data) {
+                    self.activityStreamOnNotifyDrop(ddSource, e, data)
+
+                    return true;
+                }
+            });
+        }, this);
+    },
+
+    activityStreamOnNotifyDrop: function(ddSource, e, data)
+    {
+        var panel = this.getActivityStreamPanel();
+        var records = data.records;
+
+        for (var i = 0; i < records.length; i++)
+        {
+            panel.body.createChild(
+                {
+                    tag: 'p',
+                    style:'padding:5px 10px',
+                    html: 'Bot: @mer: Please review this item: "' + records[0].data.name + '"'
+                }
+            );
+        }
+    },
+
+    getModulePanel: function()
     {
         return Ext.ComponentQuery.query('#module-panel')[0];
+    },
+
+    getActivityStreamPanel: function()
+    {
+        return Ext.ComponentQuery.query('#activity-stream')[0];
     }
+
 
 } );
