@@ -24,6 +24,7 @@ Ext.define( 'App.view.wizard.group.GroupWizardToolbar', {
                     text: 'Save',
                     action: 'saveGroup',
                     itemId: 'save',
+                    disabled: true,
                     iconCls: 'icon-btn-save-24'
                 }
             ]};

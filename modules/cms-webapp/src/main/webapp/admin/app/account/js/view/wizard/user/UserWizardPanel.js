@@ -26,6 +26,7 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
     initComponent: function()
     {
         var me = this;
+        var isNew = this.userFields == undefined;
         var photoUrl;
         var userGroups = [];
         var displayNameValue = 'Display Name';
@@ -45,7 +46,7 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
 
         me.tbar = {
             xtype: 'userWizardToolbar',
-            isNewUser: this.userFields == undefined
+            isNewUser: isNew
         };
         me.items = [
             {
@@ -101,6 +102,7 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
                     {
                         xtype: 'wizardPanel',
                         showControls: true,
+                        isNew: isNew,
                         items: [
                             {
                                 stepNumber: 1,
