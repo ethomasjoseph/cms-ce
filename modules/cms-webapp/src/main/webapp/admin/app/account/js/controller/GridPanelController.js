@@ -175,7 +175,7 @@ Ext.define( 'App.controller.GridPanelController', {
                                                          if ( activeTab.getId() == "tab-browse" )
                                                          {
                                                              var menu = cmsTabPanel.down( "#newItemMenu" );
-                                                             menu.show();
+                                                             menu.showBy( cmsTabPanel.down( "#newAccountButton" ) );
                                                          }
                                                      },
                                                      openItem: function()

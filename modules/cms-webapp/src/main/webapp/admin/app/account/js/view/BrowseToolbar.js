@@ -21,6 +21,7 @@ Ext.define( 'App.view.BrowseToolbar', {
                     {
                         xtype: 'splitbutton',
                         text: ' New',
+                        itemId: 'newAccountButton',
                         action: 'newUser',
                         iconCls: 'icon-add-24',
                         cls: 'x-btn-as-arrow',
