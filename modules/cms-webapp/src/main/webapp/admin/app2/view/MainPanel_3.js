@@ -15,16 +15,16 @@ Ext.define( 'App.view.MainPanel_3', {
             {
                 region: 'west',
                 xtype: 'panel',
-                padding: '5 0 5 5',
+                border: true,
                 title: 'Module 3 - Side Panel',
                 collapsible: true,
                 split: true,
-                flex: 1
+                flex: 2
             },
             {
                 region: 'center',
                 xtype: 'panel',
-                padding: '5 5 5 0',
+                border: true,
                 flex: 6,
                 items: [
                     {

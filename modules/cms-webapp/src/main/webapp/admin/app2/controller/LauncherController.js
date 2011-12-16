@@ -54,7 +54,7 @@ Ext.define( 'App.controller.LauncherController', {
 
     getApplicationPanel: function()
     {
-        return Ext.ComponentQuery.query('#application-panel')[0];
+        return Ext.ComponentQuery.query('#module-panel')[0];
     }
 
 } );
