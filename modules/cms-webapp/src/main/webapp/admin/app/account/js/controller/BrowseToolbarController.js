@@ -39,7 +39,7 @@ Ext.define( 'App.controller.BrowseToolbarController', {
                               click: this.showChangePasswordWindow
                           },
                           '*[action=viewUser]': {
-                              click: this.showUserPreviewPanel
+                              click: this.showAccountPreviewPanel
                           },
                           '*[action=exportAccounts]': {
                               click: this.showExportAccountsWindow
@@ -92,7 +92,7 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         }
     },
 
-    showUserPreviewPanel: function( el, e )
+    showAccountPreviewPanel: function( el, e )
     {
         var me = this;
         var selected = me.getUserGrid().getSelectionModel().selected.get( 0 );

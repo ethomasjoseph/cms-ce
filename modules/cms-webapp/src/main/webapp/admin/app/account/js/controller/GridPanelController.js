@@ -1,6 +1,7 @@
 Ext.define( 'App.controller.GridPanelController', {
     extend: 'Ext.app.Controller',
 
+    requires: ['App.util.AccountKeyMap'],
     stores: [
         'AccountStore'
     ],
@@ -31,7 +32,10 @@ Ext.define( 'App.controller.GridPanelController', {
                               },
                               beforeitemmousedown: this.cancelItemContextClickOnMultipleSelection,
                               itemcontextmenu: this.popupMenu,
-                              itemdblclick: this.showUserPreviewPanel
+                              itemdblclick: this.showAccountPreviewPanel
+                          },
+                          'viewport': {
+                              afterrender: this.initAccount
                           }
                       } );
     },
@@ -142,13 +146,82 @@ Ext.define( 'App.controller.GridPanelController', {
         return true;
     },
 
-    showUserPreviewPanel: function( el, e )
+    showAccountPreviewPanel: function( el, e )
     {
         var ctrl = this.getController( 'BrowseToolbarController' );
         if ( ctrl )
         {
-            ctrl.showUserPreviewPanel( el, e );
+            ctrl.showAccountPreviewPanel( el, e );
         }
+    },
+
+    showEditAccountPanel: function( el, e )
+    {
+        var ctrl = this.getController( 'EditUserPanelController' );
+        if ( ctrl )
+        {
+            ctrl.showEditUserForm( el, e );
+        }
+    },
+
+    initAccount: function()
+    {
+        var me = this;
+        var cmsTabPanel = this.getCmsTabPanel();
+        var keyMap = new App.util.AccountKeyMap( {
+                                                     newMegaMenu: function()
+                                                     {
+                                                         var activeTab = cmsTabPanel.getActiveTab();
+                                                         if ( activeTab.getId() == "tab-browse" )
+                                                         {
+                                                             var menu = cmsTabPanel.down( "#newItemMenu" );
+                                                             menu.show();
+                                                         }
+                                                     },
+                                                     openItem: function()
+                                                     {
+                                                         var activeTab = cmsTabPanel.getActiveTab();
+                                                         if ( activeTab.getId() == "tab-browse" )
+                                                         {
+                                                             me.showAccountPreviewPanel();
+                                                         }
+                                                     },
+                                                     editItem: function()
+                                                     {
+                                                         var activeTab = cmsTabPanel.getActiveTab();
+                                                         if ( activeTab.getId() == "tab-browse" )
+                                                         {
+                                                             me.showEditAccountPanel();
+                                                         }
+                                                     },
+                                                     saveItem: function()
+                                                     {
+                                                         var activeTab = cmsTabPanel.getActiveTab();
+                                                         if ( activeTab.isXType( "groupWizardPanel" ) ||
+                                                                 activeTab.isXType( "userWizardPanel" ) )
+                                                         {
+                                                             me.getController( "UserWizardController" ).saveNewUser();
+                                                         }
+                                                     },
+                                                     prevStep: function()
+                                                     {
+                                                         var activeTab = cmsTabPanel.getActiveTab();
+                                                         if ( activeTab.isXType( "groupWizardPanel" ) ||
+                                                                 activeTab.isXType( "userWizardPanel" ) )
+                                                         {
+                                                             me.getController( "UserWizardController" ).wizardPrev();
+                                                         }
+                                                     },
+                                                     nextStep: function()
+                                                     {
+                                                         var activeTab = cmsTabPanel.getActiveTab();
+                                                         if ( activeTab.isXType( "groupWizardPanel" ) ||
+                                                                 activeTab.isXType( "userWizardPanel" ) )
+                                                         {
+                                                             me.getController( "UserWizardController" ).wizardNext();
+                                                         }
+                                                     }
+                                                 } );
     },
 
     getPersistentGridSelectionPlugin: function()
