@@ -12,11 +12,11 @@ import com.enonic.cms.core.portal.xtrace.JsonSerializer;
 import com.enonic.cms.core.portal.xtrace.XTraceHelper;
 
 public class XTraceInterceptor
-    extends HandlerInterceptorAdapter
+        extends HandlerInterceptorAdapter
 {
     @Override
     public boolean preHandle( HttpServletRequest request, HttpServletResponse response, Object handler )
-        throws Exception
+            throws Exception
     {
         if ( !XTraceHelper.clientIsEnabled( request ) )
         {
@@ -39,14 +39,14 @@ public class XTraceInterceptor
     }
 
     private void forwardToAuthenticationForm( HttpServletRequest request, HttpServletResponse response )
-        throws Exception
+            throws Exception
     {
         request.setAttribute( "xtrace.originalUrl", request.getRequestURL().toString() );
         request.getRequestDispatcher( request.getRequestURI() + "/_xtrace/login" ).forward( request, response );
     }
 
     public void postHandle( HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView )
-        throws Exception
+            throws Exception
     {
         final PageRenderingTrace currentPageRenderingTrace = XTraceHelper.getCurrentPageRenderingTrace();
 
@@ -69,22 +69,35 @@ public class XTraceInterceptor
     private void setResponseHeaders( HttpServletResponse response, String traceInfo )
     {
         final Integer charsPrHeader = 1000;
-        final int traceInfoCharLength = traceInfo.length();
-
-        final double numberOfHeadersAsDouble = Math.ceil( traceInfoCharLength / charsPrHeader.doubleValue() );
+        final int charLength = traceInfo.length();
+        final double numberOfHeadersAsDouble = Math.ceil( charLength / charsPrHeader.doubleValue() );
         final int numberOfHeaders = (int) ( numberOfHeadersAsDouble );
 
         for ( int i = 0; i < numberOfHeaders; i++ )
         {
             final int beginIndex = charsPrHeader * i;
+
             int endIndex = beginIndex + charsPrHeader;
-            if ( endIndex >= traceInfoCharLength )
-                endIndex = beginIndex + ( traceInfoCharLength - beginIndex );
+            if ( endIndex >= charLength )
+                endIndex = beginIndex + ( charLength - beginIndex );
 
-            final String headerValue = traceInfo.substring( beginIndex, endIndex );
+            final String value = traceInfo.substring( beginIndex, endIndex );
 
-            response.setHeader( "X-Trace-Info-" + i, headerValue );
+            response.setHeader( createResponseHeaderName(i), value );
         }
+    }
+
+    private String createResponseHeaderName( int index )
+    {
+        final int i = index + 1;
+
+        String key = Integer.toString( i );
+        if ( i < 10 )
+        {
+            key = "0" + key;
+        }
+
+        return "X-Trace-Info-" + key;
     }
 
 }
