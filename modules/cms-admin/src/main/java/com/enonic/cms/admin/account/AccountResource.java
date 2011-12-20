@@ -42,7 +42,6 @@ import com.enonic.cms.core.security.userstore.UserStoreEntity;
 import com.enonic.cms.core.security.userstore.UserStoreService;
 import com.enonic.cms.store.dao.GroupDao;
 import com.enonic.cms.store.dao.UserDao;
-import com.enonic.cms.store.dao.UserStoreDao;
 
 import com.enonic.cms.domain.EntityPageList;
 
@@ -64,9 +63,6 @@ public final class AccountResource
 
     @Autowired
     private GroupDao groupDao;
-
-    @Autowired
-    private UserStoreDao userStoreDao;
 
     @Autowired
     private UserStoreService userStoreService;
@@ -261,11 +257,11 @@ public final class AccountResource
 
     @GET
     @Path("userkey")
-    public Response getUserKeyByUserName( @QueryParam("userstore_name") @DefaultValue("") final String userStoreName,
+    public Response getUserKeyByUserName( @QueryParam("userstore") @DefaultValue("") final String userStoreName,
                                           @QueryParam("username") @DefaultValue("") final String userName )
     {
         final Map<String, Object> response = new HashMap<String, Object>();
-        UserStoreEntity userStore = userStoreDao.findByName( userStoreName );
+        UserStoreEntity userStore = userStoreService.findByName( userStoreName );
         if ( userStore == null )
         {
             return Response.status( Response.Status.NOT_FOUND ).build();

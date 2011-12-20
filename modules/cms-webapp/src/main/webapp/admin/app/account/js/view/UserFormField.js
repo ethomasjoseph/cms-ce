@@ -249,7 +249,7 @@ Ext.define( 'App.view.UserFormField', {
                                   url: 'data/account/userkey',
                                   method: 'GET',
                                   params: {
-                                      'userstore_name': userStoreName,
+                                      'userstore': userStoreName,
                                       'username': value
                                   },
                                   success: function( response )
