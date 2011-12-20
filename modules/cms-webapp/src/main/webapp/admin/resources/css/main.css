@@ -26,15 +26,15 @@ body,
 
 .x-fieldset-header {
     color: #15428B;
-    font: 15px/16px bold tahoma,arial,verdana,sans-serif;
+    font: 15px/16px bold tahoma, arial, verdana, sans-serif;
     padding: 0 0 9px;
 }
 
 .x-fieldset {
-	border: 0;
-	border-top: 1px solid #ccc;
-	margin-bottom: 10px;
-	padding: 0 15px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 0 15px;
 }
 
 /*----- Generic -----*/
@@ -607,6 +607,7 @@ img.photo {
     -moz-border-radius: 4px;
     border-radius: 4px;
 }
+
 .cms-user-info h2 {
     margin: 0;
 }
@@ -659,6 +660,7 @@ div.cms-userstore-active {
 .cms-wizard-toolbar .x-mask {
     display: none;
 }
+
 .cms-wizard-toolbar.x-item-disabled {
     opacity: 1;
     filter: none;
@@ -881,20 +883,19 @@ ul.cms-wizard-navigation li a.last-current {
 .cms-dialog-window .dialog-info {
     color: #555;
     border: 1px solid #B5B8C8;
-    padding:  10px;
+    padding: 10px;
 }
 
 .cms-password-meter > .x-progress-bar {
     background: url("../images/meter.gif") repeat;
-    background-size: 600px;
+    background-size: 250px;
 }
-
 
 /*****  Mega Menu   *****/
 
 .cms-mega-menu {
     background-color: #fff !important;
-    padding:  10px;
+    padding: 10px;
 }
 
 .cms-mega-menu-header h2 {
@@ -915,6 +916,7 @@ ul.cms-wizard-navigation li a.last-current {
 .cms-mega-menu-item.medium .x-menu-item-link {
     line-height: 24px;
 }
+
 .cms-mega-menu-item.medium .x-menu-item-icon {
     width: 24px;
     height: 24px;
