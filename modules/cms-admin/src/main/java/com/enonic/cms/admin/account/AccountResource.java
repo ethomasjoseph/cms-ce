@@ -42,6 +42,7 @@ import com.enonic.cms.core.security.userstore.UserStoreEntity;
 import com.enonic.cms.core.security.userstore.UserStoreService;
 import com.enonic.cms.store.dao.GroupDao;
 import com.enonic.cms.store.dao.UserDao;
+import com.enonic.cms.store.dao.UserStoreDao;
 
 import com.enonic.cms.domain.EntityPageList;
 
@@ -63,6 +64,9 @@ public final class AccountResource
 
     @Autowired
     private GroupDao groupDao;
+
+    @Autowired
+    private UserStoreDao userStoreDao;
 
     @Autowired
     private UserStoreService userStoreService;
@@ -156,8 +160,8 @@ public final class AccountResource
     @Path("export")
     public Response exportAsCsv( @InjectParam final AccountExportRequest req,
                                  @DefaultValue("ISO-8859-1") @FormParam("encoding") String characterEncoding,
-                                 @DefaultValue(SEPARATOR_PARAM_COMMA) @FormParam("separator") String separator)
-        throws UnsupportedEncodingException
+                                 @DefaultValue(SEPARATOR_PARAM_COMMA) @FormParam("separator") String separator )
+            throws UnsupportedEncodingException
     {
         final int accountsExportLimit = 5000;
 
@@ -252,6 +256,33 @@ public final class AccountResource
         AccountModel groupModel = modelTranslator.toGroupInfo( group );
         final Map<String, Object> response = new HashMap<String, Object>();
         response.put( "group", groupModel );
+        return Response.ok( response ).build();
+    }
+
+    @GET
+    @Path("userkey")
+    public Response getUserKeyByUserName( @QueryParam("userstore_name") @DefaultValue("") final String userStoreName,
+                                          @QueryParam("username") @DefaultValue("") final String userName )
+    {
+        final Map<String, Object> response = new HashMap<String, Object>();
+        UserStoreEntity userStore = userStoreDao.findByName( userStoreName );
+        if ( userStore == null )
+        {
+            return Response.status( Response.Status.NOT_FOUND ).build();
+        }
+        else
+        {
+            UserEntity user = userDao.findByUserStoreKeyAndUsername( userStore.getKey(), userName );
+            if ( user != null )
+            {
+                response.put( "userkey", user.getKey().toString() );
+            }
+            else
+            {
+                response.put( "userkey", null );
+            }
+        }
+
         return Response.ok( response ).build();
     }
 

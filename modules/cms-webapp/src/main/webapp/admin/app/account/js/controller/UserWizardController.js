@@ -335,10 +335,19 @@ Ext.define( 'App.controller.UserWizardController', {
 
     userFieldValidityChange: function( field, isValid )
     {
-        if ( field.fieldname === 'repeat-password' )
+        if ( field.fieldname === 'repeat-password' || field.fieldname === 'password' || field.fieldname === 'username' )
         {
-            var greenMark = field.down( '#greenMark' );
-            greenMark.setVisibility( isValid );
+            var repeatPassword = field.up( 'fieldset' ).down( '#repeat-password' );
+            var passwordMeter = field.up( 'fieldset' ).down( '#password' );
+            if ( repeatPassword )
+            {
+                repeatPassword.validate();
+            }
+            if ( passwordMeter )
+            {
+                passwordMeter.validate();
+            }
+            field.showGreenMark( isValid );
         }
 
     },

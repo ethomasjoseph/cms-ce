@@ -34,7 +34,9 @@ Ext.define( 'App.view.UserFormField', {
             'locale': 300,
             'fax': 300,
             'mobile': 300,
-            'phone': 300
+            'phone': 300,
+            'password': 250,
+            'repeat-password': 250
         }
         this.items = [];
         var fieldConfig = {
@@ -101,20 +103,21 @@ Ext.define( 'App.view.UserFormField', {
             style: {
                 visibility:'hidden'
             },
-            setVisibility: function(isVisible){
-                if (isVisible)
+            setVisibility: function( isVisible )
+            {
+                if ( isVisible )
                 {
-                    this.el.setStyle({visibility: 'visible'});
+                    this.el.setStyle( {visibility: 'visible'} );
                 }
                 else
                 {
-                    this.el.setStyle({visibility: 'hidden'});
+                    this.el.setStyle( {visibility: 'hidden'} );
                 }
             }
         }
-        Ext.Array.include(this.items, greenLabel);
+        Ext.Array.include( this.items, greenLabel );
         this.callParent( arguments );
-        this.addEvents('validitychange');
+        this.addEvents( 'validitychange' );
     },
 
     createCheckBoxConfig: function( fieldConfig )
@@ -180,13 +183,9 @@ Ext.define( 'App.view.UserFormField', {
 
     createPasswordConfig: function( fieldConfig, me )
     {
-        var passwordConfig, validator;
-        if (fieldConfig.itemId == 'repeat-password')
-        {
-            validator = me.validatePassword;
-        }
-        
-        if (me.fieldname == 'password')
+        var passwordConfig;
+
+        if ( me.fieldname == 'password' )
         {
             passwordConfig = {
                 xtype: 'passwordMeter'
@@ -196,11 +195,10 @@ Ext.define( 'App.view.UserFormField', {
         {
             passwordConfig = {
                 xtype: 'textfield',
-                inputType: 'password',
-                validator: validator
+                inputType: 'password'
             };
         }
-
+        passwordConfig.validator = me.validatePassword;
         return Ext.apply( fieldConfig, passwordConfig );
     },
 
@@ -210,31 +208,79 @@ Ext.define( 'App.view.UserFormField', {
         return Ext.apply( fieldConfig, fileConfig );
     },
 
-    createTextConfig: function( fieldConfig )
+    createTextConfig: function( fieldConfig, me )
     {
         var textConfig = {
             xtype: 'textfield',
             enableKeyEvents: true,
             bubbleEvents: ['keyup']
         };
+        if ( me.fieldname === 'username' )
+        {
+            textConfig.validator = me.validateUserName;
+            textConfig.validValue = true;
+        }
         return Ext.apply( fieldConfig, textConfig );
     },
 
-    validatePassword: function(value)
+    validatePassword: function()
     {
-        var passwordFieldValue = this.up('fieldset').down('#password').getValue();
-        if (passwordFieldValue == value )
+        var passwordField = this.up( 'fieldset' ).down( '#password' );
+        var repeatPasswordField = this.up( 'fieldset' ).down( '#repeat-password' );
+        if ( passwordField.getValue() == repeatPasswordField.getValue() )
         {
             return true;
-        } else {
+        }
+        else
+        {
             return 'Passwords don\'t match';
         }
     },
 
-    validityChanged: function(field, isValid, opts)
+    validateUserName: function( value )
     {
-        var parentField = field.up('userFormField');
-        parentField.fireEvent('validitychange', parentField, isValid, opts);
+        var me = this;
+        if ( me.prevValue != value )
+        {
+            this.prevValue = value;
+            var userForm = me.up( 'editUserFormPanel' );
+            var userStoreName = userForm.currentUser ? userForm.currentUser.userStore : userForm.defaultUserStoreName;
+            Ext.Ajax.request( {
+                                  url: 'data/account/userkey',
+                                  method: 'GET',
+                                  params: {
+                                      'userstore_name': userStoreName,
+                                      'username': value
+                                  },
+                                  success: function( response )
+                                  {
+                                      var respObj = Ext.decode( response.responseText, true );
+                                      if ( respObj.userkey != null )
+                                      {
+                                          me.validValue = false;
+                                      }
+                                      else
+                                      {
+                                          me.validValue = true;
+                                      }
+                                      me.validate();
+                                  }
+                              } );
+        }
+        return me.validValue == true ? me.validValue : "User with this user name already exists";
+
+    },
+
+    validityChanged: function( field, isValid, opts )
+    {
+        var parentField = field.up( 'userFormField' );
+        parentField.fireEvent( 'validitychange', parentField, isValid, opts );
+    },
+
+    showGreenMark: function( visible )
+    {
+        var greenMark = this.down( '#greenMark' );
+        greenMark.setVisibility( visible );
     }
 
 
