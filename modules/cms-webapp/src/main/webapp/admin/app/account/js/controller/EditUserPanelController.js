@@ -10,54 +10,56 @@ Ext.define( 'App.controller.EditUserPanelController', {
 
     init: function()
     {
-        this.control( {
+        this.control(
+            {
 
-                          '*[action=saveUser]': {
-                              click: this.saveUser
-                          },
-                          '*[action=toggleDisplayNameField]': {
-                              click: this.toggleDisplayNameField
-                          },
-                          'addressPanel #iso-country' : {
-                              select: this.countryChangeHandler
-                          },
-                          '*[action=deleteUser]': {
-                              click: this.deleteUser
-                          },
-                          'editUserPanel textfield[name=prefix]': {
-                              keyup: this.textFieldHandleEnterKey
-                          },
-                          'editUserPanel textfield[name=first-name]': {
-                              keyup: this.textFieldHandleEnterKey
-                          },
-                          'editUserPanel textfield[name=middle-name]': {
-                              keyup: this.textFieldHandleEnterKey
-                          },
-                          'editUserPanel textfield[name=last-name]': {
-                              keyup: this.textFieldHandleEnterKey
-                          },
-                          'editUserPanel textfield[name=suffix]': {
-                              keyup: this.textFieldHandleEnterKey
-                          },
-                          'editUserPanel textfield[name=label]': {
-                              keyup: this.updateTabTitle
-                          },
-                          '*[action=deleteGroup]': {
-                              click: this.leaveGroup
-                          },
-                          '*[action=selectGroup]': {
-                              select: this.selectGroup
-                          },
-                          '*[action=closeUserForm]': {
-                              click: this.closeUserForm
-                          },
-                          '*[action=addNewTab]': {
-                              click: this.addNewTab
-                          },
-                          '*[action=initValue]': {
-                              added: this.initValue
-                          }
-                      } );
+                '*[action=saveUser]': {
+                    click: this.saveUser
+                },
+                '*[action=toggleDisplayNameField]': {
+                    click: this.toggleDisplayNameField
+                },
+                'addressPanel #iso-country' : {
+                    select: this.countryChangeHandler
+                },
+                '*[action=deleteUser]': {
+                    click: this.deleteUser
+                },
+                'editUserPanel textfield[name=prefix]': {
+                    keyup: this.textFieldHandleEnterKey
+                },
+                'editUserPanel textfield[name=first-name]': {
+                    keyup: this.textFieldHandleEnterKey
+                },
+                'editUserPanel textfield[name=middle-name]': {
+                    keyup: this.textFieldHandleEnterKey
+                },
+                'editUserPanel textfield[name=last-name]': {
+                    keyup: this.textFieldHandleEnterKey
+                },
+                'editUserPanel textfield[name=suffix]': {
+                    keyup: this.textFieldHandleEnterKey
+                },
+                'editUserPanel textfield[name=label]': {
+                    keyup: this.updateTabTitle
+                },
+                '*[action=deleteGroup]': {
+                    click: this.leaveGroup
+                },
+                '*[action=selectGroup]': {
+                    select: this.selectGroup
+                },
+                '*[action=closeUserForm]': {
+                    click: this.closeUserForm
+                },
+                '*[action=addNewTab]': {
+                    click: this.addNewTab
+                },
+                '*[action=initValue]': {
+                    added: this.initValue
+                }
+            }
+        );
     },
 
     deleteUser: function( button )
@@ -267,6 +269,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
             var accountDetail = this.getAccountDetailPanel();
             var tabPane = this.getCmsTabPanel();
             var currentUser = accountDetail.getCurrentUser();
+            var me = this;
             Ext.Ajax.request( {
                                   url: 'data/user/userinfo',
                                   method: 'GET',
@@ -287,10 +290,28 @@ Ext.define( 'App.controller.EditUserPanelController', {
                                           hasPhoto: currentUser.hasPhoto,
                                           autoScroll: true
                                       };
-                                      tabPane.addTab( tab ).down( 'wizardPanel' ).addData( {'userStoreName': jsonObj.userStore} );
+                                      var tabCmp = tabPane.addTab( tab );
+                                      var wizardPanel = tabCmp.down('wizardPanel');
+
+                                      var data = me.userInfoToWizardData(jsonObj);
+                                      wizardPanel.addData( data );
+                                      tabCmp.updateHeader( {value: currentUser.displayName, edited: true} );
                                   }
                               } );
         }
+    },
+
+    userInfoToWizardData:function ( userData )
+    {
+        var data = {
+            'userStore': userData.userStore,
+            'key': userData.key,
+            'email': userData.email,
+            'username': userData.username,
+            'display-name': userData['display-name'],
+            'userInfo': userData.userInfo
+        };
+        return data;
     },
 
     closeUserForm: function( button )

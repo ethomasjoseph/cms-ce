@@ -70,6 +70,20 @@ Ext.define( 'App.view.wizard.user.WizardStepMembershipPanel', {
             } );
             selectBox.setValue( groupKeys );
         }
+    },
+
+    getData: function()
+    {
+        var selectBox = this.down( 'comboboxselect' );
+        var values = selectBox.valueModels;
+        var groupsSelected = [];
+        Ext.Array.each( values, function(group) {
+            var group = {key :group.data.key, name:group.data.name, userStore:group.data.userStore};
+            groupsSelected.push(group);
+        });
+        var userData = { groups: groupsSelected };
+        console.info(userData);
+        return userData;
     }
 
 } );

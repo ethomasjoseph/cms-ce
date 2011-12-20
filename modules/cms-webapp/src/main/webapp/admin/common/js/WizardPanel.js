@@ -21,6 +21,7 @@ Ext.define( 'Common.WizardPanel', {
     initComponent: function()
     {
         var wizard = this;
+        this.data = {};
 
         if ( this.showControls )
         {
@@ -291,7 +292,7 @@ Ext.define( 'Common.WizardPanel', {
 
     addData: function( newValues )
     {
-        Ext.apply( this.data, newValues );
+        Ext.merge( this.data, newValues );
     },
 
     getData: function()
