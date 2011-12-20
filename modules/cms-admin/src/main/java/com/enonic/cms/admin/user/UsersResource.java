@@ -37,10 +37,14 @@ import com.sun.jersey.api.core.InjectParam;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 
+import com.enonic.cms.core.search.account.AccountIndexData;
+import com.enonic.cms.core.search.account.AccountKey;
+import com.enonic.cms.core.search.account.AccountSearchService;
 import com.enonic.cms.core.security.user.StoreNewUserCommand;
 import com.enonic.cms.core.security.user.UpdateUserCommand;
 import com.enonic.cms.core.security.user.User;
 import com.enonic.cms.core.security.user.UserEntity;
+import com.enonic.cms.core.security.user.UserKey;
 import com.enonic.cms.core.security.userstore.UserStoreService;
 import com.enonic.cms.store.dao.UserDao;
 
@@ -67,6 +71,9 @@ public final class UsersResource
 
     @Autowired
     private UserModelTranslator userModelTranslator;
+
+    @Autowired
+    private AccountSearchService searchService;
 
     public UsersResource()
     {
@@ -192,30 +199,58 @@ public final class UsersResource
     @Consumes("application/json")
     public Map<String, Object> saveUser( UserModel userData )
     {
-        boolean isValid =
-                StringUtils.isNotBlank( userData.getDisplayName() ) && StringUtils.isNotBlank( userData.getName() ) &&
-                        StringUtils.isNotBlank( userData.getEmail() );
-        Map<String, Object> res = new HashMap<String, Object>();
+        final boolean isValid = isValidUserData( userData );
+        final Map<String, Object> res = new HashMap<String, Object>();
         if ( isValid )
         {
             if ( userData.getKey() == null )
             {
                 StoreNewUserCommand command = userModelTranslator.toNewUserCommand( userData );
-                userStoreService.storeNewUser( command );
+                UserKey userKey = userStoreService.storeNewUser( command );
+                indexUser( userKey.toString() );
             }
             else
             {
                 UpdateUserCommand command = userModelTranslator.toUpdateUserCommand( userData );
                 userStoreService.updateUser( command );
+                indexUser( userData.getKey() );
             }
             res.put( "success", true );
         }
         else
         {
             res.put( "success", false );
-            res.put( "error", "Validation was failed" );
+            res.put( "error", "Validation failed" );
         }
         return res;
+    }
+
+    private void indexUser( String userKey )
+    {
+        final UserEntity userEntity = this.userDao.findByKey( userKey );
+        if ( userEntity == null )
+        {
+            searchService.deleteIndex( userKey );
+            return;
+        }
+
+        final com.enonic.cms.core.search.account.User user = new com.enonic.cms.core.search.account.User();
+        user.setKey( new AccountKey( userEntity.getKey().toString() ) );
+        user.setName( userEntity.getName() );
+        user.setEmail( userEntity.getEmail() );
+        user.setDisplayName( userEntity.getDisplayName() );
+        user.setUserStoreName( userEntity.getUserStore().getName() );
+        user.setLastModified( userEntity.getTimestamp() );
+        user.setUserInfo( userEntity.getUserInfo() );
+        final AccountIndexData accountIndexData = new AccountIndexData( user );
+        searchService.index( accountIndexData );
+    }
+
+    private boolean isValidUserData( UserModel userData )
+    {
+        boolean isValid = StringUtils.isNotBlank( userData.getDisplayName() ) && StringUtils.isNotBlank( userData.getName() ) &&
+            StringUtils.isNotBlank( userData.getEmail() );
+        return isValid;
     }
 
     private UserEntity findEntity( final String key )

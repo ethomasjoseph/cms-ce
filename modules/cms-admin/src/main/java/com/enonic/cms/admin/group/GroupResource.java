@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.MatchMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -139,9 +140,15 @@ public final class GroupResource
 
     @GET
     @Path( "list" )
-    public List<GroupModel> getGroupsElasticSearch( @QueryParam("query") String query,
-                                                    @QueryParam("limit") @DefaultValue("50") final int limit )
+    public List<GroupModel> getGroups( @QueryParam("query") String query,
+                                       @QueryParam("key") String key,
+                                       @QueryParam("limit") @DefaultValue("50") final int limit )
     {
+        if ( StringUtils.isNotEmpty( key ) )
+        {
+            final String[] groupKeys = StringUtils.split( key, "," );
+            return getGroups( groupKeys );
+        }
         final AccountSearchQuery searchQueryCountFacets = new AccountSearchQuery()
             .setCount( limit )
             .setIncludeResults( true )
@@ -165,6 +172,21 @@ public final class GroupResource
         return GroupModelHelper.toListModel( groups );
     }
 
+    private List<GroupModel> getGroups( final String... groupKeys )
+    {
+        final List<GroupEntity> groups = new ArrayList<GroupEntity>();
+        for ( String groupKey : groupKeys )
+        {
+            GroupEntity groupEntity = this.groupDao.findByKey( new GroupKey( groupKey.trim() ) );
+            if ( groupEntity != null )
+            {
+                groups.add( groupEntity );
+            }
+        }
+
+        return GroupModelHelper.toListModel( groups );
+    }
+    
     @GET
     @Path("detail")
     public GroupModel getGroupDetails(@QueryParam("key") final String key)

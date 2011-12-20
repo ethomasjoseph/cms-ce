@@ -101,7 +101,7 @@ Ext.define( 'App.controller.UserWizardController', {
             var firstNameValue = firstName ? Ext.String.trim( firstName.getValue() ) : '';
             var lastName = formPanel.down( '#last-name' );
             var lastNameValue = lastName ? Ext.String.trim( lastName.getValue() ) : '';
-            var userStoreName = wizard.getData()['userStoreName'];
+            var userStoreName = wizard.getData()['userStore'];
             var usernameField = wizard.down('#username')
             if ( firstNameValue || lastNameValue )
             {
@@ -112,18 +112,51 @@ Ext.define( 'App.controller.UserWizardController', {
 
     wizardFinished: function( wizard, data )
     {
-        var tab = wizard.up( 'userWizardPanel' );
-        if ( tab )
-        {
-            tab.close();
+        data['display-name'] = this.getDisplayNameValue();
+        console.info('wizard finished');
+        console.info(data);
+
+        var onUpdateUserSuccess = function() {
+            var tab = wizard.up( 'userWizardPanel' );
+            if ( tab )
+            {
+                tab.close();
+            }
+            var parentApp = parent.mainApp;
+            if ( parentApp )
+            {
+                parentApp.fireEvent( 'notifier.show', "User was created",
+                                     "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.",
+                                     true );
+            }
         }
-        var parentApp = parent.mainApp;
-        if ( parentApp )
-        {
-            parentApp.fireEvent( 'notifier.show', "User was created",
-                                 "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.",
-                                 true );
-        }
+        this.updateUser( data , onUpdateUserSuccess );
+    },
+
+    updateUser: function ( userData, onSuccess )
+    {
+        Ext.Ajax.request( {
+              url: 'data/user/update',
+              method: 'POST',
+              jsonData: userData,
+              success: function( response, opts )
+              {
+                  var serverResponse = Ext.JSON.decode( response.responseText );
+                  console.info('user update: ' + Ext.JSON.encode(userData) );
+                  if ( !serverResponse.success )
+                  {
+                      Ext.Msg.alert( 'Error', serverResponse.error );
+                  }
+                  else
+                  {
+                      onSuccess();
+                  }
+              },
+              failure: function( response, opts )
+              {
+                  Ext.Msg.alert( 'Error', 'Unable to update user' );
+              }
+        } );
     },
 
     wizardPrev: function( btn, evt )
@@ -176,7 +209,7 @@ Ext.define( 'App.controller.UserWizardController', {
                 xtype: 'userWizardPanel'
             };
         var tabItem = this.getCmsTabPanel().addTab( tab );
-        tabItem.down('wizardPanel').addData( {'userStoreName': userStoreName} );
+        tabItem.down('wizardPanel').addData( {'userStore': userStoreName} );
         var window = view.up( 'window' );
         window.close();
     },
@@ -214,6 +247,15 @@ Ext.define( 'App.controller.UserWizardController', {
         {
             username.on( 'change', this.usernameFieldChanged, this );
         }
+    },
+
+    getDisplayNameValue: function()
+    {
+        var userWizard = this.getWizardPanel().up('userWizardPanel');
+        var wizardPanelId = userWizard.getId();
+        var displayNameField = Ext.query( '#' + wizardPanelId + ' input.cms-display-name' )[0];
+        var displayName = displayNameField.value;
+        return displayName === this.EMPTY_DISPLAY_NAME_TEXT ? '' : displayName;
     },
 
     bindDisplayNameEvents: function( wizard )

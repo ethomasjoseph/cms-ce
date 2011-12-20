@@ -19,7 +19,9 @@ import com.enonic.cms.api.client.model.user.Address;
 import com.enonic.cms.api.client.model.user.Gender;
 import com.enonic.cms.api.client.model.user.UserInfo;
 import com.enonic.cms.core.security.SecurityService;
+import com.enonic.cms.core.security.group.AbstractMembershipsCommand;
 import com.enonic.cms.core.security.group.GroupEntity;
+import com.enonic.cms.core.security.group.GroupKey;
 import com.enonic.cms.core.security.user.StoreNewUserCommand;
 import com.enonic.cms.core.security.user.UpdateUserCommand;
 import com.enonic.cms.core.security.user.UserEntity;
@@ -304,6 +306,9 @@ public final class UserModelTranslator
         command.setUserStoreKey( userStore.getKey() );
         command.setAllowAnyUserAccess( true );
         command.setStorer( securityService.getLoggedInPortalUser().getKey() );
+
+        updateUserCommandMemberships( command, userModel );
+
         return command;
     }
 
@@ -324,8 +329,24 @@ public final class UserModelTranslator
         command.setDisplayName( userModel.getDisplayName() );
         command.setUserInfo( userInfo );
         command.setAllowUpdateSelf( true );
-        command.setUpdateOpenGroupsOnly( true );
+        command.setUpdateOpenGroupsOnly( false );
         command.setUpdateStrategy( UpdateUserCommand.UpdateStrategy.REPLACE_ALL );
+
+        updateUserCommandMemberships( command, userModel );
+        command.setSyncMemberships( true );
+
         return command;
+    }
+
+    private void updateUserCommandMemberships( AbstractMembershipsCommand command, UserModel userModel )
+    {
+        final List<Map<String, String>> groups = userModel.getGroups();
+        if ( groups != null )
+        {
+            for ( Map<String, String> groupFields : groups )
+            {
+                command.addMembership( new GroupKey( groupFields.get( "key" ) ) );
+            }
+        }
     }
 }

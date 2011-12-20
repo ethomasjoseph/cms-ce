@@ -301,12 +301,12 @@ public class AccountSearchService
     }
 
     public void deleteIndex(String id) {
-        final DeleteRequest deleteRequest = new DeleteRequest(  )
-            .index( CMS_INDEX )
-            .type( ACCOUNT_INDEX_TYPE )
-            .id( id );
-        this.client.delete( deleteRequest ).actionGet();
-    }
+            final DeleteRequest deleteRequest = new DeleteRequest(  )
+                .index( CMS_INDEX )
+                .type( ACCOUNT_INDEX_TYPE )
+                .id( id );
+            this.client.delete( deleteRequest ).actionGet();
+        }
 
     @Autowired
     public void setClient( Client client )
