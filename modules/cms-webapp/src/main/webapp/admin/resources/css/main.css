@@ -317,14 +317,6 @@ img.photo {
     background: url("../images/cancel.png");
 }
 
-.icon-btn-arrow-left-24 {
-    background: url("../icons/24x24/nav_left_blue.png");
-}
-
-.icon-btn-arrow-right-24 {
-    background: url("../icons/24x24/nav_right_blue.png");
-}
-
 .icon-btn-tick-24 {
     background: url("../images/tick-24.png");
 }
@@ -335,10 +327,6 @@ img.photo {
 
 .icon-question-mark-32 {
     background: url("../../ext/resources/themes/images/default/shared/icon-question.gif") no-repeat;
-}
-
-.icon-btn-finish-24 {
-    background: url("../icons/24x24/finish.png");
 }
 
 .icon-link {
