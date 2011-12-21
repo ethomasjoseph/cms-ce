@@ -58,6 +58,16 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
                         height: 111,
                         photoUrl: photoUrl,
                         progressBarHeight: 6
+                    },
+                    {
+                        styleHtmlContent: true,
+                        height: 50,
+                        border: 0,
+                        cls: 'cms-image-upload-button-image-tip',
+                        html: '<div class="x-tip x-tip-default x-layer" role="tooltip">' +
+                                '<div class="x-tip-anchor x-tip-anchor-top"></div>' +
+                                '<div class="x-tip-body  x-tip-body-default x-tip-body-default">' +
+                                'Click to upload photo</div></div>'
                     }
                 ]
             },

@@ -45,24 +45,6 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
     {
         this.initUploader();
         this.addBodyMouseEventListeners();
-        this.initToolTip();
-    },
-
-    initToolTip: function ()
-    {
-
-        var config = {
-            target: this.getImageElement(),
-            width: 100,
-            anchor: 'top',
-            anchorOffset: 30,
-            html: 'Click to upload photo'
-        };
-
-        Ext.create( 'Ext.tip.ToolTip', config );
-        Ext.QuickTips.init();
-
-        //Ext.tip.QuickTipManager.register(config);
     },
 
     initUploader: function()
