@@ -24,11 +24,37 @@ Ext.define( 'App.view.GridPanel', {
             {
                 text: 'Local Name',
                 dataIndex: 'name',
+                hidden: true,
                 sortable: true
             },
             {
                 text: 'User Store',
                 dataIndex: 'userStore',
+                hidden: true,
+                sortable: true
+            },
+            {
+                text: 'E-Mail',
+                dataIndex: 'email',
+                hidden: true,
+                sortable: true
+            },
+            {
+                text: 'Country',
+                dataIndex: 'country',
+                hidden: true,
+                sortable: true
+            },
+            {
+                text: 'Locale',
+                dataIndex: 'locale',
+                hidden: true,
+                sortable: true
+            },
+            {
+                text: 'Timezone',
+                dataIndex: 'timezone',
+                hidden: true,
                 sortable: true
             },
             {
