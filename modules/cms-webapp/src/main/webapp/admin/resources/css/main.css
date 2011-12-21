@@ -808,11 +808,13 @@ ul.cms-wizard-navigation li a.last-current {
 .cms-image-upload-button-container {
     position: relative;
     cursor: pointer;
+    padding: 1px;
 }
 
 .cms-file-upload-drop-target {
     border: 1px solid #98c9f2;
     box-shadow: 0 0 3px #98c9f2;
+    padding: 0px;
 }
 
 .cms-image-upload-button-container .cms-image-upload-button-image {
@@ -841,6 +843,27 @@ ul.cms-wizard-navigation li a.last-current {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#dbeeff', endColorstr = '#99BCE8', GradientType = 0);
     background: linear-gradient(top, #dbeeff 0%, #99BCE8 100%);
     border-radius: 3px;
+}
+
+.cms-image-upload-button-image-tip,
+.cms-image-upload-button-image-tip>div{
+    overflow: visible;
+}
+
+.cms-image-upload-button-image-tip .x-tip {
+    left: 10px;
+    width: 100px;
+    height: 38px;
+}
+
+.cms-image-upload-button-image-tip .x-tip-anchor {
+    z-index: 1;
+    left: 44px;
+    top: -10px;
+}
+
+.cms-image-upload-button-image-tip .x-tip-body {
+    text-align: center;
 }
 
 .cms-list-item {
