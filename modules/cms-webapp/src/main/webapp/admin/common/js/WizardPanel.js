@@ -34,14 +34,14 @@ Ext.define( 'Common.WizardPanel', {
                     itemId: 'controls',
                     defaults: {
                         xtype: 'button',
-                        width: 90,
                         scale: 'medium'
                     },
                     items: [
                         {
                             itemId: 'prev',
-                            text: 'Previous',
                             iconCls: 'icon-left-24',
+                            width: 40,
+                            margin: '0 0 0 50',
                             hideMode: 'display',
                             hidden: isFirst,
                             handler: function( btn, evt )
