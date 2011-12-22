@@ -113,9 +113,6 @@ Ext.define( 'App.controller.UserWizardController', {
     wizardFinished: function( wizard, data )
     {
         data['display-name'] = this.getDisplayNameValue();
-        console.info('wizard finished');
-        console.info(data);
-
         var onUpdateUserSuccess = function() {
             var tab = wizard.up( 'userWizardPanel' );
             if ( tab )
@@ -142,7 +139,6 @@ Ext.define( 'App.controller.UserWizardController', {
               success: function( response, opts )
               {
                   var serverResponse = Ext.JSON.decode( response.responseText );
-                  console.info('user update: ' + Ext.JSON.encode(userData) );
                   if ( !serverResponse.success )
                   {
                       Ext.Msg.alert( 'Error', serverResponse.error );

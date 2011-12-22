@@ -82,7 +82,6 @@ Ext.define( 'App.view.wizard.user.WizardStepMembershipPanel', {
             groupsSelected.push(group);
         });
         var userData = { groups: groupsSelected };
-        console.info(userData);
         return userData;
     }
 
