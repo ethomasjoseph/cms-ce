@@ -148,6 +148,9 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
 
         this.callParent( arguments );
 
+        var uploader = this.down('photoUploadButton');
+        uploader.on( 'fileuploaded', me.photoUploaded, me );
+
         //Render all user forms
         if ( me.userFields && me.userFields.userStore )
         {
@@ -209,6 +212,12 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
     {
         Ext.apply(this.headerData, data);
         this.down('#wizardHeader').update(this.headerData);
+    },
+
+    photoUploaded:function ( photoUploadButton, response )
+    {
+        var wizard = this.down('wizardPanel');
+        wizard.addData( {photo:response.photoRef} );
     }
 
 } );

@@ -22,6 +22,8 @@ public final class UserModel
     public final static String USER_INFO = "userInfo";
 
     public final static String USERSTORE = "userStore";
+    
+    public final static String PHOTO_NAME = "photo";
 
     private String key;
 
@@ -58,6 +60,9 @@ public final class UserModel
 
     @JsonProperty
     private boolean hasPhoto = false;
+    
+    @JsonProperty(PHOTO_NAME)
+    private String photo;
 
     private UserInfoModel userInfo;
 
@@ -192,5 +197,15 @@ public final class UserModel
     public void setHasPhoto( boolean hasPhoto )
     {
         this.hasPhoto = hasPhoto;
+    }
+
+    public String getPhoto()
+    {
+        return photo;
+    }
+
+    public void setPhoto( String photo )
+    {
+        this.photo = photo;
     }
 }
