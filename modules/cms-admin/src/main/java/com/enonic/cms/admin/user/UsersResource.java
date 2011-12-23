@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -103,13 +104,21 @@ public final class UsersResource
     @Produces("image/png")
     public Response getPhoto( @QueryParam("key") final String key, 
                               @QueryParam("thumb") @DefaultValue("false") final boolean thumb,
+                              @QueryParam("def") final String defaultImageUrl,
                               @Context final Request request)
         throws Exception
     {
         final UserEntity entity = findEntity( key );
         if ( entity.getPhoto() == null )
         {
-            return Response.status( Response.Status.NOT_FOUND ).build();
+            if ( defaultImageUrl == null )
+            {
+                return Response.status( Response.Status.NOT_FOUND ).build();
+            }
+            else
+            {
+                return Response.seeOther( new URI( defaultImageUrl ) ).build();
+            }
         }
         byte[] photo = this.photoService.renderPhoto( entity, thumb ? 40 : 100 );
         final String photoHash = Integer.toHexString( Arrays.hashCode( photo ) );
