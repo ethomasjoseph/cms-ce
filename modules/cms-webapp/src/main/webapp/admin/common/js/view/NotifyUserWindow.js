@@ -34,8 +34,7 @@ Ext.define( 'Common.view.NotifyUserWindow', {
                                 fieldLabel: 'Cc',
                                 name: 'cc',
                                 allowBlank: true,
-                                anchor: '100%',
-                                allowBlank: false
+                                anchor: '100%'
                             },{
                                 fieldLabel: 'Subject <span>*</span>',
                                 itemId: 'subject',

@@ -26,6 +26,7 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
     initComponent: function()
     {
         var me = this;
+        var isNew = this.userFields == undefined;
         var photoUrl;
         var userGroups = [];
         var displayNameValue = 'Display Name';
@@ -45,7 +46,7 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
 
         me.tbar = {
             xtype: 'userWizardToolbar',
-            isNewUser: this.userFields == undefined
+            isNewUser: isNew
         };
         me.items = [
             {
@@ -101,6 +102,7 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
                     {
                         xtype: 'wizardPanel',
                         showControls: true,
+                        isNew: isNew,
                         items: [
                             {
                                 stepNumber: 1,
@@ -147,6 +149,9 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
         ];
 
         this.callParent( arguments );
+
+        var uploader = this.down('photoUploadButton');
+        uploader.on( 'fileuploaded', me.photoUploaded, me );
 
         //Render all user forms
         if ( me.userFields && me.userFields.userStore )
@@ -226,6 +231,12 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
         var data = {displayName: displayName};
         Ext.apply( data, wizardData );
         return data;
+    },
+
+    photoUploaded:function ( photoUploadButton, response )
+    {
+        var wizard = this.down('wizardPanel');
+        wizard.addData( {photo:response.photoRef} );
     }
 
 } );

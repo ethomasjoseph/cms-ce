@@ -60,6 +60,8 @@ public final class UsersResource
 
     private static final int PHOTO_CACHE_TIMEOUT = Period.minutes( 5 ).getSeconds();
 
+    private static final String UPLOAD_PATH = "/admin/resources/uploads/";
+
     @Autowired
     private UserDao userDao;
 
@@ -134,19 +136,18 @@ public final class UsersResource
         Map<String, Object> response = new HashMap<String, Object>();
         try
         {
-            File folder = new File( context.getRealPath( "/admin/resources/uploads/" ) );
+            final File folder = new File( context.getRealPath( UPLOAD_PATH ) );
             if ( !folder.exists() )
             {
                 folder.mkdirs();
             }
-            File file = new File( folder.getPath() + "/" + fileDetail.getFileName() );
-            if ( file.exists() )
-            {
-                file.delete();
-            }
+            final String filename = StringUtils.substringBeforeLast( fileDetail.getFileName(), "." );
+            final String extension = "." + StringUtils.substringAfterLast( fileDetail.getFileName(), "." );
+            final File uploadFile = File.createTempFile( filename, extension, folder );
+
             int read;
-            byte[] bytes = new byte[1024];
-            OutputStream out = new FileOutputStream( file );
+            final byte[] bytes = new byte[1024];
+            final OutputStream out = new FileOutputStream( uploadFile );
             while ( ( read = fileInputStream.read( bytes ) ) != -1 )
             {
                 out.write( bytes, 0, read );
@@ -154,11 +155,12 @@ public final class UsersResource
             out.flush();
             out.close();
             response.put( "success", true );
-            response.put( "src", "resources/uploads/" + fileDetail.getFileName() );
+            response.put( "src", "resources/uploads/" + uploadFile.getName() );
+            response.put( "photoRef", uploadFile.getName() );
         }
         catch ( IOException e )
         {
-            e.printStackTrace();
+            LOG.error( "Could not store uploaded photo", e );
             response.put( "success", false );
         }
         return response;
@@ -197,12 +199,26 @@ public final class UsersResource
     @POST
     @Path("update")
     @Consumes("application/json")
-    public Map<String, Object> saveUser( UserModel userData )
+    public Map<String, Object> saveUser( UserModel userData, @Context ServletContext context )
     {
         final boolean isValid = isValidUserData( userData );
         final Map<String, Object> res = new HashMap<String, Object>();
         if ( isValid )
         {
+            final String photoRef = userData.getPhoto();
+            if ( StringUtils.isNotEmpty( photoRef ) )
+            {
+                final File photoFile = new File( context.getRealPath( UPLOAD_PATH ), photoRef );
+                if ( photoFile.exists() )
+                {
+                    userData.setPhoto( photoFile.getAbsolutePath() );
+                }
+                else
+                {
+                    userData.setPhoto( null );
+                }
+            }
+
             if ( userData.getKey() == null )
             {
                 StoreNewUserCommand command = userModelTranslator.toNewUserCommand( userData );

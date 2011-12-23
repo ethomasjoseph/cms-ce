@@ -16,7 +16,9 @@ Ext.define( 'App.controller.GroupWizardController', {
             'groupWizardPanel wizardPanel':{
                 beforestepchanged:this.validateStep,
                 stepchanged:this.stepChanged,
-                finished:this.wizardFinished
+                finished:this.wizardFinished,
+                validitychange: this.validityChanged,
+                dirtychange: this.dirtyChanged
             }
         });
     },
@@ -79,6 +81,20 @@ Ext.define( 'App.controller.GroupWizardController', {
         }
     },
 
+    validityChanged: function( wizard, valid )
+    {
+        var tb = this.getGroupWizardToolbar();
+        var save = tb.down( '#save' );
+        save.setDisabled( !(valid && ( wizard.isWizardDirty || wizard.isNew )) );
+    },
+
+    dirtyChanged: function( wizard, dirty )
+    {
+        var tb = this.getGroupWizardToolbar();
+        var save = tb.down( '#save' );
+        save.setDisabled( !((dirty || wizard.isNew ) && wizard.isWizardValid) );
+    },
+
     focusFirstField: function()
     {
         var activeItem = this.getWizardPanel().getLayout().getActiveItem();
@@ -92,6 +108,11 @@ Ext.define( 'App.controller.GroupWizardController', {
     getGroupWizardPanel: function()
     {
         return Ext.ComponentQuery.query( 'groupWizardPanel' )[0];
+    },
+
+    getGroupWizardToolbar: function()
+    {
+        return Ext.ComponentQuery.query( 'groupWizardToolbar' )[0];
     },
 
     getWizardPanel: function()

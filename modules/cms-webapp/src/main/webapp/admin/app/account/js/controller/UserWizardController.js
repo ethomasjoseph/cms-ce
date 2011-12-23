@@ -35,7 +35,9 @@ Ext.define( 'App.controller.UserWizardController', {
                               afterrender: this.bindDisplayNameEvents,
                               beforestepchanged: this.validateStep,
                               stepchanged: this.stepChanged,
-                              finished: this.wizardFinished
+                              finished: this.wizardFinished,
+                              validitychange: this.validityChanged,
+                              dirtychange: this.dirtyChanged
                           },
                           'userStoreListPanel': {
                               itemclick: this.userStoreSelected
@@ -155,6 +157,20 @@ Ext.define( 'App.controller.UserWizardController', {
                   Ext.Msg.alert( 'Error', 'Unable to update user' );
               }
         } );
+    },
+
+    validityChanged: function( wizard, valid )
+    {
+        var tb = this.getUserWizardToolbar();
+        var save = tb.down( '#save' );
+        save.setDisabled( !(valid && ( wizard.isWizardDirty || wizard.isNew )) );
+    },
+
+    dirtyChanged: function( wizard, dirty )
+    {
+        var tb = this.getUserWizardToolbar();
+        var save = tb.down( '#save' );
+        save.setDisabled( !((dirty || wizard.isNew ) && wizard.isWizardValid) );
     },
 
     wizardPrev: function( btn, evt )
@@ -407,6 +423,11 @@ Ext.define( 'App.controller.UserWizardController', {
     getWizardPanel: function()
     {
         return Ext.ComponentQuery.query( 'wizardPanel' )[0];
+    },
+
+    getUserWizardToolbar: function()
+    {
+        return Ext.ComponentQuery.query( 'userWizardToolbar' )[0];
     },
 
     getCmsTabPanel: function()

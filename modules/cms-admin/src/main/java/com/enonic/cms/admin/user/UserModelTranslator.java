@@ -1,5 +1,7 @@
 package com.enonic.cms.admin.user;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -294,6 +297,7 @@ public final class UserModelTranslator
     {
         StoreNewUserCommand command = new StoreNewUserCommand();
         UserInfo userInfo = toUserInfo( userModel.getUserInfo() );
+        userInfo.setPhoto( readPhoto( userModel.getPhoto() ) );
         UserStoreEntity userStore = userStoreDao.findByName( userModel.getUserStore() );
         if ( userStore == null )
         {
@@ -326,6 +330,7 @@ public final class UserModelTranslator
         userSpecification.setUserStoreKey( userStore.getKey() );
         UpdateUserCommand command = new UpdateUserCommand( new UserKey( userModel.getKey() ), userSpecification );
         UserInfo userInfo = toUserInfo( userModel.getUserInfo() );
+        userInfo.setPhoto( readPhoto( userModel.getPhoto() ) );
         command.setEmail( userModel.getEmail() );
         command.setDisplayName( userModel.getDisplayName() );
         command.setUserInfo( userInfo );
@@ -337,6 +342,31 @@ public final class UserModelTranslator
         command.setSyncMemberships( true );
 
         return command;
+    }
+
+    private byte[] readPhoto( final String photoPath )
+    {
+        if ( photoPath == null )
+        {
+            return null;
+        }
+        final File file = new File( photoPath );
+        if ( file.exists() )
+        {
+            try
+            {
+                return FileUtils.readFileToByteArray( file );
+            }
+            catch ( IOException e )
+            {
+                LOG.error( "Unable to read photo from file: " + file.getAbsolutePath(), e );
+                return null;
+            }
+        }
+        else
+        {
+            return null;
+        }
     }
 
     private void updateUserCommandMemberships( AbstractMembershipsCommand command, UserModel userModel )

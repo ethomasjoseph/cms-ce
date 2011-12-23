@@ -19,6 +19,7 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
         {
             alert( 'ImageUploadButton requires Plupload!' );
         }
+        this.addEvents("fileuploaded");
     },
 
     onRender: function()
@@ -99,6 +100,8 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
                 uploadButton.updateImage( responseObj.src );
             }
             uploadButton.hideProgressBar();
+
+            uploadButton.fireEvent('fileuploaded', this, responseObj);
         } );
 
         uploader.bind( 'UploadComplete', function( up, files )
