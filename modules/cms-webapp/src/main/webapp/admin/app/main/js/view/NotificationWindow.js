@@ -6,6 +6,8 @@ Ext.define( 'App.view.NotificationWindow', {
     floating: true,
     autoRender: true,
 
+    notifyOpts: undefined,
+
     tpl: Templates.main.notificationWindow,
 
     initComponent: function()
@@ -25,6 +27,17 @@ Ext.define( 'App.view.NotificationWindow', {
     {
         this.callParent( arguments );
         this.getEl().setOpacity(0);
+    },
+
+    setNotifyOpts: function( notifyOpts )
+    {
+        this.notifyOpts = notifyOpts;
+    },
+
+    getNotifyOpts: function()
+    {
+        return this.notifyOpts;
     }
+
 
 });

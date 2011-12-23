@@ -180,6 +180,10 @@ img.photo {
     background: #fff;
 }
 
+.cms-form-label>span {
+    color: red;
+}
+
 /*----- Cycle Button Menu Items -----*/
 
 .x-menu-item img.icon-details-bottom, .icon-details-bottom {

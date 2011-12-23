@@ -207,12 +207,14 @@ public final class UsersResource
             {
                 StoreNewUserCommand command = userModelTranslator.toNewUserCommand( userData );
                 UserKey userKey = userStoreService.storeNewUser( command );
+                res.put( "userkey", userKey.toString() );
                 indexUser( userKey.toString() );
             }
             else
             {
                 UpdateUserCommand command = userModelTranslator.toUpdateUserCommand( userData );
                 userStoreService.updateUser( command );
+                res.put( "userkey", userData.getKey() );
                 indexUser( userData.getKey() );
             }
             res.put( "success", true );
