@@ -148,6 +148,7 @@ input[readonly],
 textarea,
 textarea[disabled],
 textarea[readonly],
+.codearea,
 select {
     background-color: #fff;
     border: 1px solid #b3c3c3;

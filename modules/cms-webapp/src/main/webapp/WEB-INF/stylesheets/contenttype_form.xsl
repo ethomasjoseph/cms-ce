@@ -46,10 +46,12 @@
                 <script type="text/javascript" src="javascript/tabpane.js">//</script>
                 <link type="text/css" rel="StyleSheet" href="javascript/tab.webfx.css" />
                 <link rel="stylesheet" type="text/css" href="css/admin.css"/>
-                <link rel="stylesheet" type="text/css" href="css/codearea.css"/>
 
-                <script type="text/javascript" src="codemirror/js/codemirror.js">//</script>
-                <script type="text/javascript" src="javascript/codearea.js">//</script>
+                <!-- CodeArea JavaScript -->
+                <script type="text/javascript" src="ace/src/ace.js" charset="utf-8">//</script>
+                <script type="text/javascript" src="ace/src/mode-xml.js" charset="utf-8">//</script>
+                <script type="text/javascript" src="javascript/codearea.js" charset="utf-8">//</script>
+
                 <script type="text/javascript" src="javascript/admin.js">//</script>
                 <script type="text/javascript" src="javascript/validate.js">//</script>
 
@@ -68,14 +70,9 @@
                         </xsl:otherwise>
                     </xsl:choose>
 
-                    var g_codeMirror = null;
-
                     function validateAll(formName) {
 
-                        if ( codeArea_module )
-                        {
-                          document.getElementById('module').value = codeArea_module.getCode();
-                        }
+                        cms.CodeArea.saveAll();
 
                         var f = document.forms[formName];
 
@@ -267,17 +264,13 @@
                             </tr>
                         </xsl:if>
                         <tr>
-                            <xsl:call-template name="codearea">
-                                <xsl:with-param name="name" select="'module'"/>
-                                <xsl:with-param name="label" select="'%fldConfig%:'"/>
-                                <xsl:with-param name="width" select="'100%'"/>
-                                <xsl:with-param name="height" select="'380px'"/>
-                                <xsl:with-param name="line-numbers" select="true()"/>
-                                <xsl:with-param name="read-only" select="false()"/>
-                                <xsl:with-param name="selectnode" select="$selectnode"/>
-                                <xsl:with-param name="buttons" select="'find,replace,indentall,indentselection,gotoline'"/>
-                                <xsl:with-param name="status-bar" select="true()"/>
-                            </xsl:call-template>
+                          <xsl:call-template name="codearea">
+                            <xsl:with-param name="name" select="'module'"/>
+                            <xsl:with-param name="label" select="'%fldConfig%:'"/>
+                            <!-- TODO: Should xml be serialized? -->
+                            <xsl:with-param name="selectnode" select="$selectnode"/>
+                            <xsl:with-param name="mode" select="'xml'"/>
+                          </xsl:call-template>
                         </tr>
                     </table>
                 </fieldset>

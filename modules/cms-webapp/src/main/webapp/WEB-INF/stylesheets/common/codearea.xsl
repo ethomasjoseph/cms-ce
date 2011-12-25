@@ -1,40 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+    <!--
+
+    How to use:
+
+    1. Include this file in the XSL document
+
+      <xsl:include href="common/codearea.xsl"/>
+
+    2. Embed the following JavaScripts in the XSL document
+
+      <script type="text/javascript" src="ace/src/ace.js" charset="utf-8">//</script>
+      <script type="text/javascript" src="ace/src/mode-xml.js" charset="utf-8">//</script>
+      <script type="text/javascript" src="javascript/codearea.js" charset="utf-8">//</script>
+
+    3. Call the codearea template
+
+      <xsl:call-template name="codearea">
+        <xsl:with-param name="name" select="'module'"/>
+        <xsl:with-param name="label" select="'Label'"/>
+        <xsl:with-param name="selectnode" select="/path/to/content"/>
+        <xsl:with-param name="mode" select="'xml'"/>
+      </xsl:call-template>
+
+        @param: name    - String    required    name of the textarea that is submitted to the server
+        @param: label   - String    required    text label for the codearea
+        @selectnode     - XPath     optional    X-path to the content that should initially populate the code area.
+        @mode           - String    optional    Mode/syntax parser. Default is XML
+        @readonly       - Boolean   optional    Read only
+
+
+    Modes:
+
+      To change mode (syntax parser), change the mode-{$mode} in the second javascript src and set mode to $mode in the template call.
+
+      Supported modes are:
+
+         java
+         xml (default)
+         html
+         javascript
+         css
+         json
+    -->
+
+
 <xsl:stylesheet version="1.0" exclude-result-prefixes="#all"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exslt-common="http://exslt.org/common"
                 xmlns:saxon="http://saxon.sf.net/"
                 xmlns:admin="java:com.enonic.cms.core.xslt.lib.AdminFunctions">
-  <!--
-    Requires:
-
-        XSL:
-
-        <xsl:include href="common/labelcolumn.xsl"/>
-
-        CSS:
-
-        <link rel="stylesheet" type="text/css" href="css/admin.css"/>
-        <link rel="stylesheet" type="text/css" href="css/codearea.css"/>
-
-        JS:
-
-        <script type="text/javascript" src="codemirror/js/codemirror.js">//</script>
-        <script type="text/javascript" src="javascript/codearea.js">//</script>
-        <script type="text/javascript" src="javascript/admin.js">//</script>
-  -->
 
   <xsl:template name="codearea">
     <xsl:param name="name" select="''"/>
     <xsl:param name="label" select="''"/>
+    <!-- TODO: Required should be boolean! -->
     <xsl:param name="required" select="''"/>
     <xsl:param name="selectnode"/>
-    <xsl:param name="width" select="'600px'"/>
+    <xsl:param name="width" select="'100%'"/>
     <xsl:param name="height" select="'500px'"/>
-    <xsl:param name="buttons" select="''"/>
-    <xsl:param name="line-numbers" select="true()"/>
-    <xsl:param name="status-bar" select="true()"/>
-    <xsl:param name="read-only" select="false()"/>
-    <xsl:param name="editable" select="true()"/>
+    <xsl:param name="mode" select="'xml'"/>
+    <xsl:param name="readonly" select="false()"/>
+
+    <xsl:variable name="idForTextArea" select="concat('cms_codeArea_textArea_',$name)" />
+    <xsl:variable name="idForPreElement" select="concat('cms_codeArea_',$name)" />
 
     <xsl:if test="string-length($label) &gt; 0">
       <xsl:call-template name="labelcolumn">
@@ -43,66 +72,34 @@
         <xsl:with-param name="fieldname" select="$name"/>
       </xsl:call-template>
     </xsl:if>
+
     <td valign="top">
-      
-      <table id="{concat('code-area-container-', $name)}" class="code-area-container" border="0" cellpadding="0" cellspacing="0">
-        <tr>
-          <td id="{concat('code-area-buttons-container-', $name)}" class="code-area-buttons-container">
-            <xsl:comment>Buttons</xsl:comment>
-          </td>
-        </tr>
-        <tr>
-          <td id="{concat('code-area-document-container-', $name)}" class="code-area-document-container">
+      <div class="codearea" style="position:relative; background-color:#fff; width: {$width}; height: {$height}; padding:0">
 
-            <textarea>
-              <xsl:attribute name="name">
-                <xsl:value-of select="$name"/>
-              </xsl:attribute>
-              <xsl:attribute name="id">
-                <xsl:value-of select="$name"/>
-              </xsl:attribute>
-              <xsl:attribute name="style">
-                <xsl:value-of select="concat('width:', $width, ';height:', $height)"/>
-              </xsl:attribute>
-              <xsl:value-of select="$selectnode"/>
-            </textarea>
+        <!-- Editor content store. This will be populated on form submit -->
+        <textarea style="display: none">
+          <xsl:attribute name="name">
+            <xsl:value-of select="$name"/>
+          </xsl:attribute>
+          <xsl:attribute name="id">
+            <xsl:value-of select="$idForTextArea"/>
+          </xsl:attribute>
+          <xsl:value-of select="$selectnode"/>
+        </textarea>
 
-          </td>
-        </tr>
-        <tr>
-          <td id="{concat('code-area-statusbar-container-', $name)}" class="code-area-statsubar-container">
-            <xsl:attribute name="style">
-              <xsl:choose>
-                <xsl:when test="$status-bar">display: block</xsl:when>
-                <xsl:otherwise>display: none</xsl:otherwise>
-              </xsl:choose>
-            </xsl:attribute>
+        <!-- Editor display -->
+        <pre id="{$idForPreElement}" style="position: absolute; margin: 0; right:0; width: {$width}; height: {$height};"><xsl:value-of select="$selectnode"/></pre>
 
-            <div id="{concat('ca-caret-info-', $name)}" class="ca-caret-info">
-              <span id="{concat('ca-current-line-number-', $name)}" class="ca-current-line-number">0</span>
-              <span>:</span>
-              <span id="{concat('ca-current-column-number-', $name)}" class="ca-current-column-number">0</span>
-            </div>
+        <script type="text/javascript">
+          cms.CodeArea.create({
+            id: '<xsl:value-of select="$name"/>',
+            required: '<xsl:value-of select="$required"/>',
+            mode: '<xsl:value-of select="$mode"/>',
+            readonly: <xsl:value-of select="$readonly"/>,
+          });
 
-          </td>
-        </tr>
-      </table>
-
-      <script type="text/javascript">
-        var codeArea_<xsl:value-of select="$name"/> = new cms.ui.CodeArea({
-        'textareaId' : '<xsl:value-of select="$name"/>',
-        'width' : '<xsl:value-of select="$width"/>',
-        'height' : '<xsl:value-of select="$height"/>',
-        'lineNumbers' : <xsl:value-of select="$line-numbers"/>,
-        'statusBar' : <xsl:value-of select="$status-bar"/>,
-        'readOnly' : <xsl:value-of select="$read-only"/>,
-        'editable' : <xsl:value-of select="$editable"/>,
-        'buttons' : '<xsl:value-of select="$buttons"/>'
-        });
-
-        codeArea_<xsl:value-of select="$name"/>.init();
-      </script>
-
+        </script>
+      </div>
     </td>
   </xsl:template>
 </xsl:stylesheet>
