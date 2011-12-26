@@ -6,6 +6,7 @@ Ext.define( 'Common.view.NotifyUserWindow', {
     items: [
             {
                 xtype: 'form',
+                itemId: 'notifyForm',
                 method: 'POST',
                 autoHeight: true,
                 border: false,
@@ -19,20 +20,29 @@ Ext.define( 'Common.view.NotifyUserWindow', {
                         defaults: {
                             xtype: 'textfield',
                             allowBlank: false,
-                            validateOnChange: true
+                            validateOnChange: true,
+                            labelClsExtra: 'cms-form-label'
                         },
                         items: [
                             {
-                                fieldLabel: 'To',
+                                fieldLabel: 'To <span>*</span>',
                                 name: 'to',
+                                itemId: 'to',
                                 anchor: '100%',
                                 allowBlank: false
                             },{
-                                fieldLabel: 'Subject',
+                                fieldLabel: 'Cc',
+                                name: 'cc',
+                                allowBlank: true,
+                                anchor: '100%'
+                            },{
+                                fieldLabel: 'Subject <span>*</span>',
+                                itemId: 'subject',
                                 anchor: '100%',
                                 name: 'subject'
                             }, {
-                                fieldLabel: 'Message',
+                                fieldLabel: 'Message <span>*</span>',
+                                itemId: "message",
                                 xtype: 'textarea',
                                 anchor: '100%',
                                 rows: 3,
@@ -51,6 +61,18 @@ Ext.define( 'Common.view.NotifyUserWindow', {
                     }
                 ]
             }
-        ]
+        ],
+
+    doShow: function( model )
+    {
+        this.callParent( arguments );
+        var formPanel = this.down('#notifyForm');
+        formPanel.getForm().reset();
+        formPanel.down('#to').setValue(model.data.email);
+        formPanel.down('#subject').setValue(model.subject);
+        formPanel.down('#message').setValue(model.message);
+
+
+    }
 
 } );

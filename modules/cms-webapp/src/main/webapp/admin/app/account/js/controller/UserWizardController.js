@@ -115,10 +115,12 @@ Ext.define( 'App.controller.UserWizardController', {
     wizardFinished: function( wizard, data )
     {
         data['display-name'] = this.getDisplayNameValue();
-        var onUpdateUserSuccess = function() {
+        var onUpdateUserSuccess = function( userkey ) {
             var tab = wizard.up( 'userWizardPanel' );
+            var isNewUser = true;
             if ( tab )
             {
+                isNewUser = tab.isNewUser();
                 tab.close();
             }
             var parentApp = parent.mainApp;
@@ -126,7 +128,7 @@ Ext.define( 'App.controller.UserWizardController', {
             {
                 parentApp.fireEvent( 'notifier.show', "User was created",
                                      "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.",
-                                     true );
+                                     {userKey: userkey, newUser: isNewUser, notifyUser: true});
             }
         }
         this.updateUser( data , onUpdateUserSuccess );
@@ -147,7 +149,7 @@ Ext.define( 'App.controller.UserWizardController', {
                   }
                   else
                   {
-                      onSuccess();
+                      onSuccess( serverResponse.userkey );
                   }
               },
               failure: function( response, opts )

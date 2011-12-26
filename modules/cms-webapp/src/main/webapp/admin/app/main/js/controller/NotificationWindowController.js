@@ -23,16 +23,16 @@ Ext.define('App.controller.NotificationWindowController', {
 
     },
 
-    show: function(title, message, notifyUser)
+    show: function(title, message, opts)
     {
         this.getNotificationWindow().update(
             {
                 messageTitle: title,
                 messageText: message,
-                notifyUser: notifyUser === undefined ? false: notifyUser
+                notifyUser: opts.notifyUser === undefined ? false: opts.notifyUser
             }
         );
-
+        this.getNotificationWindow().setNotifyOpts( opts );
         this.fadeWindowInOut();
     },
 
@@ -92,6 +92,7 @@ Ext.define('App.controller.NotificationWindowController', {
 
     addWindowClickListener: function()
     {
+        var me = this;
         var notificationWindow = this.getNotificationWindow();
 
         notificationWindow.getEl().on('mouseenter', function() {
@@ -105,20 +106,30 @@ Ext.define('App.controller.NotificationWindowController', {
         notificationWindow.getEl().on('click', function(event, target) {
             if(target.className.indexOf('notify-user') > -1)
             {
-                //TODO: get real user
-                var user = {
-                    data: {
-                       "username":"mer",
-                       "display-name":"Morten Øien Eriksen",
-                       "name":"mer",
-                       "key":"2AF735F668BB0B75F8AF886C4D304F049460EE43",
-                       "displayName":"Morten Eriksen",
-                       "lastModified":"2010-03-15 16:00:02",
-                       "qualifiedName":"enonic\\mer",
-                        "email":"mer@enonic.com"
-                    }
-                };
-                this.application.fireEvent('showNotifyUserWindow ', user );
+                var notifyOpts = notificationWindow.getNotifyOpts();
+                Ext.Ajax.request( {
+                      url: 'data/user/userinfo',
+                      method: 'GET',
+                      params: {key: notifyOpts.userKey},
+                      success: function( response )
+                      {
+                          var jsonObj = Ext.JSON.decode( response.responseText );
+                          var model = {data: jsonObj};
+                          if (notifyOpts.newUser)
+                          {
+                              model.subject = "User Created";
+                              model.message = Ext.String.format(Templates.common.notifyUserMessage,
+                                      jsonObj.displayName, jsonObj.username, jsonObj.userStore,
+                                      me.getCurrentUser().displayName);
+                          }
+                          else
+                          {
+                              model.subject = "User Updated";
+
+                          }
+                          me.application.fireEvent('showNotifyUserWindow ', model );
+                      }
+                  } );
             }
 
             this.hide();
@@ -133,6 +144,20 @@ Ext.define('App.controller.NotificationWindowController', {
             win = Ext.create( 'widget.notificationWindow' );
         }
         return win;
+    },
+
+    getCurrentUser: function()
+    {
+        return {
+                   "username":"mer",
+                   "display-name":"Morten Øien Eriksen",
+                   "name":"mer",
+                   "key":"2AF735F668BB0B75F8AF886C4D304F049460EE43",
+                   "displayName":"Morten Eriksen",
+                   "lastModified":"2010-03-15 16:00:02",
+                   "qualifiedName":"enonic\\mer",
+                    "email":"mer@enonic.com"
+                };
     }
 
 });

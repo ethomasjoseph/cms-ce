@@ -216,6 +216,23 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
         this.down('#wizardHeader').update(this.headerData);
     },
 
+    isNewUser: function()
+    {
+        return this.userFields == undefined;
+    },
+
+    getData: function()
+    {
+        var wizard = this.down('wizardPanel');
+        var wizardData = wizard.getData();
+        var displayNameField = Ext.DomQuery.select( 'input.cms-display-name', this.getEl().dom )[0];
+        var displayNameFieldElement = new Ext.Element( displayNameField );
+        var displayName = displayNameFieldElement.getValue();
+        var data = {displayName: displayName};
+        Ext.apply( data, wizardData );
+        return data;
+    },
+
     photoUploaded:function ( photoUploadButton, response )
     {
         var wizard = this.down('wizardPanel');

@@ -304,6 +304,7 @@ public final class UserModelTranslator
             userStore = userStoreDao.findDefaultUserStore();
         }
         command.setUserInfo( userInfo );
+        command.setUsername( userModel.getName() );
         command.setDisplayName( userModel.getDisplayName() );
         command.setEmail( userModel.getEmail() );
         command.setPassword( "11111" );

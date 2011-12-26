@@ -489,7 +489,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
                     fieldname: item.type,
                     required: item.required || false,
                     remote: item.remote || false,
-                    readonly: item.readOnly || false,
+                    readonly: item.readOnly || false || (item.type == 'username' && me.userFields),
                     vtype: item.vtype,
                     fieldValue: fieldValue,
                     currentUser: me.currentUser
