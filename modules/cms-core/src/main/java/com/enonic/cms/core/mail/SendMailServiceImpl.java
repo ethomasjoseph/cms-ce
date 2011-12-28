@@ -4,18 +4,22 @@
  */
 package com.enonic.cms.core.mail;
 
-import com.enonic.cms.core.VerticalProperties;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
+import javax.inject.Inject;
+import javax.mail.MessagingException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
-import com.enonic.cms.store.dao.UserDao;
-
+import com.enonic.cms.core.VerticalProperties;
 import com.enonic.cms.core.security.user.QualifiedUsername;
 import com.enonic.cms.core.security.user.UserEntity;
-
-import javax.inject.Inject;
+import com.enonic.cms.store.dao.UserDao;
 
 public final class SendMailServiceImpl
     implements SendMailService
@@ -51,6 +55,45 @@ public final class SendMailServiceImpl
         else
         {
             LOG.warn( "Unknown user [" + userName + "]. Skipped sending mail." );
+        }
+    }
+
+    public final void sendNotificationMail( String recipient, String ccs, MessageSettings settings )
+    {
+        try
+        {
+            MimeMessageHelper message = createMessage( settings );
+            List<String> ccList = parseMailString( ccs );
+            composeNotificationMail( message, recipient, ccList, settings );
+            sendMessage( message );
+        }
+        catch ( Exception e )
+        {
+            LOG.error( "Failed to send mail", e );
+        }
+    }
+
+    private List<String> parseMailString (String mailString)
+    {
+        StringTokenizer strtok = new StringTokenizer( mailString, ",; " );
+        List<String> emails = new ArrayList<String>(  );
+        while (strtok.hasMoreTokens())
+        {
+            emails.add( strtok.nextToken() );
+        }
+        return emails;
+    }
+
+    private void composeNotificationMail( MimeMessageHelper message,
+                                          String recipient, List<String> ccs, MessageSettings settings)
+            throws MessagingException
+    {
+        message.setSubject( settings.getSubject() );
+        message.setText( settings.getBody() );
+        message.addTo( recipient );
+        for ( String cc: ccs )
+        {
+            message.addCc( cc );
         }
     }
 

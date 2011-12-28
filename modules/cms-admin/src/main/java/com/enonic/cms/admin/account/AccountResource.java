@@ -24,6 +24,8 @@ import org.springframework.stereotype.Component;
 
 import com.sun.jersey.api.core.InjectParam;
 
+import com.enonic.cms.core.mail.MessageSettings;
+import com.enonic.cms.core.mail.SendMailService;
 import com.enonic.cms.core.search.Facet;
 import com.enonic.cms.core.search.FacetEntry;
 import com.enonic.cms.core.search.Facets;
@@ -72,6 +74,9 @@ public final class AccountResource
 
     @Autowired
     private AccountModelTranslator modelTranslator;
+
+    @Autowired
+    private SendMailService sendMailService;
 
     public AccountResource()
     {
@@ -280,6 +285,30 @@ public final class AccountResource
         }
 
         return Response.ok( response ).build();
+    }
+
+    @POST
+    @Path("notify")
+    public Response sendNotificationEmail( @FormParam("to") @DefaultValue("") final String to,
+                                           @FormParam("cc") @DefaultValue("") final String cc,
+                                           @FormParam("subject") @DefaultValue("") final String subject,
+                                           @FormParam("message") @DefaultValue("") final String message)
+    {
+        final Map<String, Object> response = new HashMap<String, Object>();
+        UserEntity currentUser = getCurrentUser();
+        MessageSettings messageSetting = new MessageSettings();
+        messageSetting.setBody( message );
+        messageSetting.setFromName( currentUser.getDisplayName() );
+        messageSetting.setSubject( subject );
+        messageSetting.setFromMail( currentUser.getEmail() );
+        sendMailService.sendNotificationMail( to, cc, messageSetting );
+        response.put( "status", "ok" );
+        return Response.ok( response ).build();
+    }
+
+    private UserEntity getCurrentUser()
+    {
+        return userDao.findBuiltInEnterpriseAdminUser();
     }
 
 }
