@@ -1,5 +1,5 @@
 Ext.define( 'App.controller.LauncherController', {
-    extend: 'App.controller.AdminController',
+    extend: 'App.controller.AdminBaseController',
 
     init: function()
     {

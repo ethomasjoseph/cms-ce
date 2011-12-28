@@ -1,4 +1,4 @@
-Ext.define( 'App.controller.AdminController', {
+Ext.define( 'App.controller.AdminBaseController', {
     extend: 'Ext.app.Controller',
 
     init: function()

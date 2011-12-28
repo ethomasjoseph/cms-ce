@@ -1,5 +1,5 @@
 Ext.define( 'App.controller.Module_1_Controller', {
-    extend: 'App.controller.AdminController',
+    extend: 'App.controller.AdminBaseController',
 
     stores: ['Module_1_Store'],
     models: ['Module_1_Model'],
