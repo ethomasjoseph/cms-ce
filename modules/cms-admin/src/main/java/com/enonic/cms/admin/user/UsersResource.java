@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,11 +19,15 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.Period;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +38,15 @@ import com.sun.jersey.api.core.InjectParam;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 
-import com.enonic.cms.core.security.group.GroupEntity;
+import com.enonic.cms.core.search.account.AccountIndexData;
+import com.enonic.cms.core.search.account.AccountKey;
+import com.enonic.cms.core.search.account.AccountSearchService;
 import com.enonic.cms.core.security.user.StoreNewUserCommand;
 import com.enonic.cms.core.security.user.UpdateUserCommand;
 import com.enonic.cms.core.security.user.User;
 import com.enonic.cms.core.security.user.UserEntity;
+import com.enonic.cms.core.security.user.UserKey;
 import com.enonic.cms.core.security.userstore.UserStoreService;
-import com.enonic.cms.store.dao.GroupDao;
 import com.enonic.cms.store.dao.UserDao;
 
 import com.enonic.cms.domain.EntityPageList;
@@ -53,11 +59,12 @@ public final class UsersResource
 
     private static final Logger LOG = LoggerFactory.getLogger( UsersResource.class );
 
-    @Autowired
-    private UserDao userDao;
+    private static final int PHOTO_CACHE_TIMEOUT = Period.minutes( 5 ).getSeconds();
+
+    private static final String UPLOAD_PATH = "/admin/resources/uploads/";
 
     @Autowired
-    private GroupDao groupDao;
+    private UserDao userDao;
 
     @Autowired
     private UserStoreService userStoreService;
@@ -68,21 +75,11 @@ public final class UsersResource
     @Autowired
     private UserModelTranslator userModelTranslator;
 
-    private final URI GROUP_PHOTO_ICON;
-
-    private final URI GROUP_PHOTO_THUMB_ICON;
-
-    private final URI USER_PHOTO_ICON;
-
-    private final URI USER_PHOTO_THUMB_ICON;
+    @Autowired
+    private AccountSearchService searchService;
 
     public UsersResource()
-        throws URISyntaxException
     {
-        GROUP_PHOTO_ICON = new URI( "admin/resources/icons/128x128/group.png" );
-        GROUP_PHOTO_THUMB_ICON = new URI( "admin/resources/icons/32x32/group.png" );
-        USER_PHOTO_THUMB_ICON = new URI( "admin/resources/icons/256x256/dummy-user.png" );
-        USER_PHOTO_ICON = new URI( "admin/resources/icons/256x256/dummy-user.png" );
     }
 
     @GET
@@ -105,29 +102,37 @@ public final class UsersResource
     @GET
     @Path("photo")
     @Produces("image/png")
-    public Response getPhoto( @QueryParam("key") final String key, @QueryParam("thumb") @DefaultValue("false") final boolean thumb )
+    public Response getPhoto( @QueryParam("key") final String key, 
+                              @QueryParam("thumb") @DefaultValue("false") final boolean thumb,
+                              @QueryParam("def") final String defaultImageUrl,
+                              @Context final Request request)
         throws Exception
     {
-        try
+        final UserEntity entity = findEntity( key );
+        if ( entity.getPhoto() == null )
         {
-            final UserEntity entity = findEntity( key );
-            if ( entity.getPhoto() == null )
+            if ( defaultImageUrl == null )
             {
-                final URI iconUrl = thumb ? USER_PHOTO_THUMB_ICON : USER_PHOTO_ICON;
-                return Response.status( Response.Status.MOVED_PERMANENTLY ).location( iconUrl ).build();
+                return Response.status( Response.Status.NOT_FOUND ).build();
             }
-            byte[] photo = this.photoService.renderPhoto( entity, thumb ? 40 : 100 );
-            return Response.ok(photo).build();
+            else
+            {
+                return Response.seeOther( new URI( defaultImageUrl ) ).build();
+            }
         }
-        catch ( NotFoundException e )
+        byte[] photo = this.photoService.renderPhoto( entity, thumb ? 40 : 100 );
+        final String photoHash = Integer.toHexString( Arrays.hashCode( photo ) );
+        final EntityTag eTag = new EntityTag( photoHash );
+
+        Response.ResponseBuilder builder = request.evaluatePreconditions( eTag );
+        if ( builder == null )
         {
-            if ( isGroup( key ) )
-            {
-                final URI iconUrl = thumb ? GROUP_PHOTO_THUMB_ICON : GROUP_PHOTO_ICON;
-                return Response.status( Response.Status.MOVED_PERMANENTLY ).location( iconUrl ).build();
-            }
-            throw e;
+            builder = Response.ok( photo );
         }
+
+        final CacheControl cc = new CacheControl();
+        cc.setMaxAge( PHOTO_CACHE_TIMEOUT );
+        return builder.cacheControl( cc ).tag( eTag ).build();
     }
 
     @POST
@@ -140,19 +145,18 @@ public final class UsersResource
         Map<String, Object> response = new HashMap<String, Object>();
         try
         {
-            File folder = new File( context.getRealPath( "/admin/resources/uploads/" ) );
+            final File folder = new File( context.getRealPath( UPLOAD_PATH ) );
             if ( !folder.exists() )
             {
                 folder.mkdirs();
             }
-            File file = new File( folder.getPath() + "/" + fileDetail.getFileName() );
-            if ( file.exists() )
-            {
-                file.delete();
-            }
+            final String filename = StringUtils.substringBeforeLast( fileDetail.getFileName(), "." );
+            final String extension = "." + StringUtils.substringAfterLast( fileDetail.getFileName(), "." );
+            final File uploadFile = File.createTempFile( filename, extension, folder );
+
             int read;
-            byte[] bytes = new byte[1024];
-            OutputStream out = new FileOutputStream( file );
+            final byte[] bytes = new byte[1024];
+            final OutputStream out = new FileOutputStream( uploadFile );
             while ( ( read = fileInputStream.read( bytes ) ) != -1 )
             {
                 out.write( bytes, 0, read );
@@ -160,11 +164,12 @@ public final class UsersResource
             out.flush();
             out.close();
             response.put( "success", true );
-            response.put( "src", "resources/uploads/" + fileDetail.getFileName() );
+            response.put( "src", "resources/uploads/" + uploadFile.getName() );
+            response.put( "photoRef", uploadFile.getName() );
         }
         catch ( IOException e )
         {
-            e.printStackTrace();
+            LOG.error( "Could not store uploaded photo", e );
             response.put( "success", false );
         }
         return response;
@@ -203,32 +208,76 @@ public final class UsersResource
     @POST
     @Path("update")
     @Consumes("application/json")
-    public Map<String, Object> saveUser( UserModel userData )
+    public Map<String, Object> saveUser( UserModel userData, @Context ServletContext context )
     {
-        boolean isValid =
-                StringUtils.isNotBlank( userData.getDisplayName() ) && StringUtils.isNotBlank( userData.getName() ) &&
-                        StringUtils.isNotBlank( userData.getEmail() );
-        Map<String, Object> res = new HashMap<String, Object>();
+        final boolean isValid = isValidUserData( userData );
+        final Map<String, Object> res = new HashMap<String, Object>();
         if ( isValid )
         {
+            final String photoRef = userData.getPhoto();
+            if ( StringUtils.isNotEmpty( photoRef ) )
+            {
+                final File photoFile = new File( context.getRealPath( UPLOAD_PATH ), photoRef );
+                if ( photoFile.exists() )
+                {
+                    userData.setPhoto( photoFile.getAbsolutePath() );
+                }
+                else
+                {
+                    userData.setPhoto( null );
+                }
+            }
+
             if ( userData.getKey() == null )
             {
                 StoreNewUserCommand command = userModelTranslator.toNewUserCommand( userData );
-                userStoreService.storeNewUser( command );
+                UserKey userKey = userStoreService.storeNewUser( command );
+                res.put( "userkey", userKey.toString() );
+                indexUser( userKey.toString() );
             }
             else
             {
                 UpdateUserCommand command = userModelTranslator.toUpdateUserCommand( userData );
                 userStoreService.updateUser( command );
+                res.put( "userkey", userData.getKey() );
+                indexUser( userData.getKey() );
             }
             res.put( "success", true );
         }
         else
         {
             res.put( "success", false );
-            res.put( "error", "Validation was failed" );
+            res.put( "error", "Validation failed" );
         }
         return res;
+    }
+
+    private void indexUser( String userKey )
+    {
+        final UserEntity userEntity = this.userDao.findByKey( userKey );
+        if ( userEntity == null )
+        {
+            searchService.deleteIndex( userKey );
+            return;
+        }
+
+        final com.enonic.cms.core.search.account.User user = new com.enonic.cms.core.search.account.User();
+        user.setKey( new AccountKey( userEntity.getKey().toString() ) );
+        user.setName( userEntity.getName() );
+        user.setEmail( userEntity.getEmail() );
+        user.setDisplayName( userEntity.getDisplayName() );
+        user.setUserStoreName( userEntity.getUserStore().getName() );
+        user.setLastModified( userEntity.getTimestamp() );
+        user.setUserInfo( userEntity.getUserInfo() );
+        final AccountIndexData accountIndexData = new AccountIndexData( user );
+        searchService.index( accountIndexData );
+    }
+
+    private boolean isValidUserData( UserModel userData )
+    {
+        boolean isValid = StringUtils.isNotBlank( userData.getDisplayName() ) && StringUtils.isNotBlank( userData.getName() ) &&
+            StringUtils.isNotBlank( userData.getEmail() );
+        return isValid;
     }
 
     private UserEntity findEntity( final String key )
@@ -245,17 +294,6 @@ public final class UsersResource
         }
 
         return entity;
-    }
-
-    private boolean isGroup( final String key )
-    {
-        if ( key == null )
-        {
-            return false;
-        }
-
-        final GroupEntity groupEntity = this.groupDao.find( key );
-        return groupEntity != null;
     }
 
 }

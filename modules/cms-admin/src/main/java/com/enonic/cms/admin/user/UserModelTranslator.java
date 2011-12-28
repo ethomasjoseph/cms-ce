@@ -1,5 +1,7 @@
 package com.enonic.cms.admin.user;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +22,9 @@ import com.enonic.cms.api.client.model.user.Address;
 import com.enonic.cms.api.client.model.user.Gender;
 import com.enonic.cms.api.client.model.user.UserInfo;
 import com.enonic.cms.core.security.SecurityService;
+import com.enonic.cms.core.security.group.AbstractMembershipsCommand;
 import com.enonic.cms.core.security.group.GroupEntity;
+import com.enonic.cms.core.security.group.GroupKey;
 import com.enonic.cms.core.security.user.StoreNewUserCommand;
 import com.enonic.cms.core.security.user.UpdateUserCommand;
 import com.enonic.cms.core.security.user.UserEntity;
@@ -142,6 +147,7 @@ public final class UserModelTranslator
             userInfoModel.getAddresses().add( toAddressModel( address ) );
         }
         userModel.setUserInfo( userInfoModel );
+        userModel.setHasPhoto( entity.hasPhoto() );
         return userModel;
     }
 
@@ -291,18 +297,23 @@ public final class UserModelTranslator
     {
         StoreNewUserCommand command = new StoreNewUserCommand();
         UserInfo userInfo = toUserInfo( userModel.getUserInfo() );
+        userInfo.setPhoto( readPhoto( userModel.getPhoto() ) );
         UserStoreEntity userStore = userStoreDao.findByName( userModel.getUserStore() );
         if ( userStore == null )
         {
             userStore = userStoreDao.findDefaultUserStore();
         }
         command.setUserInfo( userInfo );
+        command.setUsername( userModel.getName() );
         command.setDisplayName( userModel.getDisplayName() );
         command.setEmail( userModel.getEmail() );
         command.setPassword( "11111" );
         command.setUserStoreKey( userStore.getKey() );
         command.setAllowAnyUserAccess( true );
         command.setStorer( securityService.getLoggedInPortalUser().getKey() );
+
+        updateUserCommandMemberships( command, userModel );
+
         return command;
     }
 
@@ -319,12 +330,54 @@ public final class UserModelTranslator
         userSpecification.setUserStoreKey( userStore.getKey() );
         UpdateUserCommand command = new UpdateUserCommand( new UserKey( userModel.getKey() ), userSpecification );
         UserInfo userInfo = toUserInfo( userModel.getUserInfo() );
+        userInfo.setPhoto( readPhoto( userModel.getPhoto() ) );
         command.setEmail( userModel.getEmail() );
         command.setDisplayName( userModel.getDisplayName() );
         command.setUserInfo( userInfo );
         command.setAllowUpdateSelf( true );
-        command.setUpdateOpenGroupsOnly( true );
+        command.setUpdateOpenGroupsOnly( false );
         command.setUpdateStrategy( UpdateUserCommand.UpdateStrategy.REPLACE_ALL );
+
+        updateUserCommandMemberships( command, userModel );
+        command.setSyncMemberships( true );
+
         return command;
+    }
+
+    private byte[] readPhoto( final String photoPath )
+    {
+        if ( photoPath == null )
+        {
+            return null;
+        }
+        final File file = new File( photoPath );
+        if ( file.exists() )
+        {
+            try
+            {
+                return FileUtils.readFileToByteArray( file );
+            }
+            catch ( IOException e )
+            {
+                LOG.error( "Unable to read photo from file: " + file.getAbsolutePath(), e );
+                return null;
+            }
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    private void updateUserCommandMemberships( AbstractMembershipsCommand command, UserModel userModel )
+    {
+        final List<Map<String, String>> groups = userModel.getGroups();
+        if ( groups != null )
+        {
+            for ( Map<String, String> groupFields : groups )
+            {
+                command.addMembership( new GroupKey( groupFields.get( "key" ) ) );
+            }
+        }
     }
 }

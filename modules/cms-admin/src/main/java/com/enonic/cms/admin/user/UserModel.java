@@ -22,6 +22,8 @@ public final class UserModel
     public final static String USER_INFO = "userInfo";
 
     public final static String USERSTORE = "userStore";
+    
+    public final static String PHOTO_NAME = "photo";
 
     private String key;
 
@@ -56,6 +58,11 @@ public final class UserModel
 
     private Date lastModified;
 
+    @JsonProperty
+    private boolean hasPhoto = false;
+    
+    @JsonProperty(PHOTO_NAME)
+    private String photo;
 
     private UserInfoModel userInfo;
 
@@ -180,5 +187,25 @@ public final class UserModel
     public Date getLastModified()
     {
         return lastModified;
+    }
+
+    public boolean hasPhoto()
+    {
+        return this.hasPhoto;
+    }
+
+    public void setHasPhoto( boolean hasPhoto )
+    {
+        this.hasPhoto = hasPhoto;
+    }
+
+    public String getPhoto()
+    {
+        return photo;
+    }
+
+    public void setPhoto( String photo )
+    {
+        this.photo = photo;
     }
 }

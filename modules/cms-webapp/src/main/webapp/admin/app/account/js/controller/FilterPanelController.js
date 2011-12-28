@@ -2,27 +2,27 @@ Ext.define( 'App.controller.FilterPanelController', {
     extend: 'Ext.app.Controller',
 
     stores: [
-        'UserStore',
+        'AccountStore',
         'UserstoreConfigStore'
     ],
     models: [
-        'UserModel'
+        'AccountModel'
     ],
     views: [],
 
     init: function()
     {
         this.control( {
-            'accountFilter': {
-                specialkey: this.filterHandleEnterKey,
-                render: this.onFilterPanelRender
-            },
-            'accountFilter button[action=search]': {
-                click: this.searchFilter
-            }
-        } );
+                          'accountFilter': {
+                              specialkey: this.filterHandleEnterKey,
+                              render: this.onFilterPanelRender
+                          },
+                          'accountFilter button[action=search]': {
+                              click: this.searchFilter
+                          }
+                      } );
         this.getStore( 'UserstoreConfigStore' ).on( 'load', this.initFilterPanelUserStoreOptions, this );
-        this.getStore( 'UserStore' ).on( 'load', this.updateFilterFacets, this );
+        this.getStore( 'AccountStore' ).on( 'load', this.updateFilterFacets, this );
     },
 
     onFilterPanelRender: function()
@@ -33,29 +33,29 @@ Ext.define( 'App.controller.FilterPanelController', {
         this.getFilterUserStoreField().addListener( 'change', function( field, newValue, oldValue, eOpts )
         {
             this.getAccountFilter().updateTitle();
-            this.searchFilter('userstore');
+            this.searchFilter( 'userstore' );
         }, this );
 
         this.getFilterAccountTypeField().addListener( 'change', function( field, newValue, oldValue, eOpts )
         {
             this.getAccountFilter().updateTitle();
-            this.searchFilter('type');
+            this.searchFilter( 'type' );
         }, this );
 
         this.getFilterOrganizationField().addListener( 'change', function( field, newValue, oldValue, eOpts )
         {
             this.getAccountFilter().updateTitle();
-            this.searchFilter('organization');
+            this.searchFilter( 'organization' );
         }, this );
 
         filterTextField.focus( false, 10 );
     },
 
-    searchFilter: function(facetSelected)
+    searchFilter: function( facetSelected )
     {
         this.setBrowseTabActive();
 
-        var usersStore = this.getUserStoreStore();
+        var usersStore = this.getStore('AccountStore');
         var textField = this.getFilterTextField();
         var userStoreField = this.getFilterUserStoreField();
         var accountTypeField = this.getFilterAccountTypeField();
@@ -82,7 +82,8 @@ Ext.define( 'App.controller.FilterPanelController', {
         } );
         userStoreField = values.join( ',' );
 
-        if (textField.getValue().length > 0) {
+        if ( textField.getValue().length > 0 )
+        {
             this.getAccountFilter().updateTitle();
         }
 
@@ -186,9 +187,10 @@ Ext.define( 'App.controller.FilterPanelController', {
             this.searchFilterTypingTimer = null;
         }
         var controller = this;
-        this.searchFilterTypingTimer = window.setTimeout( function (){
-            controller.searchFilter();
-        }, 500 );
+        this.searchFilterTypingTimer = window.setTimeout( function ()
+                                                          {
+                                                              controller.searchFilter();
+                                                          }, 500 );
     }
 
 } );

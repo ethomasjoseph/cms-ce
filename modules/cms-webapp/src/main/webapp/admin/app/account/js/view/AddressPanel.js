@@ -2,7 +2,7 @@ Ext.define( 'App.view.AddressPanel', {
     extend: 'Ext.form.Panel',
     alias: 'widget.addressPanel',
 
-    xtype: 'form',
+//    xtype: 'form',
     draggable: true,
     frame: true,
     layout: {
@@ -46,23 +46,24 @@ Ext.define( 'App.view.AddressPanel', {
                 name: 'iso-country',
                 itemId: 'iso-country',
                 value: this.values['iso-country'],
-                width: 600,
+                width: 400,
                 disabled: this.readonly
             };
             regionField = new Ext.form.field.ComboBox( {
-                                                           xtype: 'combobox',
-                                                           store: regionStore,
-                                                           valueField: 'code',
-                                                           displayField: 'englishName',
-                                                           queryMode: 'local',
-                                                           minChars: 1,
-                                                           emptyText: 'Please select',
-                                                           fieldLabel: 'Region',
-                                                           name: 'iso-region',
-                                                           itemId: 'iso-region',
-                                                           value: this.values['iso-region'],
-                                                           disabled: this.values['iso-region'] == null
-                                                       } );
+                   xtype: 'combobox',
+                   store: regionStore,
+                   valueField: 'code',
+                   displayField: 'englishName',
+                   queryMode: 'local',
+                   minChars: 1,
+                   emptyText: 'Please select',
+                   fieldLabel: 'Region',
+                   name: 'iso-region',
+                   itemId: 'iso-region',
+                   width: 400,
+                   value: this.values['iso-region'],
+                   disabled: this.values['iso-region'] == null
+               } );
             if ( this.values['iso-country'] && this.values['iso-region'] )
             {
                 Ext.apply( regionStore.proxy.extraParams, {
@@ -85,7 +86,7 @@ Ext.define( 'App.view.AddressPanel', {
                 name: 'country',
                 itemId: 'address-country',
                 value: this.values['country'],
-                width: 600,
+                width: 400,
                 disabled: this.readonly
             };
             regionField = {
@@ -93,6 +94,7 @@ Ext.define( 'App.view.AddressPanel', {
                 fieldLabel: 'Region',
                 name: 'region',
                 itemId: 'address-region',
+                width: 400,
                 value: this.values['region'],
                 disabled: this.readonly
             };

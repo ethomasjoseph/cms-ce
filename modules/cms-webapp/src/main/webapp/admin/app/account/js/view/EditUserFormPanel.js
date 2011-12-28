@@ -489,7 +489,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
                     fieldname: item.type,
                     required: item.required || false,
                     remote: item.remote || false,
-                    readonly: item.readOnly || false,
+                    readonly: item.readOnly || false || (item.type == 'username' && me.userFields),
                     vtype: item.vtype,
                     fieldValue: fieldValue,
                     currentUser: me.currentUser
@@ -536,15 +536,65 @@ Ext.define( 'App.view.EditUserFormPanel', {
         }
     },
 
+    getAddresses: function(formValues)
+    {
+        var addressFields = ['country', 'region', 'street', 'postal-code', 'postal-address', 'label', 'iso-country', 'iso-region'];
+        var address;
+        var addresses = [];
+        if ( Ext.isArray( formValues.label ) )
+        {
+            // multiple address panels in form
+            var numAdr = formValues.label.length;
+            for ( var a = 0; a < numAdr; a++ )
+            {
+                address = {};
+                Ext.Array.forEach(addressFields, function (fieldId){
+                    if (formValues[fieldId] && formValues[fieldId][a]) {
+                        address[fieldId] = formValues[fieldId][a];
+                    }
+                });
+                addresses.push( address );
+            }
+        }
+        else
+        {
+            // single address panel in form
+            address = {};
+            Ext.Array.forEach(addressFields, function (fieldId){
+                if (formValues[fieldId]) {
+                    address[fieldId] = formValues[fieldId];
+                }
+            });
+            addresses.push( address );
+        }
+        return addresses;
+    },
+
     getData: function()
     {
         var formValues = this.getValues();
-        var userData = {
-            username: formValues['username'],
-            'display-name': formValues['display-name'],
-            email: formValues['email'],
-            userInfo: formValues
-        };
+        var userData;
+        var isPlacesForm = formValues.label;
+        if ( isPlacesForm )
+        {
+            userData = {
+                userInfo: {addresses: this.getAddresses(formValues) }
+            };
+        }
+        else
+        {
+            userData = {
+                userInfo:formValues
+            };
+            if ( formValues['username'] )
+            {
+                userData['username'] = formValues['username'];
+            }
+            if ( formValues['email'] )
+            {
+                userData['email'] = formValues['email'];
+            }
+        }
         return userData;
     }
 

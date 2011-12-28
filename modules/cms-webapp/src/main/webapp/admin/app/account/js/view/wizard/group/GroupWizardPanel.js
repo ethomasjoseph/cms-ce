@@ -6,8 +6,7 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
         'App.view.wizard.group.GroupWizardToolbar',
         'App.view.wizard.group.WizardStepGeneralPanel',
         'App.view.wizard.group.WizardStepMembersPanel',
-        'App.view.wizard.group.WizardStepGroupSummaryPanel',
-        'Common.fileupload.PhotoUploadButton'
+        'App.view.wizard.group.WizardStepGroupSummaryPanel'
     ],
 
     layout: 'column',
@@ -25,10 +24,27 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
         var isNew = this.modelData == undefined;
         var displayNameValue = 'Group name';
 
-        me.tbar = {
+        var groupWizardHeader = Ext.create( 'Ext.form.Panel', {
+            xtype: 'form',
+            itemId: 'wizardHeader',
+            cls: 'cms-wizard-header-container',
+            border: false,
+            items: {
+                xtype: 'textfield',
+                cls: 'cms-display-name',
+                anchor: '100%',
+                height: 36,
+                allowBlank: false,
+                value: displayNameValue
+            }
+        } );
+
+        var groupWizardToolbar = Ext.createByAlias( 'widget.groupWizardToolbar', {
             xtype: 'groupWizardToolbar',
             isNew: isNew
-        };
+        } );
+
+        me.tbar = groupWizardToolbar;
         me.items = [
             {
                 width: 138,
@@ -51,31 +67,14 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
                     border: false
                 },
                 items: [
-                    {
-                        xtype: 'form',
-                        itemId: 'wizardHeader',
-                        cls: 'cms-wizard-header-container',
-                        listeners: {
-                            // add validity change event to update validity of the active form
-                            validitychange: function( headerForm, valid, opts ) {
-                                var activeForm = me.getActiveItemForm();
-                                if( activeForm ) {
-                                    activeForm.onValidityChange( valid && activeForm.isValid() );
-                                }
-                            }
-                        },
-                        items: [{
-                            xtype: 'textfield',
-                            cls: 'cms-display-name',
-                            anchor: '100%',
-                            height: 36,
-                            allowBlank: false,
-                            value: displayNameValue
-                        }]
-                    },
+                    groupWizardHeader,
                     {
                         xtype: 'wizardPanel',
                         showControls: true,
+                        validateItems: [
+                            groupWizardHeader
+                        ],
+                        isNew: isNew,
                         items: [
                             {
                                 stepNumber: 1,
@@ -100,29 +99,6 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
 
         this.callParent( arguments );
 
-        // add validity change event on each form to check the validity of the header as well
-        var wizardPanel = me.down( 'wizardPanel' );
-        for (var i = 0; i < wizardPanel.items.items.length; i++) {
-            var item = wizardPanel.items.items[i];
-            var itemForm = Ext.isFunction( item.getForm ) ? item.getForm() : undefined;
-            if ( itemForm ) {
-                itemForm.on( 'validitychange', function( activeForm, valid, opts ) {
-                    var headerForm = me.getHeaderForm();
-                    if( headerForm && activeForm.owner.isVisible() ) {
-                        activeForm.onValidityChange( valid && headerForm.isValid() );
-                    }
-                } );
-            }
-        }
-
-    },
-
-    getHeaderForm: function() {
-        return this.down( '#wizardHeader' ).getForm();
-    },
-
-    getActiveItemForm: function() {
-        return this.down( 'wizardPanel' ).getLayout().getActiveItem().getForm();
     }
 
 } );

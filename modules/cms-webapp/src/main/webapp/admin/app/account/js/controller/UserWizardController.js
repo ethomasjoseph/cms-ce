@@ -31,11 +31,13 @@ Ext.define( 'App.controller.UserWizardController', {
                           '*[action=wizardNext]': {
                               click: this.wizardNext
                           },
-                          'userWizardPanel': {
+                          'userWizardPanel wizardPanel': {
                               afterrender: this.bindDisplayNameEvents,
                               beforestepchanged: this.validateStep,
                               stepchanged: this.stepChanged,
-                              finished: this.wizardFinished
+                              finished: this.wizardFinished,
+                              validitychange: this.validityChanged,
+                              dirtychange: this.dirtyChanged
                           },
                           'userStoreListPanel': {
                               itemclick: this.userStoreSelected
@@ -101,7 +103,7 @@ Ext.define( 'App.controller.UserWizardController', {
             var firstNameValue = firstName ? Ext.String.trim( firstName.getValue() ) : '';
             var lastName = formPanel.down( '#last-name' );
             var lastNameValue = lastName ? Ext.String.trim( lastName.getValue() ) : '';
-            var userStoreName = wizard.getData()['userStoreName'];
+            var userStoreName = wizard.getData()['userStore'];
             var usernameField = wizard.down('#username')
             if ( firstNameValue || lastNameValue )
             {
@@ -112,18 +114,63 @@ Ext.define( 'App.controller.UserWizardController', {
 
     wizardFinished: function( wizard, data )
     {
-        var tab = wizard.up( 'userWizardPanel' );
-        if ( tab )
-        {
-            tab.close();
+        data['display-name'] = this.getDisplayNameValue();
+        var onUpdateUserSuccess = function( userkey ) {
+            var tab = wizard.up( 'userWizardPanel' );
+            var isNewUser = true;
+            if ( tab )
+            {
+                isNewUser = tab.isNewUser();
+                tab.close();
+            }
+            var parentApp = parent.mainApp;
+            if ( parentApp )
+            {
+                parentApp.fireEvent( 'notifier.show', "User was created",
+                                     "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.",
+                                     {userKey: userkey, newUser: isNewUser, notifyUser: true});
+            }
         }
-        var parentApp = parent.mainApp;
-        if ( parentApp )
-        {
-            parentApp.fireEvent( 'notifier.show', "User was created",
-                                 "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.",
-                                 true );
-        }
+        this.updateUser( data , onUpdateUserSuccess );
+    },
+
+    updateUser: function ( userData, onSuccess )
+    {
+        Ext.Ajax.request( {
+              url: 'data/user/update',
+              method: 'POST',
+              jsonData: userData,
+              success: function( response, opts )
+              {
+                  var serverResponse = Ext.JSON.decode( response.responseText );
+                  if ( !serverResponse.success )
+                  {
+                      Ext.Msg.alert( 'Error', serverResponse.error );
+                  }
+                  else
+                  {
+                      onSuccess( serverResponse.userkey );
+                  }
+              },
+              failure: function( response, opts )
+              {
+                  Ext.Msg.alert( 'Error', 'Unable to update user' );
+              }
+        } );
+    },
+
+    validityChanged: function( wizard, valid )
+    {
+        var tb = this.getUserWizardToolbar();
+        var save = tb.down( '#save' );
+        save.setDisabled( !(valid && ( wizard.isWizardDirty || wizard.isNew )) );
+    },
+
+    dirtyChanged: function( wizard, dirty )
+    {
+        var tb = this.getUserWizardToolbar();
+        var save = tb.down( '#save' );
+        save.setDisabled( !((dirty || wizard.isNew ) && wizard.isWizardValid) );
     },
 
     wizardPrev: function( btn, evt )
@@ -135,12 +182,20 @@ Ext.define( 'App.controller.UserWizardController', {
     wizardNext: function( btn, evt )
     {
         var w = this.getWizardPanel();
-        w.next( btn );
+        var valid = true
+        if ( w.getLayout().getActiveItem().getForm )
+        {
+            valid = w.getLayout().getActiveItem().getForm().isValid();
+        }
+        if ( valid )
+        {
+            w.next( btn );
+        }
     },
 
     userStoreFieldsLoaded: function( target )
     {
-        target.up('userWizardPanel').doLayout();
+        target.up( 'userWizardPanel' ).doLayout();
         this.focusFirstField();
         this.bindFormEvents( target );
     },
@@ -167,16 +222,16 @@ Ext.define( 'App.controller.UserWizardController', {
 
         var userStoreName = record.get( 'name' );
         var tab = {
-                id: Ext.id( null, 'new-user-' ),
-                title: 'New User',
-                iconCls: 'icon-new-user',
-                closable: true,
-                autoScroll: true,
-                userstore: userStoreName,
-                xtype: 'userWizardPanel'
-            };
+            id: Ext.id( null, 'new-user-' ),
+            title: 'New User',
+            iconCls: 'icon-new-user',
+            closable: true,
+            autoScroll: true,
+            userstore: userStoreName,
+            xtype: 'userWizardPanel'
+        };
         var tabItem = this.getCmsTabPanel().addTab( tab );
-        tabItem.down('wizardPanel').addData( {'userStoreName': userStoreName} );
+        tabItem.down('wizardPanel').addData( {'userStore': userStoreName} );
         var window = view.up( 'window' );
         window.close();
     },
@@ -236,7 +291,7 @@ Ext.define( 'App.controller.UserWizardController', {
 
     setDefaultDisplayName: function( wizard )
     {
-        this.updateWizardHeader(wizard, {value: this.EMPTY_DISPLAY_NAME_TEXT, edited: false});
+        this.updateWizardHeader( wizard, {value: this.EMPTY_DISPLAY_NAME_TEXT, edited: false} );
     },
 
     displayNameFocus: function( event, element )
@@ -259,7 +314,7 @@ Ext.define( 'App.controller.UserWizardController', {
             }
             else
             {
-                this.updateWizardHeader(opts.wizard, {value: autogeneratedDispName, edited: true});
+                this.updateWizardHeader( opts.wizard, {value: autogeneratedDispName, edited: true} );
             }
         }
     },
@@ -279,20 +334,27 @@ Ext.define( 'App.controller.UserWizardController', {
     autoGenerateDisplayName: function( wizard )
     {
         var prefix = wizard.down( '#prefix' ) ? Ext.String.trim( wizard.down( '#prefix' ).getValue() ) : '';
-        var firstName = wizard.down( '#first-name' ) ? Ext.String.trim( wizard.down( '#first-name' ).getValue() )
+        var firstName = wizard.down( '#first-name' ) ? Ext.String.trim( wizard.down( '#first-name' ).getValue() ) : '';
+        var middleName = wizard.down( '#middle-name' ) ? Ext.String.trim( wizard.down( '#middle-name' ).getValue() )
                 : '';
-        var middleName = wizard.down( '#middle-name' )
-                ? Ext.String.trim( wizard.down( '#middle-name' ).getValue() ) : '';
-        var lastName = wizard.down( '#last-name' ) ? Ext.String.trim( wizard.down( '#last-name' ).getValue() )
-                : '';
+        var lastName = wizard.down( '#last-name' ) ? Ext.String.trim( wizard.down( '#last-name' ).getValue() ) : '';
         var suffix = wizard.down( '#suffix' ) ? Ext.String.trim( wizard.down( '#suffix' ).getValue() ) : '';
         var displayNameValue = prefix + ' ' + firstName + ' ' + middleName + ' ' + lastName + ' ' + suffix;
         return Ext.String.trim( displayNameValue.replace( /  /g, ' ' ) );
     },
 
+    getDisplayNameValue: function()
+    {
+        var userWizard = this.getWizardPanel().up('userWizardPanel');
+        var wizardPanelId = userWizard.getId();
+        var displayNameField = Ext.query( '#' + wizardPanelId + ' input.cms-display-name' )[0];
+        var displayName = displayNameField.value;
+        return displayName === this.EMPTY_DISPLAY_NAME_TEXT ? '' : displayName;
+    },
+    
     profileNameFieldChanged: function( field )
     {
-        var userWizard = field.up('userWizardPanel');
+        var userWizard = field.up( 'userWizardPanel' );
 
         if ( !userWizard.displayNameAutoGenerate )
         {
@@ -303,18 +365,18 @@ Ext.define( 'App.controller.UserWizardController', {
 
         if ( displayNameValue !== '' )
         {
-            this.updateWizardHeader(userWizard, {value: displayNameValue, edited: true});
+            this.updateWizardHeader( userWizard, {value: displayNameValue, edited: true} );
         }
         else
         {
-            this.updateWizardHeader(userWizard, {value: this.EMPTY_DISPLAY_NAME_TEXT, edited: false});
+            this.updateWizardHeader( userWizard, {value: this.EMPTY_DISPLAY_NAME_TEXT, edited: false} );
         }
     },
 
     usernameFieldChanged: function( field )
     {
-        var userWizard = field.up('userWizardPanel');
-        this.updateWizardHeader( userWizard, {qUserName: field.value});
+        var userWizard = field.up( 'userWizardPanel' );
+        this.updateWizardHeader( userWizard, {qUserName: field.value} );
     },
 
     focusFirstField: function()
@@ -327,19 +389,28 @@ Ext.define( 'App.controller.UserWizardController', {
         }
     },
 
-    userFieldValidityChange: function(field, isValid)
+    userFieldValidityChange: function( field, isValid )
     {
-        if (field.fieldname === 'repeat-password')
+        if ( field.fieldname === 'repeat-password' || field.fieldname === 'password' || field.fieldname === 'username' )
         {
-            var greenMark = field.down('#greenMark');
-            greenMark.setVisibility(isValid);
+            var repeatPassword = field.up( 'fieldset' ).down( '#repeat-password' );
+            var passwordMeter = field.up( 'fieldset' ).down( '#password' );
+            if ( repeatPassword )
+            {
+                repeatPassword.validate();
+            }
+            if ( passwordMeter )
+            {
+                passwordMeter.validate();
+            }
+            field.showGreenMark( isValid );
         }
 
     },
 
     updateWizardHeader: function ( wizard, data )
     {
-        wizard.updateHeader(data);
+        wizard.updateHeader( data );
         this.bindDisplayNameEvents( wizard );
     },
 
@@ -354,12 +425,17 @@ Ext.define( 'App.controller.UserWizardController', {
         return Ext.ComponentQuery.query( 'wizardPanel' )[0];
     },
 
+    getUserWizardToolbar: function()
+    {
+        return Ext.ComponentQuery.query( 'userWizardToolbar' )[0];
+    },
+
     getCmsTabPanel: function()
     {
         return Ext.ComponentQuery.query( 'cmsTabPanel' )[0];
     },
 
-    autoSuggestUsername: function(firstName, lastName, userStoreName, usernameField)
+    autoSuggestUsername: function( firstName, lastName, userStoreName, usernameField )
     {
         if ( usernameField.getValue() !== '' )
         {
@@ -367,22 +443,22 @@ Ext.define( 'App.controller.UserWizardController', {
         }
 
         Ext.Ajax.request( {
-            url: 'data/account/suggestusername',
-            method: 'GET',
-            params: {
-                'firstname': firstName,
-                'lastname': lastName,
-                'userstore': userStoreName
-            },
-            success: function( response )
-            {
-                var respObj = Ext.decode( response.responseText, true );
-                if (usernameField.getValue() === '')
-                {
-                    usernameField.setValue(respObj.username);
-                }
-            }
-        } );
+                              url: 'data/account/suggestusername',
+                              method: 'GET',
+                              params: {
+                                  'firstname': firstName,
+                                  'lastname': lastName,
+                                  'userstore': userStoreName
+                              },
+                              success: function( response )
+                              {
+                                  var respObj = Ext.decode( response.responseText, true );
+                                  if ( usernameField.getValue() === '' )
+                                  {
+                                      usernameField.setValue( respObj.username );
+                                  }
+                              }
+                          } );
     }
 
 } );

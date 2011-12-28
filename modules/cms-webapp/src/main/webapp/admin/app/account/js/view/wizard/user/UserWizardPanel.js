@@ -26,6 +26,7 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
     initComponent: function()
     {
         var me = this;
+        var isNew = this.userFields == undefined;
         var photoUrl;
         var userGroups = [];
         var displayNameValue = 'Display Name';
@@ -38,14 +39,14 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
         };
         if ( me.userFields )
         {
-            photoUrl = 'data/user/photo?key=' + me.userFields.key;
+            photoUrl = me.hasPhoto ? 'data/user/photo?key=' + me.userFields.key : 'resources/icons/256x256/dummy-user.png';
             userGroups = me.userFields.groups;
             displayNameValue = me.userFields.displayName;
         }
 
         me.tbar = {
             xtype: 'userWizardToolbar',
-            isNewUser: this.userFields == undefined
+            isNewUser: isNew
         };
         me.items = [
             {
@@ -58,6 +59,16 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
                         height: 111,
                         photoUrl: photoUrl,
                         progressBarHeight: 6
+                    },
+                    {
+                        styleHtmlContent: true,
+                        height: 50,
+                        border: 0,
+                        cls: 'cms-image-upload-button-image-tip',
+                        html: '<div class="x-tip x-tip-default x-layer" role="tooltip">' +
+                                '<div class="x-tip-anchor x-tip-anchor-top"></div>' +
+                                '<div class="x-tip-body  x-tip-body-default x-tip-body-default">' +
+                                'Click to upload photo</div></div>'
                     }
                 ]
             },
@@ -91,6 +102,7 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
                     {
                         xtype: 'wizardPanel',
                         showControls: true,
+                        isNew: isNew,
                         items: [
                             {
                                 stepNumber: 1,
@@ -137,6 +149,9 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
         ];
 
         this.callParent( arguments );
+
+        var uploader = this.down('photoUploadButton');
+        uploader.on( 'fileuploaded', me.photoUploaded, me );
 
         //Render all user forms
         if ( me.userFields && me.userFields.userStore )
@@ -199,6 +214,29 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
     {
         Ext.apply(this.headerData, data);
         this.down('#wizardHeader').update(this.headerData);
+    },
+
+    isNewUser: function()
+    {
+        return this.userFields == undefined;
+    },
+
+    getData: function()
+    {
+        var wizard = this.down('wizardPanel');
+        var wizardData = wizard.getData();
+        var displayNameField = Ext.DomQuery.select( 'input.cms-display-name', this.getEl().dom )[0];
+        var displayNameFieldElement = new Ext.Element( displayNameField );
+        var displayName = displayNameFieldElement.getValue();
+        var data = {displayName: displayName};
+        Ext.apply( data, wizardData );
+        return data;
+    },
+
+    photoUploaded:function ( photoUploadButton, response )
+    {
+        var wizard = this.down('wizardPanel');
+        wizard.addData( {photo:response.photoRef} );
     }
 
 } );

@@ -19,6 +19,7 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
         {
             alert( 'ImageUploadButton requires Plupload!' );
         }
+        this.addEvents("fileuploaded");
     },
 
     onRender: function()
@@ -45,24 +46,6 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
     {
         this.initUploader();
         this.addBodyMouseEventListeners();
-        this.initToolTip();
-    },
-
-    initToolTip: function ()
-    {
-
-        var config = {
-            target: this.getImageElement(),
-            width: 100,
-            anchor: 'top',
-            anchorOffset: 30,
-            html: 'Click to upload photo'
-        };
-
-        Ext.create( 'Ext.tip.ToolTip', config );
-        Ext.QuickTips.init();
-
-        //Ext.tip.QuickTipManager.register(config);
     },
 
     initUploader: function()
@@ -117,6 +100,8 @@ Ext.define( 'Common.fileupload.PhotoUploadButton', {
                 uploadButton.updateImage( responseObj.src );
             }
             uploadButton.hideProgressBar();
+
+            uploadButton.fireEvent('fileuploaded', this, responseObj);
         } );
 
         uploader.bind( 'UploadComplete', function( up, files )

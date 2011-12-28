@@ -21,11 +21,13 @@ Ext.define( 'App.view.BrowseToolbar', {
                     {
                         xtype: 'splitbutton',
                         text: ' New',
+                        itemId: 'newAccountButton',
                         action: 'newUser',
                         iconCls: 'icon-add-24',
                         cls: 'x-btn-as-arrow',
                         menu: Ext.create( 'Common.view.MegaMenu', {
                             maxColumns: 1,
+                            itemId: "newItemMenu",
                             tableAttrs: {
                                 style: {
                                     width: '100%'

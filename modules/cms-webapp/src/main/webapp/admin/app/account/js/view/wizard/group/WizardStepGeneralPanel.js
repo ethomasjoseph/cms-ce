@@ -18,6 +18,7 @@ Ext.define( 'App.view.wizard.group.WizardStepGeneralPanel', {
             {
                 xtype: 'textarea',
                 fieldLabel: 'Description',
+                allowBlank: true,
                 rows: 5,
                 name: 'description'
             }

@@ -9,7 +9,7 @@ Ext.define( 'App.view.GridPanel', {
     loadMask: true,
     columnLines: true,
     frame: false,
-    store: 'UserStore',
+    store: 'AccountStore',
 
     initComponent: function()
     {
@@ -22,13 +22,39 @@ Ext.define( 'App.view.GridPanel', {
                 flex: 1
             },
             {
-                text: 'Local Name',
+                text: 'Username',
                 dataIndex: 'name',
+                hidden: true,
                 sortable: true
             },
             {
-                text: 'User Store',
+                text: 'Userstore',
                 dataIndex: 'userStore',
+                hidden: true,
+                sortable: true
+            },
+            {
+                text: 'E-Mail',
+                dataIndex: 'email',
+                hidden: true,
+                sortable: true
+            },
+            {
+                text: 'Country',
+                dataIndex: 'country',
+                hidden: true,
+                sortable: true
+            },
+            {
+                text: 'Locale',
+                dataIndex: 'locale',
+                hidden: true,
+                sortable: true
+            },
+            {
+                text: 'Timezone',
+                dataIndex: 'timezone',
+                hidden: true,
                 sortable: true
             },
             {
@@ -45,39 +71,50 @@ Ext.define( 'App.view.GridPanel', {
             xtype: 'pagingtoolbar',
             store: this.store,
             plugins: ['slidingPagerPlugin']
-        },
+        };
 
         this.viewConfig = {
             trackOver : true,
             stripeRows: true
         };
 
-        this.selModel = Ext.create('Ext.selection.CheckboxModel', {
-        });
+        this.selModel = Ext.create( 'Ext.selection.CheckboxModel', {
+        } );
 
         this.callParent( arguments );
     },
 
     nameRenderer: function( value, p, record )
     {
-        return Ext.String.format(
-                Templates.account.gridPanelNameRenderer,
-                record.data.key,
-                value,
-                record.data.name,
-                record.data.userStore
-                );
+        var account = record.data;
+        var photoUrl;
+        if ( account.hasPhoto )
+        {
+            photoUrl = Ext.String.format( 'data/user/photo?key={0}&thumb=true', account.key );
+        }
+        else
+        {
+            photoUrl = account.type === 'user' ? 'resources/icons/256x256/dummy-user.png' : 'resources/icons/256x256/group.png';
+        }
+        return Ext.String.format( Templates.account.gridPanelNameRenderer, photoUrl, value, account.name, account.userStore );
     },
 
-    prettyDateRenderer: function( value, p, record ) {
-        try {
-            if( parent && Ext.isFunction( parent.humane_date ) ) {
+    prettyDateRenderer: function( value, p, record )
+    {
+        try
+        {
+            if ( parent && Ext.isFunction( parent.humane_date ) )
+            {
                 return parent.humane_date( value );
-            } else {
+            }
+            else
+            {
                 return value;
             }
-        } catch( e ) {
+        }
+        catch( e )
+        {
             return value;
         }
     }
-});
+} );
