@@ -1,17 +1,23 @@
-Ext.define( 'App.view.GridPanel_1', {
+Ext.define( 'App.view.ContentGridPanel', {
     extend: 'Ext.grid.Panel',
-    alias : 'widget.gridPanel1',
+    alias : 'widget.contentGridPanel',
 
-    title: 'Module 1',
+    title: 'Content',
+    requires: ['App.view.ContentToolbar'],
     layout: 'fit',
+    multiSelect: true,
     loadMask: true,
     columnLines: true,
     frame: false,
     border: false,
-    store: 'Module_1_Store',
+    store: 'ContentStore',
 
     initComponent: function()
     {
+        this.tbar = {
+            xtype: 'contentToolbar'
+        };
+
         this.columns = [
             {
                 text: 'Name',
@@ -36,7 +42,11 @@ Ext.define( 'App.view.GridPanel_1', {
 
         this.viewConfig = {
             trackOver : true,
-            stripeRows: true
+            stripeRows: true,
+            plugins: {
+                ptype: 'gridviewdragdrop',
+                dragGroup: 'global_activityStreamDragGroup'
+            }
         };
 
         this.callParent( arguments );

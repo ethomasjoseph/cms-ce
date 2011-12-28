@@ -1,7 +1,7 @@
-Ext.define( 'App.view.Panel_1', {
+Ext.define( 'App.view.TestMainPanel', {
     extend: 'Ext.panel.Panel',
-    alias : 'widget.panel1',
-    title: 'Module 1',
+    alias : 'widget.testMainPanel',
+    title: 'Tests',
     border: false,
     bodyPadding: 10,
     items: [
@@ -13,8 +13,8 @@ Ext.define( 'App.view.Panel_1', {
         },
         {
             xtype: 'button',
-            text: 'Module 3',
-            action: 'loadModule3'
+            text: 'Content',
+            action: 'loadContent'
         }
     ],
 

@@ -1,4 +1,4 @@
-Ext.define('App.model.Module_3_Model', {
+Ext.define('App.model.ContentModel', {
     extend: 'Ext.data.Model',
 
     fields: [

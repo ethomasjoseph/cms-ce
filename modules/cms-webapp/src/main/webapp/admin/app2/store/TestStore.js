@@ -1,7 +1,7 @@
-Ext.define( 'App.store.Module_1_Store', {
+Ext.define( 'App.store.TestStore', {
     extend: 'Ext.data.Store',
 
-    model: 'App.model.Module_1_Model',
+    model: 'App.model.TestModel',
 
     pageSize: 100,
     autoLoad: true,
@@ -16,7 +16,7 @@ Ext.define( 'App.store.Module_1_Store', {
 
     proxy: {
         type: 'ajax',
-        url: 'app2/data/ContentTypes_1.json',
+        url: 'app2/data/Test.json',
         reader: {
             type: 'json',
             root: 'contentTypes',

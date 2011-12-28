@@ -1,13 +1,12 @@
-Ext.define( 'App.controller.Module_1_Controller', {
+Ext.define( 'App.controller.TestController', {
     extend: 'App.controller.AdminBaseController',
 
-    stores: ['Module_1_Store'],
-    models: ['Module_1_Model'],
-    views: ['Panel_1'],
+    stores: ['TestStore'],
+    models: ['TestModel'],
+    views: ['TestMainPanel'],
 
     windowStartX: 150,
-    windowStartY: 50
-    ,
+    windowStartY: 50,
 
     init: function()
     {
@@ -16,9 +15,9 @@ Ext.define( 'App.controller.Module_1_Controller', {
                 '*[action=createNewWindow]': {
                     click: this.createNewWindow
                 },
-                '*[action=loadModule3]': {
+                '*[action=loadContent]': {
                     click: function() {
-                        this.loadModule('Module_3_Controller');
+                        this.loadModule('ContentController');
                     }
                 }
             }
@@ -27,10 +26,10 @@ Ext.define( 'App.controller.Module_1_Controller', {
 
     createNewWindow: function(button, event) {
         var self = this;
-        var store = self.getStore('Module_1_Store');
+        var store = self.getStore('TestStore');
         var randomIndex = Math.floor(Math.random() * (store.getCount()-1));
         var title = store.getAt(randomIndex).data.name;
-        var panel = Ext.ComponentQuery.query('.panel1')[0];
+        var panel = Ext.ComponentQuery.query('.testMainPanel')[0];
         console.log(panel);
 
         Ext.create('Ext.window.Window', {

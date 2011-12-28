@@ -1,15 +1,14 @@
-Ext.define( 'App.view.GridPanel_2', {
+Ext.define( 'App.view.AccountGridPanel', {
     extend: 'Ext.grid.Panel',
-    alias : 'widget.gridPanel2',
+    alias : 'widget.accountGridPanel',
 
-    title: 'Module 2',
-    requires: ['App.view.Toolbar_3'],
+    title: 'Accounts',
     layout: 'fit',
     loadMask: true,
     columnLines: true,
     frame: false,
     border: false,
-    store: 'Module_2_Store',
+    store: 'AccountStore',
 
     initComponent: function()
     {
@@ -26,6 +25,13 @@ Ext.define( 'App.view.GridPanel_2', {
                 handler:function ()
                 {
                     alert( 'Edit' );
+                }
+            },
+            {
+                text:'Delete',
+                handler:function ()
+                {
+                    alert( 'Delete' );
                 }
             },
         ];
@@ -55,7 +61,11 @@ Ext.define( 'App.view.GridPanel_2', {
 
         this.viewConfig = {
             trackOver : true,
-            stripeRows: true
+            stripeRows: true,
+            plugins: {
+                ptype: 'gridviewdragdrop',
+                dragGroup: 'global_activityStreamDragGroup'
+            }
         };
 
         this.callParent( arguments );

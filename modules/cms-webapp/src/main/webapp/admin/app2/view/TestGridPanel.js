@@ -1,23 +1,17 @@
-Ext.define( 'App.view.GridPanel_3', {
+Ext.define( 'App.view.TestGridPanel', {
     extend: 'Ext.grid.Panel',
-    alias : 'widget.gridPanel3',
+    alias : 'widget.testGridPanel',
 
-    title: 'Module 3',
-    requires: ['App.view.Toolbar_3'],
+    title: 'Tests',
     layout: 'fit',
-    multiSelect: true,
     loadMask: true,
     columnLines: true,
     frame: false,
     border: false,
-    store: 'Module_3_Store',
+    store: 'TestStore',
 
     initComponent: function()
     {
-        this.tbar = {
-            xtype: 'toolbar3'
-        };
-
         this.columns = [
             {
                 text: 'Name',
@@ -42,11 +36,7 @@ Ext.define( 'App.view.GridPanel_3', {
 
         this.viewConfig = {
             trackOver : true,
-            stripeRows: true,
-            plugins: {
-                ptype: 'gridviewdragdrop',
-                dragGroup: 'global_activityStreamDragGroup'
-            }
+            stripeRows: true
         };
 
         this.callParent( arguments );

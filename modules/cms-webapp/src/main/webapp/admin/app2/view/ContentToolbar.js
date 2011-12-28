@@ -1,6 +1,6 @@
-Ext.define('App.view.Toolbar_3', {
+Ext.define('App.view.ContentToolbar', {
     extend: 'Ext.toolbar.Toolbar',
-    alias: 'widget.toolbar3',
+    alias: 'widget.contentToolbar',
 
     items: [
         {

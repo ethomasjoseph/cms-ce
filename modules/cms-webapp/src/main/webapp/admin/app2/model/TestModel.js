@@ -1,4 +1,4 @@
-Ext.define('App.model.Module_1_Model', {
+Ext.define('App.model.TestModel', {
     extend: 'Ext.data.Model',
 
     fields: [

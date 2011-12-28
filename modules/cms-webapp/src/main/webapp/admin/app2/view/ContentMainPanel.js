@@ -1,9 +1,9 @@
-Ext.define( 'App.view.MainPanel_3', {
+Ext.define( 'App.view.ContentMainPanel', {
     extend: 'Ext.panel.Panel',
-    alias : 'widget.mainPanel3',
+    alias : 'widget.contentMainPanel',
 
     requires: [
-        'App.view.GridPanel_3',
+        'App.view.ContentGridPanel',
     ],
 
     layout: 'border',
@@ -16,7 +16,7 @@ Ext.define( 'App.view.MainPanel_3', {
                 region: 'west',
                 xtype: 'panel',
                 border: true,
-                title: 'Module 3 - Side Panel',
+                title: 'Content - Side Panel',
                 collapsible: true,
                 split: true,
                 flex: 2
@@ -28,7 +28,7 @@ Ext.define( 'App.view.MainPanel_3', {
                 flex: 7,
                 items: [
                     {
-                        xtype: 'gridPanel3'
+                        xtype: 'contentGridPanel'
                     }
                 ]
             }

@@ -10,19 +10,19 @@ Ext.define( 'App.controller.LauncherController', {
                         this.setUpActivityStreamDropListener()
                     }
                 },
-                '*[action=loadModule-1]': {
+                '*[action=loadTests]': {
                     click: function() {
-                        this.loadModule('Module_1_Controller');
+                        this.loadModule('TestController');
                     }
                 },
-                '*[action=loadModule-2]': {
+                '*[action=loadAccounts]': {
                     click: function() {
-                        this.loadModule('Module_2_Controller');
+                        this.loadModule('AccountController');
                     }
                 },
-                '*[action=loadModule-3]': {
+                '*[action=loadContent]': {
                     click: function() {
-                        this.loadModule('Module_3_Controller');
+                        this.loadModule('ContentController');
                     }
                 }
             }
