@@ -3,6 +3,7 @@
     <title>Enonic CMS Admin</title>
     <link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css">
     <link rel="stylesheet" type="text/css" href="resources/css/icons.css">
+    <script type="text/javascript" src="app2/translate.js"></script>
     <script type="text/javascript" src="ext/ext-all-debug.js"></script>
     <script type="text/javascript">
 
@@ -38,7 +39,7 @@
                                 items: [
                                     {
                                         xtype: 'button',
-                                        text:'Module 1',
+                                        text: 'Module 1',
                                         action: 'loadModule-1'
                                     },
                                     {
@@ -50,6 +51,11 @@
                                         xtype: 'button',
                                         text:'Module 3',
                                         action: 'loadModule-3'
+                                    },
+                                    {
+                                        xtype: 'tbtext',
+                                        text: translate('Translate test: You have <strong>{0}</strong> new messages in your activity stream. Last from: <strong>{1}</strong>', 10, 'Morten Eriksen'),
+                                        styleHtmlContent: true
                                     }
                                 ]
                             },

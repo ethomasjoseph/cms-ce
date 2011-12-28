@@ -13,9 +13,23 @@ Ext.define( 'App.view.GridPanel_2', {
 
     initComponent: function()
     {
-        this.tbar = {
-            xtype: 'toolbar3'
-        };
+        this.tbar = [
+            {
+                text:'New',
+                handler:function ()
+                {
+                    alert( 'New' );
+                }
+            },
+            {
+                text:'Edit',
+                handler:function ()
+                {
+                    alert( 'Edit' );
+                }
+            },
+        ];
+
 
         this.columns = [
             {

@@ -8,7 +8,13 @@ Ext.define( 'App.view.Panel_1', {
         {
             xtype: 'button',
             text: 'Create New Window',
-            action: 'createNewWindow'
+            action: 'createNewWindow',
+            margin: '0 5 0 0'
+        },
+        {
+            xtype: 'button',
+            text: 'Module 3',
+            action: 'loadModule3'
         }
     ],
 

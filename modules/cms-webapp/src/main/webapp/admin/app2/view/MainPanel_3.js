@@ -19,7 +19,7 @@ Ext.define( 'App.view.MainPanel_3', {
                 title: 'Module 3 - Side Panel',
                 collapsible: true,
                 split: true,
-                flex: 1
+                flex: 2
             },
             {
                 region: 'center',

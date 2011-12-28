@@ -1,5 +1,5 @@
 Ext.define( 'App.controller.LauncherController', {
-    extend: 'Ext.app.Controller',
+    extend: 'App.controller.AdminController',
 
     init: function()
     {
@@ -7,57 +7,29 @@ Ext.define( 'App.controller.LauncherController', {
             {
                 'viewport': {
                     render: function() {
-                        this.activityStreamSetupDropListener()
+                        this.setUpActivityStreamDropListener()
                     }
                 },
                 '*[action=loadModule-1]': {
-                    click: function(button, event) {
-                        this.loadModule('Module_1_Controller', button, event);
+                    click: function() {
+                        this.loadModule('Module_1_Controller');
                     }
                 },
                 '*[action=loadModule-2]': {
-                    click: function(button, event) {
-                        this.loadModule('Module_2_Controller', button, event);
+                    click: function() {
+                        this.loadModule('Module_2_Controller');
                     }
                 },
                 '*[action=loadModule-3]': {
-                    click: function(button, event) {
-                        this.loadModule('Module_3_Controller', button, event);
+                    click: function() {
+                        this.loadModule('Module_3_Controller');
                     }
                 }
             }
         );
-
-        this.loadMask = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait..."});
     },
 
-    loadModule: function(controllerName, element, event)
-    {
-        this.loadMask.show();
-
-        var controller = this.getController(controllerName);
-        var view = this.getView(controller.views[0]).create();
-        var options = { single: true };
-        var args = [];
-
-        view.mon(view, 'render', function() {
-            console.log('executing init on Controller "' + this.id + '", passing: ', args);
-
-            controller.init.apply(controller, args);
-            this.loadMask.hide();
-        }, this, options);
-
-        view.mon(view, 'deactivate', function(view) {
-            console.log('removing controller "' + this.id + '" and destroying controller "' + view.id + '"');
-
-            view.destroy();
-            Ext.destroy(this.application.controllers.remove(this));
-        }, this, options);
-
-        this.getModulePanel().getLayout().setActiveItem(view);
-    },
-
-    activityStreamSetupDropListener: function()
+    setUpActivityStreamDropListener: function()
     {
         var self = this;
         var activityStreamPanel = this.getActivityStreamPanel();
@@ -93,17 +65,6 @@ Ext.define( 'App.controller.LauncherController', {
                 }
             );
         }
-    },
-
-    getModulePanel: function()
-    {
-        return Ext.ComponentQuery.query('#module-panel')[0];
-    },
-
-    getActivityStreamPanel: function()
-    {
-        return Ext.ComponentQuery.query('#activity-stream')[0];
     }
-
 
 } );

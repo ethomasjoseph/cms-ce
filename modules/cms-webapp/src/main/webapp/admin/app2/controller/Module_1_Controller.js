@@ -1,5 +1,5 @@
 Ext.define( 'App.controller.Module_1_Controller', {
-    extend: 'Ext.app.Controller',
+    extend: 'App.controller.AdminController',
 
     stores: ['Module_1_Store'],
     models: ['Module_1_Model'],
@@ -15,6 +15,11 @@ Ext.define( 'App.controller.Module_1_Controller', {
             {
                 '*[action=createNewWindow]': {
                     click: this.createNewWindow
+                },
+                '*[action=loadModule3]': {
+                    click: function() {
+                        this.loadModule('Module_3_Controller');
+                    }
                 }
             }
         );
