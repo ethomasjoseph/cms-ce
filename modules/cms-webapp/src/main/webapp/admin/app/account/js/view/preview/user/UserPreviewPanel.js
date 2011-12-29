@@ -79,6 +79,7 @@ Ext.define( 'App.view.preview.user.UserPreviewPanel', {
                             {
                                 flex: 1,
                                 xtype: 'wizardPanel',
+                                presentationMode: true,
                                 showControls: false,
                                 items: [
                                     {

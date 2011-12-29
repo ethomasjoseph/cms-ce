@@ -18,6 +18,13 @@ public class GroupModel
 
     private Date lastModified;
 
+    private boolean builtIn;
+
+    public String getType()
+    {
+        return builtIn ? "role" : "group";
+    }
+
     public void setKey( String key )
     {
         this.key = key;
@@ -86,5 +93,15 @@ public class GroupModel
     public Date getLastModified()
     {
         return lastModified;
+    }
+
+    public void setBuiltIn( boolean builtIn )
+    {
+        this.builtIn = builtIn;
+    }
+
+    public boolean isBuiltIn()
+    {
+        return this.builtIn;
     }
 }

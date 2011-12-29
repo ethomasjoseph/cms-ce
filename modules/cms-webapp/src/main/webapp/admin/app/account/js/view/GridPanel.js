@@ -94,7 +94,8 @@ Ext.define( 'App.view.GridPanel', {
         }
         else
         {
-            photoUrl = account.type === 'user' ? 'resources/icons/256x256/dummy-user.png' : 'resources/icons/256x256/group.png';
+            photoUrl = account.type === 'user' ? 'resources/icons/256x256/dummy-user.png' :
+                    account.type === 'role' ? 'resources/icons/256x256/businessman.png'  : 'resources/icons/256x256/group.png';
         }
         return Ext.String.format( Templates.account.gridPanelNameRenderer, photoUrl, value, account.name, account.userStore );
     },

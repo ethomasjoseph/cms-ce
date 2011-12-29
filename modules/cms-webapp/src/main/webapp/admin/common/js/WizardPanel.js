@@ -33,6 +33,7 @@ Ext.define( 'Common.WizardPanel', {
     // private, for tracking invalid and dirty items
     dirtyItems: undefined,
     invalidItems: undefined,
+    presentationMode: false,
 
 
     initComponent: function()
@@ -372,12 +373,16 @@ Ext.define( 'Common.WizardPanel', {
     },
 
     updateValidity: function( step ) {
-        var activeForm = step ? step.getForm() : this.getLayout().getActiveItem().getForm();
-        if( activeForm ) {
-            var isStepValid = Ext.Array.intersect( this.invalidItems, this.validateItems).length == 0;
-            isStepValid = !activeForm.hasInvalidField() && isStepValid;
-            activeForm.onValidityChange( isStepValid );
+        if (!this.presentationMode)
+        {
+            var activeForm = step ? step.getForm() : this.getLayout().getActiveItem().getForm();
+            if( activeForm ) {
+                var isStepValid = Ext.Array.intersect( this.invalidItems, this.validateItems).length == 0;
+                isStepValid = !activeForm.hasInvalidField() && isStepValid;
+                activeForm.onValidityChange( isStepValid );
+            }
         }
+
     },
 
     updateProgress: function( newStep )
