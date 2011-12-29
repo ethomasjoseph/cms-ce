@@ -1,5 +1,5 @@
 // Bu-huuu! This is not allowed.
-var _textForTranslateTest = 'The <span style="text-decoration: underline">{0}</span> <span style="text-decoration: underline">{1}</span> <span style="text-decoration: underline">{2}</span> jumps over the <span style="text-decoration: underline">{3}</span> <span style="text-decoration: underline">{4}</span>';
+var _textForTranslateTest = 'The {0} {1} {2} jumps over the {3} {4}';
 
 Ext.define( 'App.view.TestMainPanel', {
     extend: 'Ext.panel.Panel',

@@ -20,16 +20,17 @@ Ext.define( 'App.view.ContentGridPanel', {
 
         this.columns = [
             {
+                text: 'Key',
+                dataIndex: 'key',
+                sortable: true,
+                align: 'right',
+                flex: 1
+            },
+            {
                 text: 'Name',
                 dataIndex: 'name',
                 sortable: true,
                 flex: 10
-            },
-            {
-                text: 'Content type no',
-                dataIndex: 'key',
-                sortable: true,
-                align: 'center'
             },
             {
                 text: 'Modified',
