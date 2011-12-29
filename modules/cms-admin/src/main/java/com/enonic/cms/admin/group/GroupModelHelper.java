@@ -15,6 +15,7 @@ public class GroupModelHelper
         model.setQualifiedName( entity.getQualifiedName().toString() );
         model.setDisplayName( entity.getDisplayName() );
         model.setLastModified( entity.getLastModified() );
+        model.setBuiltIn( entity.isBuiltIn() );
 
         if ( entity.getUserStore() != null )
         {

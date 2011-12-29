@@ -129,6 +129,11 @@ Ext.define('Common.BoxSelect', {
     //private
     componentLayout: 'boxselectfield',
 
+    itemClassResolver: function()
+    {
+        return '';
+    },
+
     /**
 	 * Initialize additional settings and enable simultaneous typeAhead and multiSelect support
 	 */
@@ -719,10 +724,9 @@ Ext.define('Common.BoxSelect', {
             } else if (Ext.isString(me.labelTpl)) {
                 me.labelTpl = Ext.create('Ext.XTemplate', me.labelTpl);
             }
-
             me.multiSelectItemTpl = [
             '<tpl for=".">',
-            '<li class="x-boxselect-item ',
+            '<li class="x-boxselect-item {[this.getItemClass(values)]}',
             '<tpl if="this.isSelected(values.'+ me.valueField + ')">',
             ' selected',
             '</tpl>',
@@ -742,6 +746,9 @@ Ext.define('Common.BoxSelect', {
                 },
                 getItemLabel: function(values) {
                     return me.getTpl('labelTpl').apply(values);
+                },
+                getItemClass: function(values) {
+                    return me.itemClassResolver(values);
                 }
             }
             ];

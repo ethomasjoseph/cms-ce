@@ -29,6 +29,8 @@ public class GroupModel
 
     private List<AccountModel> members;
 
+    private boolean builtIn;
+
     public GroupModel()
     {
     }
@@ -36,7 +38,7 @@ public class GroupModel
     @Override
     public String getAccountType()
     {
-        return "group";
+        return builtIn ? "role" : "group";
     }
 
     @Override
@@ -125,5 +127,15 @@ public class GroupModel
     public void setMembers( List<AccountModel> members )
     {
         this.members = members;
+    }
+
+    public void setBuiltIn( boolean builtIn )
+    {
+        this.builtIn = builtIn;
+    }
+
+    public boolean isBuiltIn()
+    {
+        return this.builtIn;
     }
 }
