@@ -10,7 +10,7 @@ Ext.define( 'Common.view.NotifyUserWindow', {
                 method: 'POST',
                 autoHeight: true,
                 border: false,
-                url: 'data/user/notify',
+                url: 'data/account/notify',
                 bodyPadding: '5px 0 0',
                 items: [
                     {
@@ -43,6 +43,7 @@ Ext.define( 'Common.view.NotifyUserWindow', {
                             }, {
                                 fieldLabel: 'Message <span>*</span>',
                                 itemId: "message",
+                                name: 'message',
                                 xtype: 'textarea',
                                 anchor: '100%',
                                 rows: 3,
