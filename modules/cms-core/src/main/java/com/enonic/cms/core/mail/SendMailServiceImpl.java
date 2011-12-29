@@ -62,6 +62,7 @@ public final class SendMailServiceImpl
     {
         try
         {
+            settings = createSettingsIfNeeded( settings );
             MimeMessageHelper message = createMessage( settings );
             List<String> ccList = parseMailString( ccs );
             composeNotificationMail( message, recipient, ccList, settings );
