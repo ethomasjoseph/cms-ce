@@ -56,13 +56,20 @@ Ext.define( 'App.controller.UserWizardController', {
 
     saveNewUser: function()
     {
+        var userWizard = this.getWizardPanel().up('userWizardPanel');
+        var data = userWizard.getData();
+        data['display-name'] = this.getDisplayNameValue();
+
         var parentApp = parent.mainApp;
-        if ( parentApp )
-        {
-            parentApp.fireEvent( 'notifier.show', "User was saved",
-                                 "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.",
-                                 false );
+        var onUpdateUserSuccess = function() {
+            if ( parentApp )
+            {
+                parentApp.fireEvent( 'notifier.show', "User was saved",
+                                     "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.",
+                                     false );
+            }
         }
+        this.updateUser( data , onUpdateUserSuccess );
     },
 
     validateStep: function( wizard, step )
