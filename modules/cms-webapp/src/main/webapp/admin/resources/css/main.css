@@ -232,6 +232,10 @@ img.photo {
     background-image: url("../icons/16x16/group.png");
 }
 
+.icon-role {
+    background-image: url("../icons/16x16/businessman.png");
+}
+
 .icon-edit-user-24 {
     background-image: url("../icons/24x24/edit.png");
 }
@@ -878,19 +882,38 @@ ul.cms-wizard-navigation li a.last-current {
 }
 
 .cms-groups-boxselect li.x-boxselect-item {
-    background: url("../icons/16x16/group.png") no-repeat 3px 3px #DEE7F8;
     margin: 4px 0 0 4px;
     padding: 0px 1px 4px 5px !important;
-}
-
-.cms-groups-boxselect li.x-boxselect-item:hover {
-    background: url("../icons/16x16/group.png") no-repeat 3px 3px #BBCEF1 !important;
 }
 
 .cms-groups-boxselect div.x-boxselect-item-text {
     font-size: 11px;
     margin-left: 18px;
     padding-top: 1px;
+}
+
+li.cms-group-item {
+    background: url("../icons/16x16/group.png") no-repeat 3px 3px #DEE7F8;
+}
+
+li.cms-group-item:hover{
+    background: url("../icons/16x16/group.png") no-repeat 3px 3px #BBCEF1 !important;
+}
+
+li.cms-role-item {
+    background: url("../icons/16x16/businessman.png") no-repeat 3px 3px #DEE7F8;
+}
+
+li.cms-role-item:hover{
+    background: url("../icons/16x16/businessman.png") no-repeat 3px 3px #BBCEF1 !important;
+}
+
+li.cms-user-item {
+    background: url("../icons/16x16/user.png") no-repeat 3px 3px #DEE7F8;
+}
+
+li.cms-user-item:hover{
+    background: url("../icons/16x16/user.png") no-repeat 3px 3px #BBCEF1 !important;
 }
 
 .cms-cursor-clickable {

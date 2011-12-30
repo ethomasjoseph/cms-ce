@@ -59,7 +59,7 @@ public final class UsersResource
 
     private static final Logger LOG = LoggerFactory.getLogger( UsersResource.class );
 
-    private static final int PHOTO_CACHE_TIMEOUT = Period.minutes( 5 ).getSeconds();
+    private static final int PHOTO_CACHE_TIMEOUT = Period.minutes( 1 ).getSeconds();
 
     private static final String UPLOAD_PATH = "/admin/resources/uploads/";
 

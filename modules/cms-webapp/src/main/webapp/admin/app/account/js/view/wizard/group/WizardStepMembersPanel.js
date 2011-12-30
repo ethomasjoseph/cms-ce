@@ -30,6 +30,21 @@ Ext.define( 'App.view.wizard.group.WizardStepMembersPanel', {
                         store: 'AccountStore',
                         mode: 'local',
                         displayField: 'name',
+                        itemClassResolver: function (values)
+                        {
+                            if (values.type === 'user')
+                            {
+                                return 'cms-user-item';
+                            }
+                            if (values.type === 'role')
+                            {
+                                return 'cms-role-item';
+                            }
+                            else
+                            {
+                                return 'cms-group-item';
+                            }
+                        },
                         listConfig: {
                             getInnerTpl: function()
                             {

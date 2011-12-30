@@ -55,6 +55,7 @@ Ext.define( 'App.view.preview.group.GroupPreviewPanel', {
                             {
                                 flex: 1,
                                 xtype: 'wizardPanel',
+                                presentationMode: true,
                                 showControls: false,
                                 items: [
                                     {
