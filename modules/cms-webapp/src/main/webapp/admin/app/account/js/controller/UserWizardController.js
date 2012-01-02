@@ -31,6 +31,11 @@ Ext.define( 'App.controller.UserWizardController', {
                           '*[action=wizardNext]': {
                               click: this.wizardNext
                           },
+                          '*[action=wizardFinish]': {
+                              click: function( btn, evt, opts ) {
+                                  this.saveNewUser( btn, evt, opts, true );
+                              }
+                          },
                           'userWizardPanel wizardPanel': {
                               afterrender: this.bindDisplayNameEvents,
                               beforestepchanged: this.validateStep,
@@ -54,21 +59,35 @@ Ext.define( 'App.controller.UserWizardController', {
                       } );
     },
 
-    saveNewUser: function()
+    saveNewUser: function( btn, evt, opts, closeWizard )
     {
-        var userWizard = this.getWizardPanel().up('userWizardPanel');
+        var userWizard = btn.up('userWizardPanel');
+        var wizardPanel = userWizard.down( 'wizardPanel' );
         var data = userWizard.getData();
+        // getData return all the data before current step
+        // but we need to add current one as well
+        // in case we are saving in the middle of the wizard
+        var step = wizardPanel.getLayout().getActiveItem();
+        if ( Ext.isFunction( step.getData ) ) {
+            Ext.merge(data, step.getData());
+        }
         data['display-name'] = this.getDisplayNameValue();
 
         var parentApp = parent.mainApp;
-        var onUpdateUserSuccess = function() {
+        var onUpdateUserSuccess = function( key ) {
+            wizardPanel.addData( {
+                'key': key
+            } );
             if ( parentApp )
             {
                 parentApp.fireEvent( 'notifier.show', "User was saved",
                                      "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.",
                                      false );
             }
-        }
+            if ( closeWizard ) {
+                userWizard.close();
+            }
+        };
         this.updateUser( data , onUpdateUserSuccess );
     },
 
@@ -168,16 +187,23 @@ Ext.define( 'App.controller.UserWizardController', {
 
     validityChanged: function( wizard, valid )
     {
-        var tb = this.getUserWizardToolbar();
+        // Need to go this way up the hierarchy in case there are multiple wizards
+        var tb = wizard.up('userWizardPanel').down('userWizardToolbar');
         var save = tb.down( '#save' );
-        save.setDisabled( !(valid && ( wizard.isWizardDirty || wizard.isNew )) );
+        var finish = tb.down( '#finish' );
+        var conditionsMet = valid && ( wizard.isWizardDirty || wizard.isNew );
+        save.setDisabled( !conditionsMet );
+        finish.setVisible( conditionsMet );
     },
 
     dirtyChanged: function( wizard, dirty )
     {
-        var tb = this.getUserWizardToolbar();
+        var tb = wizard.up('userWizardPanel').down('userWizardToolbar');
         var save = tb.down( '#save' );
-        save.setDisabled( !((dirty || wizard.isNew ) && wizard.isWizardValid) );
+        var finish = tb.down( '#finish' );
+        var conditionsMet = (dirty || wizard.isNew ) && wizard.isWizardValid;
+        save.setDisabled( !conditionsMet );
+        finish.setVisible( conditionsMet );
     },
 
     wizardPrev: function( btn, evt )

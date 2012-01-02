@@ -50,13 +50,25 @@ Ext.define( 'App.view.wizard.user.UserWizardToolbar', {
                     iconCls: 'icon-change-password-24'
                 }
             ]};
+        var finishBtn = {
+            xtype: 'buttongroup',
+            hidden: true,
+            columns: 1,
+            itemId: 'finish',
+            defaults: buttonDefaults,
+            items: [{
+                    text: 'Finish',
+                    action: 'wizardFinish',
+                    iconCls: 'icon-ok-24'
+                }
+            ]};
         if ( this.isNewUser )
         {
-            this.items = [ saveBtn ];
+            this.items = [ saveBtn, '->', finishBtn ];
         }
         else
         {
-            this.items = [ saveBtn, deleteBtn, changePasswordBtn];
+            this.items = [ saveBtn, deleteBtn, changePasswordBtn, '->', finishBtn];
         }
         this.callParent( arguments );
     }

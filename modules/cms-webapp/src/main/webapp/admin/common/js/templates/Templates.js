@@ -31,7 +31,7 @@ Templates.common = {
                     'values.type==="role" ? "icon-role" : "icon-group"]} cms-list-item"></span></div>' + '<div class="cms-left"><span>{name} ({userStore})</span>' +
                 '</div>' +
             '</div>'
-    ,notifyUserMessage: 'Hi {0}! Your username is {1}. ' +
+    ,notifyUserMessage: 'Hi {0}! Your username is {1}. \n' +
             'If required, please choose userstore: {2} when logging in. \nRegards, {3}.'
 
 };
