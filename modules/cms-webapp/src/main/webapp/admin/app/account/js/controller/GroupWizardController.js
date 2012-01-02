@@ -13,6 +13,11 @@ Ext.define( 'App.controller.GroupWizardController', {
             'groupWizardPanel *[action=deleteGroup]':{
                 click:this.deleteGroup
             },
+            'groupWizardPanel *[action=finishGroup]':{
+                click: function( btn, evt, opts ) {
+                    this.saveGroup( btn, evt, opts, true );
+                }
+            },
             'groupWizardPanel wizardPanel':{
                 beforestepchanged:this.validateStep,
                 stepchanged:this.stepChanged,
@@ -23,14 +28,18 @@ Ext.define( 'App.controller.GroupWizardController', {
         });
     },
 
-    saveGroup: function()
+    saveGroup: function( btn, evt, opts, closeWizard )
     {
+        var groupWizard = btn.up( 'groupWizardPanel' );
         var parentApp = parent.mainApp;
         if ( parentApp )
         {
             parentApp.fireEvent( 'notifier.show', "Group was saved",
                                  "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.",
                                  false );
+        }
+        if ( closeWizard ) {
+            groupWizard.close();
         }
     },
 
@@ -83,16 +92,23 @@ Ext.define( 'App.controller.GroupWizardController', {
 
     validityChanged: function( wizard, valid )
     {
-        var tb = this.getGroupWizardToolbar();
+        // Need to go this way up the hierarchy in case there are multiple wizards
+        var tb = wizard.up('groupWizardPanel').down('groupWizardToolbar');
         var save = tb.down( '#save' );
-        save.setDisabled( !(valid && ( wizard.isWizardDirty || wizard.isNew )) );
+        var finish = tb.down( '#finish' );
+        var conditionsMet = valid && ( wizard.isWizardDirty || wizard.isNew );
+        save.setDisabled( !conditionsMet);
+        finish.setVisible( conditionsMet );
     },
 
     dirtyChanged: function( wizard, dirty )
     {
-        var tb = this.getGroupWizardToolbar();
+        var tb = wizard.up('groupWizardPanel').down('groupWizardToolbar');
         var save = tb.down( '#save' );
-        save.setDisabled( !((dirty || wizard.isNew ) && wizard.isWizardValid) );
+        var finish = tb.down( '#finish' );
+        var conditionsMet = (dirty || wizard.isNew ) && wizard.isWizardValid;
+        save.setDisabled( !conditionsMet );
+        finish.setVisible( conditionsMet );
     },
 
     focusFirstField: function()

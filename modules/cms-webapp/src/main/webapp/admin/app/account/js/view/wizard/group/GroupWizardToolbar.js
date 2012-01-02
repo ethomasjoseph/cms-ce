@@ -39,11 +39,22 @@ Ext.define( 'App.view.wizard.group.GroupWizardToolbar', {
                     iconCls: 'icon-delete-user-24'
                 }
             ]};
-
+        var finishBtn = {
+            xtype: 'buttongroup',
+            hidden: true,
+            columns: 1,
+            itemId: 'finish',
+            defaults: buttonDefaults,
+            items: [{
+                    text: 'Finish',
+                    action: 'finishGroup',
+                    iconCls: 'icon-ok-24'
+                }
+            ]};
         if( this.isNew ) {
-            this.items = [ saveBtn ];
+            this.items = [ saveBtn, '->', finishBtn ];
         } else {
-            this.items = [ saveBtn, deleteBtn ];
+            this.items = [ saveBtn, deleteBtn, '->', finishBtn ];
         }
         this.callParent( arguments );
     }
