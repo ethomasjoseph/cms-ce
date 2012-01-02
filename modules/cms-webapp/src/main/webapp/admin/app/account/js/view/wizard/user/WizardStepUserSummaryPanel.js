@@ -3,6 +3,7 @@ Ext.define( 'App.view.wizard.user.WizardStepUserSummaryPanel', {
     alias : 'widget.wizardStepUserSummaryPanel',
 
     border: false,
+    alwaysKeep: true,
 
     items: [
         {

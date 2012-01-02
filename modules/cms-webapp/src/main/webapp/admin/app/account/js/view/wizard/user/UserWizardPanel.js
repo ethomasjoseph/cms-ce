@@ -105,7 +105,6 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
                         isNew: isNew,
                         items: [
                             {
-                                stepNumber: 1,
                                 stepTitle: "Profile",
                                 itemId: "profilePanel",
                                 xtype: 'editUserFormPanel',
@@ -113,7 +112,6 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
                                 enableToolbar: false
                             },
                             {
-                                stepNumber: 2,
                                 stepTitle: "User",
                                 itemId: "userPanel",
                                 xtype: 'editUserFormPanel',
@@ -123,7 +121,6 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
                                 enableToolbar: false
                             },
                             {
-                                stepNumber: 3,
                                 stepTitle: "Places",
                                 itemId: 'placesPanel',
                                 xtype: 'editUserFormPanel',
@@ -132,13 +129,11 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
                                 enableToolbar: false
                             },
                             {
-                                stepNumber: 4,
                                 stepTitle: "Memberships",
                                 groups: userGroups,
                                 xtype: 'wizardStepMembershipPanel'
                             },
                             {
-                                stepNumber: 5,
                                 stepTitle: "Summary",
                                 xtype: 'wizardStepUserSummaryPanel'
                             }
