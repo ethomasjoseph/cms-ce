@@ -1,0 +1,90 @@
+<html>
+<head>
+    <title>Enonic CMS Admin</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <link rel="stylesheet" type="text/css" href="../../ext/resources/css/ext-all.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/main.css">
+    <script type="text/javascript" src="../../ext/ext-all-debug.js"></script>
+    <script type="text/javascript" src="i18n-templates.js"></script>
+
+    <script type="text/javascript" src="app/lib/i18n/Phrases.js"></script>
+    <script type="text/javascript">
+        App.lib.i18n.Phrases.setMap({
+            'account': {
+                'quickBrownFox': 'The quick {0} {1} jumps over the {2} {3}',
+                'updateSuccessFeedback': '{0} was successfully updated'
+            },
+            'content': {
+                'quickBrownFox': 'Den hurtige {0} {1} hopper over den {2} {3}'
+            },
+            'tools': {
+                'msSinceEpoch': '{0} ms since epoch'
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        Ext.Loader.setConfig(
+            {
+                enabled: true
+            }
+        );
+
+        Ext.application(
+            {
+                name: 'App',
+                appFolder: 'app',
+
+                launch:function ()
+                {
+
+                    Ext.create( 'Ext.container.Viewport', {
+                        layout: 'border',
+                        padding: '5 5 5 280',
+                        items: [
+                            {
+                                region: 'center',
+                                xtype: 'panel',
+                                autoScroll: true,
+                                bodyPadding: 10,
+                                items: [
+                                    {
+                                        xtype: 'button',
+                                        text: App.lib.i18n.Phrases.getPhrase('account.quickBrownFox', 'brown', 'fox', 'lazy', 'dog')
+                                    },
+                                    {
+                                        xtype: 'component',
+                                        margin: '10 0 0 0',
+                                        html:  App.lib.i18n.Phrases.getPhrase('account.updateSuccessFeedback', 'enonic\\mer')
+                                    },
+                                    {
+                                        xtype: 'component',
+                                        margin: '10 0 0 0',
+                                        tpl: tpl,
+                                        listeners:{
+                                            afterrender:function ( component, eOpts )
+                                            {
+                                                this.update( {} )
+                                            }
+                                        }
+                                    },
+                                    {
+                                        xtype: 'component',
+                                        margin: '10 0 0 0',
+                                        html:  App.lib.i18n.Phrases.getPhrase('tools.msSinceEpoch', new Date().getTime())
+                                    }
+                                ]
+                            }
+                        ]
+                    } );
+                }
+            }
+        );
+    </script>
+
+</head>
+<body>
+
+</body>
+</html>
