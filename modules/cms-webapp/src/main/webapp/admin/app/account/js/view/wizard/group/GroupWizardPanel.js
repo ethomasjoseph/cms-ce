@@ -77,17 +77,14 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
                         isNew: isNew,
                         items: [
                             {
-                                stepNumber: 1,
                                 stepTitle: "General",
                                 xtype: 'wizardStepGeneralPanel'
                             },
                             {
-                                stepNumber: 2,
                                 stepTitle: "Members",
                                 xtype: 'wizardStepMembersPanel'
                             },
                             {
-                                stepNumber: 3,
                                 stepTitle: "Summary",
                                 xtype: 'wizardStepGroupSummaryPanel'
                             }

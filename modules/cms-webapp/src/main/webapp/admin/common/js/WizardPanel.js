@@ -106,15 +106,21 @@ Ext.define( 'Common.WizardPanel', {
             margin: 0,
             tpl: new Ext.XTemplate( Templates.common.wizardPanelSteps, {
                 isCurrent: function( index ) {
-                    return wizard.getLayout().getActiveItem().stepNumber == index;
+                    var itemIndex = Ext.Array.indexOf(wizard.getLayout().getLayoutItems(),
+                            wizard.getLayout().getActiveItem()) + 1;
+                    return itemIndex == index;
                 },
 
                 isPrevious: function( index ) {
-                    return wizard.getLayout().getActiveItem().stepNumber -1 == index;
+                    var itemIndex = Ext.Array.indexOf(wizard.getLayout().getLayoutItems(),
+                            wizard.getLayout().getActiveItem()) + 1;
+                    return itemIndex -1 == index;
                 },
 
                 isNext: function( index ) {
-                    return wizard.getLayout().getActiveItem().stepNumber < index;
+                    var itemIndex = Ext.Array.indexOf(wizard.getLayout().getLayoutItems(),
+                            wizard.getLayout().getActiveItem()) + 1;
+                    return itemIndex < index;
                 },
 
                 resolveClsName: function(index, total) {
@@ -174,6 +180,15 @@ Ext.define( 'Common.WizardPanel', {
         // bind afterrender events
 
         this.on( 'afterrender', this.bindItemListeners );
+        this.on( 'render', function(cmp)
+        {
+            cmp.items.each( function(item){
+                if (!item.alwaysKeep && item.getForm && (item.getForm().getFields().getCount() == 0))
+                {
+                    cmp.remove(item);
+                }
+            });
+        });
 
         var firstStep = this.items.getCount() > 0 ? this.items.first() : undefined;
         if( firstStep ) {
