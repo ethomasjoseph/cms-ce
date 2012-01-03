@@ -30,7 +30,6 @@ Ext.define( 'App.controller.GridPanelController', {
                                   this.updateDetailsPanel(selModel, selected, eOpts);
                                   this.updateActionItems();
                               },
-                              beforeitemmousedown: this.cancelItemContextClickOnMultipleSelection,
                               itemcontextmenu: this.popupMenu,
                               itemdblclick: this.showAccountPreviewPanel
                           },
@@ -130,21 +129,6 @@ Ext.define( 'App.controller.GridPanelController', {
         {
             ctrl.showEditUserForm( el, e );
         }
-    },
-
-    cancelItemContextClickOnMultipleSelection: function( view, record, item, index, event, eOpts )
-    {
-        var persistentGridSelection = this.getPersistentGridSelectionPlugin();
-        var rightClick = event.button === 2;
-        var isSelected = persistentGridSelection.selected[record.internalId];
-
-        var cancel = rightClick && isSelected && persistentGridSelection.getSelectionCount() > 1;
-        if ( cancel )
-        {
-            return false;
-        }
-
-        return true;
     },
 
     showAccountPreviewPanel: function( el, e )
