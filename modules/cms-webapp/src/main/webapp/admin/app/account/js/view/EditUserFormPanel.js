@@ -221,6 +221,10 @@ Ext.define( 'App.view.EditUserFormPanel', {
                     {
                         Ext.Array.include( tabs, me.generateAddressPanel( field, index != 0, addresses[index] ) );
                     }
+                    if (tabs.length == 0)
+                    {
+                        Ext.Array.include(tabs, me.generateAddressPanel( field ));
+                    }
                     return {
                         sourceField: field,
                         xtype: 'addressContainer',

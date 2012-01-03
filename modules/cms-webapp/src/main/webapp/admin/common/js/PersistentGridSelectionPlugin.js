@@ -20,6 +20,10 @@ Ext.define('Common.PersistentGridSelectionPlugin', {
             // attach an interceptor for the selModel's onRefresh handler
             this.grid.view.un('refresh', this.grid.selModel.refresh, this.grid.selModel);
             this.grid.view.on('refresh', this.onViewRefresh, this );
+            this.grid.view.on('beforeitemmousedown', function(view, record, item, index, event, eOpts) {
+                this.clearSelectionOnRowClick(view, record, item, index, event, eOpts);
+                this.cancelItemContextClickWhenSelectionIsMultiple(view, record, item, index, event, eOpts);
+            }, this );
             this.grid.view.headerCt.on('headerclick', this.onHeaderClick, this);
             // add a handler to detect when the user changes the selection
             this.grid.selModel.on('select', this.onRowSelect, this );
@@ -28,96 +32,8 @@ Ext.define('Common.PersistentGridSelectionPlugin', {
                 this.ignoreSelectionChanges = true;
             }, this);
 
-            Ext.ComponentQuery.query('pagingtoolbar')[0].on('beforechange', this.pageChange, this );
+            Ext.ComponentQuery.query('pagingtoolbar')[0].on('beforechange', this.pagingOnBeforeChange, this );
         }, this);
-    },
-
-    // private
-    onViewRefresh: function() {
-        this.ignoreSelectionChanges = true;
-        // explicitly refresh the selection model
-        this.grid.selModel.refresh();
-        // selection changed from view updates, restore full selection
-        var ds = this.grid.getStore();
-        // TODO: Optimize.
-        for (var i = ds.getCount() - 1; i >= 0; i--) {
-            if (this.selected[ds.getAt(i).internalId]) {
-                this.grid.selModel.select(i,true,false);
-            }
-        }
-        this.ignoreSelectionChanges = false;
-    },
-
-    pageChange: function() {
-        this.ignoreSelectionChanges = true;
-    },
-
-    // private
-    onSelectionClear: function() {
-        if (!this.ignoreSelectionChanges) {
-            // selection cleared by user
-            // also called internally when the selection replaces the old selection
-            this.selections = [];
-            this.selected = {};
-        }
-    },
-
-    // private
-    onRowSelect: function(sm,rec,i,o) {
-        if (!this.ignoreSelectionChanges) {
-            if (!this.selected[rec.internalId])
-            {
-                this.selections.push(rec);
-                this.selected[rec.internalId] = true;
-            }
-
-        }
-    },
-
-    onHeaderClick: function(headerCt, header, e) {
-        if (header.isCheckerHd) {
-            e.stopEvent();
-            var isChecked = header.el.hasCls(Ext.baseCSSPrefix + 'grid-hd-checker-on');
-            if (isChecked) {
-                this.clearSelections();
-            } else {
-                this.grid.selModel.selectAll();
-            }
-        }
-
-        return false;
-    },
-
-    // private
-    onRowDeselect: function(rowModel,record,index,eOpts){
-        if (!this.ignoreSelectionChanges) {
-            if (this.selected[record.internalId]) {
-                for (var j = this.selections.length - 1; j >= 0; j--) {
-                    if (this.selections[j].internalId == record.internalId) {
-                        this.selections.splice(j, 1);
-                        this.selected[record.internalId] = false;
-                        break;
-                    }
-                }
-            }
-        }
-    },
-
-    // private
-    notifySelectionModelAboutSelectionChange: function()
-    {
-        this.grid.selModel.fireEvent("selectionchange", {});
-    },
-
-    /**
-     * Clears selections across all pages
-     */
-    clearSelections: function() {
-        this.selections = [];
-        this.selected = {};
-        this.grid.selModel.deselectAll();
-        this.onViewRefresh();
-        this.notifySelectionModelAboutSelectionChange();
     },
 
     /**
@@ -138,7 +54,7 @@ Ext.define('Common.PersistentGridSelectionPlugin', {
 
     /**
      * Removes an record from the selection
-      * @param record
+     * @param record
      */
     deselect: function(record)
     {
@@ -159,6 +75,139 @@ Ext.define('Common.PersistentGridSelectionPlugin', {
      */
     selectAll: function() {
         this.grid.selModel.selectAll();
+    },
+
+    /**
+     * Clears selections across all pages
+     */
+    clearSelection: function() {
+        this.selections = [];
+        this.selected = {};
+        this.grid.selModel.deselectAll();
+        this.onViewRefresh();
+        this.notifySelectionModelAboutSelectionChange();
+    },
+
+    /**
+     * @private
+     */
+    onViewRefresh: function() {
+        this.ignoreSelectionChanges = true;
+        // explicitly refresh the selection model
+        this.grid.selModel.refresh();
+        // selection changed from view updates, restore full selection
+        var ds = this.grid.getStore();
+        // TODO: Optimize.
+        for (var i = ds.getCount() - 1; i >= 0; i--) {
+            if (this.selected[ds.getAt(i).internalId]) {
+                this.grid.selModel.select(i,true,false);
+            }
+        }
+        this.ignoreSelectionChanges = false;
+    },
+
+    /**
+     * @private
+     */
+    pagingOnBeforeChange: function() {
+        this.ignoreSelectionChanges = true;
+    },
+
+    /**
+     * @private
+     */
+    onSelectionClear: function() {
+        if (!this.ignoreSelectionChanges) {
+            // selection cleared by user
+            // also called internally when the selection replaces the old selection
+            this.selections = [];
+            this.selected = {};
+        }
+    },
+
+    /**
+     * @private
+     */
+    onRowSelect: function(sm,rec,i,o) {
+        if (!this.ignoreSelectionChanges) {
+            if (!this.selected[rec.internalId])
+            {
+                this.selections.push(rec);
+                this.selected[rec.internalId] = true;
+            }
+
+        }
+    },
+
+    /**
+     * @private
+     */
+    onHeaderClick: function(headerCt, header, e) {
+        if (header.isCheckerHd) {
+            e.stopEvent();
+            var isChecked = header.el.hasCls(Ext.baseCSSPrefix + 'grid-hd-checker-on');
+            if (isChecked) {
+                this.clearSelections();
+            } else {
+                this.grid.selModel.selectAll();
+            }
+        }
+
+        return false;
+    },
+
+    /**
+     * @private
+     */
+    onRowDeselect: function(rowModel,record,index,eOpts){
+        if (!this.ignoreSelectionChanges) {
+            if (this.selected[record.internalId]) {
+                for (var j = this.selections.length - 1; j >= 0; j--) {
+                    if (this.selections[j].internalId == record.internalId) {
+                        this.selections.splice(j, 1);
+                        this.selected[record.internalId] = false;
+                        break;
+                    }
+                }
+            }
+        }
+    },
+
+    /**
+     * @private
+     */
+    notifySelectionModelAboutSelectionChange: function()
+    {
+        this.grid.selModel.fireEvent("selectionchange", {});
+    },
+
+    /**
+     * @private
+     */
+    cancelItemContextClickWhenSelectionIsMultiple: function( view, record, item, index, event, eOpts )
+    {
+        var isRightClick = event.button === 2;
+        var recordIsSelected = this.selected[record.internalId];
+        var cancel = isRightClick && recordIsSelected && this.getSelectionCount() > 1;
+
+        if ( cancel )
+        {
+            return false;
+        }
+        return true;
+    },
+
+    /**
+     * @private
+     */
+    clearSelectionOnRowClick: function(view, record, item, index, event, eOpts) {
+        var targetElement = event.target;
+        var isLeftClick = event.button === 0;
+        var isCheckboxColumn = targetElement.className && targetElement.className.indexOf('x-grid-row-checker') > -1;
+        if ( isLeftClick && !isCheckboxColumn )
+        {
+            this.clearSelection();
+        }
     }
 
 });

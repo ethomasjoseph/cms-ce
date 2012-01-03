@@ -191,7 +191,7 @@ Ext.define('App.view.DetailPanel', {
         if ( clearSel )
         {
             clearSel.on( "click", function() {
-                persistentGridSelection.clearSelections();
+                persistentGridSelection.clearSelection();
             }, this );
         }
 

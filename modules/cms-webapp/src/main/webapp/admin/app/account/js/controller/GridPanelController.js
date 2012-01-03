@@ -25,12 +25,11 @@ Ext.define( 'App.controller.GridPanelController', {
                               }
                           },
                           'accountGrid': {
-                              selectionchange: function()
+                              selectionchange: function(selModel, selected, eOpts)
                               {
-                                  this.updateDetailsPanel();
+                                  this.updateDetailsPanel(selModel, selected, eOpts);
                                   this.updateActionItems();
                               },
-                              beforeitemmousedown: this.cancelItemContextClickOnMultipleSelection,
                               itemcontextmenu: this.popupMenu,
                               itemdblclick: this.showAccountPreviewPanel
                           },
@@ -40,7 +39,7 @@ Ext.define( 'App.controller.GridPanelController', {
                       } );
     },
 
-    updateDetailsPanel: function()
+    updateDetailsPanel: function(selModel, selected, eOpts)
     {
         var detailPanel = this.getAccountDetailPanel();
         var persistentGridSelectionPlugin = this.getPersistentGridSelectionPlugin();
@@ -54,6 +53,7 @@ Ext.define( 'App.controller.GridPanelController', {
         var selectionModelCount = selectionModel.getCount();
 
         // Works because selection model count is 1 even if page has changed.
+        //console.log(selModel);
         var showUserPreviewOnly = selectionModelCount === 1;
 
         if ( persistentSelectionCount === 0 )
@@ -129,21 +129,6 @@ Ext.define( 'App.controller.GridPanelController', {
         {
             ctrl.showEditUserForm( el, e );
         }
-    },
-
-    cancelItemContextClickOnMultipleSelection: function( view, record, item, index, event, eOpts )
-    {
-        var persistentGridSelection = this.getPersistentGridSelectionPlugin();
-        var rightClick = event.button === 2;
-        var isSelected = persistentGridSelection.selected[record.internalId];
-
-        var cancel = rightClick && isSelected && persistentGridSelection.getSelectionCount() > 1;
-        if ( cancel )
-        {
-            return false;
-        }
-
-        return true;
     },
 
     showAccountPreviewPanel: function( el, e )
