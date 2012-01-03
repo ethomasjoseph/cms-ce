@@ -20,6 +20,7 @@ Ext.define('Common.PersistentGridSelectionPlugin', {
             // attach an interceptor for the selModel's onRefresh handler
             this.grid.view.un('refresh', this.grid.selModel.refresh, this.grid.selModel);
             this.grid.view.on('refresh', this.onViewRefresh, this );
+            this.grid.view.on('beforeitemmousedown', this.clearSelectionOnRowClick, this );
             this.grid.view.headerCt.on('headerclick', this.onHeaderClick, this);
             // add a handler to detect when the user changes the selection
             this.grid.selModel.on('select', this.onRowSelect, this );
@@ -109,10 +110,20 @@ Ext.define('Common.PersistentGridSelectionPlugin', {
         this.grid.selModel.fireEvent("selectionchange", {});
     },
 
+    // private
+    clearSelectionOnRowClick: function(view, record, item, index, event, eOpts) {
+        var target = event.target;
+        var isCheckboxColumn = target.className && target.className.indexOf('x-grid-row-checker') > -1;
+        if ( !isCheckboxColumn )
+        {
+            this.clearSelection();
+        }
+    },
+
     /**
      * Clears selections across all pages
      */
-    clearSelections: function() {
+    clearSelection: function() {
         this.selections = [];
         this.selected = {};
         this.grid.selModel.deselectAll();

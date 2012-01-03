@@ -25,9 +25,9 @@ Ext.define( 'App.controller.GridPanelController', {
                               }
                           },
                           'accountGrid': {
-                              selectionchange: function()
+                              selectionchange: function(selModel, selected, eOpts)
                               {
-                                  this.updateDetailsPanel();
+                                  this.updateDetailsPanel(selModel, selected, eOpts);
                                   this.updateActionItems();
                               },
                               beforeitemmousedown: this.cancelItemContextClickOnMultipleSelection,
@@ -40,7 +40,7 @@ Ext.define( 'App.controller.GridPanelController', {
                       } );
     },
 
-    updateDetailsPanel: function()
+    updateDetailsPanel: function(selModel, selected, eOpts)
     {
         var detailPanel = this.getAccountDetailPanel();
         var persistentGridSelectionPlugin = this.getPersistentGridSelectionPlugin();
@@ -54,6 +54,7 @@ Ext.define( 'App.controller.GridPanelController', {
         var selectionModelCount = selectionModel.getCount();
 
         // Works because selection model count is 1 even if page has changed.
+        //console.log(selModel);
         var showUserPreviewOnly = selectionModelCount === 1;
 
         if ( persistentSelectionCount === 0 )
