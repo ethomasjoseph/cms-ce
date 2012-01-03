@@ -9,7 +9,6 @@ Ext.define( 'App.lib.util.Messages', {
             this.phrasesMap = phrasesMap;
         },
 
-
         get: function ()
         {
             var args = Array.prototype.slice.call(arguments);
@@ -23,7 +22,6 @@ Ext.define( 'App.lib.util.Messages', {
 
             return this.getFormatted(phrase, args.slice(1, args.length));
         },
-
 
         getFormatted: function(phrase, args)
         {
