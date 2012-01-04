@@ -282,7 +282,6 @@ Ext.define( 'App.controller.EditUserPanelController', {
                                           id: currentUser.userStore + '-' + currentUser.name,
                                           title: currentUser.displayName + ' (' + currentUser.qualifiedName + ')',
                                           iconCls: 'icon-edit-user',
-                                          cls: 'edit-user',
                                           closable: true,
                                           userstore: jsonObj.userStore,
                                           qUserName: currentUser.name,
