@@ -78,7 +78,7 @@ Ext.define( 'App.view.BrowseToolbar', {
                     {
                         text: 'View',
                         action: 'viewUser',
-                        iconCls: 'icon-user-24',
+                        iconCls: 'icon-view-24',
                         disableOnMultipleSelection: true
                     }
                 ]

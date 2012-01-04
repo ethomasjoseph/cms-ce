@@ -125,17 +125,17 @@ Templates.account = {
                     '<li class="{[values.type === \"user\" ? "user-el" : "group-el"]}">{displayName}</li>' + '</tpl></ul></div>'
 
     ,userPreviewCommonInfo:
-            '<div><table><thead><tr>' + '<th>Roles</th></tr></thead><tbody>' + '<tpl for="groups">' +
-                    '<tr><td>{name}</td></tr>' + '</tpl>' + '</tbody></table></div><div><table><thead>' +
+            '<div class="container"><table><thead><tr>' + '<th>Roles</th></tr></thead><tbody>' + '<tpl for="groups">' +
+                    '<tr><td>{name}</td></tr>' + '</tpl>' + '</tbody></table></div><div class="container"><table><thead>' +
                     '<tr><th colspan="2">Settings</th></tr></thead><tbody><tr>' +
                     '<td class="label">Locale:</td><td>{locale}</td></tr><tr>' +
                     '<td class="label">Country:</td><td>{country}</td></tr><tr>' +
                     '<td class="label">TimeZone:</td><td>{timezone}</td></tr></tbody></table>' +
-                    '</div><div><table><thead><tr><th colspan="2">Statistics</th></tr></thead>' +
+                    '</div><div class="container"><table><thead><tr><th colspan="2">Statistics</th></tr></thead>' +
                     '<tbody><tr><td class="label">Last login:</td><td>{lastLogged}</td>' +
                     '</tr><tr><td class="label">Created:</td><td>{created}</td></tr><tr>' +
                     '<td class="label">Owner of:</td><td>394</td></tr></tbody></table></div>' +
-                    '<div><table><thead><tr><th>Last position</th></tr></thead></table></div>'
+                    '<div class="container"><table><thead><tr><th>Last position</th></tr></thead></table></div>'
 
     ,deleteManyUsers:
             '<div class="cms-delete-user-confirmation-message">' +

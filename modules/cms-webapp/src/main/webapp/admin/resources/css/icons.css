@@ -83,6 +83,10 @@
     background: transparent url("../icons/24x24/navigate_right.png") 0 0 no-repeat;
 }
 
+.icon-view-24 {
+    background: transparent url("../icons/24x24/eye_blue.png") 0 0 no-repeat;
+}
+
 /*---- 128 px icons ----*/
 
 .icon-group-128 {

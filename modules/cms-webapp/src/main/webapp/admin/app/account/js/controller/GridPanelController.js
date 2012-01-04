@@ -56,19 +56,16 @@ Ext.define( 'App.controller.GridPanelController', {
         //console.log(selModel);
         var showUserPreviewOnly = persistentSelectionCount === 1;
 
-        if ( persistentSelectionCount === 0 )
-        {
+        if ( persistentSelectionCount === 0 ) {
             detailPanel.showNoneSelection();
-        } else if ( showUserPreviewOnly )
-        {
-            var user = selectionModel.getSelection()[0];
+        } else if ( showUserPreviewOnly ) {
+            var account = selectionModel.getSelection()[0];
 
-            if ( user )
-            {
-                detailPanel.setCurrentUser( user.data );
+            if ( account ) {
+                detailPanel.setCurrentAccount( account.data );
             }
             //TODO: can fail
-            detailPanel.showUserPreview( user.data )
+            detailPanel.showAccountPreview( account.data )
         }
         else
         {
@@ -127,7 +124,8 @@ Ext.define( 'App.controller.GridPanelController', {
         var ctrl = this.getController( 'EditUserPanelController' );
         if ( ctrl )
         {
-            ctrl.showEditUserForm( el, e );
+            var account = this.getAccountDetailPanel().getCurrentAccount();
+            ctrl.showEditUserForm( account );
         }
     },
 
@@ -137,15 +135,6 @@ Ext.define( 'App.controller.GridPanelController', {
         if ( ctrl )
         {
             ctrl.showAccountPreviewPanel( el, e );
-        }
-    },
-
-    showEditAccountPanel: function( el, e )
-    {
-        var ctrl = this.getController( 'EditUserPanelController' );
-        if ( ctrl )
-        {
-            ctrl.showEditUserForm( el, e );
         }
     },
 
@@ -176,7 +165,7 @@ Ext.define( 'App.controller.GridPanelController', {
                                                          var activeTab = cmsTabPanel.getActiveTab();
                                                          if ( activeTab.getId() == "tab-browse" )
                                                          {
-                                                             me.showEditAccountPanel();
+                                                             me.showEditUserForm();
                                                          }
                                                      },
                                                      saveItem: function()

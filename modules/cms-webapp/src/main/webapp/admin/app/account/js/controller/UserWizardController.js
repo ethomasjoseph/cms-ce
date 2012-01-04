@@ -71,7 +71,7 @@ Ext.define( 'App.controller.UserWizardController', {
         if ( Ext.isFunction( step.getData ) ) {
             Ext.merge(data, step.getData());
         }
-        data['display-name'] = this.getDisplayNameValue();
+        data['display-name'] = this.getDisplayNameValue( userWizard );
 
         var parentApp = parent.mainApp;
         var onUpdateUserSuccess = function( key ) {
@@ -146,14 +146,16 @@ Ext.define( 'App.controller.UserWizardController', {
 
     wizardFinished: function( wizard, data )
     {
-        data['display-name'] = this.getDisplayNameValue();
+        var userWizard = wizard.up( 'userWizardPanel' );
+        data['display-name'] = this.getDisplayNameValue( userWizard );
+
         var onUpdateUserSuccess = function( userkey ) {
-            var tab = wizard.up( 'userWizardPanel' );
+
             var isNewUser = true;
-            if ( tab )
+            if ( userWizard )
             {
-                isNewUser = tab.isNewUser();
-                tab.close();
+                isNewUser = userWizard.isNewUser();
+                userWizard.close();
             }
             var parentApp = parent.mainApp;
             if ( parentApp )
@@ -394,9 +396,8 @@ Ext.define( 'App.controller.UserWizardController', {
         return Ext.String.trim( displayNameValue.replace( /  /g, ' ' ) );
     },
 
-    getDisplayNameValue: function()
+    getDisplayNameValue: function( userWizard )
     {
-        var userWizard = this.getWizardPanel().up('userWizardPanel');
         var wizardPanelId = userWizard.getId();
         var displayNameField = Ext.query( '#' + wizardPanelId + ' input.cms-display-name' )[0];
         var displayName = displayNameField.value;

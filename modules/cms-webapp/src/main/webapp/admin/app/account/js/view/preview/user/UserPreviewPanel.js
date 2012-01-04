@@ -55,6 +55,7 @@ Ext.define( 'App.view.preview.user.UserPreviewPanel', {
                 items: [
                     {
                         width: 100,
+                        itemId: 'previewPhoto',
                         tpl: Templates.account.userPreviewPhoto,
                         data: this.data,
                         margin: 5
@@ -72,37 +73,39 @@ Ext.define( 'App.view.preview.user.UserPreviewPanel', {
                         },
                         items: [
                             {
-                                height: 70,
+                                autoHeight: true,
+                                itemId: 'previewHeader',
                                 tpl: Templates.account.userPreviewHeader,
                                 data: this.data
                             },
                             {
                                 flex: 1,
-                                xtype: 'wizardPanel',
-                                presentationMode: true,
-                                showControls: false,
+                                xtype: 'tabpanel',
+                                defaults: {
+                                    border: false
+                                },
                                 items: [
                                     {
-                                        stepNumber: 1,
-                                        stepTitle: "Activities"
+                                        title: "Activities",
+                                        html: 'Activities'
                                     },
                                     {
-                                        stepNumber: 2,
-                                        stepTitle: "Profile",
+                                        title: "Profile",
+                                        itemId: 'profileTab',
                                         tpl: Templates.account.userPreviewProfile,
                                         data: profileData
                                     },
                                     {
-                                        stepNumber: 3,
-                                        stepTitle: "Places"
+                                        title: "Places",
+                                        html: 'Places'
                                     },
                                     {
-                                        stepNumber: 4,
-                                        stepTitle: "Memberships"
+                                        title: "Memberships",
+                                        html: 'Memberships'
                                     },
                                     {
-                                        stepNumber: 5,
-                                        stepTitle: "Advanced"
+                                        title: "Advanced",
+                                        html: 'Advanced'
                                     }
                                 ]
                             }
@@ -111,6 +114,7 @@ Ext.define( 'App.view.preview.user.UserPreviewPanel', {
                     {
                         width: 300,
                         margin: 5,
+                        itemId: 'previewInfo',
                         cls: 'east',
                         tpl: Templates.account.userPreviewCommonInfo,
                         data: this.data
@@ -125,28 +129,48 @@ Ext.define( 'App.view.preview.user.UserPreviewPanel', {
     {
         var fieldSetEmpty = true;
         var profileData = [];
-        Ext.Array.each( this.fieldSets, function( fieldSet )
-        {
-            var fieldSetData = { title: fieldSet.title};
-            fieldSetData.fields = [];
-            Ext.Array.each( fieldSet.fields, function( field )
+        if ( userData ) {
+            Ext.Array.each( this.fieldSets, function( fieldSet )
             {
-                var value = userData[field] ? userData[field] : userData.userInfo[field];
-                var title = App.view.EditUserFormPanel.fieldLabels[field]
-                        ? App.view.EditUserFormPanel.fieldLabels[field] : field
-                if ( value )
+                var fieldSetData = { title: fieldSet.title};
+                fieldSetData.fields = [];
+                Ext.Array.each( fieldSet.fields, function( field )
                 {
-                    Ext.Array.include( fieldSetData.fields, {title: title, value: value} );
-                    fieldSetEmpty = false;
+                    var value = userData[field] || (userData.userInfo ? userData.userInfo[field] : undefined);
+                    var title = App.view.EditUserFormPanel.fieldLabels[field]
+                            ? App.view.EditUserFormPanel.fieldLabels[field] : field
+                    if ( value )
+                    {
+                        Ext.Array.include( fieldSetData.fields, {title: title, value: value} );
+                        fieldSetEmpty = false;
+                    }
+                } );
+                if ( !fieldSetEmpty )
+                {
+                    Ext.Array.include( profileData, fieldSetData );
+                    fieldSetEmpty = true;
                 }
             } );
-            if ( !fieldSetEmpty )
-            {
-                Ext.Array.include( profileData, fieldSetData );
-                fieldSetEmpty = true;
-            }
-        } );
+        }
         return profileData;
+    },
+
+    setData: function( data ) {
+        if ( data ) {
+            this.data = data;
+
+            var previewHeader = this.down( '#previewHeader' );
+            previewHeader.update( data );
+
+            var previewPhoto = this.down( '#previewPhoto' );
+            previewPhoto.update( data );
+
+            var previewInfo = this.down( '#previewInfo' );
+            previewInfo.update( data );
+
+            var profileTab = this.down( '#profileTab' );
+            profileTab.update( this.generateProfileData( data ) );
+        }
     }
 
 

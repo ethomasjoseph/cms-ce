@@ -19,7 +19,7 @@ Ext.define( 'App.view.preview.user.UserPreviewToolbar', {
             items: [
                 {
                     text: 'Delete',
-                    action: 'showDeleteWindow',
+                    action: 'deleteUserPreview',
                     iconCls: 'icon-delete-user-24'
                 }
             ]};
@@ -30,7 +30,7 @@ Ext.define( 'App.view.preview.user.UserPreviewToolbar', {
             items: [
                 {
                     text: 'Change Password',
-                    action: 'changePassword',
+                    action: 'changePasswordPreview',
                     iconCls: 'icon-change-password-24'
                 }
             ]};
@@ -41,7 +41,7 @@ Ext.define( 'App.view.preview.user.UserPreviewToolbar', {
             items: [
                 {
                     text: 'Edit User',
-                    action: 'edit',
+                    action: 'editUserPreview',
                     iconCls: 'icon-edit-user-24'
                 }
             ]};

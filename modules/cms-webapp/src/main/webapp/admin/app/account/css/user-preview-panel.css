@@ -2,6 +2,31 @@
 }
 
 /*--- Generic ---*/
+
+.cms-user-preview-panel .x-fieldset-header {
+    border-bottom: 1px solid #F0F0F0;
+    display: block;
+    width: 100%;
+    padding: 0 15px;
+}
+
+.cms-user-preview-panel .x-fieldset-header .x-fieldset-header-text {
+    color: #555;
+    font-weight: bold;
+    font-size: 12px;
+    float: none;
+}
+
+.cms-user-preview-panel .x-fieldset {
+    border: 0 none;
+    padding: 0;
+    margin: 0 0 20px;
+}
+
+.cms-user-preview-panel .x-fieldset table {
+    margin: 0 15px;
+}
+
 .cms-user-preview-panel,
 .cms-user-preview-panel td,
 .cms-user-preview-panel th {
@@ -54,70 +79,23 @@
     padding: 2px;
 }
 
-.cms-user-preview-panel .center th,
-.cms-user-preview-panel .center td,
-.cms-user-preview-panel .center .container,
-.cms-user-preview-panel .center .navigation {
-    padding-left: 10px !important;
-}
-
-.cms-user-preview-panel .center th {
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.cms-user-preview-panel .center .container {
-    padding: 5px;
-}
-
-.cms-user-preview-panel .center .navigation {
-    background-color: #f0f0f0;
-    padding: 10px;
-    margin-top: 10px;
-    margin-bottom: 20px;
-}
-
-.cms-user-preview-panel .center .navigation li {
-    display: inline;
-    list-style-type: none;
-    padding-right: 20px;
-    color: #777;
-}
-
-.cms-user-preview-panel .center .navigation li.active {
-    color: #000;
-}
-
 .cms-user-preview-panel .center .email {
     color: #777;
 }
 
-.cms-user-preview-panel .east {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    width: 221px;
+.cms-user-preview-panel .center .container {
+    margin: 10px;
 }
 
-.cms-user-preview-panel ul.cms-wizard-navigation a.next,
-.cms-user-preview-panel ul.cms-wizard-navigation a.last {
-    color: #222222;
-}
-
-.cms-user-preview-panel ul.cms-wizard-navigation li {
-    background: none;
-    padding-right: 0px;
-    border-right: 1px solid #d3d3d3;
-}
-
-.cms-user-preview-panel ul.cms-wizard-navigation li a {
-    margin-right: 0px;
+.cms-user-preview-panel .east .container {
+    margin-bottom: 20px;
 }
 
 .cms-user-preview-panel li.user-el {
     height: 32px;
     margin: 10px 0 0;
     padding: 10px 35px;
-    font: bold;
+    font-weight: bold;
     font-size: 15px;
     background: url(/admin/resources/icons/32x32/user.png) no-repeat;
 }
@@ -126,8 +104,57 @@
     height: 32px;
     margin: 10px 0 0;
     padding: 10px 35px;
-    font: bold;
+    font-weight: bold;
     font-size: 15px;
     background: url(/admin/resources/icons/32x32/group.png) no-repeat;
+}
 
+/*****  Tabs strip  *****/
+
+.cms-user-preview-panel .x-tab-bar-strip {
+    top: 40px !important; /* Default value is 20, we add 20 = 40 */
+    display: none;
+}
+
+.cms-user-preview-panel .x-tab-bar {
+    background: none #f0f0f0;
+    margin: 0 0 20px;
+    border: 0 none;
+}
+
+.cms-user-preview-panel .x-tab-bar * {
+    background: none transparent !important;
+    border: 0 none !important;
+}
+
+.cms-user-preview-panel .x-tab-bar .x-tab-bar-body {
+    height: 43px !important; /* Default value is 23, we add 20 = 43 */
+    border: 0 none !important; /* Overides the border that appears on resizing the grid */
+}
+
+.cms-user-preview-panel .x-tab-bar .x-tab-bar-body .x-box-inner {
+    height: 41px !important; /* Default value is 21, we add 20 = 41 */
+}
+
+.cms-user-preview-panel .x-tab-bar .x-tab-bar-body .x-box-inner .x-tab {
+    height: 41px !important; /* Default value is 21, we add 20 = 41 */
+    -webkit-box-shadow: none;
+    -o-box-shadow: none;
+    box-shadow: none;
+}
+
+.cms-user-preview-panel .x-tab-bar .x-tab button {
+    height: 33px !important; /* Default value 13, we add 20 = 33 */
+    line-height: 33px !important; /* Default value 13, we add 20 = 33 */
+    font-size: 12px;
+    color: #777;
+    font-weight: normal;
+}
+
+.cms-user-preview-panel .x-tab-bar .x-tab-active button {
+    color: #000;
+}
+
+.cms-user-preview-panel .x-panel-body-default {
+    border: 0 none;
 }
