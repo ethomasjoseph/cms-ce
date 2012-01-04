@@ -1,17 +1,17 @@
 Ext.define( 'App.lib.util.Messages', {
 
-    phrasesMap: {},
+    phrasesMap:{},
 
-    statics: {
+    statics:{
 
-        setMap: function ( phrasesMap )
+        setMap:function ( phrasesMap )
         {
             this.phrasesMap = phrasesMap;
         },
 
-        get: function ()
+        get:function ()
         {
-            var args = Array.prototype.slice.call(arguments);
+            var args = Array.prototype.slice.call( arguments );
             var key = args[0];
             var phrase = this.phrasesMap[key];
 
@@ -20,10 +20,10 @@ Ext.define( 'App.lib.util.Messages', {
                 return '{' + key + ' NOT TRANSLATED}';
             }
 
-            return this.getFormatted(phrase, args.slice(1, args.length));
+            return this.formatPhrase( phrase, args.slice( 1, args.length ) );
         },
 
-        getFormatted: function(phrase, args)
+        formatPhrase:function ( phrase, args )
         {
             var formatted = phrase;
 
