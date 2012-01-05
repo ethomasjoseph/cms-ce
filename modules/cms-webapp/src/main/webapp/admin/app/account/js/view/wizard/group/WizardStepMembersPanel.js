@@ -27,6 +27,7 @@ Ext.define( 'App.view.wizard.group.WizardStepMembersPanel', {
                         cls: 'cms-groups-boxselect',
                         resizable: false,
                         name: 'members',
+                        itemId: 'members',
                         store: 'AccountStore',
                         mode: 'local',
                         displayField: 'name',
@@ -56,13 +57,26 @@ Ext.define( 'App.view.wizard.group.WizardStepMembersPanel', {
                         growMin: 75,
                         hideTrigger: true,
                         pinList: false,
-                        labelTpl: '{name} ({userStore})'
+                        labelTpl: '<tpl if="type==\'user\'">{displayName} ({qualifiedName})</tpl>' +
+                                  '<tpl if="type!=\'user\'">{name} ({userStore})</tpl>'
                     }
                 ]
             }
         ];
 
         this.callParent( arguments );
+
+        if (this.modelData && this.modelData.members)
+        {
+            var members = this.down('#members');
+            var memberKeys = [];
+            Ext.Array.each(this.modelData.members, function (member)
+            {
+                Ext.Array.include(memberKeys, member.key);
+            });
+            members.setValue(memberKeys);
+        }
+
 
     }
 } );

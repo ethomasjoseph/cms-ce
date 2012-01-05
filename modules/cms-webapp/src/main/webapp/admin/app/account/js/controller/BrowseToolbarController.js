@@ -10,7 +10,6 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         'CallingCodeModel'
     ],
     views: [
-        'EditUserPanel',
         'ChangePasswordWindow',
         'DeleteAccountWindow',
         'wizard.user.UserWizardPanel',
@@ -88,20 +87,21 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         var ctrl = this.getController( 'EditUserPanelController' );
         if ( ctrl )
         {
-            ctrl.showEditUserForm( el, e );
+            var account = this.getAccountDetailPanel().getCurrentAccount();
+            ctrl.showEditUserForm( account );
         }
     },
 
     showAccountPreviewPanel: function( el, e )
     {
         var me = this;
-        var selected = me.getUserGrid().getSelectionModel().selected.get( 0 );
-        if ( selected.get( 'type' ) === 'user' )
+        var selected = me.getAccountDetailPanel().getCurrentAccount();
+        if ( selected.type === 'user' )
         {
             Ext.Ajax.request( {
                                   url: 'data/user/userinfo',
                                   method: 'GET',
-                                  params: {key: selected.get( 'key' )},
+                                  params: {key: selected.key },
                                   success: function( response )
                                   {
                                       var jsonObj = Ext.JSON.decode( response.responseText );
@@ -109,7 +109,8 @@ Ext.define( 'App.controller.BrowseToolbarController', {
                                                                       title: jsonObj.displayName + ' (' +
                                                                               jsonObj.qualifiedName + ')',
                                                                       xtype: 'userPreviewPanel',
-                                                                      data: jsonObj
+                                                                      data: jsonObj,
+                                                                      user: selected
                                                                   } );
 
                                   }
@@ -120,7 +121,7 @@ Ext.define( 'App.controller.BrowseToolbarController', {
             Ext.Ajax.request( {
                                   url: 'data/account/groupinfo',
                                   method: 'GET',
-                                  params: {key: selected.get( 'key' )},
+                                  params: {key: selected.key },
                                   success: function( response )
                                   {
                                       var jsonObj = Ext.JSON.decode( response.responseText );
@@ -128,7 +129,8 @@ Ext.define( 'App.controller.BrowseToolbarController', {
                                       me.getCmsTabPanel().addTab( {
                                                                       title: jsonObj.group.displayName,
                                                                       xtype: 'groupPreviewPanel',
-                                                                      data: jsonObj.group
+                                                                      data: jsonObj.group,
+                                                                      group: selected
                                                                   } );
                                   }
                               } );
@@ -153,16 +155,6 @@ Ext.define( 'App.controller.BrowseToolbarController', {
     getUserGrid: function()
     {
         return Ext.ComponentQuery.query( 'accountGrid' )[0];
-    },
-
-    getUserDeleteWindow: function()
-    {
-        var win = Ext.ComponentQuery.query( 'userDeleteWindow' )[0];
-        if ( !win )
-        {
-            win = Ext.create( 'widget.userDeleteWindow' );
-        }
-        return win;
     },
 
     getUserChangePasswordWindow: function()
@@ -193,6 +185,11 @@ Ext.define( 'App.controller.BrowseToolbarController', {
             win = Ext.create( 'widget.deleteAccountWindow' );
         }
         return win;
+    },
+
+    getAccountDetailPanel: function()
+    {
+        return Ext.ComponentQuery.query( 'accountDetail' )[0];
     }
 
 } );

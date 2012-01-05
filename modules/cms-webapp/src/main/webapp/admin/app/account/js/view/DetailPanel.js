@@ -8,19 +8,34 @@ Ext.define('App.view.DetailPanel', {
 
     initComponent: function() {
         var largeBoxesPanel = this.createLargeBoxSelection();
-        var userPreviewPanel = this.userPreviewPanel();
+        var userPreviewPanel = this.createUserPreviewPanel();
+        var groupPreviewPanel = this.createGroupPreviewPanel();
         var smallBoxesPanel = this.createSmallBoxSelection();
         var noneSelectedPanel = this.createNoneSelection();
 
-        this.items = [noneSelectedPanel, userPreviewPanel, largeBoxesPanel, smallBoxesPanel];
+        this.items = [noneSelectedPanel, userPreviewPanel, groupPreviewPanel,
+            largeBoxesPanel, smallBoxesPanel];
         this.callParent(arguments);
     },
 
-    showUserPreview: function(data)
+    showAccountPreview: function( data )
     {
-        var activeItem = this.down('#userPreviewPanel');
-        this.getLayout().setActiveItem('userPreviewPanel');
-        activeItem.update(data);
+        if ( data ) {
+            var activeTab;
+            switch (data.type) {
+                case 'user':
+                    activeTab = this.down( 'userPreviewPanel' );
+                    break;
+                case 'role':
+                case 'group':
+                    activeTab = this.down( 'groupPreviewPanel' );
+                    break;
+            }
+            if ( activeTab ) {
+                this.getLayout().setActiveItem( activeTab );
+                activeTab.setData( data );
+            }
+        }
     },
 
 
@@ -47,20 +62,18 @@ Ext.define('App.view.DetailPanel', {
         activeItem.update(data);
     },
 
-    userPreviewPanel: function()
+    createUserPreviewPanel: function()
     {
-        var tpl = new Ext.XTemplate( Templates.account.userPreview );
-
-        var panel = {
-            xtype: 'panel',
-            itemId: 'userPreviewPanel',
-            styleHtmlContent: true,
-            autoScroll: true,
-            border: 0,
-            tpl: tpl
+        return {
+            xtype: 'userPreviewPanel'
         };
+    },
 
-        return panel;
+    createGroupPreviewPanel: function()
+    {
+        return {
+            xtype: 'groupPreviewPanel'
+        };
     },
 
     createNoneSelection: function()
@@ -166,14 +179,14 @@ Ext.define('App.view.DetailPanel', {
         }
     },
 
-    setCurrentUser: function(user)
+    setCurrentAccount: function(user)
     {
-        this.currentUser = user;
+        this.currentAccount = user;
     },
 
-    getCurrentUser: function()
+    getCurrentAccount: function()
     {
-        return this.currentUser;
+        return this.currentAccount;
     },
 
     updateTitle: function(persistentGridSelection)

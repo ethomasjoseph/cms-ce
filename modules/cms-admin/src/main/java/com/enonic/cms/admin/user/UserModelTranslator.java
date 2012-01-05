@@ -31,7 +31,6 @@ import com.enonic.cms.core.security.user.UserEntity;
 import com.enonic.cms.core.security.user.UserKey;
 import com.enonic.cms.core.security.user.UserSpecification;
 import com.enonic.cms.core.security.userstore.UserStoreEntity;
-import com.enonic.cms.store.dao.UserDao;
 import com.enonic.cms.store.dao.UserStoreDao;
 
 import com.enonic.cms.domain.EntityPageList;
@@ -40,9 +39,6 @@ import com.enonic.cms.domain.EntityPageList;
 public final class UserModelTranslator
 {
     private static final Logger LOG = LoggerFactory.getLogger( UsersResource.class );
-
-    @Autowired
-    private UserDao userDao;
 
     @Autowired
     private UserStoreDao userStoreDao;

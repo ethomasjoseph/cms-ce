@@ -28,7 +28,9 @@ Templates.common = {
             '<div class="clearfix">' +
                 '<div class="cms-left">' +
                     '<span class="{[values.type==="user" ? "icon-user" : ' +
-                    'values.type==="role" ? "icon-role" : "icon-group"]} cms-list-item"></span></div>' + '<div class="cms-left"><span>{name} ({userStore})</span>' +
+                    'values.type==="role" ? "icon-role" : "icon-group"]} cms-list-item"></span></div>' +
+                    '<div class="cms-left"><span><tpl if="type==\'user\'"> {displayName} ({qualifiedName})</tpl>' +
+                    '<tpl if="type!=\'user\'">{name} ({userStore})</tpl></span>' +
                 '</div>' +
             '</div>'
     ,notifyUserMessage: 'Hi {0}! Your username is {1}. \n' +

@@ -552,55 +552,12 @@ img.photo {
 }
 
 /*----- Edit Form Header -----*/
-.cms-edit-form-header {
-    background-color: #eee;
-    padding: 10px;
-}
-
-.cms-edit-form-header .left {
-    float: left;
-    margin-right: 16px;
-}
-
-.cms-edit-form-header .left img {
-    width: 40px;
-}
-
-.cms-edit-form-header .right {
-    float: left;
-}
-
-.cms-edit-form-header .right h1 {
-    font-size: 18px;
-    float: left;
-}
-
-.cms-edit-form-header .edit-button {
-    display: block;
-    margin: 2px 0 0 5px;
-    padding: 3px;
-    border: 1px solid TRANSPARENT;
-    background: TRANSPARENT url(../../resources/images/pencil.png) no-repeat;
-    width: 16px;
-    height: 16px;
-    float: right;
-}
-
-.cms-edit-form-header .edit-button:hover {
-    border-color: #ccc;
-}
-
-.cms-edit-form-header .right p {
-    margin: 5px 0 0 0;
-}
-
-.cms-display-name-editable {
-    font-weight: normal !important;
-}
 
 .cms-display-name {
     border: none;
+    margin: 5px 0 0 0;
     font-weight: bold;
+    font-size: 26px;
     text-align: left;
     background: none;
 }
@@ -790,7 +747,7 @@ ul.cms-wizard-navigation li a.current.last {
     position: relative;
 }
 
-.cms-wizard-header-container input {
+.cms-wizard-header-container {
     width: 99%;
     border: 1px solid TRANSPARENT;
     color: #555555;

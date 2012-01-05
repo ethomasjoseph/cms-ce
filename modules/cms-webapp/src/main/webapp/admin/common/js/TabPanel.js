@@ -10,14 +10,14 @@ Ext.define( 'Common.TabPanel', {
         this.callParent( arguments );
     },
 
-    addTab: function( items )
+    addTab: function( items, index )
     {
         var tabPanel = this;
         var tab = this.getTabById( items.id );
         // Create a new tab if it is not already created
         if ( !tab )
         {
-            tab = this.add( items );
+            tab = this.insert( index || this.items.length, items );
 
             if ( tab.closable )
             {

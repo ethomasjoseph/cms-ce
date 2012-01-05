@@ -22,21 +22,15 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
     {
         var me = this;
         var isNew = this.modelData == undefined;
-        var displayNameValue = 'Group name';
+        var displayNameValue = isNew ? 'Display name' : this.modelData.displayName;
 
-        var groupWizardHeader = Ext.create( 'Ext.form.Panel', {
-            xtype: 'form',
+        var groupWizardHeader = Ext.create( 'Ext.container.Container', {
             itemId: 'wizardHeader',
-            cls: 'cms-wizard-header-container',
+            height: 30,
+            cls: 'cms-wizard-header-container cms-display-name',
             border: false,
-            items: {
-                xtype: 'textfield',
-                cls: 'cms-display-name',
-                anchor: '100%',
-                height: 36,
-                allowBlank: false,
-                value: displayNameValue
-            }
+            tpl: "{.}",
+            data: displayNameValue
         } );
 
         var groupWizardToolbar = Ext.createByAlias( 'widget.groupWizardToolbar', {
@@ -56,7 +50,8 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
                         plain: true,
                         width: 128,
                         height: 128,
-                        cls: 'icon-group-128'
+                        cls: me.modelData &&
+                                (me.modelData.type === 'role') ? 'icon-role-128' : 'icon-group-128'
                     }
                 ]
             },
@@ -78,14 +73,17 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
                         items: [
                             {
                                 stepTitle: "General",
+                                modelData: this.modelData,
                                 xtype: 'wizardStepGeneralPanel'
                             },
                             {
                                 stepTitle: "Members",
+                                modelData: this.modelData,
                                 xtype: 'wizardStepMembersPanel'
                             },
                             {
                                 stepTitle: "Summary",
+                                modelData: this.modelData,
                                 xtype: 'wizardStepGroupSummaryPanel'
                             }
                         ]

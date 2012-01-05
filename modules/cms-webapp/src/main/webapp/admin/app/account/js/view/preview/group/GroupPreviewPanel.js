@@ -31,6 +31,7 @@ Ext.define( 'App.view.preview.group.GroupPreviewPanel', {
                 items: [
                     {
                         width: 100,
+                        itemId: 'previewPhoto',
                         tpl: Templates.account.userPreviewPhoto,
                         data: this.data,
                         margin: 5
@@ -49,6 +50,7 @@ Ext.define( 'App.view.preview.group.GroupPreviewPanel', {
                         items: [
                             {
                                 height: 70,
+                                itemId: 'previewHeader',
                                 tpl: Templates.account.userPreviewHeader,
                                 data: this.data
                             },
@@ -61,6 +63,7 @@ Ext.define( 'App.view.preview.group.GroupPreviewPanel', {
                                     {
                                         stepNumber: 1,
                                         stepTitle: "Memberships",
+                                        itemId: 'membershipsTab',
                                         tpl: Templates.account.previewMemberships,
                                         data: this.data
                                     }
@@ -72,10 +75,22 @@ Ext.define( 'App.view.preview.group.GroupPreviewPanel', {
             }
         ];
         this.callParent( arguments );
+    },
+
+
+    setData: function( data ) {
+        if ( data ) {
+            this.data = data;
+
+            var previewHeader = this.down( '#previewHeader' );
+            previewHeader.update( data );
+
+            var previewPhoto = this.down( '#previewPhoto' );
+            previewPhoto.update( data );
+
+            var previewInfo = this.down( '#membershipsTab' );
+            previewInfo.update( data );
+        }
     }
-
-
-
-
 
 } );

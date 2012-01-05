@@ -1,8 +1,11 @@
 package com.enonic.cms.admin.group;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -14,20 +17,33 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.MatchMode;
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.sun.jersey.api.NotFoundException;
 
 import com.enonic.cms.core.search.SearchSortOrder;
+import com.enonic.cms.core.search.account.AccountIndexData;
 import com.enonic.cms.core.search.account.AccountIndexField;
+import com.enonic.cms.core.search.account.AccountKey;
 import com.enonic.cms.core.search.account.AccountSearchHit;
 import com.enonic.cms.core.search.account.AccountSearchQuery;
 import com.enonic.cms.core.search.account.AccountSearchResults;
 import com.enonic.cms.core.search.account.AccountSearchService;
+import com.enonic.cms.core.search.account.Group;
+import com.enonic.cms.core.security.SecurityService;
 import com.enonic.cms.core.security.group.GroupEntity;
 import com.enonic.cms.core.security.group.GroupKey;
+import com.enonic.cms.core.security.group.StoreNewGroupCommand;
+import com.enonic.cms.core.security.group.UpdateGroupCommand;
 import com.enonic.cms.core.security.user.UserEntity;
+import com.enonic.cms.core.security.user.UserKey;
+import com.enonic.cms.core.security.userstore.UserStoreEntity;
+import com.enonic.cms.core.security.userstore.UserStoreKey;
+import com.enonic.cms.core.security.userstore.UserStoreService;
 import com.enonic.cms.store.dao.GroupDao;
 import com.enonic.cms.store.dao.UserDao;
 
@@ -36,6 +52,7 @@ import com.enonic.cms.store.dao.UserDao;
 @Produces(MediaType.APPLICATION_JSON)
 public final class GroupResource
 {
+    private static final Logger LOG = LoggerFactory.getLogger( GroupResource.class );
 
     @Autowired
     private GroupDao groupDao;
@@ -44,7 +61,16 @@ public final class GroupResource
     private UserDao userDao;
 
     @Autowired
+    private UserStoreService userStoreService;
+
+    @Autowired
     private AccountSearchService searchService;
+
+    @Autowired
+    private GroupModelTranslator groupModelTranslator;
+
+    @Autowired
+    protected SecurityService securityService;
 
     @POST
     @Path("join")
@@ -135,7 +161,7 @@ public final class GroupResource
     @Path( "list_" )
     public List<GroupModel> getGroups(@QueryParam("query") String query){
         List<GroupEntity> groups = groupDao.findByCriteria( query, null, true, MatchMode.START );
-        return GroupModelHelper.toListModel( groups );
+        return groupModelTranslator.toListModel( groups );
     }
 
     @GET
@@ -169,7 +195,7 @@ public final class GroupResource
             groups.add( groupEntity );
         }
 
-        return GroupModelHelper.toListModel( groups );
+        return groupModelTranslator.toListModel( groups );
     }
 
     private List<GroupModel> getGroups( final String... groupKeys )
@@ -184,7 +210,7 @@ public final class GroupResource
             }
         }
 
-        return GroupModelHelper.toListModel( groups );
+        return groupModelTranslator.toListModel( groups );
     }
     
     @GET
@@ -193,7 +219,115 @@ public final class GroupResource
     {
         final GroupEntity entity = findEntity( key );
 
-        return GroupModelHelper.toModel( entity );
+        return groupModelTranslator.toModel( entity );
+    }
+
+    @POST
+    @Path("update")
+    @Consumes("application/json")
+    public Map<String, Object> updateGroup( GroupModel group )
+    {
+        final boolean isValid = isValidGroupData( group );
+        final Map<String, Object> res = new HashMap<String, Object>();
+        if ( isValid )
+        {
+            if ( group.getKey() == null )
+            {
+                StoreNewGroupCommand command = groupModelTranslator.toNewGroupCommand( group );
+                command.setExecutor( getCurrentUser() );
+                GroupKey groupKey = userStoreService.storeNewGroup( command );
+                res.put( "groupkey", groupKey.toString() );
+                indexGroup( groupKey.toString() );
+            }
+            else
+            {
+                UpdateGroupCommand command = groupModelTranslator.toUpdateGroupCommand( group, getCurrentUser().getKey() );
+                userStoreService.updateGroup( command );
+                res.put( "groupkey", group.getKey() );
+                indexGroup( group.getKey() );
+            }
+            res.put( "success", true );
+        }
+        else
+        {
+            res.put( "success", false );
+            res.put( "error", "Validation failed" );
+        }
+        return res;
+    }
+
+    private boolean isValidGroupData( GroupModel groupData )
+    {
+        if ( StringUtils.isBlank( groupData.getName() ) )
+        {
+            return false;
+        }
+
+        return validateMembersInUserStore(groupData);
+    }
+
+    private boolean validateMembersInUserStore( GroupModel groupData )
+    {
+        UserStoreEntity userStore = ( groupData.getUserStore() == null ) ? null : userStoreService.findByName( groupData.getUserStore() );
+        if ( userStore == null )
+        {
+            userStore = userStoreService.getDefaultUserStore();
+        }
+        final UserStoreKey userStoreKey = userStore.getKey();
+
+        List<Map<String, String>> members = groupData.getMembers();
+        for ( Map<String, String> memberFields : members )
+        {
+            final String memberKey = memberFields.get( "key" );
+            final UserStoreKey memberUserStoreKey = getMemberUserStore( memberKey );
+            if ( memberUserStoreKey == null || ( !memberUserStoreKey.equals( userStoreKey ) ) )
+            {
+                LOG.warn( memberKey + " cannot be member of group '" + groupData.getName() +
+                              "'. Group and member must be located in same user store." );
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private UserStoreKey getMemberUserStore( final String memberKey )
+    {
+        final UserKey userKey = new UserKey( memberKey );
+        final UserEntity user = securityService.getUser( userKey );
+        if ( user != null )
+        {
+            return user.getUserStoreKey();
+        }
+        else
+        {
+            final GroupEntity group = securityService.getGroup( new GroupKey( memberKey ) );
+            return group == null ? null : group.getUserStoreKey();
+        }
+    }
+
+    private void indexGroup( final String groupKey )
+    {
+        final GroupEntity groupEntity = this.groupDao.find( groupKey );
+        if ( groupEntity == null )
+        {
+            searchService.deleteIndex( groupKey );
+            return;
+        }
+
+        final Group group = new Group();
+        group.setKey( new AccountKey( groupEntity.getGroupKey().toString() ) );
+        group.setName( groupEntity.getName() );
+        group.setDisplayName( groupEntity.getDisplayName() );
+        group.setGroupType( groupEntity.getType() );
+        if ( groupEntity.getUserStore() != null )
+        {
+            group.setUserStoreName( groupEntity.getUserStore().getName() );
+        }
+        final DateTime lastModified = ( groupEntity.getLastModified() == null ) ? null : new DateTime( groupEntity.getLastModified() );
+        group.setLastModified( lastModified );
+        final AccountIndexData accountIndexData = new AccountIndexData( group );
+
+        searchService.index( accountIndexData );
     }
 
     private GroupEntity findEntity( final String key )
@@ -210,6 +344,11 @@ public final class GroupResource
         }
 
         return entity;
+    }
+
+    private UserEntity getCurrentUser()
+    {
+        return userDao.findBuiltInEnterpriseAdminUser();
     }
 
 }

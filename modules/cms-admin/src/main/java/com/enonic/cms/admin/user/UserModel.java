@@ -1,12 +1,12 @@
 package com.enonic.cms.admin.user;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @JsonAutoDetect
 public final class UserModel
@@ -43,6 +43,8 @@ public final class UserModel
     public UserModel()
     {
     }
+    
+    private String type = "user";
 
     @JsonProperty(USER_NAME)
     private String name;
@@ -69,6 +71,14 @@ public final class UserModel
     private String lastLogged;
 
     private List<Map<String, String>> groups;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public List<Map<String, String>> getGroups()
     {
