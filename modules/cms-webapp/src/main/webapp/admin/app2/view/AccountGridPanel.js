@@ -39,16 +39,17 @@ Ext.define( 'App.view.AccountGridPanel', {
 
         this.columns = [
             {
+                text: 'Key',
+                dataIndex: 'key',
+                sortable: true,
+                align: 'left',
+                width: 40
+            },
+            {
                 text: 'Name',
                 dataIndex: 'name',
                 sortable: true,
                 flex: 10
-            },
-            {
-                text: 'Content type no',
-                dataIndex: 'key',
-                sortable: true,
-                align: 'center'
             },
             {
                 text: 'Modified',

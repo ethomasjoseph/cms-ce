@@ -17,7 +17,7 @@ Ext.define( 'App.controller.AdminBaseController', {
 
         if ( controller === undefined )
         {
-            console.log( 'controller "' + controllerName + '" does not exist. Instantiate controller and render the main view' );
+            console.info( 'controller "' + controllerName + '" does not exist. Instantiate controller and render the main view' );
 
             controller = this.getController( controllerName );
             view = this.getView( controller.views[0] ).create();
@@ -32,7 +32,7 @@ Ext.define( 'App.controller.AdminBaseController', {
         }
         else
         {
-            console.log( 'controller "' + controllerName + '" exist use cache' );
+            console.info( 'controller "' + controllerName + '" exist use cache' );
 
             view = this.viewCache[controllerName];
         }

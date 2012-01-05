@@ -23,8 +23,8 @@ Ext.define( 'App.view.ContentGridPanel', {
                 text: 'Key',
                 dataIndex: 'key',
                 sortable: true,
-                align: 'right',
-                flex: 1
+                align: 'left',
+                width: 40
             },
             {
                 text: 'Name',
