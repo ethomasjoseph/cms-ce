@@ -42,7 +42,7 @@ Templates.account = {
                     '<tpl if="hasPhoto"><img alt="User" src="data/user/photo?key={key}&thumb=true" alt="{displayName}"/></tpl>' +
                     '<tpl if="(!hasPhoto) && type===\'user\'"><img alt="User" src="resources/icons/256x256/dummy-user.png" alt="{displayName}"/></tpl>' +
                     '<tpl if="type===\'group\'"><img src="resources/icons/256x256/group.png" alt="{displayName}"/></tpl>' +
-                    '<tpl if="type===\'role\'"><img src="resources/icons/256x256/businessman.png" alt="{displayName}"/></tpl>' +
+                    '<tpl if="type===\'role\'"><img src="resources/icons/256x256/businessmen.png" alt="{displayName}"/></tpl>' +
                     '</div>' +
                     '<div class="center">' + '<h2>{displayName}</h2>' + '<p>{userStore}\\\\{name}</p>' + '</div>' +
                     '<div class="right">' +
@@ -56,7 +56,7 @@ Templates.account = {
                     '<tpl if="hasPhoto"><img alt="User" src="data/user/photo?key={key}&thumb=true" alt="{displayName}"/></tpl>' +
                     '<tpl if="(!hasPhoto) && type===\'user\'"><img alt="User" src="resources/icons/256x256/dummy-user.png" alt="{displayName}"/></tpl>' +
                     '<tpl if="type===\'group\'"><img alt="Group" src="resources/icons/256x256/group.png" alt="{displayName}"/></tpl>' +
-                    '<tpl if="type===\'role\'"><img alt="Group" src="resources/icons/256x256/businessman.png" alt="{displayName}"/></tpl>' +
+                    '<tpl if="type===\'role\'"><img alt="Group" src="resources/icons/256x256/businessmen.png" alt="{displayName}"/></tpl>' +
                     '</div>' +
                     '<div class="cms-selected-item-box center">' + '<h2>{displayName}</h2>' + '</div>' +
                     '<div class="cms-selected-item-box right">' +
@@ -69,7 +69,7 @@ Templates.account = {
                     '<tpl if="hasPhoto"><img src="data/user/photo?key={key}" alt="{displayName}"/></tpl>' +
                     '<tpl if="(!hasPhoto) && type===\'user\'"><img src="resources/icons/256x256/dummy-user.png" alt="{displayName}"/></tpl>' +
                     '<tpl if="type===\'group\'"><img src="resources/icons/256x256/group.png" alt="{displayName}"/></tpl>' +
-                    '<tpl if="type===\'role\'"><img src="resources/icons/256x256/businessman.png" alt="{displayName}"/></tpl>' +
+                    '<tpl if="type===\'role\'"><img src="resources/icons/256x256/businessmen.png" alt="{displayName}"/></tpl>' +
                     '</div>' +
                     '</div><div class="center"><div class="container">' +
                     '<h1>{displayName}</h1><div><span>{userStore}\\\\{name}</span>' +
@@ -119,7 +119,7 @@ Templates.account = {
                     '<tpl if="hasPhoto"><img src="data/user/photo?key={key}" alt="{displayName}"/></tpl>' +
                     '<tpl if="(!hasPhoto) && type===\'user\'"><img src="resources/icons/256x256/dummy-user.png" alt="{displayName}"/></tpl>' +
                     '<tpl if="type===\'group\'"><img src="resources/icons/256x256/group.png" alt="{displayName}"/></tpl>' +
-                    '<tpl if="type===\'role\'"><img src="resources/icons/256x256/businessman.png" alt="{displayName}"/></tpl>' +
+                    '<tpl if="type===\'role\'"><img src="resources/icons/256x256/businessmen.png" alt="{displayName}"/></tpl>' +
                     '</div></div>'
 
     ,userPreviewHeader:

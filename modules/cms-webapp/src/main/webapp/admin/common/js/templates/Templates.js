@@ -20,7 +20,7 @@ Templates.common = {
             '<img src="resources/icons/256x256/group.png" alt="{displayName}"/>' +
             '</tpl>' +
             '<tpl if="type===\'role\'">' +
-            '<img src="resources/icons/256x256/businessman.png" alt="{displayName}"/>' +
+            '<img src="resources/icons/256x256/businessmen.png" alt="{displayName}"/>' +
             '</tpl></div>' +
             '<div class="cms-left"><h2>{displayName}</h2>({qualifiedName})<br/>' +
             '<a href="mailto:{email}:">{email}</a></div></div></div>'
