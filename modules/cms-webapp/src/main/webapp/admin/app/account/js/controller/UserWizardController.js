@@ -136,6 +136,12 @@ Ext.define( 'App.controller.UserWizardController', {
                 this.autoSuggestUsername(firstNameValue, lastNameValue, userStoreName, usernameField);
             }
         }
+
+        if ( wizard.isNew ) {
+            // in case of new wizard check that step is valid before proceeding
+            var pb = wizard.getProgressBar();
+            pb.setDisabled( !wizard.isStepValid( newStep ) );
+        }
     },
 
     wizardFinished: function( wizard, data )
@@ -189,21 +195,33 @@ Ext.define( 'App.controller.UserWizardController', {
     {
         // Need to go this way up the hierarchy in case there are multiple wizards
         var tb = wizard.up('userWizardPanel').down('userWizardToolbar');
+        var pb = wizard.getProgressBar();
         var save = tb.down( '#save' );
         var finish = tb.down( '#finish' );
         var conditionsMet = valid && ( wizard.isWizardDirty || wizard.isNew );
         save.setDisabled( !conditionsMet );
         finish.setVisible( conditionsMet );
+        if ( !wizard.isNew ) {
+            pb.setDisabled( !conditionsMet );
+        } else {
+            pb.setDisabled( !wizard.isStepValid() );
+        }
     },
 
     dirtyChanged: function( wizard, dirty )
     {
         var tb = wizard.up('userWizardPanel').down('userWizardToolbar');
+        var pb = wizard.getProgressBar();
         var save = tb.down( '#save' );
         var finish = tb.down( '#finish' );
         var conditionsMet = (dirty || wizard.isNew ) && wizard.isWizardValid;
         save.setDisabled( !conditionsMet );
         finish.setVisible( conditionsMet );
+        if ( !wizard.isNew ) {
+            pb.setDisabled( !conditionsMet );
+        } else {
+            pb.setDisabled( !wizard.isStepValid() );
+        }
     },
 
     wizardPrev: function( btn, evt )

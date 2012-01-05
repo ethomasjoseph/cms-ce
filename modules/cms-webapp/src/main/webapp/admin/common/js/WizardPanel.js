@@ -43,6 +43,8 @@ Ext.define( 'Common.WizardPanel', {
         this.dirtyItems = [];
         this.invalidItems = [];
 
+        this.cls += this.isNew ? ' cms-wizard-new' : ' cms-wizard-edit';
+        
         if ( this.showControls )
         {
             Ext.each( this.items, function( item, index, all ) {
@@ -94,6 +96,7 @@ Ext.define( 'Common.WizardPanel', {
             xtype: 'panel',
             dock: 'top',
             cls: 'cms-wizard-toolbar',
+            disabledCls: 'cms-wizard-toolbar-disabled',
             itemId: 'progressBar',
             listeners: {
                 click: {
@@ -105,46 +108,37 @@ Ext.define( 'Common.WizardPanel', {
             styleHtmlContent: true,
             margin: 0,
             tpl: new Ext.XTemplate( Templates.common.wizardPanelSteps, {
-                isCurrent: function( index ) {
-                    var itemIndex = Ext.Array.indexOf(wizard.getLayout().getLayoutItems(),
-                            wizard.getLayout().getActiveItem()) + 1;
-                    return itemIndex == index;
-                },
-
-                isPrevious: function( index ) {
-                    var itemIndex = Ext.Array.indexOf(wizard.getLayout().getLayoutItems(),
-                            wizard.getLayout().getActiveItem()) + 1;
-                    return itemIndex -1 == index;
-                },
-
-                isNext: function( index ) {
-                    var itemIndex = Ext.Array.indexOf(wizard.getLayout().getLayoutItems(),
-                            wizard.getLayout().getActiveItem()) + 1;
-                    return itemIndex < index;
-                },
 
                 resolveClsName: function(index, total) {
+                    var activeIndex = wizard.items.indexOf( wizard.getLayout().getActiveItem() ) + 1;
                     var clsName = '';
-                    if (this.isPrevious(index)) {
-                        clsName = 'previous'
+
+                    if (index == 1) {
+                        clsName += 'first '
                     }
 
-                    if (this.isCurrent(index)) {
-                        clsName = 'current'
+                    if (index < activeIndex) {
+                        clsName += 'previous '
                     }
 
-                    if (this.isNext(index)) {
-                        clsName = 'next'
+                    if (index + 1 == activeIndex) {
+                        clsName += 'immediate '
                     }
 
-                    var isLast = !this.isCurrent(index) && index == total;
-                    if (isLast) {
-                        clsName = 'last'
+                    if (index == activeIndex) {
+                        clsName += 'current '
                     }
 
-                    var isLastAndCurrent = this.isCurrent(index) && index == total;
-                    if (isLastAndCurrent) {
-                        clsName = 'current-last'
+                    if (index > activeIndex) {
+                        clsName += 'next '
+                    }
+
+                    if (index - 1 == activeIndex) {
+                        clsName += 'immediate '
+                    }
+
+                    if (index == total) {
+                        clsName += 'last '
                     }
 
                     return clsName;
@@ -171,7 +165,6 @@ Ext.define( 'Common.WizardPanel', {
         if( !wizard.boundItems ) {
             wizard.boundItems = [];
         }
-        wizard.boundItems.push( this.down( '#progressBar' ) );
 
         if( !wizard.validateItems ) {
             wizard.validateItems = [];
@@ -193,7 +186,6 @@ Ext.define( 'Common.WizardPanel', {
         var firstStep = this.items.getCount() > 0 ? this.items.first() : undefined;
         if( firstStep ) {
             firstStep.on('afterrender', function (item) {
-                wizard.updateValidity( item );
                 wizard.fireEvent('stepchanged', wizard, null, item);
             })
         }
@@ -260,8 +252,6 @@ Ext.define( 'Common.WizardPanel', {
                 Ext.Array.remove( this.invalidItems, form );
             }
 
-            this.updateValidity();
-
             var isWizardValid = this.invalidItems.length == 0;
             if( this.isWizardValid != isWizardValid ) {
                 // fire the wizard validity change event
@@ -294,15 +284,23 @@ Ext.define( 'Common.WizardPanel', {
     changeStep: function(event, target)
     {
         var progressBar = this.dockedItems.items[0];
+        var isNew = this.isNew;
         var isDisabled = progressBar.isDisabled();
 
         var li = Ext.fly( target ).up( 'li' );
 
-        if ( !isDisabled || ( isDisabled && li.hasCls( 'previous' ) )  ){
+        // allow click only the next immediate step in new mode
+        // or any step in edit mode when valid
+        // or any except the last in edit when not valid
+        // or all previous steps in any mode
+        if ( ( !isDisabled && isNew && li.hasCls('next') && li.hasCls( 'immediate' ) )
+                || ( !isDisabled && !isNew )
+                || ( isDisabled && !isNew && !li.hasCls( 'last' ) )
+                || li.hasCls( 'previous' ) ) {
             var step = Number( li.getAttribute( 'wizardStep' ) );
             this.navigate( step - 1 );
         }
-        event.stopEvent()
+        event.stopEvent();
     },
 
     next: function( btn )
@@ -373,7 +371,7 @@ Ext.define( 'Common.WizardPanel', {
         if ( newStep )
         {
             this.updateProgress( newStep );
-            this.updateValidity( newStep );
+
             this.fireEvent( "stepchanged", this, oldStep, newStep );
             if ( this.showControls ) {
                 // update internal controls if shown
@@ -387,28 +385,18 @@ Ext.define( 'Common.WizardPanel', {
         }
     },
 
-    updateValidity: function( step ) {
-        if (!this.presentationMode)
-        {
-            var activeForm = step ? step.getForm() : this.getLayout().getActiveItem().getForm();
-            if( activeForm ) {
-                var isStepValid = Ext.Array.intersect( this.invalidItems, this.validateItems).length == 0;
-                isStepValid = !activeForm.hasInvalidField() && isStepValid;
-                activeForm.onValidityChange( isStepValid );
-            }
-        }
-
-    },
-
     updateProgress: function( newStep )
     {
         var progressBar = this.dockedItems.items[0];
         progressBar.update( this.items.items );
+    },
 
-        var step = newStep || this.getLayout().getActiveItem();
-        var form = step instanceof Ext.form.Panel ? step : step.down( 'form' );
-        if ( form ) {
-            progressBar.setDisabled( form.getForm().hasInvalidField() );
+    isStepValid: function( step ) {
+        var activeForm = step ? step.getForm() : this.getLayout().getActiveItem().getForm();
+        if( activeForm ) {
+            var isStepValid = Ext.Array.intersect( this.invalidItems, this.validateItems).length == 0;
+            isStepValid = !activeForm.hasInvalidField() && isStepValid;
+            return isStepValid;
         }
     },
 
@@ -447,6 +435,10 @@ Ext.define( 'Common.WizardPanel', {
     getData: function()
     {
         return this.data;
+    },
+
+    getProgressBar: function() {
+        return this.dockedItems.items[0];
     }
 
 } );
