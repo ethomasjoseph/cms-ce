@@ -16,8 +16,8 @@ Ext.define( 'App.view.wizard.group.WizardStepGeneralPanel', {
             items: [
                 {
                     xtype: 'textfield',
-                    fieldLabel: 'Name',
-                    blank: false,
+                    fieldLabel: 'Name <span style="color: red;">*</span>',
+                    allowBlank: false,
                     value: me.modelData ? me.modelData.displayName : '',
                     name: 'displayName',
                     itemId: 'displayName',

@@ -216,46 +216,47 @@ Ext.define( 'App.controller.EditUserPanelController', {
         }
     },
 
-    showEditUserForm: function( el, e )
+    showEditUserForm: function( account, callback, index )
     {
-        if ( el && (el.action == 'newUser') )
+        if ( !account )
         {
             var window = Ext.create( 'widget.selectUserStoreWindow', {} );
             window.show();
-
         }
         else
         {
-            var accountDetail = this.getAccountDetailPanel();
             var tabPane = this.getCmsTabPanel();
-            var currentAccount = accountDetail.getCurrentUser();
             var me = this;
-            if (currentAccount.type === 'user'){
+            if (account.type === 'user'){
                 Ext.Ajax.request( {
                       url: 'data/user/userinfo',
                       method: 'GET',
-                      params: {key: currentAccount.key},
+                      params: {key: account.key},
                       success: function( response )
                       {
                           var jsonObj = Ext.JSON.decode( response.responseText );
                           var tab = {
                               xtype: 'userWizardPanel',
-                              id: currentAccount.userStore + '-' + currentAccount.name,
-                              title: currentAccount.displayName + ' (' + currentAccount.qualifiedName + ')',
+                              id: account.userStore + '-' + account.name,
+                              title: account.displayName + ' (' + account.qualifiedName + ')',
                               iconCls: 'icon-edit-user',
                               closable: true,
                               userstore: jsonObj.userStore,
-                              qUserName: currentAccount.name,
+                              qUserName: account.name,
                               userFields: jsonObj,
-                              hasPhoto: currentAccount.hasPhoto,
+                              hasPhoto: account.hasPhoto,
                               autoScroll: true
                           };
-                          var tabCmp = tabPane.addTab( tab );
+                          var tabCmp = tabPane.addTab( tab, index );
                           var wizardPanel = tabCmp.down('wizardPanel');
 
                           var data = me.userInfoToWizardData(jsonObj);
                           wizardPanel.addData( data );
-                          tabCmp.updateHeader( {value: currentAccount.displayName, edited: true} );
+                          tabCmp.updateHeader( {value: account.displayName, edited: true} );
+
+                          if ( Ext.isFunction( callback ) ) {
+                              callback();
+                          }
                       }
                   } );
             }
@@ -264,7 +265,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
                 Ext.Ajax.request( {
                       url: 'data/account/groupinfo',
                       method: 'GET',
-                      params: {key: currentAccount.key},
+                      params: {key: account.key},
                       success: function( response )
                       {
                           var jsonObj = Ext.JSON.decode( response.responseText );
@@ -275,10 +276,13 @@ Ext.define( 'App.controller.EditUserPanelController', {
                                   xtype: 'groupWizardPanel',
                                   modelData: jsonObj.group
                               } );
+
+                          if ( Ext.isFunction( callback ) ) {
+                              callback();
+                          }
                       }
                 } );
             }
-
         }
     },
 
