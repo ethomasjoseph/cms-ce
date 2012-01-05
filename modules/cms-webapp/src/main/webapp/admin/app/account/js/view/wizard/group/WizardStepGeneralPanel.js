@@ -16,7 +16,8 @@ Ext.define( 'App.view.wizard.group.WizardStepGeneralPanel', {
             items: [
                 {
                     xtype: 'textfield',
-                    fieldLabel: 'Display Name',
+                    fieldLabel: 'Name',
+                    blank: false,
                     value: me.modelData ? me.modelData.displayName : '',
                     name: 'displayName',
                     itemId: 'displayName',
@@ -24,11 +25,13 @@ Ext.define( 'App.view.wizard.group.WizardStepGeneralPanel', {
                     listeners: {
                         keyup: function(field, event)
                         {
-                            if (!event.isSpecialKey())
+                            var value = field.getValue();
+                            var displayNameLabel = me.up('groupWizardPanel').down('#wizardHeader');
+                            if (value.trim() == '')
                             {
-                                var displayNameLabel = me.up('groupWizardPanel').down('#wizardHeader');
-                                displayNameLabel.update(field.getValue());
+                                value = 'Display Name';
                             }
+                            displayNameLabel.update(value);
                         }
                     },
                     emptyText: 'Display Name'
