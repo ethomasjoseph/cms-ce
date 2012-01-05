@@ -31,6 +31,10 @@ public class GroupModel
 
     private boolean builtIn;
 
+    private String description;
+
+    private Boolean isPublic;
+
     public GroupModel()
     {
     }
@@ -137,5 +141,25 @@ public class GroupModel
     public boolean isBuiltIn()
     {
         return this.builtIn;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
+    public Boolean isPublic()
+    {
+        return isPublic;
+    }
+
+    public void setPublic( Boolean aPublic )
+    {
+        isPublic = aPublic;
     }
 }

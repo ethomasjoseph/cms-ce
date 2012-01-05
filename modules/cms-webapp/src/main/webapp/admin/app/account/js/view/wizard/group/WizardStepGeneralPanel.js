@@ -2,27 +2,54 @@ Ext.define( 'App.view.wizard.group.WizardStepGeneralPanel', {
     extend: 'Ext.form.Panel',
     alias : 'widget.wizardStepGeneralPanel',
 
-    items: [{
-        xtype: 'fieldset',
-        title: 'General',
-        padding: '10px 15px',
-        defaults: {
-            width: 600
-        },
-        items: [
-            {
-                xtype: 'checkbox',
-                fieldLabel: 'Restricted enrollment',
-                name: 'restrictedEnrollment'
+
+    initComponent: function()
+    {
+        var me = this;
+        me.items = [{
+            xtype: 'fieldset',
+            title: 'General',
+            padding: '10px 15px',
+            defaults: {
+                width: 600
             },
-            {
-                xtype: 'textarea',
-                fieldLabel: 'Description',
-                allowBlank: true,
-                rows: 5,
-                name: 'description'
-            }
-        ]
-    }]
+            items: [
+                {
+                    xtype: 'textfield',
+                    fieldLabel: 'Display Name',
+                    value: me.modelData ? me.modelData.displayName : '',
+                    name: 'displayName',
+                    itemId: 'displayName',
+                    enableKeyEvents: true,
+                    listeners: {
+                        keyup: function(field, event)
+                        {
+                            if (!event.isSpecialKey())
+                            {
+                                var displayNameLabel = me.up('groupWizardPanel').down('#wizardHeader');
+                                displayNameLabel.update(field.getValue());
+                            }
+                        }
+                    },
+                    emptyText: 'Display Name'
+                },
+                {
+                    xtype: 'checkbox',
+                    fieldLabel: 'Public group',
+                    value: me.modelData ? me.modelData.public : false,
+                    name: 'restrictedEnrollment'
+                },
+                {
+                    xtype: 'textarea',
+                    fieldLabel: 'Description',
+                    allowBlank: true,
+                    rows: 5,
+                    value: me.modelData ? me.modelData.description : '',
+                    name: 'description'
+                }
+            ]
+        }];
+        me.callParent( arguments );
+    }
 
 } );

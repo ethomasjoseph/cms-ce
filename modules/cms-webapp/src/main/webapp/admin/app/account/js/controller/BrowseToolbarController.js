@@ -10,7 +10,6 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         'CallingCodeModel'
     ],
     views: [
-        'EditUserPanel',
         'ChangePasswordWindow',
         'DeleteAccountWindow',
         'wizard.user.UserWizardPanel',
@@ -153,16 +152,6 @@ Ext.define( 'App.controller.BrowseToolbarController', {
     getUserGrid: function()
     {
         return Ext.ComponentQuery.query( 'accountGrid' )[0];
-    },
-
-    getUserDeleteWindow: function()
-    {
-        var win = Ext.ComponentQuery.query( 'userDeleteWindow' )[0];
-        if ( !win )
-        {
-            win = Ext.create( 'widget.userDeleteWindow' );
-        }
-        return win;
     },
 
     getUserChangePasswordWindow: function()

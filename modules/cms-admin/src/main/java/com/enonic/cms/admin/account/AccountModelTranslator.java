@@ -62,7 +62,8 @@ public final class AccountModelTranslator
         model.setDisplayName( entity.getDisplayName() );
         model.setLastModified( entity.getLastModified() );
         model.setBuiltIn( entity.isBuiltIn() );
-
+        model.setPublic( !entity.isRestricted() );
+        model.setDescription( entity.getDescription() );
         if ( entity.getUserStore() != null )
         {
             model.setUserStore( entity.getUserStore().getName() );

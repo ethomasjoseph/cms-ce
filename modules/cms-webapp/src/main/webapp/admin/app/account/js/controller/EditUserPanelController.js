@@ -4,7 +4,6 @@ Ext.define( 'App.controller.EditUserPanelController', {
     stores: [],
     models: [],
     views: [
-        'DeleteWindow',
         'SelectUserStoreWindow'
     ],
 
@@ -45,9 +44,6 @@ Ext.define( 'App.controller.EditUserPanelController', {
                 },
                 '*[action=deleteGroup]': {
                     click: this.leaveGroup
-                },
-                '*[action=selectGroup]': {
-                    select: this.selectGroup
                 },
                 '*[action=closeUserForm]': {
                     click: this.closeUserForm
@@ -147,42 +143,6 @@ Ext.define( 'App.controller.EditUserPanelController', {
 
     },
 
-    selectGroup: function( field, value, options )
-    {
-        var userPrefPanel = field.up( 'userPreferencesPanel' );
-        var groupPanel = userPrefPanel.down( '#groupPanel' );
-        var userPanel = field.up( 'editUserPanel' );
-        var groupItem = {
-            xtype: 'groupDetailButton',
-            value: value[0].get( 'name' ),
-            key: value[0].get( 'key' )
-        };
-
-        var isContain = Ext.Array.contains( groupPanel.groupKeys, value[0].get( 'key' ) );
-        if ( !isContain )
-        {
-            Ext.Ajax.request( {
-                                  url: 'data/group/join',
-                                  method: 'POST',
-                                  params: {key: userPanel.currentUser.key, isUser: true, join: [groupItem.key]},
-                                  success: function( response, opts )
-                                  {
-                                      groupPanel.add( groupItem );
-                                  },
-                                  failure: function( response, opts )
-                                  {
-                                      Ext.Msg.alert( 'Info', 'Group wasn\'t added' );
-                                  }
-                              } );
-        }
-        else
-        {
-            Ext.Msg.alert( 'Info', 'Group was already added' );
-        }
-
-        field.setValue( '' );
-    },
-
     leaveGroup: function( element, event )
     {
         var groupItem = element.up( 'groupDetailButton' );
@@ -268,35 +228,57 @@ Ext.define( 'App.controller.EditUserPanelController', {
         {
             var accountDetail = this.getAccountDetailPanel();
             var tabPane = this.getCmsTabPanel();
-            var currentUser = accountDetail.getCurrentUser();
+            var currentAccount = accountDetail.getCurrentUser();
             var me = this;
-            Ext.Ajax.request( {
-                                  url: 'data/user/userinfo',
-                                  method: 'GET',
-                                  params: {key: currentUser.key},
-                                  success: function( response )
-                                  {
-                                      var jsonObj = Ext.JSON.decode( response.responseText );
-                                      var tab = {
-                                          xtype: 'userWizardPanel',
-                                          id: currentUser.userStore + '-' + currentUser.name,
-                                          title: currentUser.displayName + ' (' + currentUser.qualifiedName + ')',
-                                          iconCls: 'icon-edit-user',
-                                          closable: true,
-                                          userstore: jsonObj.userStore,
-                                          qUserName: currentUser.name,
-                                          userFields: jsonObj,
-                                          hasPhoto: currentUser.hasPhoto,
-                                          autoScroll: true
-                                      };
-                                      var tabCmp = tabPane.addTab( tab );
-                                      var wizardPanel = tabCmp.down('wizardPanel');
+            if (currentAccount.type === 'user'){
+                Ext.Ajax.request( {
+                      url: 'data/user/userinfo',
+                      method: 'GET',
+                      params: {key: currentAccount.key},
+                      success: function( response )
+                      {
+                          var jsonObj = Ext.JSON.decode( response.responseText );
+                          var tab = {
+                              xtype: 'userWizardPanel',
+                              id: currentAccount.userStore + '-' + currentAccount.name,
+                              title: currentAccount.displayName + ' (' + currentAccount.qualifiedName + ')',
+                              iconCls: 'icon-edit-user',
+                              closable: true,
+                              userstore: jsonObj.userStore,
+                              qUserName: currentAccount.name,
+                              userFields: jsonObj,
+                              hasPhoto: currentAccount.hasPhoto,
+                              autoScroll: true
+                          };
+                          var tabCmp = tabPane.addTab( tab );
+                          var wizardPanel = tabCmp.down('wizardPanel');
 
-                                      var data = me.userInfoToWizardData(jsonObj);
-                                      wizardPanel.addData( data );
-                                      tabCmp.updateHeader( {value: currentUser.displayName, edited: true} );
-                                  }
+                          var data = me.userInfoToWizardData(jsonObj);
+                          wizardPanel.addData( data );
+                          tabCmp.updateHeader( {value: currentAccount.displayName, edited: true} );
+                      }
+                  } );
+            }
+            else
+            {
+                Ext.Ajax.request( {
+                      url: 'data/account/groupinfo',
+                      method: 'GET',
+                      params: {key: currentAccount.key},
+                      success: function( response )
+                      {
+                          var jsonObj = Ext.JSON.decode( response.responseText );
+                          console.log(jsonObj.group);
+                          me.getCmsTabPanel().addTab( {
+                                  title: jsonObj.group.displayName,
+                                  iconCls: 'icon-new-group',
+                                  xtype: 'groupWizardPanel',
+                                  modelData: jsonObj.group
                               } );
+                      }
+                } );
+            }
+
         }
     },
 
@@ -342,16 +324,6 @@ Ext.define( 'App.controller.EditUserPanelController', {
     getEditUserFormPanel: function()
     {
         return Ext.ComponentQuery.query( 'editUserFormPanel' )[0];
-    },
-
-    getUserDeleteWindow: function()
-    {
-        var win = Ext.ComponentQuery.query( 'userDeleteWindow' )[0];
-        if ( !win )
-        {
-            win = Ext.create( 'widget.userDeleteWindow' );
-        }
-        return win;
     },
 
     getAccountDetailPanel: function()

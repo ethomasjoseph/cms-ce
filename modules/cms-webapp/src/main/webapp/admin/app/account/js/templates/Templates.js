@@ -18,12 +18,6 @@ Templates.account = {
                     '<div style="float:left; padding: 1px 0 0 5px"><div class="cms-grid-title">{1}</div>' +
                     '<div class="cms-grid-description">{3}\\{2}</div>'
 
-    ,editUserPanelHeader:
-            '<div class="cms-edit-form-header clearfix">' + '<div class="left">' +
-                    '<img alt="User" src="data/user/photo?key={key}"/></div>' + '<div class="right">' +
-                    '<h1><input id="display-name" type="text" value="{displayName}" readonly="true" class="cms-display-name {[edited ? "cms-edited-field" : ""]}"/></h1><a href="javascript:;" class="edit-button"></a>' +
-                    '<p>{qualifiedName}</p></div></div>'
-
     ,newUserPanelHeader:
             '<div class="cms-wizard-header-container">' + '<div class="cms-wizard-header clearfix">' +
                     '<input type="text" value="{value}" readonly="true" id="cms-display-name" class="cms-display-name"/>' +
