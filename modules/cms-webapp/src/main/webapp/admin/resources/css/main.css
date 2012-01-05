@@ -233,7 +233,7 @@ img.photo {
 }
 
 .icon-role {
-    background-image: url("../icons/16x16/businessman.png");
+    background-image: url("../icons/16x16/businessmen.png");
 }
 
 .icon-edit-user-24 {
@@ -697,7 +697,7 @@ ul.cms-wizard-navigation li.current {
     background-image: url(../../resources/images/wizard-navigation-arrow-current.png);
 }
 
-ul.cms-wizard-navigation li.previous {
+ul.cms-wizard-navigation li.previous.immediate {
     background-image: url(../../resources/images/wizard-navigation-arrow-previous.png);
 }
 
@@ -705,12 +705,8 @@ ul.cms-wizard-navigation li.last {
     background-image: url(../../resources/images/wizard-navigation-arrow-last.png);
 }
 
-ul.cms-wizard-navigation li.current-last {
+ul.cms-wizard-navigation li.current.last {
     background-image: url(../../resources/images/wizard-navigation-arrow-current-last.png);
-}
-
-ul.cms-wizard-navigation li.last-current {
-    background-image: url(../../resources/images/wizard-navigation-arrow-current.png);
 }
 
 ul.cms-wizard-navigation li a {
@@ -727,27 +723,48 @@ ul.cms-wizard-navigation li a.previous {
 }
 
 ul.cms-wizard-navigation li a.current,
-ul.cms-wizard-navigation li a.current-last {
+ul.cms-wizard-navigation li a.current.last {
     padding-right: 86px;
     color: #000;
     font-weight: bold;
     background-color: #fff;
 }
 
-ul.cms-wizard-navigation a.next {
-    color: #acacac;
+/*----- Wizard edit mode -----*/
+
+.cms-wizard-edit ul.cms-wizard-navigation a.next,
+.cms-wizard-edit ul.cms-wizard-navigation a.next.immediate,
+.cms-wizard-edit ul.cms-wizard-navigation a.next.last {
+    color: #222;
+    cursor: pointer;
 }
 
-.edit-user ul.cms-wizard-navigation a.next {
-    color: #222222;
-}
-
-.cms-wizard-toolbar.x-item-disabled ul.cms-wizard-navigation a.next,
-ul.cms-wizard-navigation li a.last,
-ul.cms-wizard-navigation li a.last-current {
+.cms-wizard-edit .cms-wizard-toolbar-disabled ul.cms-wizard-navigation a.next.last {
     color: #acacac;
     cursor: default;
 }
+
+
+/*----- Wizard new mode -----*/
+
+.cms-wizard-new ul.cms-wizard-navigation li a.next {
+    color: #acacac;
+    cursor: default;
+}
+.cms-wizard-new ul.cms-wizard-navigation li a.next.immediate {
+    color: #222;
+    cursor: pointer;
+}
+
+.cms-wizard-new .cms-wizard-toolbar-disabled ul.cms-wizard-navigation a.next,
+.cms-wizard-new .cms-wizard-toolbar-disabled ul.cms-wizard-navigation a.next.immediate,
+.cms-wizard-new .cms-wizard-toolbar-disabled ul.cms-wizard-navigation a.next.last {
+    color: #acacac;
+    cursor: default;
+}
+
+
+
 
 .cms-wizard>div>.x-panel-body {
     border: 0 none;
@@ -901,11 +918,11 @@ li.cms-group-item:hover{
 }
 
 li.cms-role-item {
-    background: url("../icons/16x16/businessman.png") no-repeat 3px 3px #DEE7F8;
+    background: url("../icons/16x16/businessmen.png") no-repeat 3px 3px #DEE7F8;
 }
 
 li.cms-role-item:hover{
-    background: url("../icons/16x16/businessman.png") no-repeat 3px 3px #BBCEF1 !important;
+    background: url("../icons/16x16/businessmen.png") no-repeat 3px 3px #BBCEF1 !important;
 }
 
 li.cms-user-item {

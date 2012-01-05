@@ -21,6 +21,23 @@ Ext.define('Common.PersistentGridSelectionPlugin', {
             this.grid.view.un('refresh', this.grid.selModel.refresh, this.grid.selModel);
             this.grid.view.on('refresh', this.onViewRefresh, this );
             this.grid.view.on('beforeitemmousedown', function(view, record, item, index, event, eOpts) {
+                var targetElement = event.target;
+                var isCheckboxColumn = targetElement.className && targetElement.className.indexOf('x-grid-cell-first') > -1;
+                if ( isCheckboxColumn )
+                {
+                    var isChecked = this.selected[record.internalId];
+                    if ( !isChecked )
+                    {
+                        this.grid.selModel.select(index, true, false);
+                    }
+                    else
+                    {
+                        this.grid.selModel.deselect(index);
+                    }
+
+                    return false;
+                }
+
                 this.clearSelectionOnRowClick(view, record, item, index, event, eOpts);
                 this.cancelItemContextClickWhenSelectionIsMultiple(view, record, item, index, event, eOpts);
             }, this );
@@ -54,7 +71,7 @@ Ext.define('Common.PersistentGridSelectionPlugin', {
 
     /**
      * Removes an record from the selection
-     * @param record
+     * @param {Ext.data.Model} record The selected record
      */
     deselect: function(record)
     {
@@ -203,8 +220,9 @@ Ext.define('Common.PersistentGridSelectionPlugin', {
     clearSelectionOnRowClick: function(view, record, item, index, event, eOpts) {
         var targetElement = event.target;
         var isLeftClick = event.button === 0;
-        var isCheckboxColumn = targetElement.className && targetElement.className.indexOf('x-grid-row-checker') > -1;
-        if ( isLeftClick && !isCheckboxColumn )
+        var isCheckbox = targetElement.className && targetElement.className.indexOf('x-grid-row-checker') > -1;
+
+        if ( isLeftClick && !isCheckbox )
         {
             this.clearSelection();
         }

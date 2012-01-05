@@ -6,7 +6,7 @@ Ext.define('App.store.UserstoreConnectorStore', {
 
     proxy: {
         type: 'ajax',
-        url: '../admin/data/userstore/connectors',
+        url: 'data/userstore/connectors',
         simpleSortMode: true,
         reader: {
             type: 'json',

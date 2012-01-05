@@ -54,7 +54,7 @@ Ext.define( 'App.controller.GridPanelController', {
 
         // Works because selection model count is 1 even if page has changed.
         //console.log(selModel);
-        var showUserPreviewOnly = selectionModelCount === 1;
+        var showUserPreviewOnly = persistentSelectionCount === 1;
 
         if ( persistentSelectionCount === 0 )
         {
