@@ -1,4 +1,4 @@
-Ext.define( 'App.controller.LauncherController', {
+Ext.define( 'App.controller.AdminLauncherController', {
     extend: 'App.controller.AdminBaseController',
 
     init: function()
