@@ -1,6 +1,8 @@
 package com.enonic.cms.admin.group;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class GroupModel
 {
@@ -14,9 +16,15 @@ public class GroupModel
 
     private String displayName;
 
+    private String description;
+
     private String userStore;
 
     private Date lastModified;
+
+    private boolean restricted;
+
+    private List<Map<String, String>> members;
 
     private boolean builtIn;
 
@@ -24,7 +32,7 @@ public class GroupModel
     {
         return builtIn ? "role" : "group";
     }
-
+    
     public void setKey( String key )
     {
         this.key = key;
@@ -95,6 +103,26 @@ public class GroupModel
         return lastModified;
     }
 
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
+    public boolean isRestricted()
+    {
+        return restricted;
+    }
+
+    public void setRestricted( boolean restricted )
+    {
+        this.restricted = restricted;
+    }
+
     public void setBuiltIn( boolean builtIn )
     {
         this.builtIn = builtIn;
@@ -103,5 +131,15 @@ public class GroupModel
     public boolean isBuiltIn()
     {
         return this.builtIn;
+    }
+
+    public List<Map<String, String>> getMembers()
+    {
+        return members;
+    }
+
+    public void setMembers( List<Map<String, String>> members )
+    {
+        this.members = members;
     }
 }
