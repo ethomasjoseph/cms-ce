@@ -131,7 +131,18 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
                             {
                                 stepTitle: "Memberships",
                                 groups: userGroups,
-                                xtype: 'wizardStepMembershipPanel'
+                                xtype: 'wizardStepMembershipPanel',
+                                listeners: {
+                                    afterrender: {
+                                        fn: function()
+                                        {
+                                            var membershipPanel = this.down('wizardStepMembershipPanel');
+                                            var wizard = this.down('wizardPanel');
+                                            wizard.addData( membershipPanel.getData() );
+                                        },
+                                        scope: this
+                                    }
+                                }
                             },
                             {
                                 stepTitle: "Summary",
