@@ -22,18 +22,6 @@ Ext.define( 'App.view.wizard.group.WizardStepGeneralPanel', {
                     name: 'displayName',
                     itemId: 'displayName',
                     enableKeyEvents: true,
-                    listeners: {
-                        keyup: function(field, event)
-                        {
-                            var value = field.getValue();
-                            var displayNameLabel = me.up('groupWizardPanel').down('#wizardHeader');
-                            if (value.trim() == '')
-                            {
-                                value = 'Display Name';
-                            }
-                            displayNameLabel.update(value);
-                        }
-                    },
                     emptyText: 'Display Name'
                 },
                 {

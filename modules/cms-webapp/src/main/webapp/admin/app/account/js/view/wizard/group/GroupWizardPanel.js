@@ -26,11 +26,13 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
 
         var groupWizardHeader = Ext.create( 'Ext.container.Container', {
             itemId: 'wizardHeader',
-            height: 30,
-            cls: 'cms-wizard-header-container cms-display-name',
+            autoHeight: true,
+            cls: 'cms-wizard-header-container',
             border: false,
-            tpl: "{.}",
-            data: displayNameValue
+            tpl: new Ext.XTemplate(Templates.account.groupWizardHeader),
+            data: {
+                displayName: displayNameValue
+            }
         } );
 
         var groupWizardToolbar = Ext.createByAlias( 'widget.groupWizardToolbar', {
@@ -42,7 +44,7 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
         me.items = [
             {
                 width: 138,
-                padding: '5 5 5 5',
+                padding: 5,
                 border: false,
                 items: [
                     {
@@ -57,7 +59,7 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
             },
             {
                 columnWidth: 1,
-                padding: '8 10 10 0',
+                padding: '10 10 10 0',
                 defaults: {
                     border: false
                 },

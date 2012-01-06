@@ -734,37 +734,33 @@ ul.cms-wizard-navigation li a.current.last {
 /*----- Wizard header -----*/
 
 .cms-wizard-header-container {
-    margin-bottom: 4px;
+    margin: 5px 0 5px 4px;
     font-size: 12px;
-    padding-left: 3px;
-}
-
-.cms-wizard-header-container p {
-    margin: 0;
 }
 
 .cms-wizard-header-container .cms-wizard-header {
     position: relative;
 }
 
-.cms-wizard-header-container {
-    width: 99%;
+.cms-wizard-header-container .cms-display-name {
+    width: 100%;
     border: 1px solid TRANSPARENT;
     color: #555555;
     font-size: 26px;
     line-height: 36px;
     height: 36px;
     font-weight: normal;
+    margin: 0;
     border-radius: 2px;
     background: white none;
 }
 
-.cms-wizard-header-container input:hover {
+.cms-wizard-header-container input.cms-display-name:hover {
     border: 1px solid #98c9f2;
     box-shadow: 0 0 3px #98c9f2;
 }
 
-.cms-wizard-header-container input:focus {
+.cms-wizard-header-container input.cms-display-name:focus {
     color: #000 !important;
     border: 1px solid #99BCE8 !important;
 }
@@ -777,7 +773,7 @@ ul.cms-wizard-navigation li a.current.last {
     border-color: #C30;
 }
 
-.user-store-user-name {
+.cms-wizard-header-container .cms-wizard-userstore {
     padding-left: 3px;
 }
 

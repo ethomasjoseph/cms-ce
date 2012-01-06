@@ -18,6 +18,18 @@ Ext.define( 'App.controller.GroupWizardController', {
                     this.saveGroup( btn, evt, opts, true );
                 }
             },
+            'groupWizardPanel textfield#displayName': {
+                keyup: function( field, event ) {
+                    var value = field.getValue();
+                    var displayNameLabel = field.up('groupWizardPanel').down('#wizardHeader');
+                    if (value.trim() == '') {
+                        value = 'Display Name';
+                    }
+                    displayNameLabel.update({
+                        displayName: value
+                    });
+                }
+            },
             'groupWizardPanel wizardPanel':{
                 beforestepchanged:this.validateStep,
                 stepchanged:this.stepChanged,

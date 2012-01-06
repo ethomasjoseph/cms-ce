@@ -19,7 +19,7 @@ Ext.define( 'App.view.preview.group.GroupPreviewToolbar', {
             items: [
                 {
                     text: 'Delete',
-                    action: 'showDeleteWindow',
+                    action: 'deleteGroupPreview',
                     iconCls: 'icon-delete-user-24'
                 }
             ]};
@@ -30,7 +30,7 @@ Ext.define( 'App.view.preview.group.GroupPreviewToolbar', {
             items: [
                 {
                     text: 'Edit Group',
-                    action: 'edit',
+                    action: 'editGroupPreview',
                     iconCls: 'icon-edit-user-24'
                 }
             ]};
