@@ -28,7 +28,7 @@ Ext.define( 'App.view.wizard.group.WizardStepMembersPanel', {
                         resizable: false,
                         name: 'members',
                         itemId: 'members',
-                        store: 'AccountStore',
+                        store: new App.store.AccountStore(),
                         mode: 'local',
                         displayField: 'name',
                         itemClassResolver: function (values)
