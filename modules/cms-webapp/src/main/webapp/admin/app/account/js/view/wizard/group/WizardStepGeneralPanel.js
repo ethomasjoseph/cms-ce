@@ -53,6 +53,13 @@ Ext.define( 'App.view.wizard.group.WizardStepGeneralPanel', {
             ]
         }];
         me.callParent( arguments );
-    }
+    },
 
+    getData: function()
+    {
+        var restricted = this.down('*[name=restrictedEnrollment]').value;
+        var description = this.down('*[name=description]').value;
+        var data = {'description': description, 'restricted': restricted};
+        return data;
+    }
 } );

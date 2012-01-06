@@ -65,7 +65,7 @@ Ext.define( 'App.view.wizard.group.WizardStepMembersPanel', {
         ];
 
         this.callParent( arguments );
-
+        
         if (this.modelData && this.modelData.members)
         {
             var members = this.down('#members');
@@ -76,7 +76,18 @@ Ext.define( 'App.view.wizard.group.WizardStepMembersPanel', {
             });
             members.setValue(memberKeys);
         }
+    },
 
-
+    getData: function()
+    {
+        var selectBox = this.down( 'comboboxselect' );
+        var values = selectBox.valueModels;
+        var groupsSelected = [];
+        Ext.Array.each( values, function(group) {
+            var group = {key :group.data.key, name:group.data.name, userStore:group.data.userStore};
+            groupsSelected.push(group);
+        });
+        var userData = { members: groupsSelected };
+        return userData;
     }
 } );
