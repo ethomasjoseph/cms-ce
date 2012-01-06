@@ -1,5 +1,6 @@
 package com.enonic.cms.admin.account;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -8,6 +9,10 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
+import com.enonic.cms.admin.user.AddressModel;
+import com.enonic.cms.admin.user.UserInfoModel;
+import com.enonic.cms.api.client.model.user.Address;
+import com.enonic.cms.api.client.model.user.UserInfo;
 import com.enonic.cms.core.security.group.GroupEntity;
 import com.enonic.cms.core.security.group.GroupType;
 import com.enonic.cms.core.security.user.UserEntity;
@@ -17,6 +22,7 @@ import com.enonic.cms.domain.EntityPageList;
 @Component
 public final class AccountModelTranslator
 {
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat( "yyyy-MM-dd" );
 
     AccountModel toAModel( final UserEntity entity )
     {
@@ -32,7 +38,7 @@ public final class AccountModelTranslator
         //TODO: not implemented
         model.setCreated( "1998-09-13" );
         List<Map<String, String>> groups = new ArrayList<Map<String, String>>();
-        for ( GroupEntity group : entity.getAllMembershipsGroups() )
+        for ( GroupEntity group : entity.getDirectMemberships() )
         {
             Map<String, String> groupMap = new HashMap<String, String>();
             groupMap.put( "name", group.getDisplayName() );
@@ -49,8 +55,75 @@ public final class AccountModelTranslator
             model.setUserStore( "system" );
         }
         model.setHasPhoto( entity.hasPhoto() );
+        model.setUserInfo( toUserInfoModel( entity ) );
 
         return model;
+    }
+
+    private UserInfoModel toUserInfoModel( final UserEntity entity )
+    {
+        UserInfoModel userInfoModel = new UserInfoModel();
+        UserInfo userInfo = entity.getUserInfo();
+        String birthday = null;
+        if ( userInfo.getBirthday() != null )
+        {
+            birthday = dateFormatter.format( userInfo.getBirthday() );
+        }
+        userInfoModel.setBirthday( birthday );
+        userInfoModel.setCountry( userInfo.getCountry() );
+        userInfoModel.setDescription( userInfo.getDescription() );
+        userInfoModel.setFax( userInfo.getFax() );
+        userInfoModel.setFirstName( userInfo.getFirstName() );
+        userInfoModel.setGlobalPosition( userInfo.getGlobalPosition() );
+        userInfoModel.setHomePage( userInfo.getHomePage() );
+        if ( userInfo.getHtmlEmail() != null )
+        {
+            userInfoModel.setHtmlEmail( userInfo.getHtmlEmail().toString() );
+        }
+        userInfoModel.setInitials( userInfo.getInitials() );
+        userInfoModel.setLastName( userInfo.getLastName() );
+        if ( userInfo.getLocale() != null )
+        {
+            userInfoModel.setLocale( userInfo.getLocale().toString() );
+        }
+        userInfoModel.setMemberId( userInfo.getMemberId() );
+        userInfoModel.setMiddleName( userInfo.getMiddleName() );
+        userInfoModel.setMobile( userInfo.getMobile() );
+        userInfoModel.setNickName( userInfo.getOrganization() );
+        userInfoModel.setPersonalId( userInfo.getPersonalId() );
+        userInfoModel.setPhone( userInfo.getPhone() );
+        userInfoModel.setPrefix( userInfo.getPrefix() );
+        userInfoModel.setSuffix( userInfo.getSuffix() );
+        if ( userInfo.getTimeZone() != null )
+        {
+            userInfoModel.setTimeZone( userInfo.getTimeZone().getDisplayName() );
+        }
+        userInfoModel.setTitle( userInfo.getTitle() );
+        if ( userInfo.getGender() != null )
+        {
+            userInfoModel.setGender( userInfo.getGender().toString() );
+        }
+        userInfoModel.setOrganization( userInfo.getOrganization() );
+        for ( Address address : userInfo.getAddresses() )
+        {
+            userInfoModel.getAddresses().add( toAddressModel( address ) );
+        }
+
+        return userInfoModel;
+    }
+
+    private AddressModel toAddressModel( final Address address )
+    {
+        AddressModel addressModel = new AddressModel();
+        addressModel.setCountry( address.getCountry() );
+        addressModel.setIsoCountry( address.getIsoCountry() );
+        addressModel.setRegion( address.getRegion() );
+        addressModel.setIsoRegion( address.getIsoRegion() );
+        addressModel.setLabel( address.getLabel() );
+        addressModel.setPostalAddress( address.getPostalAddress() );
+        addressModel.setPostalCode( address.getPostalCode() );
+        addressModel.setStreet( address.getStreet() );
+        return addressModel;
     }
 
     private AccountModel toAModel( final GroupEntity entity )
