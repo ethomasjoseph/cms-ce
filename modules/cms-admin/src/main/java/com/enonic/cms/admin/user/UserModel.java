@@ -4,6 +4,7 @@ import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -38,10 +39,12 @@ public final class UserModel
         this.displayName = displayName;
         this.userStore = userStore;
         this.userInfo = new UserInfoModel( userInfo );
+        this.groups = new ArrayList<Map<String, String>>();
     }
 
     public UserModel()
     {
+        this.groups = new ArrayList<Map<String, String>>();
     }
     
     private String type = "user";

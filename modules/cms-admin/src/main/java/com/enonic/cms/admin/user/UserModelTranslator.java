@@ -60,7 +60,7 @@ public final class UserModelTranslator
         //TODO: not implemented
         model.setCreated( "13-09-1998" );
         List<Map<String, String>> groups = new ArrayList<Map<String, String>>();
-        for ( GroupEntity group : entity.getAllMembershipsGroups() )
+        for ( GroupEntity group : entity.getDirectMemberships() )
         {
             Map<String, String> groupMap = new HashMap<String, String>();
             groupMap.put( "name", group.getDisplayName() );
