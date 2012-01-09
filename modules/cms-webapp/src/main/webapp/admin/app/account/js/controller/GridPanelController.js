@@ -62,10 +62,10 @@ Ext.define( 'App.controller.GridPanelController', {
             var account = selectionModel.getSelection()[0];
 
             if ( account ) {
-                detailPanel.setCurrentAccount( account.data );
+                detailPanel.setCurrentAccount( account.raw );
             }
             //TODO: can fail
-            detailPanel.showAccountPreview( account.data )
+            detailPanel.showAccountPreview( account.raw )
         }
         else
         {
