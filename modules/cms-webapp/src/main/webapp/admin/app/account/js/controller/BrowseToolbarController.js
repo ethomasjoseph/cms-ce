@@ -48,11 +48,8 @@ Ext.define( 'App.controller.BrowseToolbarController', {
 
     createNewGroupTab: function()
     {
-        this.getCmsTabPanel().addTab( {
-                                          title: 'New Group',
-                                          iconCls: 'icon-new-group',
-                                          xtype: 'groupWizardPanel'
-                                      } );
+        var window = Ext.create( 'widget.selectUserStoreWindow', {caller: 'group'} );
+        window.show();
     },
 
     showDeleteUserWindow: function()
