@@ -27,7 +27,7 @@ Ext.define( 'App.controller.GridPanelController', {
                           'accountGrid': {
                               selectionchange: function(selModel, selected, eOpts)
                               {
-                                  this.updateDetailsPanel(selModel, selected, eOpts);
+                                  this.updateDetailsPanel();
                                   this.updateActionItems();
                               },
                               itemcontextmenu: this.popupMenu,
@@ -39,18 +39,14 @@ Ext.define( 'App.controller.GridPanelController', {
                       } );
     },
 
-    updateDetailsPanel: function(selModel, selected, eOpts)
+    updateDetailsPanel: function()
     {
         var detailPanel = this.getAccountDetailPanel();
         var persistentGridSelectionPlugin = this.getPersistentGridSelectionPlugin();
         var persistentSelection = persistentGridSelectionPlugin.getSelection();
         var persistentSelectionCount = persistentGridSelectionPlugin.getSelectionCount();
-        var userStore = this.getStore( 'AccountStore' );
-        var pageSize = userStore.pageSize;
-        var totalCount = userStore.totalCount;
 
         var selectionModel = this.getUserGrid().getSelectionModel();
-        var selectionModelCount = selectionModel.getCount();
 
         // Works because selection model count is 1 even if page has changed.
         //console.log(selModel);
@@ -63,9 +59,8 @@ Ext.define( 'App.controller.GridPanelController', {
 
             if ( account ) {
                 detailPanel.setCurrentAccount( account.raw );
+                detailPanel.showAccountPreview( account.raw );
             }
-            //TODO: can fail
-            detailPanel.showAccountPreview( account.raw )
         }
         else
         {
