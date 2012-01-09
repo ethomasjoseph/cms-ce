@@ -78,9 +78,7 @@ Ext.define( 'App.view.GridPanel', {
             stripeRows: true
         };
 
-        this.selModel = Ext.create( 'Ext.selection.CheckboxModel', {
-            //checkOnly: true
-        } );
+        this.selModel = Ext.create( 'Ext.selection.CheckboxModel', {} );
 
         this.callParent( arguments );
     },

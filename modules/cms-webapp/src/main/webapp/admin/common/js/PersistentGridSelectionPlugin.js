@@ -2,7 +2,7 @@
  * PersistentGridSelectionPlugin
  * Based on joeri's RowSelectionPaging post,2009-02-26
  *
- * Only tested on grids using the CheckboxModel
+ * Only tested on grids using a plain Ext.selection.CheckboxModel
  */
 Ext.define('Common.PersistentGridSelectionPlugin', {
 
@@ -21,10 +21,21 @@ Ext.define('Common.PersistentGridSelectionPlugin', {
             this.grid.view.un('refresh', this.grid.selModel.refresh, this.grid.selModel);
             this.grid.view.on('refresh', this.onViewRefresh, this );
             this.grid.view.on('beforeitemmousedown', function(view, record, item, index, event, eOpts) {
+                // TODO: Check up with Sencha
+                // It is not possible to check the checkbox in CheckboxModel when left clicking the column.
+                // Not sure if this is a bug since right clicking the column does check the checkbox (or shift/ctrl + left click).
                 var targetElement = event.target;
-                var isCheckboxColumn = targetElement.className && targetElement.className.indexOf('x-grid-cell-first') > -1;
-                if ( isCheckboxColumn )
+                var isCheckboxColumnIsClicked = targetElement.className && targetElement.className.indexOf('x-grid-cell-first') > -1;
+                if ( isCheckboxColumnIsClicked )
                 {
+                    var isShiftKeyPressed = event.shiftKey === true;
+                    var isCtrlKeyPressed = event.ctrlKey === true;
+                    // It works when using the shift and meta keys. Just return if this is the case
+                    if ( isShiftKeyPressed || isCtrlKeyPressed )
+                    {
+                        return;
+                    }
+
                     var isChecked = this.selected[record.internalId];
                     if ( !isChecked )
                     {
