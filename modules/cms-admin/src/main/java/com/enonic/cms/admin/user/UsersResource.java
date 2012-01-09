@@ -197,10 +197,10 @@ public final class UsersResource
 
     @POST
     @Path("delete")
-    public Map<String, Object> deleteUser( @FormParam("userKey") final String userKey )
+    public Map<String, Object> deleteUser( @FormParam("keys") final String keys )
     {
         Map<String, Object> res = new HashMap<String, Object>();
-        LOG.info( "User was deleted: " + userKey );
+        LOG.info( "Delete accounts: " + keys );
         res.put( "success", true );
         return res;
     }

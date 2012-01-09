@@ -21,7 +21,7 @@ Ext.define( 'App.controller.GroupPreviewToolbarController', {
     {
         var ctrl = this.getController( 'BrowseToolbarController' );
         if ( ctrl ) {
-            ctrl.showDeleteUserWindow();
+            ctrl.showDeleteAccountWindow();
         }
     },
 

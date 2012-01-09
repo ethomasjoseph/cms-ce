@@ -160,7 +160,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
                         {
                             text: 'Delete',
                             iconCls: 'icon-delete-user',
-                            action: 'deleteUser'
+                            action: 'deleteAccount'
                         },
                         {
                             text: 'Change Password',

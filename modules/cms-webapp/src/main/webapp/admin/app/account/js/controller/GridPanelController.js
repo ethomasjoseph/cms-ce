@@ -17,26 +17,28 @@ Ext.define( 'App.controller.GridPanelController', {
 
     init: function()
     {
-        this.control( {
-                          'cmsTabPanel': {
-                              afterrender: function( tabPanel, eOpts )
-                              {
-                                  this.updateActionItems();
-                              }
-                          },
-                          'accountGrid': {
-                              selectionchange: function(selModel, selected, eOpts)
-                              {
-                                  this.updateDetailsPanel(selModel, selected, eOpts);
-                                  this.updateActionItems();
-                              },
-                              itemcontextmenu: this.popupMenu,
-                              itemdblclick: this.showAccountPreviewPanel
-                          },
-                          'viewport': {
-                              afterrender: this.initAccount
-                          }
-                      } );
+        this.control(
+            {
+                'cmsTabPanel': {
+                    afterrender: function( tabPanel, eOpts )
+                    {
+                        this.updateActionItems();
+                    }
+                },
+                'accountGrid': {
+                    selectionchange: function(selModel, selected, eOpts)
+                    {
+                        this.updateDetailsPanel(selModel, selected, eOpts);
+                        this.updateActionItems();
+                    },
+                    itemcontextmenu: this.popupMenu,
+                    itemdblclick: this.showAccountPreviewPanel
+                },
+                'viewport': {
+                    afterrender: this.initAccount
+                }
+            }
+        );
     },
 
     updateDetailsPanel: function(selModel, selected, eOpts)
@@ -48,24 +50,19 @@ Ext.define( 'App.controller.GridPanelController', {
         var userStore = this.getStore( 'AccountStore' );
         var pageSize = userStore.pageSize;
         var totalCount = userStore.totalCount;
-
         var selectionModel = this.getUserGrid().getSelectionModel();
         var selectionModelCount = selectionModel.getCount();
+        var showAccountPreviewOnly = persistentSelectionCount === 1;
 
-        // Works because selection model count is 1 even if page has changed.
-        //console.log(selModel);
-        var showUserPreviewOnly = persistentSelectionCount === 1;
-
-        if ( persistentSelectionCount === 0 ) {
+        if ( persistentSelectionCount === 0 )
+        {
             detailPanel.showNoneSelection();
-        } else if ( showUserPreviewOnly ) {
-            var account = selectionModel.getSelection()[0];
-
-            if ( account ) {
-                detailPanel.setCurrentAccount( account.data );
-            }
-            //TODO: can fail
-            detailPanel.showAccountPreview( account.data )
+        }
+        else if ( showAccountPreviewOnly )
+        {
+            var accountData = persistentSelection[0].data;
+            detailPanel.setCurrentAccount( accountData );
+            detailPanel.showAccountPreview( accountData )
         }
         else
         {

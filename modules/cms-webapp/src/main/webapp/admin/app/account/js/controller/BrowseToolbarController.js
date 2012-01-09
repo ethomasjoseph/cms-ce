@@ -29,7 +29,7 @@ Ext.define( 'App.controller.BrowseToolbarController', {
                               click: this.createNewGroupTab
                           },
                           '*[action=showDeleteWindow]': {
-                              click: this.showDeleteUserWindow
+                              click: this.showDeleteAccountWindow
                           },
                           '*[action=edit]': {
                               click: this.showEditUserForm
@@ -55,9 +55,9 @@ Ext.define( 'App.controller.BrowseToolbarController', {
                                       } );
     },
 
-    showDeleteUserWindow: function()
+    showDeleteAccountWindow: function()
     {
-        var selected = this.getUserGrid().getSelectionModel().selected;
+        var selected = this.getPersistentGridSelectionPlugin().getSelection();
         this.getDeleteAccountWindow().doShow( selected );
     },
 

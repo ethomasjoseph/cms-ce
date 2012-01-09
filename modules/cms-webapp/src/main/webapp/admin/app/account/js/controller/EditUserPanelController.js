@@ -21,8 +21,8 @@ Ext.define( 'App.controller.EditUserPanelController', {
                 'addressPanel #iso-country' : {
                     select: this.countryChangeHandler
                 },
-                '*[action=deleteUser]': {
-                    click: this.deleteUser
+                '*[action=deleteAccount]': {
+                    click: this.deleteAccount
                 },
                 'editUserPanel textfield[name=prefix]': {
                     keyup: this.textFieldHandleEnterKey
@@ -58,24 +58,36 @@ Ext.define( 'App.controller.EditUserPanelController', {
         );
     },
 
-    deleteUser: function( button )
+    deleteAccount: function( button )
     {
-        var deleteUserWindow = button.up( 'deleteAccountWindow' );
+        var deleteAccountWindow = button.up( 'deleteAccountWindow' );
+        var selection = deleteAccountWindow.modelData.selection;
+        var keys = '';
+        if ( selection )
+        {
+            keys = Ext.Array.pluck(selection.items, 'internalId').toString();
+        }
+        else
+        {
+            keys = deleteAccountWindow.modelData.key;
+        }
 
-        Ext.Ajax.request( {
-                              url: 'data/user/delete',
-                              method: 'POST',
-                              params: {userKey: deleteUserWindow.userKey},
-                              success: function( response, opts )
-                              {
-                                  deleteUserWindow.close();
-                                  Ext.Msg.alert( 'Info', 'Account(s) was(were) deleted' );
-                              },
-                              failure: function( response, opts )
-                              {
-                                  Ext.Msg.alert( 'Info', 'Account(s) was(were) not deleted' );
-                              }
-                          } );
+        Ext.Ajax.request(
+            {
+                url: 'data/user/delete',
+                method: 'POST',
+                params: { keys: keys },
+                success: function( response, opts )
+                {
+                    deleteAccountWindow.close();
+                    Ext.Msg.alert( 'Info', 'Account(s) was(were) deleted' );
+                },
+                failure: function( response, opts )
+                {
+                    Ext.Msg.alert( 'Info', 'Account(s) was(were) not deleted' );
+                }
+            }
+        );
     },
 
     countryChangeHandler: function( field, newValue, oldValue, options )
@@ -269,7 +281,6 @@ Ext.define( 'App.controller.EditUserPanelController', {
                       success: function( response )
                       {
                           var jsonObj = Ext.JSON.decode( response.responseText );
-                          console.log(jsonObj.group);
                           var tab = {
                               title: jsonObj.group.displayName,
                               iconCls: 'icon-new-group',

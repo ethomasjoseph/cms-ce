@@ -18,7 +18,7 @@ Ext.define( 'App.view.DeleteAccountWindow', {
                     text: 'Delete',
                     iconCls: 'icon-delete-user-24',
                     itemId: 'deleteAccountButton',
-                    action: 'deleteUser'
+                    action: 'deleteAccount'
                 }
             ]
         }
@@ -26,22 +26,28 @@ Ext.define( 'App.view.DeleteAccountWindow', {
 
     initComponent: function()
     {
-
         this.callParent( arguments );
     },
 
-    doShow: function( model )
+    doShow: function( selection )
     {
-        if ( model.length == 1 )
+        if ( selection.length == 1 )
         {
-            this.callParent( [model.get( 0 )] );
+            this.callParent( [selection[0]] );
         }
         else
         {
             this.setDialogInfoTpl( Templates.account.deleteManyUsers );
-            this.callParent( [
-                                 {data: {selectionLength: model.length}}
-                             ] );
+            this.callParent(
+                [
+                    {
+                        data: {
+                            selection: selection,
+                            selectionLength: selection.length
+                        }
+                    }
+                ]
+            );
         }
     }
 } );

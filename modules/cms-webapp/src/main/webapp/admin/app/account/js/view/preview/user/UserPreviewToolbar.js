@@ -19,7 +19,7 @@ Ext.define( 'App.view.preview.user.UserPreviewToolbar', {
             items: [
                 {
                     text: 'Delete',
-                    action: 'deleteUserPreview',
+                    action: 'deleteAccountPreview',
                     iconCls: 'icon-delete-user-24'
                 }
             ]};

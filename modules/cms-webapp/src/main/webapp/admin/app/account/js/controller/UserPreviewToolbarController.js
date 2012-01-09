@@ -8,8 +8,8 @@ Ext.define( 'App.controller.UserPreviewToolbarController', {
     init: function()
     {
         this.control( {
-            'userPreviewPanel *[action=deleteUserPreview]': {
-                click: this.deleteUser
+            'userPreviewPanel *[action=deleteAccountPreview]': {
+                click: this.deleteAccount
             },
             'userPreviewPanel *[action=editUserPreview]': {
                 click: this.editUser
@@ -20,11 +20,11 @@ Ext.define( 'App.controller.UserPreviewToolbarController', {
         } );
     },
 
-    deleteUser: function( el, e )
+    deleteAccount: function( el, e )
     {
         var ctrl = this.getController( 'BrowseToolbarController' );
         if ( ctrl ) {
-            ctrl.showDeleteUserWindow();
+            ctrl.showDeleteAccountWindow();
         }
     },
 
