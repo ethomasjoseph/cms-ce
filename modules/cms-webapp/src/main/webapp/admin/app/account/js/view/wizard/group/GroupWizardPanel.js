@@ -96,6 +96,13 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
 
         this.callParent( arguments );
 
+        if (this.modelData)
+        {
+            var wizard = this.down('wizardPanel');
+            wizard.addData({userStore: this.modelData.userStore});
+            wizard.addData({key: this.modelData.key});
+        }
+
     }
 
 } );
