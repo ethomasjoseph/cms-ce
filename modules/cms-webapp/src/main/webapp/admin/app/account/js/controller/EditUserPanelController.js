@@ -232,7 +232,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
     {
         if ( !account )
         {
-            var window = Ext.create( 'widget.selectUserStoreWindow', {} );
+            var window = Ext.create( 'widget.selectUserStoreWindow', {caller: 'user'} );
             window.show();
         }
         else
@@ -288,7 +288,6 @@ Ext.define( 'App.controller.EditUserPanelController', {
                               modelData: jsonObj.group
                           };
                           me.getCmsTabPanel().addTab( tab, index );
-
                           if ( Ext.isFunction( callback ) ) {
                               callback();
                           }

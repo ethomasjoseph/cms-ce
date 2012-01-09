@@ -274,15 +274,28 @@ Ext.define( 'App.controller.UserWizardController', {
         radioButton.dom.checked = true;
 
         var userStoreName = record.get( 'name' );
-        var tab = {
-            id: Ext.id( null, 'new-user-' ),
-            title: 'New User',
-            iconCls: 'icon-new-user',
-            closable: true,
-            autoScroll: true,
-            userstore: userStoreName,
-            xtype: 'userWizardPanel'
-        };
+        var itemType = view.caller;
+        var tab;
+        if (itemType === 'group')
+        {
+            tab = {
+                title: 'New Group',
+                iconCls: 'icon-new-group',
+                xtype: 'groupWizardPanel'
+            };
+        }
+        else
+        {
+            tab = {
+                id: Ext.id( null, 'new-user-' ),
+                title: 'New User',
+                iconCls: 'icon-new-user',
+                closable: true,
+                autoScroll: true,
+                userstore: userStoreName,
+                xtype: 'userWizardPanel'
+            };
+        }
         var tabItem = this.getCmsTabPanel().addTab( tab );
         tabItem.down('wizardPanel').addData( {'userStore': userStoreName} );
         var window = view.up( 'window' );

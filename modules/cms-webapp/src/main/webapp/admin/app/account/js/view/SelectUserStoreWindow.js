@@ -7,6 +7,8 @@ Ext.define( 'App.view.SelectUserStoreWindow', {
     dialogTitle: 'Select user store',
     dialogInfoTpl: undefined,
 
+    /* Caller field defines is this window used for group wizard or user wizard*/
+    caller: undefined,
     items: [
         {
             xtype: 'userStoreListPanel',
@@ -16,6 +18,12 @@ Ext.define( 'App.view.SelectUserStoreWindow', {
 
     initComponent: function()
     {
+        this.items = [
+        {
+            xtype: 'userStoreListPanel',
+            caller: this.caller,
+            height: 400
+        }];
         this.callParent( arguments );
     }
 

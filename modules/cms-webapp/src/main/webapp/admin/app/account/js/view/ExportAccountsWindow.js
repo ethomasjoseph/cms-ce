@@ -68,7 +68,6 @@ Ext.define( 'App.view.ExportAccountsWindow', {
                                     query = win.modelData.searched.lastQuery;
                                     query = query || {};
                                 }
-                                query['separator'] = 't'; // tab character
 
                                 win.close();
 

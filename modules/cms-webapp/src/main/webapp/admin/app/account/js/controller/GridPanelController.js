@@ -61,8 +61,11 @@ Ext.define( 'App.controller.GridPanelController', {
         else if ( showAccountPreviewOnly )
         {
             var accountData = persistentSelection[0].data;
-            detailPanel.setCurrentAccount( accountData );
-            detailPanel.showAccountPreview( accountData )
+            if ( accountData )
+            {
+                detailPanel.setCurrentAccount( accountData );
+                detailPanel.showAccountPreview( accountData )
+            }
         }
         else
         {

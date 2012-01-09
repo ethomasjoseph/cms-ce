@@ -89,7 +89,6 @@ Ext.define( 'App.controller.GroupWizardController', {
     wizardFinished: function( wizard, data )
     {
         data['name'] = this.getDisplayNameValue();
-        data['userStore'] = 'system'; // TODO: use selected userstore (see B-02535)
         var tab = this.getGroupWizardPanel();
         var parentApp = parent.mainApp;
 
