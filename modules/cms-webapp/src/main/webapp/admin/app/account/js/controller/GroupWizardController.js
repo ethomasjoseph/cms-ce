@@ -18,6 +18,18 @@ Ext.define( 'App.controller.GroupWizardController', {
                     this.saveGroup( btn, evt, opts, true );
                 }
             },
+            'groupWizardPanel textfield#displayName': {
+                keyup: function( field, event ) {
+                    var value = field.getValue();
+                    var displayNameLabel = field.up('groupWizardPanel').down('#wizardHeader');
+                    if (value.trim() == '') {
+                        value = 'Display Name';
+                    }
+                    displayNameLabel.update({
+                        displayName: value
+                    });
+                }
+            },
             'groupWizardPanel wizardPanel':{
                 beforestepchanged:this.validateStep,
                 stepchanged:this.stepChanged,
@@ -76,18 +88,25 @@ Ext.define( 'App.controller.GroupWizardController', {
 
     wizardFinished: function( wizard, data )
     {
-        var tab = wizard.up( 'groupWizardPanel' );
-        if ( tab )
-        {
-            tab.close();
-        }
+        data['name'] = this.getDisplayNameValue();
+        data['userStore'] = 'system'; // TODO: use selected userstore (see B-02535)
+        var tab = this.getGroupWizardPanel();
         var parentApp = parent.mainApp;
-        if ( parentApp )
-        {
-            parentApp.fireEvent( 'notifier.show', "Group was created",
-                                 "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.",
-                                 true );
-        }
+
+        var onUpdateGroupSuccess = function() {
+            if ( tab )
+            {
+                tab.close();
+            }
+            if ( parentApp )
+            {
+                parentApp.fireEvent( 'notifier.show', "Group was created",
+                                     "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.",
+                                     true );
+            }
+        };
+
+        this.updateGroup(data, onUpdateGroupSuccess);
     },
 
     validityChanged: function( wizard, valid )
@@ -134,6 +153,39 @@ Ext.define( 'App.controller.GroupWizardController', {
     getWizardPanel: function()
     {
         return Ext.ComponentQuery.query( 'wizardPanel' )[0];
+    },
+
+    getDisplayNameValue: function()
+    {
+        var groupWizard = this.getGroupWizardPanel();
+        var generalStep = groupWizard.down('wizardStepGeneralPanel');
+        var displayNameField = generalStep.query('#displayName')[0];
+        return displayNameField.value;
+    },
+
+    updateGroup:function ( groupData, onSuccess )
+    {
+        Ext.Ajax.request( {
+                              url: 'data/group/update',
+                              method: 'POST',
+                              jsonData: groupData,
+                              success:function ( response, opts )
+                              {
+                                  var serverResponse = Ext.JSON.decode( response.responseText );
+                                  if ( !serverResponse.success )
+                                  {
+                                      Ext.Msg.alert( 'Error', serverResponse.error );
+                                  }
+                                  else
+                                  {
+                                      onSuccess( serverResponse.userkey );
+                                  }
+                              },
+                              failure:function ( response, opts )
+                              {
+                                  Ext.Msg.alert( 'Error', 'Unable to update group' );
+                              }
+                          } );
     }
 
 } );

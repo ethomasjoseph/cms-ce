@@ -417,11 +417,11 @@ Ext.define( 'App.controller.UserWizardController', {
 
         if ( displayNameValue !== '' )
         {
-            this.updateWizardHeader( userWizard, {value: displayNameValue, edited: true} );
+            this.updateWizardHeader( userWizard, {displayName: displayNameValue, edited: true} );
         }
         else
         {
-            this.updateWizardHeader( userWizard, {value: this.EMPTY_DISPLAY_NAME_TEXT, edited: false} );
+            this.updateWizardHeader( userWizard, {displayName: this.EMPTY_DISPLAY_NAME_TEXT, edited: false} );
         }
     },
 

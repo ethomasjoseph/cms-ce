@@ -18,13 +18,20 @@ Templates.account = {
                     '<div style="float:left; padding: 1px 0 0 5px"><div class="cms-grid-title">{1}</div>' +
                     '<div class="cms-grid-description">{3}\\{2}</div>'
 
-    ,newUserPanelHeader:
-            '<div class="cms-wizard-header-container">' + '<div class="cms-wizard-header clearfix">' +
-                    '<input type="text" value="{value}" readonly="true" id="cms-display-name" class="cms-display-name"/>' +
-                    '</div>' + '<div class="clearfix user-store-user-name">' + '<tpl if="isNewUser">New User:</tpl>' +
-                    '<tpl if="isNewUser == false">User:</tpl>' +
-                    '<span><tpl if="userstoreName">{userstoreName}\\\\</tpl></span><span>{qUserName}</span></div>' +
-                    '</div>'
+    ,userWizardHeader:
+            '<div class="cms-wizard-header">' +
+                '<input type="text" value="{displayName}" readonly="true" class="cms-display-name"/>' +
+            '</div>' +
+            '<div class="cms-wizard-userstore">' +
+                '<label>{[ values.isNewUser ? "New User" : "User" ]}: </label>' +
+                '<span>{[ values.userstoreName ? (values.userstoreName + "&#92;") : "" ]}</span>' +
+                '<span>{qUserName}</span>' +
+            '</div>'
+
+    ,groupWizardHeader:
+            '<div class="cms-wizard-header">' +
+                '<h1 class="cms-display-name cms-edited-field">{displayName}</h1>' +
+            '</div>'
 
     ,noUserSelected:
             '<div>No user selected</div>'

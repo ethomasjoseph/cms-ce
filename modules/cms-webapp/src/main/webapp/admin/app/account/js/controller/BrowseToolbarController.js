@@ -87,7 +87,10 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         var ctrl = this.getController( 'EditUserPanelController' );
         if ( ctrl )
         {
-            var account = this.getAccountDetailPanel().getCurrentAccount();
+            var account;
+            if ( "newUser" != el.action ) {
+                account = this.getAccountDetailPanel().getCurrentAccount();
+            }
             ctrl.showEditUserForm( account );
         }
     },

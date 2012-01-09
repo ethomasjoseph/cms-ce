@@ -30,19 +30,19 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
         var photoUrl;
         var userGroups = [];
         var displayNameValue = 'Display Name';
-        me.headerData = {
-            value: displayNameValue,
-            userstoreName: me.userstore,
-            qUserName: me.qUserName,
-            isNewUser: this.userFields == undefined,
-            edited: false
-        };
         if ( me.userFields )
         {
             photoUrl = me.hasPhoto ? 'data/user/photo?key=' + me.userFields.key : 'resources/icons/256x256/dummy-user.png';
             userGroups = me.userFields.groups;
             displayNameValue = me.userFields.displayName;
         }
+        me.headerData = {
+            displayName: displayNameValue,
+            userstoreName: me.userstore,
+            qUserName: me.qUserName,
+            isNewUser: isNew,
+            edited: false
+        };
 
         me.tbar = {
             xtype: 'userWizardToolbar',
@@ -51,7 +51,7 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
         me.items = [
             {
                 width: 121,
-                padding: '5 5 5 5',
+                padding: 5,
                 items: [
                     {
                         xtype: 'photoUploadButton',
@@ -74,15 +74,17 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
             },
             {
                 columnWidth: 1,
-                padding: '8 10 10 0',
+                padding: '10 10 10 0',
                 defaults: {
                     border: false
                 },
                 items: [
                     {
-                        xtype: 'panel',
+                        xtype: 'container',
                         itemId: 'wizardHeader',
                         styleHtmlContent: true,
+                        autoHeight: true,
+                        cls: 'cms-wizard-header-container',
                         listeners: {
                             afterrender: {
                                 fn: function()
@@ -96,7 +98,7 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
                                 scope: this
                             }
                         },
-                        tpl: new Ext.XTemplate(Templates.account.newUserPanelHeader),
+                        tpl: new Ext.XTemplate(Templates.account.userWizardHeader),
                         data: me.headerData
                     },
                     {
@@ -131,7 +133,18 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
                             {
                                 stepTitle: "Memberships",
                                 groups: userGroups,
-                                xtype: 'wizardStepMembershipPanel'
+                                xtype: 'wizardStepMembershipPanel',
+                                listeners: {
+                                    afterrender: {
+                                        fn: function()
+                                        {
+                                            var membershipPanel = this.down('wizardStepMembershipPanel');
+                                            var wizard = this.down('wizardPanel');
+                                            wizard.addData( membershipPanel.getData() );
+                                        },
+                                        scope: this
+                                    }
+                                }
                             },
                             {
                                 stepTitle: "Summary",

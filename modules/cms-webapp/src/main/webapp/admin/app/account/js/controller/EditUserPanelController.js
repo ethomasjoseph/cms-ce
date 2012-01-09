@@ -270,12 +270,13 @@ Ext.define( 'App.controller.EditUserPanelController', {
                       {
                           var jsonObj = Ext.JSON.decode( response.responseText );
                           console.log(jsonObj.group);
-                          me.getCmsTabPanel().addTab( {
-                                  title: jsonObj.group.displayName,
-                                  iconCls: 'icon-new-group',
-                                  xtype: 'groupWizardPanel',
-                                  modelData: jsonObj.group
-                              } );
+                          var tab = {
+                              title: jsonObj.group.displayName,
+                              iconCls: 'icon-new-group',
+                              xtype: 'groupWizardPanel',
+                              modelData: jsonObj.group
+                          };
+                          me.getCmsTabPanel().addTab( tab, index );
 
                           if ( Ext.isFunction( callback ) ) {
                               callback();
