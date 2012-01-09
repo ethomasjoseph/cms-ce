@@ -67,6 +67,28 @@ public class CsvBuilderTest
         assertEquals( expectedContent, csvContent );
     }
 
+    @Test
+    public void createCsvWithLineChangeInValues()
+        throws IOException
+    {
+        final CsvBuilder csvBuilder = new CsvBuilder();
+        csvBuilder.addValue( "Type" );
+        csvBuilder.addValue( "\"Display Name\"" );
+        csvBuilder.addValue( "Local, or global Name" );
+
+        csvBuilder.endOfLine();
+
+        csvBuilder.addValue( "User" );
+        csvBuilder.addValue( "super\r\n User" );
+        csvBuilder.addValue( "Lorem ipsum\r\ndolor sit amet" );
+
+        final String csvContent = csvBuilder.build().trim();
+
+        final String expectedContent = normalizeNewLineChars( readFile( "csv_test_line_change.csv" ).trim() );
+
+        assertEquals( expectedContent, csvContent );
+    }
+
     private void addCsvLines(CsvBuilder csvBuilder) {
         csvBuilder.addValue( "Type" );
         csvBuilder.addValue( "Display Name" );

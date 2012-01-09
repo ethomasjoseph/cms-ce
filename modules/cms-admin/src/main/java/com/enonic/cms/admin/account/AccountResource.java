@@ -161,7 +161,7 @@ public final class AccountResource
     @Path("export")
     public Response exportAsCsv( @InjectParam final AccountExportRequest req,
                                  @DefaultValue("ISO-8859-1") @FormParam("encoding") String characterEncoding,
-                                 @DefaultValue(SEPARATOR_PARAM_COMMA) @FormParam("separator") String separator )
+                                 @DefaultValue(SEPARATOR_PARAM_TAB) @FormParam("separator") String separator )
             throws UnsupportedEncodingException
     {
         final int accountsExportLimit = 5000;
@@ -186,9 +186,9 @@ public final class AccountResource
         }
         final AccountsCsvExport csvExport = new AccountsCsvExport( groupDao, userDao );
         final String separatorChar;
-        if ( SEPARATOR_PARAM_TAB.equals( separator ) )
+        if ( SEPARATOR_PARAM_COMMA.equals( separator ) )
         {
-            separatorChar = "\t";
+            separatorChar = ",";
         }
         else if ( SEPARATOR_PARAM_SEMICOLON.equals( separator ) )
         {
@@ -196,8 +196,9 @@ public final class AccountResource
         }
         else
         {
-            separatorChar = ",";
+            separatorChar = "\t";
         }
+        
         csvExport.setSeparator( separatorChar );
         final String content = csvExport.generateCsv( searchResults );
         final String filename = csvExport.getExportFileName( new Date() );
