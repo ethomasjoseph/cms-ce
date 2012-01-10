@@ -62,14 +62,14 @@ Ext.define( 'App.controller.EditUserPanelController', {
     {
         var deleteAccountWindow = button.up( 'deleteAccountWindow' );
         var selection = deleteAccountWindow.modelData.selection;
-        var keys = '';
+        var key = '';
         if ( selection )
         {
-            keys = Ext.Array.pluck(selection, 'internalId').toString();
+            key = Ext.Array.pluck(selection, 'internalId');
         }
         else
         {
-            keys = deleteAccountWindow.modelData.key;
+            key = deleteAccountWindow.modelData.key;
         }
 
         var parentApp = parent.mainApp;
@@ -92,7 +92,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
             {
                 url: 'data/user/delete',
                 method: 'POST',
-                params: { keys: keys },
+                params: { key: key },
                 success: onSuccessCallback,
                 failure: onFailureCallback
             }

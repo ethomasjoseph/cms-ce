@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -197,10 +198,15 @@ public final class UsersResource
 
     @POST
     @Path("delete")
-    public Map<String, Object> deleteUser( @FormParam("keys") final String keys )
+    public Map<String, Object> deleteUser( @FormParam("key") final List<String> key )
     {
         Map<String, Object> res = new HashMap<String, Object>();
-        LOG.info( "Delete accounts: " + keys );
+
+        for ( String k : key )
+        {
+            LOG.info( "Delete account: " + k );
+        }
+
         res.put( "success", true );
         return res;
     }
