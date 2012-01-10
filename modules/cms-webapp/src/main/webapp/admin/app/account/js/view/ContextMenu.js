@@ -17,7 +17,8 @@ Ext.define('App.view.ContextMenu', {
         {
             text: 'View',
             iconCls: 'icon-user',
-            action: 'viewUser'
+            action: 'viewUser',
+            disableOnMultipleSelection: true
         },
         '-',
         {
