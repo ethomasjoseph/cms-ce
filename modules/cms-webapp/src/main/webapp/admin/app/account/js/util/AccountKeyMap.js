@@ -53,6 +53,14 @@ Ext.define( 'App.util.AccountKeyMap', {
                 alt: false,
                 defaultEventAction: 'stopEvent',
                 fn: actionHandlers.nextStep
+            },
+            {
+                key: Ext.EventObject.DELETE,
+                ctrl: false,
+                shift: false,
+                alt: false,
+                defaultEventAction: 'stopEvent',
+                fn: actionHandlers.deleteItem
             }
         ]] );
     }

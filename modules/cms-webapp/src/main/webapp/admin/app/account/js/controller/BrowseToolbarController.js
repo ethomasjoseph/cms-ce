@@ -54,8 +54,11 @@ Ext.define( 'App.controller.BrowseToolbarController', {
 
     showDeleteAccountWindow: function()
     {
-        var selected = this.getPersistentGridSelectionPlugin().getSelection();
-        this.getDeleteAccountWindow().doShow( selected );
+        var persistentSelectionPlugin = this.getPersistentGridSelectionPlugin();
+        if ( persistentSelectionPlugin.getSelectionCount() > 0 )
+        {
+            this.getDeleteAccountWindow().doShow( persistentSelectionPlugin.getSelection() );
+        }
     },
 
     showChangePasswordWindow: function()

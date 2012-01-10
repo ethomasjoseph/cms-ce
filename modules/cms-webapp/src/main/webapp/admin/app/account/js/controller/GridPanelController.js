@@ -194,6 +194,14 @@ Ext.define( 'App.controller.GridPanelController', {
                                                          {
                                                              me.getController( "UserWizardController" ).wizardNext();
                                                          }
+                                                     },
+                                                     deleteItem: function()
+                                                     {
+                                                         var activeTab = cmsTabPanel.getActiveTab();
+                                                         if ( activeTab.getId() == "tab-browse" )
+                                                         {
+                                                             me.getController( "BrowseToolbarController" ).showDeleteAccountWindow();
+                                                         }
                                                      }
                                                  } );
     },
