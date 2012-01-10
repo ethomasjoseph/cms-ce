@@ -65,11 +65,27 @@ Ext.define( 'App.controller.EditUserPanelController', {
         var keys = '';
         if ( selection )
         {
-            keys = Ext.Array.pluck(selection.items, 'internalId').toString();
+            keys = Ext.Array.pluck(selection, 'internalId').toString();
         }
         else
         {
             keys = deleteAccountWindow.modelData.key;
+        }
+
+        var parentApp = parent.mainApp;
+        function onSuccessCallback(response, opts)
+        {
+            deleteAccountWindow.close();
+            if ( parentApp )
+            {
+                parentApp.fireEvent( 'notifier.show', "Accounts was deleted", "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin", false );
+            }
+        }
+
+        function onFailureCallback(response, opts)
+        {
+            deleteAccountWindow.close();
+            Ext.Msg.alert( 'Error', response.status + ' ' + response.statusText );
         }
 
         Ext.Ajax.request(
@@ -77,15 +93,8 @@ Ext.define( 'App.controller.EditUserPanelController', {
                 url: 'data/user/delete',
                 method: 'POST',
                 params: { keys: keys },
-                success: function( response, opts )
-                {
-                    deleteAccountWindow.close();
-                    Ext.Msg.alert( 'Info', 'Account(s) was(were) deleted' );
-                },
-                failure: function( response, opts )
-                {
-                    Ext.Msg.alert( 'Info', 'Account(s) was(were) not deleted' );
-                }
+                success: onSuccessCallback,
+                failure: onFailureCallback
             }
         );
     },
@@ -100,12 +109,14 @@ Ext.define( 'App.controller.EditUserPanelController', {
                 'countryCode': field.getValue()
             } );
 
-            region.store.load( {
-                                   callback: function( records, operation, success )
-                                   {
-                                       region.setDisabled( !records || records.length == 0 );
-                                   }
-                               } );
+            region.store.load(
+                {
+                   callback: function( records, operation, success )
+                   {
+                       region.setDisabled( !records || records.length == 0 );
+                   }
+               }
+            );
         }
         return true;
     },
@@ -297,7 +308,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
         }
     },
 
-    userInfoToWizardData:function ( userData )
+    userInfoToWizardData: function ( userData )
     {
         var data = {
             'userStore': userData.userStore,
