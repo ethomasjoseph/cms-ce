@@ -32,6 +32,7 @@ import com.enonic.cms.core.content.binary.BinaryDataKey;
 import com.enonic.cms.core.content.binary.ContentBinaryDataEntity;
 import com.enonic.cms.core.preview.PreviewContext;
 import com.enonic.cms.core.resolver.ContentAccessResolver;
+import com.enonic.cms.core.resolver.MimeTypeResolver;
 import com.enonic.cms.core.security.user.UserEntity;
 import com.enonic.cms.core.structure.SiteEntity;
 import com.enonic.cms.core.structure.menuitem.MenuItemEntity;
@@ -291,7 +292,8 @@ public class AttachmentController
         AttachmentRequestTracer.traceSize( trace, blob.getLength() );
         HttpServletUtil.setContentDisposition( response, download, binaryData.getName() );
 
-        response.setContentType( HttpServletUtil.resolveMimeType( getServletContext(), binaryData.getName() ) );
+        final String mimeType = MimeTypeResolver.getInstance().getMimeType( binaryData.getName() );
+        response.setContentType( mimeType );
         response.setContentLength( (int) blob.getLength() );
 
         ByteStreams.copy( blob.getStream(), response.getOutputStream() );
