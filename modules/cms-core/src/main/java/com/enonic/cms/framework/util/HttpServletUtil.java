@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TimeZone;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -100,16 +99,6 @@ public class HttpServletUtil
         value.append( ";filename=\"" ).append( filename ).append( "\"" );
 
         response.setHeader( "Content-Disposition", value.toString() );
-    }
-
-    public static String resolveMimeType( ServletContext servletContext, String filename )
-    {
-        String mimeType = servletContext.getMimeType( filename.toLowerCase() );
-        if ( mimeType == null )
-        {
-            mimeType = "www/unknown";
-        }
-        return mimeType;
     }
 
     /**
