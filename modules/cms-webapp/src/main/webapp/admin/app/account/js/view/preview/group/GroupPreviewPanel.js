@@ -6,13 +6,13 @@ Ext.define( 'App.view.preview.group.GroupPreviewPanel', {
     requires: ['App.view.preview.group.GroupPreviewToolbar', 'Common.WizardPanel'],
 
     autoWidth: true,
+    autoScroll: true,
 
     tbar: {
         xtype: 'groupPreviewToolbar'
     },
 
     cls: 'cms-user-preview-panel',
-    layout: 'fit',
     width: undefined,
 
 
@@ -22,8 +22,8 @@ Ext.define( 'App.view.preview.group.GroupPreviewPanel', {
             {
                 xtype: 'panel',
                 layout: {
-                    type: 'hbox',
-                    align: 'stretch'
+                    type: 'column',
+                    columns: 3
                 },
                 defaults: {
                     border: 0
@@ -37,13 +37,9 @@ Ext.define( 'App.view.preview.group.GroupPreviewPanel', {
                         margin: 5
                     },
                     {
-                        flex: 1,
+                        columnWidth: 1,
                         cls: 'center',
                         xtype: 'panel',
-                        layout: {
-                            type: 'vbox',
-                            align: 'stretch'
-                        },
                         defaults: {
                             border: 0
                         },

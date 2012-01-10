@@ -60,7 +60,8 @@ Ext.define( 'App.controller.GridPanelController', {
         }
         else if ( showAccountPreviewOnly )
         {
-            var accountData = persistentSelection[0].data;
+            // need raw to include fields like memberships, not defined in model
+            var accountData = persistentSelection[0].raw;
             if ( accountData )
             {
                 detailPanel.setCurrentAccount( accountData );

@@ -8,13 +8,13 @@ Ext.define( 'App.view.preview.user.UserPreviewPanel', {
     dialogTitle: 'User Preview',
 
     autoWidth: true,
+    autoScroll: true,
 
     tbar: {
         xtype: 'userPreviewToolbar'
     },
 
     cls: 'cms-user-preview-panel',
-    layout: 'fit',
     width: undefined,
 
 
@@ -46,9 +46,10 @@ Ext.define( 'App.view.preview.user.UserPreviewPanel', {
             {
                 xtype: 'panel',
                 layout: {
-                    type: 'hbox',
-                    align: 'stretch'
+                    type: 'column',
+                    columns: 3
                 },
+                autoHeight: true,
                 defaults: {
                     border: 0
                 },
@@ -61,13 +62,9 @@ Ext.define( 'App.view.preview.user.UserPreviewPanel', {
                         margin: 5
                     },
                     {
-                        flex: 1,
+                        columnWidth: 1,
                         cls: 'center',
                         xtype: 'panel',
-                        layout: {
-                            type: 'vbox',
-                            align: 'stretch'
-                        },
                         defaults: {
                             border: 0
                         },
