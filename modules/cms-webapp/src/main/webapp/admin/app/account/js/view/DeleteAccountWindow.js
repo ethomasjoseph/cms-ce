@@ -33,6 +33,7 @@ Ext.define( 'App.view.DeleteAccountWindow', {
     {
         if ( selection.length == 1 )
         {
+            this.setDialogInfoTpl( Templates.common.userInfo );
             this.callParent( [selection[0]] );
         }
         else
