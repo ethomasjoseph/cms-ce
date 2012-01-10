@@ -26,9 +26,9 @@ Ext.define( 'App.controller.GridPanelController', {
                     }
                 },
                 'accountGrid': {
-                    selectionchange: function(selModel, selected, eOpts)
+                    selectionchange: function()
                     {
-                        this.updateDetailsPanel(selModel, selected, eOpts);
+                        this.updateDetailsPanel();
                         this.updateActionItems();
                     },
                     itemcontextmenu: this.popupMenu,
@@ -41,17 +41,12 @@ Ext.define( 'App.controller.GridPanelController', {
         );
     },
 
-    updateDetailsPanel: function(selModel, selected, eOpts)
+    updateDetailsPanel: function()
     {
         var detailPanel = this.getAccountDetailPanel();
         var persistentGridSelectionPlugin = this.getPersistentGridSelectionPlugin();
         var persistentSelection = persistentGridSelectionPlugin.getSelection();
         var persistentSelectionCount = persistentGridSelectionPlugin.getSelectionCount();
-        var userStore = this.getStore( 'AccountStore' );
-        var pageSize = userStore.pageSize;
-        var totalCount = userStore.totalCount;
-        var selectionModel = this.getUserGrid().getSelectionModel();
-        var selectionModelCount = selectionModel.getCount();
         var showAccountPreviewOnly = persistentSelectionCount === 1;
 
         if ( persistentSelectionCount === 0 )
