@@ -160,25 +160,6 @@ Ext.define('App.view.DetailPanel', {
         }
     },
 
-    // TODO: Remove
-    generateUserButton: function(userData, shortInfo)
-    {
-        if (shortInfo)
-        {
-            return {
-                xtype: 'userShortDetailButton',
-                userData: userData
-            };
-        }
-        else
-        {
-            return {
-                xtype: 'userDetailButton',
-                userData: userData
-            };
-        }
-    },
-
     setCurrentAccount: function(user)
     {
         this.currentAccount = user;
