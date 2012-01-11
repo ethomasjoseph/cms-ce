@@ -79,7 +79,9 @@ Ext.define( 'App.view.GridPanel', {
             loadMask: true
         };
 
-        this.selModel = Ext.create( 'Ext.selection.CheckboxModel', {} );
+        this.selModel = Ext.create( 'Ext.selection.CheckboxModel', {
+            //checkOnly: true
+        } );
 
         this.callParent( arguments );
     },
@@ -94,8 +96,8 @@ Ext.define( 'App.view.GridPanel', {
         }
         else
         {
-            photoUrl = account.type === 'user' ? 'resources/icons/256x256/dummy-user.png' :
-                    account.type === 'role' ? 'resources/icons/256x256/businessmen.png'  : 'resources/icons/256x256/group.png';
+            photoUrl = !account.builtIn && account.type === 'user' ? 'resources/icons/256x256/dummy-user.png' :
+                    account.builtIn ? 'resources/icons/256x256/masks.png'  : 'resources/icons/256x256/group.png';
         }
         return Ext.String.format( Templates.account.gridPanelNameRenderer, photoUrl, value, account.name, account.userStore );
     },

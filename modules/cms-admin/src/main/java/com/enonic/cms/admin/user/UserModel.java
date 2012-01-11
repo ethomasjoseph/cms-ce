@@ -1,13 +1,13 @@
 package com.enonic.cms.admin.user;
 
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonCreator;
-import org.codehaus.jackson.annotate.JsonProperty;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 @JsonAutoDetect
 public final class UserModel
@@ -74,6 +74,10 @@ public final class UserModel
     private String lastLogged;
 
     private List<Map<String, String>> groups;
+
+
+
+    private boolean builtIn;
 
     public String getType() {
         return type;
@@ -220,5 +224,15 @@ public final class UserModel
     public void setPhoto( String photo )
     {
         this.photo = photo;
+    }
+
+    public boolean isBuiltIn()
+    {
+        return builtIn;
+    }
+
+    public void setBuiltIn( boolean builtIn )
+    {
+        this.builtIn = builtIn;
     }
 }

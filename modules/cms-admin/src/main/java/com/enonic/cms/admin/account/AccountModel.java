@@ -47,4 +47,8 @@ interface AccountModel
 
     @JsonProperty("hasPhoto")
     public boolean hasPhoto();
+
+    public void setBuiltIn( boolean builtIn );
+
+    public boolean isBuiltIn();
 }

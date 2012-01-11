@@ -34,6 +34,8 @@ public final class UserModel implements AccountModel
 
     private boolean hasPhoto = false;
 
+    private boolean builtIn;
+
     private UserInfoModel userInfo;
 
     private String lastLogged;
@@ -169,6 +171,18 @@ public final class UserModel implements AccountModel
     public boolean hasPhoto()
     {
         return this.hasPhoto;
+    }
+
+    @Override
+    public void setBuiltIn( boolean builtIn )
+    {
+        this.builtIn = builtIn;
+    }
+
+    @Override
+    public boolean isBuiltIn()
+    {
+        return builtIn;
     }
 
     public void setHasPhoto( boolean hasPhoto )
