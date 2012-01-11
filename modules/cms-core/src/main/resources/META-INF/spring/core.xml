@@ -326,8 +326,6 @@
     <property name="loginService" ref="loginService"/>
   </bean>
 
-  <bean id="adminAjaxService" class="com.enonic.cms.server.service.admin.ajax.AdminAjaxServiceImpl"/>
-
   <bean id="davConfiguration" class="com.enonic.cms.core.webdav.DavConfiguration">
     <property name="fileResourceService" ref="fileResourceService"/>
     <property name="securityService" ref="securityService"/>

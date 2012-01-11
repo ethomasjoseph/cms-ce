@@ -18,18 +18,6 @@ public class VerticalAdminLogger
         throw new VerticalAdminException(message);
     }
 
-    public static void errorAdmin( String message, Object[] msgData )
-    {
-        LOG.error(message, msgData);
-        throw new VerticalAdminException(format(message, msgData));
-    }
-
-    public static void errorAdmin(String message, Object msgData, Throwable throwable)
-    {
-        LOG.errorCause(message, throwable, msgData);
-        throw new VerticalAdminException(format(message, msgData), throwable);
-    }
-
     public static void errorAdmin(String message, Throwable throwable)
     {
         LOG.errorCause(message, throwable);

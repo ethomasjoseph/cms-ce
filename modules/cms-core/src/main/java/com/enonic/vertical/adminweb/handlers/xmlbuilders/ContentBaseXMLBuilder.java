@@ -18,7 +18,6 @@ import com.enonic.esl.xml.XMLTool;
 import com.enonic.vertical.adminweb.AdminHandlerBaseServlet;
 import com.enonic.vertical.adminweb.VerticalAdminException;
 import com.enonic.vertical.adminweb.VerticalAdminLogger;
-import com.enonic.vertical.adminweb.handlers.ContentBaseHandlerServlet;
 import com.enonic.vertical.engine.AccessRight;
 
 import com.enonic.cms.core.content.binary.BinaryData;
@@ -177,7 +176,7 @@ public class ContentBaseXMLBuilder
             unitKey = formItems.getInt( "unitkey" );
         }
 
-        int contenttypekey = ContentBaseHandlerServlet.getContentTypeKey( formItems );
+        int contenttypekey = getContentTypeKey( formItems );
 
         Document doc = XMLTool.createDocument( "content" );
         Element content = doc.getDocumentElement();
@@ -391,6 +390,20 @@ public class ContentBaseXMLBuilder
         AdminHandlerBaseServlet.buildAccessRightsXML( content, null, formItems, AccessRight.CONTENT );
 
         return XMLTool.documentToString( doc );
+    }
+
+    private static int getContentTypeKey( ExtendedMap formItems )
+    {
+        int page = formItems.getInt( "page", -1 );
+        if ( page == -1 )
+        {
+            // Throw exception
+            return -1;
+        }
+        else
+        {
+            return page - 999;
+        }
     }
 
     private void buildDueDateElement( ExtendedMap formItems, Document doc, Element content )
