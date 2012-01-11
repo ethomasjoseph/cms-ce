@@ -923,8 +923,6 @@ public abstract class AdminHandlerBaseServlet
                             String message = "Unexpected error occurred during handling of admin page: %t";
                             VerticalAdminLogger.error( message, e );
                         }
-                        ErrorPageServlet.Error error = new ErrorPageServlet.ThrowableError( e );
-                        session.setAttribute( "com.enonic.vertical.error", error );
                         redirectClientToAdminPath( "errorpage", (MultiValueMap) null, request, response );
                     }
                     catch ( VerticalAdminException vae )
