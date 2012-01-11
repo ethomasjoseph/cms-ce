@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.enonic.cms.core.security.user.UserEntity;
 import com.enonic.cms.store.dao.GroupDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
@@ -399,34 +398,6 @@ public final class GroupHandler
     {
         final GroupEntity entity = this.groupDao.findBuiltInEnterpriseAdministrator();
         return entity != null ? entity.getGroupKey().toString() : null;
-    }
-
-    public Set<UserEntity> getUserNames( String[] groupKeys )
-    {
-        HashSet<UserEntity> foundUsers = new HashSet<UserEntity>();
-        HashSet<GroupEntity> groupsToCheck = new HashSet<GroupEntity>();
-        for ( String gKey : groupKeys )
-        {
-            GroupEntity group = groupDao.find( gKey );
-            if ( group.isOfType( GroupType.USER, false ) )
-            {
-                foundUsers.add( group.getUser() );
-            }
-            else
-            {
-                groupsToCheck.addAll( group.getAllMembersRecursively() );
-            }
-        }
-
-        for ( GroupEntity group : groupsToCheck )
-        {
-            if ( group.isOfType( GroupType.USER, false ) )
-            {
-                foundUsers.add( group.getUser() );
-            }
-        }
-
-        return foundUsers;
     }
 }
 

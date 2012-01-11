@@ -12,20 +12,17 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.enonic.cms.core.CmsDateAndTimeFormats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.enonic.esl.sql.model.Column;
-import com.enonic.esl.util.ArrayUtil;
 import com.enonic.esl.util.RelationAggregator;
 import com.enonic.esl.util.RelationNode;
 import com.enonic.esl.util.RelationTree;
@@ -55,7 +52,6 @@ import com.enonic.cms.core.security.user.User;
 import com.enonic.cms.store.dao.CategoryDao;
 
 import com.enonic.cms.core.content.category.CategoryStatistics;
-import com.enonic.cms.core.content.contenttype.ContentTypeKey;
 import com.enonic.cms.core.security.user.UserEntity;
 
 public class CategoryHandler
@@ -68,11 +64,6 @@ public class CategoryHandler
             "cat_sName,cat_sDescription,cat_usr_hModifier,cat_dteTimestamp,cat_bautoapprove)" + " VALUES (?,?,?,?,?,@currentTimestamp@" +
             ",0,?,?,?," + "@currentTimestamp@,?" + ")";
 
-    private final static String CAT_UPDATE =
-        "UPDATE " + CAT_TABLE + " SET cat_uni_lKey = ?" + ",cat_cty_lKey = ?" + ",cat_cat_lSuper = ?" + ",cat_usr_hOwner = ?" +
-            ",cat_dteCreated = ?" + ",cat_sName = ?" + ",cat_sDescription = ?" + ",cat_usr_hModifier = ?" + ",cat_dteTimestamp = " +
-            "@currentTimestamp@" + ",cat_bAutoApprove = ?" + " WHERE cat_lKey = ?";
-
     private final static String CAT_SELECT_COUNT = "SELECT count(cat_lKey) FROM " + CAT_TABLE;
 
     private final static String CAT_WHERE_CLAUSE_CAT_NOT_DELETED = " cat_bDeleted = 0";
@@ -83,23 +74,12 @@ public class CategoryHandler
 
     private final static String CAT_WHERE_CLAUSE_UNI = " cat_uni_lKey = ?";
 
-    private final static String CAT_SET_UNITKEY = "UPDATE tCategory SET cat_uni_lKey = ? WHERE cat_lKey = ?";
-
-    private final static String CAT_SET_UNITKEY_AND_SUPERKEY =
-        "UPDATE tCategory SET cat_uni_lKey = ?, cat_cat_lSuper = ? WHERE cat_lKey = ?";
-
-    // SQL objects:
-
-    private CategoryStatisticsHelper categoryStatisticsHelper;
-
     @Autowired
     private CategoryDao categoryDao;
 
     public void init()
     {
         super.init();
-
-        categoryStatisticsHelper = new CategoryStatisticsHelper( this );
     }
 
     private int[] createCategory( User olduser, CopyContext copyContext, Document categoryDoc, boolean useOldKey )
@@ -409,28 +389,6 @@ public class CategoryHandler
         return xmlCreator.createCategory( category ).getAsDOMDocument();
     }
 
-    public Document getCategoryNameDoc( CategoryKey categoryKey )
-    {
-        CategoryXmlCreator xmlCreator = new CategoryXmlCreator();
-        CategoryEntity category = categoryDao.findByKey( categoryKey );
-        return xmlCreator.createCategoryNames( category ).getAsDOMDocument();
-    }
-
-    public String getCategoryName( CategoryKey categoryKey )
-    {
-
-        String name = "";
-        if ( categoryKey != null )
-        {
-            CategoryEntity category = categoryDao.findByKey( categoryKey );
-            if ( category != null )
-            {
-                name = category.getName();
-            }
-        }
-        return name;
-    }
-
     public int getContentCount( CategoryKey categoryKey, boolean recursive )
     {
 
@@ -629,233 +587,6 @@ public class CategoryHandler
         }
 
         return subCategories;
-    }
-
-    public void updateCategory( User olduser, Document doc )
-    {
-
-        Connection con;
-        PreparedStatement preparedStmt = null;
-        Element root = doc.getDocumentElement();
-        Map subElems = XMLTool.filterElements( root.getChildNodes() );
-
-        int categoryKey;
-        try
-        {
-            // get the keys
-            categoryKey = Integer.parseInt( root.getAttribute( "key" ) );
-            int unitKey = -1;
-            String keyStr = root.getAttribute( "unitkey" );
-            if ( keyStr.length() > 0 )
-            {
-                unitKey = Integer.parseInt( keyStr );
-            }
-            int contentTypeKey = -1;
-            keyStr = root.getAttribute( "contenttypekey" );
-            if ( keyStr.length() > 0 )
-            {
-                contentTypeKey = Integer.parseInt( keyStr );
-            }
-            int superCategorykey = -1;
-            String key = root.getAttribute( "supercategorykey" );
-            if ( key.length() > 0 )
-            {
-                superCategorykey = Integer.parseInt( key );
-            }
-
-            con = getConnection();
-            preparedStmt = con.prepareStatement( CAT_UPDATE );
-
-            // attribute: key
-            preparedStmt.setInt( 10, categoryKey );
-
-            // attribute: unitkey
-            if ( unitKey >= 0 )
-            {
-                preparedStmt.setInt( 1, unitKey );
-            }
-            else
-            {
-                preparedStmt.setNull( 1, Types.INTEGER );
-            }
-
-            // attribute: contenttypekey
-            if ( contentTypeKey >= 0 )
-            {
-                preparedStmt.setInt( 2, contentTypeKey );
-            }
-            else
-            {
-                preparedStmt.setNull( 2, Types.INTEGER );
-            }
-
-            // attribute: supercategorykey
-            if ( superCategorykey >= 0 )
-            {
-                preparedStmt.setInt( 3, superCategorykey );
-            }
-            else
-            {
-                preparedStmt.setNull( 3, Types.INTEGER );
-            }
-
-            // attribute: created
-            Date createdDate = CmsDateAndTimeFormats.parseFrom_STORE_DATE(root.getAttribute("created"));
-            preparedStmt.setTimestamp( 5, new Timestamp( createdDate.getTime() ) );
-
-            // attribute: name
-            String name = root.getAttribute( "name" );
-            preparedStmt.setString(6, name);
-
-            // element: owner
-            Element subElem = (Element) subElems.get( "owner" );
-            String ownerKey = subElem.getAttribute( "key" );
-            preparedStmt.setString( 4, ownerKey );
-
-            // element: description (optional)
-            subElem = (Element) subElems.get( "description" );
-            if ( subElem != null )
-            {
-                String description = XMLTool.getElementText( subElem );
-
-                if ( description == null )
-                {
-                    preparedStmt.setNull( 7, Types.VARCHAR );
-                }
-                else
-                {
-                    preparedStmt.setString(7, description);
-                }
-            }
-            else
-            {
-                preparedStmt.setNull( 7, Types.VARCHAR );
-            }
-
-            preparedStmt.setString( 8, olduser.getKey().toString() );
-
-            // element: timestamp (using the database timestamp at creation)
-            /* no code */
-
-            preparedStmt.setInt( 9, root.getAttribute( "autoApprove" ).equals( "true" ) ? 1 : 0 );
-
-            // update the content category
-            int result = preparedStmt.executeUpdate();
-            preparedStmt.close();
-            preparedStmt = null;
-            if ( result == 0 )
-            {
-                String message = "Failed to update category.";
-                VerticalEngineLogger.errorUpdate(message, null );
-            }
-
-            // set category access rights
-            SecurityHandler securityHandler = getSecurityHandler();
-            Element accessrightsElem = (Element) subElems.get( "accessrights" );
-            if ( accessrightsElem != null )
-            {
-                Document tempDoc = XMLTool.createDocument();
-                tempDoc.appendChild( tempDoc.importNode( accessrightsElem, true ) );
-                securityHandler.updateAccessRights( olduser, tempDoc );
-            }
-        }
-        catch ( SQLException sqle )
-        {
-            String message = "Failed to update category: %t";
-            VerticalEngineLogger.errorUpdate(message, sqle );
-        }
-        catch ( NumberFormatException nfe )
-        {
-            String message = "Failed to parse a key field: %t";
-            VerticalEngineLogger.errorUpdate(message, nfe );
-        }
-        finally
-        {
-            close( preparedStmt );
-        }
-    }
-
-    public CategoryKey getParentCategoryKey( CategoryKey categoryKey )
-    {
-        if ( categoryKey == null )
-        {
-            return null;
-        }
-
-        CategoryEntity category = categoryDao.findByKey( categoryKey );
-        if ( category != null && category.getParent() != null )
-        {
-            return category.getParent().getKey();
-        }
-        return null;
-    }
-
-    public boolean hasContent( CategoryKey categoryKey )
-    {
-
-        return getContentCount( categoryKey, true ) > 0;
-    }
-
-    public boolean isSubCategory( CategoryKey categoryKey, CategoryKey subCategoryKey )
-    {
-        CategoryKey parentKey = getParentCategoryKey( subCategoryKey );
-        return parentKey != null && ( parentKey.equals( categoryKey ) || isSubCategory( categoryKey, parentKey ) );
-    }
-
-    public void moveCategory( User olduser, CategoryKey catKey, CategoryKey superCatKey )
-    {
-
-        Connection con = null;
-        PreparedStatement preparedStmt = null;
-
-        try
-        {
-            con = getConnection();
-
-            if ( !getSecurityHandler().validateCategoryUpdate( olduser, categoryDao.findByKey( catKey ).getParent().getKey() ) )
-            {
-                VerticalEngineLogger.errorSecurity("User is not allowed to move the category.", null );
-            }
-
-            if ( !getSecurityHandler().validateCategoryUpdate( olduser, superCatKey ) )
-            {
-                VerticalEngineLogger.errorSecurity("User is not allowed to update the new parent category.", null );
-            }
-
-            int[] children = getCategoryKeysBySuperCategory(catKey, true );
-
-            // Get new unit key
-            int unitKey = getUnitKey( superCatKey );
-            preparedStmt = con.prepareStatement( CAT_SET_UNITKEY_AND_SUPERKEY );
-            if ( unitKey == -1 )
-            {
-                preparedStmt.setNull( 1, Types.INTEGER );
-            }
-            else
-            {
-                preparedStmt.setInt( 1, unitKey );
-            }
-            preparedStmt.setInt( 2, superCatKey.toInt() );
-            preparedStmt.setInt( 3, catKey.toInt() );
-            preparedStmt.executeUpdate();
-
-            // Update unit keys for all children
-            for ( int child : children )
-            {
-                preparedStmt = con.prepareStatement( CAT_SET_UNITKEY );
-                preparedStmt.setInt( 1, unitKey );
-                preparedStmt.setInt( 2, child );
-                preparedStmt.executeUpdate();
-            }
-        }
-        catch ( SQLException e )
-        {
-            VerticalEngineLogger.errorUpdate("A database error occurred: %t", e );
-        }
-        finally
-        {
-            close( preparedStmt );
-        }
     }
 
     public List<CategoryKey> getSubCategories( CategoryKey categoryKey )
@@ -1191,60 +922,6 @@ public class CategoryHandler
         {
             close( resultSet );
             close( preparedStmt );
-        }
-    }
-
-    public void getPathXML( Document doc, Element child, CategoryKey categoryKey, int[] contentTypes )
-    {
-        CategoryKey superCategoryKey = null;
-        Element elem = null;
-
-        if ( categoryKey != null )
-        {
-            CategoryEntity entity = categoryDao.findByKey( categoryKey );
-            if ( entity != null )
-            {
-                elem = XMLTool.createElement( doc, doc.getDocumentElement(), "category" );
-                elem.setAttribute( "key", String.valueOf( categoryKey ) );
-                elem.setAttribute( "name", entity.getName() );
-
-                if ( child != null )
-                {
-                    elem.appendChild( child );
-                }
-
-                Integer contentTypeKey = null;
-                if ( entity.getContentType() != null )
-                {
-                    contentTypeKey = entity.getContentType().getKey();
-                    elem.setAttribute( "contenttypekey", String.valueOf( contentTypeKey ) );
-                }
-
-                if ( contentTypeKey == null || ( contentTypes != null && !ArrayUtil.contains( contentTypes, contentTypeKey ) ) )
-                {
-                    elem.setAttribute( "disable", "true" );
-                }
-
-                if ( entity.getParent() != null )
-                {
-                    superCategoryKey = entity.getParent().getKey();
-                }
-            }
-        }
-
-        if ( superCategoryKey != null )
-        {
-            getPathXML( doc, elem, superCategoryKey, contentTypes );
-        }
-        else
-        {
-            Element topCat = XMLTool.createElement( doc, doc.getDocumentElement(), "categories" );
-            topCat.setAttribute( "disable", "true" );
-
-            if ( elem != null )
-            {
-                topCat.appendChild( elem );
-            }
         }
     }
 
@@ -1680,91 +1357,6 @@ public class CategoryHandler
 
         sql.append( inClauseFilter );
         return sql.toString();
-    }
-
-    public Document getCategoryMenu( User olduser, CategoryKey categoryKey, int[] contentTypes, boolean includeRootCategories )
-    {
-        final CategoryXmlCreator xmlCreator = new CategoryXmlCreator();
-        final UserEntity user = securityService.getUser( olduser );
-
-        if ( user == null )
-        {
-            return xmlCreator.createEmptyCategoriesDocument( "No user given" ).getAsDOMDocument();
-        }
-
-        xmlCreator.setCategoryAccessResolver( new CategoryAccessResolver( groupDao ) );
-        xmlCreator.setUser( user );
-        xmlCreator.setAnonymousUser( securityService.getUser( securityService.getAnonymousUserKey() ) );
-        xmlCreator.setAllowedContentTypes( ContentTypeKey.convertToSet( contentTypes ) );
-        xmlCreator.setIncludeOwnerAndModiferInfo( false );
-        xmlCreator.setIncludeCreatedAndTimestampInfo( false );
-        xmlCreator.setIncludeAutoApproveInfo( false );
-        xmlCreator.setIncludeDescriptionInfo( false );
-        xmlCreator.setIncludeSuperCategoryKeyInfo( false );
-
-        if ( includeRootCategories )
-        {
-            final List<CategoryEntity> rootCategories = getRootCategories( user );
-            if ( rootCategories.isEmpty() )
-            {
-                return xmlCreator.createEmptyCategoriesDocument( "No result" ).getAsDOMDocument();
-            }
-            final CategoryKey topCategoryKey = getTopCategoryKey( categoryKey );
-            final XMLDocument newCategoryTree = xmlCreator.createCategoryBranch( rootCategories, topCategoryKey );
-            return newCategoryTree.getAsDOMDocument();
-        }
-        else
-        {
-            final CategoryEntity category = categoryDao.findByKey( categoryKey );
-            final XMLDocument newCategoryTree = xmlCreator.createCategoryBranch( category );
-            return newCategoryTree.getAsDOMDocument();
-        }
-    }
-
-    private List<CategoryEntity> getRootCategories( UserEntity user )
-    {
-        List<CategoryEntity> rootCategories;
-        if ( user.isEnterpriseAdmin() )
-        {
-            rootCategories = categoryDao.findRootCategories();
-        }
-        else
-        {
-            rootCategories = categoryDao.findRootCategories( user.getAllMembershipsGroupKeys() );
-        }
-        return rootCategories;
-    }
-
-    private CategoryKey getTopCategoryKey( CategoryKey categoryKey )
-    {
-        if ( categoryKey == null )
-        {
-            return null;
-        }
-
-        CategoryEntity category = categoryDao.findByKey( categoryKey );
-        if ( category == null )
-        {
-            return null;
-        }
-
-        while ( category.getParent() != null )
-        {
-            category = category.getParent();
-        }
-        return category.getKey();
-    }
-
-    public long getArchiveSizeByUnit( int unitKey )
-    {
-
-        return categoryStatisticsHelper.getArchiveSizeByUnit( unitKey );
-    }
-
-    public long getArchiveSizeByCategory( CategoryKey categoryKey )
-    {
-
-        return categoryStatisticsHelper.getArchiveSizeByCategory( categoryKey );
     }
 
     public Map<Integer, CategoryStatistics> getCategoryStatistics( int unitKey )

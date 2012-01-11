@@ -294,18 +294,6 @@ public class XDG
         }
     }
 
-    public static StringBuffer generateWhereSQL( StringBuffer sql, Column whereColumn )
-    {
-        if ( whereColumn != null )
-        {
-            return generateWhereSQL( sql, new Column[]{whereColumn} );
-        }
-        else
-        {
-            return sql;
-        }
-    }
-
     private static void generateWhereInSQL(StringBuffer sql, Column whereInColumn, int count)
     {
         sql.append( " WHERE " );

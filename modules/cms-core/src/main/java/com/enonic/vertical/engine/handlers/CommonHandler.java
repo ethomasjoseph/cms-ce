@@ -19,7 +19,6 @@ import org.w3c.dom.Document;
 
 import com.enonic.esl.containers.MultiValueMap;
 import com.enonic.esl.sql.model.Column;
-import com.enonic.esl.sql.model.ForeignKeyColumn;
 import com.enonic.esl.sql.model.Table;
 import com.enonic.esl.sql.model.datatypes.DataType;
 import com.enonic.esl.xml.XMLTool;
@@ -113,45 +112,6 @@ public class CommonHandler
         return result;
     }
 
-    public int executeSQL( String sql, Integer[] paramValues )
-    {
-        Connection con;
-        PreparedStatement preparedStmt = null;
-        int result = 0;
-
-        try
-        {
-            con = getConnection();
-            preparedStmt = con.prepareStatement( sql );
-
-            if ( paramValues != null )
-            {
-                for ( int i = 0; i < paramValues.length; i++ )
-                {
-                    if ( paramValues[i] == null )
-                    {
-                        preparedStmt.setNull( i + 1, java.sql.Types.INTEGER );
-                    }
-                    else
-                    {
-                        preparedStmt.setInt( i + 1, paramValues[i] );
-                    }
-                }
-            }
-            result = preparedStmt.executeUpdate();
-        }
-        catch ( SQLException sqle )
-        {
-            String message = "Failed to execute sql: %t";
-            VerticalEngineLogger.error(message, sqle );
-        }
-        finally
-        {
-            close( preparedStmt );
-        }
-        return result;
-    }
-
     public int getInt( String sql, Object paramValue )
     {
         if ( paramValue != null )
@@ -199,74 +159,6 @@ public class CommonHandler
     public int getInt( String sql, int paramValue )
     {
         return getInt( sql, new int[]{paramValue} );
-    }
-
-    public Object[][] getObjectArray( String sql, Object[] paramValues )
-    {
-        Connection con = null;
-        PreparedStatement preparedStmt = null;
-        ResultSet resultSet = null;
-        Object[][] values = null;
-
-        try
-        {
-            con = getConnection();
-
-            preparedStmt = con.prepareStatement( sql );
-
-            if ( paramValues != null )
-            {
-                for ( int i = 0; i < paramValues.length; i++ )
-                {
-                    if ( paramValues[i] instanceof String )
-                    {
-                        preparedStmt.setString( i + 1, paramValues[i].toString() );
-                    }
-                    else
-                    {
-                        preparedStmt.setObject( i + 1, paramValues[i] );
-                    }
-                }
-            }
-
-            resultSet = preparedStmt.executeQuery();
-
-            ArrayList<Object[]> rows = new ArrayList<Object[]>();
-
-            while ( resultSet.next() )
-            {
-                int columnCount = resultSet.getMetaData().getColumnCount();
-                Object[] columnValues = new Object[columnCount];
-
-                for ( int columnCounter = 0; columnCounter < columnCount; columnCounter++ )
-                {
-                    columnValues[columnCounter] = resultSet.getObject( columnCounter + 1 );
-                    if ( resultSet.wasNull() )
-                    {
-                        columnValues[columnCounter] = null;
-                    }
-                }
-
-                rows.add( columnValues );
-            }
-
-            values = new Object[rows.size()][];
-            for ( int i = 0; i < rows.size(); i++ )
-            {
-                values[i] = rows.get( i );
-            }
-        }
-        catch ( SQLException sqle )
-        {
-            String message = "Failed to get object[][]: %t";
-            VerticalEngineLogger.error(message, sqle );
-        }
-        finally
-        {
-            close( resultSet );
-            close( preparedStmt );
-        }
-        return values;
     }
 
     public Object[][] getObjectArray( String sql, int[] paramValues )
@@ -512,11 +404,6 @@ public class CommonHandler
         return byteArray;
     }
 
-    public int[] getIntArray( String sql, int paramValue )
-    {
-        return getIntArray(sql, new int[]{paramValue});
-    }
-
     public int[] getIntArray( String sql, int[] paramValues )
     {
         Connection con = null;
@@ -556,11 +443,6 @@ public class CommonHandler
             close( preparedStmt );
         }
         return keys.toArray();
-    }
-
-    public int[] getIntArray( String sql )
-    {
-        return getIntArray(sql, (Object[]) null);
     }
 
     public int[] getIntArray( String sql, Object[] paramValues )
@@ -677,11 +559,6 @@ public class CommonHandler
     {
         String sql = XDG.generateSelectSQL( table, selectColumn, false, whereColumn ).toString();
         return getTimestamp(sql, paramValue);
-    }
-
-    public String[] getStringArray( String sql, int paramValue )
-    {
-        return getStringArray(sql, new int[]{paramValue});
     }
 
     public String[] getStringArray( String sql, int[] paramValues )
@@ -837,11 +714,6 @@ public class CommonHandler
         }
 
         return objects;
-    }
-
-    public boolean hasRows( String sql )
-    {
-        return hasRows( sql, null );
     }
 
     public boolean hasRows( String sql, int[] paramValues )
@@ -1269,81 +1141,6 @@ public class CommonHandler
         return result;
     }
 
-    public StringBuffer getPathString( Table table, Column keyColumn, Column parentKeyColumn, Column nameColumn, int key, boolean includeSpace )
-    {
-
-        Column[] selectColumns = new Column[]{parentKeyColumn, nameColumn};
-        Column[] whereColumns = new Column[]{keyColumn};
-        StringBuffer sql = XDG.generateSelectSQL( table, selectColumns, false, whereColumns );
-
-        Connection con = null;
-        PreparedStatement preparedStmt = null;
-        ResultSet resultSet = null;
-        StringBuffer result = new StringBuffer();
-
-        try
-        {
-            con = getConnection();
-            preparedStmt = con.prepareStatement( sql.toString() );
-
-            while ( key >= 0 )
-            {
-                preparedStmt.setInt( 1, key );
-                resultSet = preparedStmt.executeQuery();
-                if ( resultSet.next() )
-                {
-                    String name;
-                    key = resultSet.getInt( 1 );
-                    if ( resultSet.wasNull() )
-                    {
-                        key = -1;
-                        name = resultSet.getString( 2 );
-                    }
-                    else
-                    {
-                        name = resultSet.getString( 2 );
-                    }
-
-                    if ( result.length() > 0 )
-                    {
-                        if ( includeSpace )
-                        {
-                            result.insert( 0, " / " );
-                        }
-                        else
-                        {
-                            result.insert( 0, "/" );
-                        }
-                        result.insert( 0, name );
-                    }
-                    else
-                    {
-                        result.append( name );
-                    }
-                }
-                else
-                {
-                    key = -1;
-                }
-                close( resultSet );
-                resultSet = null;
-            }
-        }
-        catch ( SQLException sqle )
-        {
-            String message = "Failed to get path string: %t";
-            VerticalEngineLogger.error(message, sqle );
-            result.setLength( 0 );
-        }
-        finally
-        {
-            close( resultSet );
-            close( preparedStmt );
-        }
-
-        return result;
-    }
-
     private Document getDocument( StringBuffer sql, int paramValue )
     {
         byte[] bytes = getByteArray( sql.toString(), new Object[]{paramValue} );
@@ -1402,20 +1199,4 @@ public class CommonHandler
         }
         return doc;
     }
-
-    public void cascadeDelete( Table table, int key )
-    {
-        ForeignKeyColumn[] deleteForeignKeys = table.getReferencedKeys( true );
-        if ( deleteForeignKeys != null && deleteForeignKeys.length > 0 )
-        {
-            for ( ForeignKeyColumn deleteForeignKey : deleteForeignKeys )
-            {
-                Table referrerTable = deleteForeignKey.getTable();
-                StringBuffer sql = XDG.generateRemoveSQL( referrerTable, deleteForeignKey );
-                executeSQL( sql.toString(), key );
-            }
-        }
-    }
-
-
 }

@@ -10,8 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
@@ -30,13 +28,10 @@ import com.enonic.vertical.engine.VerticalEngineLogger;
 import com.enonic.vertical.engine.VerticalRemoveException;
 
 import com.enonic.cms.framework.util.TIntArrayList;
-import com.enonic.cms.framework.xml.XMLDocument;
-import com.enonic.cms.framework.xml.XMLDocumentFactory;
 
 import com.enonic.cms.core.CalendarUtil;
 import com.enonic.cms.core.resource.ResourceKey;
 import com.enonic.cms.core.structure.RunAsType;
-import com.enonic.cms.core.structure.portlet.PortletEntity;
 
 public final class ContentObjectHandler
     extends BaseHandler
@@ -49,8 +44,6 @@ public final class ContentObjectHandler
             " FROM tContentObject";
 
     private static final String COB_WHERE_MEN = " cob_men_lKey=?";
-
-    private static final String COB_REMOVE = "DELETE FROM tContentObject WHERE cob_lKey = ?";
 
     private static final String COB_REMOVE_BY_MENU = "DELETE FROM tContentObject WHERE cob_men_lKey = ?";
 
@@ -276,69 +269,6 @@ public final class ContentObjectHandler
         return newKeys.toArray();
     }
 
-    public int createContentObject( String xmlData )
-        throws VerticalCreateException
-    {
-
-        // XML DOM
-        Document doc = XMLTool.domparse( xmlData, "contentobject" );
-
-        int[] keys = createContentObject( null, doc, true );
-        if ( keys == null || keys.length == 0 )
-        {
-            String message = "Failed to create content object, no key returned";
-            VerticalEngineLogger.errorCreate(message, null );
-        }
-
-        return keys[0];
-    }
-
-    public XMLDocument getContentObject( int contentObjectKey )
-    {
-        PortletEntity entity = portletDao.findByKey( contentObjectKey );
-        Document doc = createContentObjectsDoc( entity != null ? Collections.singletonList( entity ) : null );
-        return XMLDocumentFactory.create( doc );
-    }
-
-    private Document createContentObjectsDoc( List<PortletEntity> list )
-    {
-        Document doc = XMLTool.createDocument( "contentobjects" );
-        if ( list == null )
-        {
-            return doc;
-        }
-
-        Element root = doc.getDocumentElement();
-        for ( PortletEntity entity : list )
-        {
-            Element elem = XMLTool.createElement( doc, root, "contentobject" );
-            elem.setAttribute( "key", String.valueOf( entity.getKey() ) );
-            elem.setAttribute( "menukey", String.valueOf( entity.getSite().getKey() ) );
-
-            Element subelem = XMLTool.createElement( doc, elem, "objectstylesheet", entity.getStyleKey().toString() );
-            subelem.setAttribute( "key", entity.getStyleKey().toString() );
-
-            String borderstylesheetkey = entity.getBorderKey() != null ? entity.getBorderKey().toString() : null;
-            if ( borderstylesheetkey != null )
-            {
-                subelem = XMLTool.createElement( doc, elem, "borderstylesheet", borderstylesheetkey );
-                subelem.setAttribute( "key", borderstylesheetkey );
-            }
-
-            XMLTool.createElement( doc, elem, "name", entity.getName() );
-
-            Document contentdata = XMLDocumentFactory.create( entity.getXmlDataAsJDOMDocument() ).getAsDOMDocument();
-            Node xmldata_root = doc.importNode( contentdata.getDocumentElement(), true );
-            elem.appendChild( xmldata_root );
-
-            XMLTool.createElement( doc, elem, "timestamp", CalendarUtil.formatTimestamp( entity.getCreated(), true ) );
-
-            elem.setAttribute( "runAs", entity.getRunAs().toString() );
-        }
-
-        return doc;
-    }
-
     private Document getContentObject( String sql, int[] paramValue )
     {
         Connection con = null;
@@ -443,38 +373,6 @@ public final class ContentObjectHandler
         return getContentObject( sql.toString(), paramValue );
     }
 
-    public void removeContentObject( int contentObjectKey )
-        throws VerticalRemoveException
-    {
-        Connection con = null;
-        PreparedStatement preparedStmt = null;
-
-        try
-        {
-            con = getConnection();
-            preparedStmt = con.prepareStatement( COB_REMOVE );
-            preparedStmt.setInt( 1, contentObjectKey );
-            int result = preparedStmt.executeUpdate();
-
-            if ( result <= 0 )
-            {
-                String message = "Failed to remove content object becuase it does not exist: {0}";
-                VerticalEngineLogger.errorRemove(message, new Object[]{contentObjectKey}, null );
-            }
-
-            preparedStmt.close();
-            preparedStmt = null;
-        }
-        catch ( SQLException sqle )
-        {
-            VerticalEngineLogger.errorRemove("A database error occurred: {0}", sqle.getMessage(), sqle );
-        }
-        finally
-        {
-            close( preparedStmt );
-        }
-    }
-
     public void removeContentObjectsByMenu( Connection _con, int menuKey )
         throws VerticalRemoveException
     {
@@ -508,12 +406,6 @@ public final class ContentObjectHandler
             {
             }
         }
-    }
-
-    public void updateContentObject( String xmlData )
-    {
-        Document doc = XMLTool.domparse( xmlData, "contentobject" );
-        updateContentObject( doc );
     }
 
     private void updateContentObject( Document doc )
