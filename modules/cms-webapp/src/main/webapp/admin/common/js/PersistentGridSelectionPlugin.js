@@ -24,8 +24,8 @@ Ext.define('Common.PersistentGridSelectionPlugin', {
                 // TODO: Check up with Sencha
                 // It is not possible to check the checkbox in CheckboxModel when left clicking the column.
                 // Not sure if this is a bug since right clicking the column does check the checkbox (or shift/ctrl + left click).
-                var targetElement = event.target;
-                var isCheckboxColumnIsClicked = targetElement.className && targetElement.className.indexOf('x-grid-cell-first') > -1;
+                var targetElement = new Ext.Element(event.target);
+                var isCheckboxColumnIsClicked = targetElement.findParent('td.x-grid-cell-first') !== null;
                 if ( isCheckboxColumnIsClicked )
                 {
                     var isShiftKeyPressed = event.shiftKey === true;
