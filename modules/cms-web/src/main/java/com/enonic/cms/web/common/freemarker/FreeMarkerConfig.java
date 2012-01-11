@@ -1,0 +1,20 @@
+package com.enonic.cms.web.common.freemarker;
+
+import freemarker.cache.WebappTemplateLoader;
+import freemarker.template.Configuration;
+
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.ServletContextAware;
+
+import javax.servlet.ServletContext;
+
+@Component
+public final class FreeMarkerConfig
+    extends Configuration
+    implements ServletContextAware
+{
+    public void setServletContext( final ServletContext context )
+    {
+        setTemplateLoader( new WebappTemplateLoader( context, "/WEB-INF/freemarker" ) );
+    }
+}
