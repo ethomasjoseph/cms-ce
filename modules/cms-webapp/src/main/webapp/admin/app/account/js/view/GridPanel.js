@@ -2,11 +2,13 @@ Ext.define( 'App.view.GridPanel', {
     extend: 'Ext.grid.Panel',
     alias : 'widget.accountGrid',
 
-    requires: ['Common.PersistentGridSelectionPlugin', 'Common.SlidingPagerPlugin'],
+    requires: [
+        'Common.PersistentGridSelectionPlugin',
+        'Common.SlidingPagerPlugin'
+    ],
     plugins: ['persistentGridSelection'],
     layout: 'fit',
     multiSelect: true,
-    loadMask: true,
     columnLines: true,
     frame: false,
     store: 'AccountStore',
@@ -59,8 +61,6 @@ Ext.define( 'App.view.GridPanel', {
             },
             {
                 text: 'Last Modified',
-                //xtype: 'datecolumn',
-                //format: 'Y-m-d h:m',
                 dataIndex: 'lastModified',
                 renderer: this.prettyDateRenderer,
                 sortable: true
@@ -75,7 +75,8 @@ Ext.define( 'App.view.GridPanel', {
 
         this.viewConfig = {
             trackOver : true,
-            stripeRows: true
+            stripeRows: true,
+            loadMask: true
         };
 
         this.selModel = Ext.create( 'Ext.selection.CheckboxModel', {} );

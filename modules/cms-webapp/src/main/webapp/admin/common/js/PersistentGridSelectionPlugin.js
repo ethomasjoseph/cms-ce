@@ -175,7 +175,7 @@ Ext.define('Common.PersistentGridSelectionPlugin', {
             e.stopEvent();
             var isChecked = header.el.hasCls(Ext.baseCSSPrefix + 'grid-hd-checker-on');
             if (isChecked) {
-                this.clearSelections();
+                this.clearSelection();
             } else {
                 this.grid.selModel.selectAll();
             }
