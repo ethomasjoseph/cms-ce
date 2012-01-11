@@ -13,7 +13,6 @@ import com.enonic.cms.core.security.user.UserEntity;
 
 public final class SendMailServiceImpl
     extends AbstractSendMailService
-    implements SendMailService
 {
     @Autowired
     private VerticalProperties properties;

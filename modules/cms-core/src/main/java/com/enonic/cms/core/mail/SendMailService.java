@@ -8,9 +8,5 @@ import com.enonic.cms.core.security.user.QualifiedUsername;
 
 public interface SendMailService
 {
-    public void sendMail( AbstractMailTemplate mailTemplate );
-
-    public void sendChangePasswordMail( QualifiedUsername userName, String newPassword );
-
     public void sendChangePasswordMail( QualifiedUsername userName, String newPassword, MessageSettings settings );
 }

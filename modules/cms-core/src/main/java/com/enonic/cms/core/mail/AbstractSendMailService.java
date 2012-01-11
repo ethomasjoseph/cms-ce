@@ -15,6 +15,7 @@ import com.enonic.cms.core.security.user.UserEntity;
 import com.enonic.cms.store.dao.UserDao;
 
 public abstract class AbstractSendMailService
+    implements SendMailService
 {
     protected final Logger log;
 
@@ -36,62 +37,6 @@ public abstract class AbstractSendMailService
     public final void setFromMail( String value )
     {
         this.fromMail = value;
-    }
-
-    public final void sendMail( AbstractMailTemplate template )
-    {
-        try
-        {
-            MessageSettings settings = new MessageSettings();
-
-            setFromSettings( template, settings );
-
-            settings.setBody( template.getBody() );
-
-            MimeMessageHelper message = createMessage( settings );
-            message.setSubject( template.getSubject() );
-            message.setText( template.getBody() );
-
-            if ( template.getMailRecipients().size() == 0 )
-            {
-                this.log.info( "No recipients specified, mail not sent." );
-            }
-
-            for ( MailRecipient recipient : template.getMailRecipients() )
-            {
-                if ( recipient.getEmail() != null )
-                {
-                    message.addTo( recipient.getEmail(), recipient.getName() );
-                }
-            }
-
-            sendMessage( message );
-        }
-        catch ( Exception e )
-        {
-            this.log.error( "Failed to send mail", e );
-        }
-    }
-
-    private void setFromSettings( AbstractMailTemplate template, MessageSettings settings )
-    {
-        MailRecipient fromRecipient = template.getFrom();
-
-        if ( fromRecipient != null && fromRecipient.getEmail() != null )
-        {
-            settings.setFromMail( fromRecipient.getEmail() );
-            settings.setFromName( fromRecipient.getName() );
-        }
-        else
-        {
-            settings.setFromMail( this.fromMail );
-            settings.setFromName( null );
-        }
-    }
-
-    public final void sendChangePasswordMail( QualifiedUsername userName, String newPassword )
-    {
-        sendChangePasswordMail( userName, newPassword, null );
     }
 
     public final void sendChangePasswordMail( QualifiedUsername userName, String newPassword, MessageSettings settings )

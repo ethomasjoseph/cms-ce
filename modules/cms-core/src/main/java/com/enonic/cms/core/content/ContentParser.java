@@ -16,8 +16,6 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import com.enonic.vertical.adminweb.handlers.xmlbuilders.ContentBaseXMLBuilder;
-
 import com.enonic.cms.framework.util.JDOMUtil;
 
 import com.enonic.cms.core.language.LanguageEntity;
@@ -41,7 +39,17 @@ import com.enonic.cms.store.dao.UserDao;
 
 public class ContentParser
 {
-    private final String DATE_PATTERN = "yyyy-MM-dd HH:mm";
+    private final static String DATE_PATTERN = "yyyy-MM-dd HH:mm";
+
+    public static final String ASSIGNEE_XML_KEY = "assignee";
+
+    public static final String ASSIGNER_XML_KEY = "assigner";
+
+    public static final String ASSIGNMENT_DESCRIPTION_XML_KEY = "assignment-description";
+
+    public static final String COMMENT_XML_KEY = "comment";
+
+    public static final String ASSIGNMENT_DUEDATE_XML_KEY = "assignment-duedate";
 
     /**
      * Whether to parse contentdata from xml data or not. If false, contentdata is loaded from storage instead. Default is true.
@@ -65,8 +73,6 @@ public class ContentParser
     private Element contentEl;
 
     private List<BinaryDataKey> binaryDatas;
-
-    private static final String COMMENT_XML_KEY = "comment";
 
     public ContentParser( ContentDao contentDao, ContentVersionDao contentVersionDao, CategoryDao categoryDao, GroupDao groupDao,
                           UserDao userDao, LanguageDao languageDao, String contentXml )
@@ -163,7 +169,7 @@ public class ContentParser
 
     private String parseAssignmentComment()
     {
-        Element assignmentCommentElement = contentEl.getChild( ContentBaseXMLBuilder.ASSIGNMENT_DESCRIPTION_XML_KEY );
+        Element assignmentCommentElement = contentEl.getChild( ASSIGNMENT_DESCRIPTION_XML_KEY );
         if ( assignmentCommentElement == null )
         {
             return null;
@@ -195,7 +201,7 @@ public class ContentParser
 
     private String parseComment()
     {
-        Element contentNameElement = contentEl.getChild( ContentBaseXMLBuilder.COMMENT_XML_KEY );
+        Element contentNameElement = contentEl.getChild( COMMENT_XML_KEY );
         if ( contentNameElement == null )
         {
             return null;
@@ -347,7 +353,7 @@ public class ContentParser
 
     private UserEntity parseAssigner()
     {
-        Element assignerEl = contentEl.getChild( ContentBaseXMLBuilder.ASSIGNER_XML_KEY );
+        Element assignerEl = contentEl.getChild( ASSIGNER_XML_KEY );
         if ( assignerEl == null )
         {
             return null;
@@ -363,7 +369,7 @@ public class ContentParser
 
     private UserEntity parseAssignee()
     {
-        Element assigneeEl = contentEl.getChild( ContentBaseXMLBuilder.ASSIGNEE_XML_KEY );
+        Element assigneeEl = contentEl.getChild( ASSIGNEE_XML_KEY );
         if ( assigneeEl == null )
         {
             return null;
@@ -447,7 +453,7 @@ public class ContentParser
 
     private Date parseDueDate()
     {
-        Element dueDate = contentEl.getChild( ContentBaseXMLBuilder.ASSIGNMENT_DUEDATE_XML_KEY );
+        Element dueDate = contentEl.getChild( ASSIGNMENT_DUEDATE_XML_KEY );
 
         if ( dueDate != null )
         {

@@ -150,11 +150,6 @@
   <bean id="localeXsltScriptResolver"
         class="com.enonic.cms.core.resolver.locale.LocaleXsltScriptResolver"/>
 
-  <bean id="adminConsoleTranslationService"
-        class="com.enonic.cms.core.AdminConsoleTranslationService" init-method="init">
-    <property name="defaultLanguageCode" value="#{config.adminDefaultLanguage}"/>
-  </bean>
-
   <bean id="adminConsoleLoginAccessResolver"
         class="com.enonic.vertical.adminweb.access.AdminConsoleLoginAccessResolver"/>
 
@@ -474,65 +469,10 @@
     <property name="userHandler" ref="userHandler"/>
   </bean>
 
-  <bean id="abstractBaseXMLBuilder" abstract="true"
-        class="com.enonic.vertical.adminweb.handlers.xmlbuilders.AbstractBaseXMLBuilder">
-    <property name="adminService" ref="adminService"/>
-    <property name="verticalProperties" ref="verticalProperties"/>
-  </bean>
-
-  <bean id="contentBaseXMLBuilder" class="com.enonic.vertical.adminweb.handlers.xmlbuilders.ContentBaseXMLBuilder"
-        parent="abstractBaseXMLBuilder">
-  </bean>
-
-  <bean id="contentArticle3XMLBuilder"
-        class="com.enonic.vertical.adminweb.handlers.xmlbuilders.ContentArticle3XMLBuilder"
-        parent="abstractBaseXMLBuilder">
-  </bean>
-
-  <bean id="contentDocumentXMLBuilder"
-        class="com.enonic.vertical.adminweb.handlers.xmlbuilders.ContentDocumentXMLBuilder"
-        parent="abstractBaseXMLBuilder">
-  </bean>
-
-  <bean id="contentEnhancedImageXMLBuilder"
-        class="com.enonic.vertical.adminweb.handlers.xmlbuilders.ContentEnhancedImageXMLBuilder"
-        parent="abstractBaseXMLBuilder">
-  </bean>
-
-  <bean id="contentFileXMLBuilder" class="com.enonic.vertical.adminweb.handlers.xmlbuilders.ContentFileXMLBuilder"
-        parent="abstractBaseXMLBuilder">
-  </bean>
-
-  <bean id="contentNewsletterXMLBuilder"
-        class="com.enonic.vertical.adminweb.handlers.xmlbuilders.ContentNewsletterXMLBuilder"
-        parent="abstractBaseXMLBuilder">
-  </bean>
-
-  <bean id="contentPollXMLBuilder" class="com.enonic.vertical.adminweb.handlers.xmlbuilders.ContentPollXMLBuilder"
-        parent="abstractBaseXMLBuilder">
-  </bean>
-
-  <bean id="simpleContentXMLBuilder" class="com.enonic.vertical.adminweb.handlers.xmlbuilders.SimpleContentXMLBuilder"
-        parent="abstractBaseXMLBuilder">
-  </bean>
-
-  <bean id="contentXMLBuildersSpringManagedBeansBridge"
-        class="com.enonic.vertical.adminweb.handlers.xmlbuilders.ContentXMLBuildersSpringManagedBeansBridge">
-    <property name="contentBaseXMLBuilder" ref="contentBaseXMLBuilder"/>
-    <property name="contentArticle3XMLBuilder" ref="contentArticle3XMLBuilder"/>
-    <property name="contentDocumentXMLBuilder" ref="contentDocumentXMLBuilder"/>
-    <property name="contentEnhancedImageXMLBuilder" ref="contentEnhancedImageXMLBuilder"/>
-    <property name="contentFileXMLBuilder" ref="contentFileXMLBuilder"/>
-    <property name="contentNewsletterXMLBuilder" ref="contentNewsletterXMLBuilder"/>
-    <property name="contentPollXMLBuilder" ref="contentPollXMLBuilder"/>
-    <property name="simpleContentXMLBuilder" ref="simpleContentXMLBuilder"/>
-  </bean>
-
   <bean id="baseHandler" abstract="true" class="com.enonic.vertical.engine.handlers.BaseHandler" init-method="init">
     <property name="keyService" ref="keyService"/>
     <property name="verticalProperties" ref="verticalProperties"/>
     <property name="baseEngine" ref="presentationEngine"/>
-    <property name="adminConsoleTranslationService" ref="adminConsoleTranslationService"/>
     <property name="securityService" ref="securityService"/>
   </bean>
 

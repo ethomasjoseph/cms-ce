@@ -3439,8 +3439,7 @@ public final class MenuHandler
             //else {
             Element nameElem = XMLTool.getElement( menuElem, "name" );
             Text text = (Text) nameElem.getFirstChild();
-            Map translationMap = languageMap.getTranslationMap( user.getSelectedLanguageCode() );
-            text.setData( text.getData() + " (" + translationMap.get( "%txtCopy%" ) + ")" );
+            text.setData( text.getData() + " (copy)" );
             //}
 
             Element elem = XMLTool.getElement( menuElem, "firstpage" );

@@ -95,10 +95,6 @@
             <artifactId>freemarker</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.directwebremoting</groupId>
-            <artifactId>dwr</artifactId>
-        </dependency>
-        <dependency>
             <groupId>tidy</groupId>
             <artifactId>tidy</artifactId>
         </dependency>

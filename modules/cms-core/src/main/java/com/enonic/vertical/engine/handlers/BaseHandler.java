@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.enonic.cms.core.AdminConsoleTranslationService;
 import com.enonic.cms.store.dao.*;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +30,6 @@ public abstract class BaseHandler
     protected final VerticalDatabase db = VerticalDatabase.getInstance();
 
     protected BaseEngine baseEngine;
-
-    protected AdminConsoleTranslationService languageMap;
 
     protected VerticalProperties verticalProperties;
 
@@ -121,12 +118,6 @@ public abstract class BaseHandler
     public void setBaseEngine( BaseEngine value )
     {
         this.baseEngine = value;
-    }
-
-
-    public void setAdminConsoleTranslationService( AdminConsoleTranslationService languageMap )
-    {
-        this.languageMap = languageMap;
     }
 
     public void setKeyService( KeyService value )
