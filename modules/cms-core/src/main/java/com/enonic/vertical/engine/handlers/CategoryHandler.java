@@ -44,20 +44,13 @@ import com.enonic.cms.core.content.category.CategoryXmlCreator;
 import com.enonic.cms.core.security.user.User;
 import com.enonic.cms.store.dao.CategoryDao;
 
-import com.enonic.cms.core.content.category.CategoryStatistics;
-
 public class CategoryHandler
     extends BaseHandler
 {
     @Autowired
     private CategoryDao categoryDao;
 
-    public void init()
-    {
-        super.init();
-    }
-
-    public int getContentCount( CategoryKey categoryKey, boolean recursive )
+    private int getContentCount( CategoryKey categoryKey, boolean recursive )
     {
 
         if ( categoryKey == null )
@@ -162,7 +155,7 @@ public class CategoryHandler
         return newDoc.getAsDOMDocument();
     }
 
-    public int getUnitKey( CategoryKey categoryKey )
+    private int getUnitKey( CategoryKey categoryKey )
     {
 
         if ( categoryKey == null )
@@ -612,162 +605,4 @@ public class CategoryHandler
         sql.append( inClauseFilter );
         return sql.toString();
     }
-
-    public Map<Integer, CategoryStatistics> getCategoryStatistics( int unitKey )
-    {
-
-        StringBuilder sql = new StringBuilder();
-        sql.append( "select" );
-        sql.append( " cat_lkey," );
-        sql.append( " cat_cat_lsuper" );
-        sql.append( " from tcategory" );
-        sql.append( " where cat_uni_lkey = ?" );
-        sql.append( " order by cat_cat_lsuper asc, cat_lkey asc" );
-
-        Connection con;
-        PreparedStatement preparedStmt = null;
-        ResultSet resultSet = null;
-        Map<Integer, CategoryStatistics> categoryStatistics = new HashMap<Integer, CategoryStatistics>();
-
-        try
-        {
-            con = getConnection();
-            preparedStmt = con.prepareStatement( sql.toString() );
-            preparedStmt.setInt( 1, unitKey );
-            resultSet = preparedStmt.executeQuery();
-
-            while ( resultSet.next() )
-            {
-
-                CategoryStatistics cs = new CategoryStatistics( resultSet.getInt( 1 ) );
-                cs.setParentCategoryKey( resultSet.getInt( 2 ) );
-                categoryStatistics.put( cs.getCategoryKey(), cs );
-            }
-        }
-        catch ( SQLException sqle )
-        {
-            throw new RuntimeException( "Failed to get category tree", sqle );
-        }
-        finally
-        {
-            close( resultSet );
-            close( preparedStmt );
-        }
-        return categoryStatistics;
-    }
-
-    public void collectStatisticsFromContent( int unitKey, Map<Integer, CategoryStatistics> catStats )
-    {
-
-        StringBuilder sql = new StringBuilder();
-        sql.append( "select" );
-        sql.append( " cat_lkey," );
-        sql.append( " cat_cat_lsuper," );
-        sql.append( " sum(@length@(cov_stitle))," );
-        sql.append( " sum(@length@(cov_sdescription))," );
-        sql.append( " sum(@length@(cov_xmlcontentdata))" );
-        sql.append( " from tcontentversion" );
-        sql.append( " left join tcontent on cov_con_lkey = con_lkey" );
-        sql.append( " left join tcategory on con_cat_lkey = cat_lkey" );
-        sql.append( " where cat_uni_lkey = ?" );
-        sql.append( " group by cat_lkey, cat_cat_lsuper" );
-        sql.append( " order by cat_cat_lsuper asc, cat_lkey asc" );
-
-        Connection con;
-        PreparedStatement preparedStmt = null;
-        ResultSet resultSet = null;
-
-        // 4 bytes times 6 for the number columns
-        int constantSize = 4 * 6;
-        // 20 bytes times 2 for the user columns
-        constantSize += 20 * 2;
-
-        try
-        {
-            con = getConnection();
-            preparedStmt = con.prepareStatement( sql.toString() );
-            preparedStmt.setInt( 1, unitKey );
-            resultSet = preparedStmt.executeQuery();
-
-            while ( resultSet.next() )
-            {
-
-                Integer categoryKey = resultSet.getInt( 1 );
-                CategoryStatistics cs = catStats.get( categoryKey );
-                if ( cs != null )
-                {
-                    long amount = constantSize + resultSet.getLong( 3 ) + resultSet.getLong( 4 ) + resultSet.getLong( 5 );
-                    cs.addAmount( amount );
-                }
-            }
-        }
-        catch ( SQLException sqle )
-        {
-            throw new RuntimeException( "Failed to get category statistics", sqle );
-        }
-        finally
-        {
-            close( resultSet );
-            close( preparedStmt );
-        }
-    }
-
-    public void collectStatisticsFromBinaryData( int unitKey, Map<Integer, CategoryStatistics> catStats )
-    {
-
-        StringBuilder sql = new StringBuilder();
-        sql.append( "select" );
-        sql.append( " cat_lkey," );
-        sql.append( " cat_cat_lsuper," );
-        sql.append( " sum(@length@(bda_sfilename))," );
-        sql.append( " sum(bda_lfilesize * 1.0)" );
-        sql.append( " from tbinarydata" );
-        sql.append( " left join tcontentbinarydata on bda_lkey = cbd_bda_lkey" );
-        sql.append( " left join tcontentversion on cbd_cov_lkey = cov_lkey" );
-        sql.append( " left join tcontent on cov_con_lkey = con_lkey" );
-        sql.append( " left join tcategory on con_cat_lkey = cat_lkey" );
-        sql.append( " where cat_uni_lkey = ?" );
-        sql.append( " group by cat_lkey, cat_cat_lsuper" );
-        sql.append( " order by cat_cat_lsuper asc, cat_lkey asc" );
-
-        Connection con;
-        PreparedStatement preparedStmt = null;
-        ResultSet resultSet = null;
-
-        // 4 bytes times 6 for the number columns
-        int constantSize = 4 * 8;
-        // 20 bytes times 2 for the user columns
-        constantSize += 20 * 2;
-
-        try
-        {
-            con = getConnection();
-            preparedStmt = con.prepareStatement( sql.toString() );
-            preparedStmt.setInt( 1, unitKey );
-            resultSet = preparedStmt.executeQuery();
-
-            while ( resultSet.next() )
-            {
-
-                Integer categoryKey = resultSet.getInt( 1 );
-                CategoryStatistics cs = catStats.get( categoryKey );
-                if ( cs != null )
-                {
-                    long filenameSize = resultSet.getLong( 3 ) * 2; // two times because it is in content version too
-                    long amount = constantSize + filenameSize + new Double( resultSet.getDouble( 4 ) ).longValue();
-                    cs.addAmount( amount );
-                }
-            }
-        }
-        catch ( SQLException sqle )
-        {
-            throw new RuntimeException( "Failed to get category statistics", sqle );
-        }
-        finally
-        {
-            close( resultSet );
-            close( preparedStmt );
-        }
-    }
-
 }

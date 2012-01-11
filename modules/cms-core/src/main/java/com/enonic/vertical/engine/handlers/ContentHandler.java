@@ -15,7 +15,6 @@ import java.util.*;
 
 import com.enonic.cms.core.content.*;
 import com.enonic.cms.core.language.LanguageKey;
-import com.enonic.cms.store.dao.ContentHandlerDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -42,43 +41,20 @@ import com.enonic.cms.core.CalendarUtil;
 import com.enonic.cms.core.content.category.CategoryKey;
 import com.enonic.cms.core.content.contenttype.ContentTypeEntity;
 import com.enonic.cms.core.security.user.User;
-import com.enonic.cms.core.security.user.UserKey;
 import com.enonic.cms.store.dao.ContentTypeDao;
 
 public final class ContentHandler
     extends BaseHandler
 {
-
     private final static String CTY_TABLE = "tContentType";
-
-    private final static String HAN_TABLE = "tContentHandler";
 
     private final static String CON_IS_CHILD = "SELECT rco_con_lParent,rco_con_lChild FROM TRELATEDCONTENT WHERE rco_con_lChild = ?";
 
     // tContentType
     private final static String CTY_INSERT = "INSERT INTO  " + CTY_TABLE + " VALUES (?,?,?,?,@currentTimestamp@" + ",?,?,?)";
 
-    // tContentHandler
-    private final static String HAN_INSERT = "INSERT INTO  " + HAN_TABLE + " VALUES (?,?,?,?,?,@currentTimestamp@)";
-
     @Autowired
     private ContentTypeDao contentTypeDao;
-
-    @Autowired
-    private ContentHandlerDao contentHandlerDao;
-
-    public CategoryKey getCategoryKey( int contentKey )
-    {
-        ContentEntity entity = contentDao.findByKey( new ContentKey( contentKey ) );
-        if ( ( entity != null ) && !entity.isDeleted() )
-        {
-            return entity.getCategory().getKey();
-        }
-        else
-        {
-            return null;
-        }
-    }
 
     private int[] getCategoryKeys( int[] contentKeys )
     {
@@ -91,7 +67,6 @@ public final class ContentHandler
             XDG.generateSelectWhereInSQL( db.tContent, db.tContent.con_cat_lKey, db.tContent.con_lKey, contentKeys.length );
         return commonHandler.getIntArray( sql.toString(), contentKeys );
     }
-
 
     public Document getContentTypesDocument( int[] contentTypeKeys )
     {
@@ -268,13 +243,13 @@ public final class ContentHandler
         return entity != null ? entity.getCategory().getContentType().getKey() : -1;
     }
 
-    public String getContentTypeName( int contentTypeKey )
+    private String getContentTypeName( int contentTypeKey )
     {
         ContentTypeEntity entity = contentTypeDao.findByKey( contentTypeKey );
         return entity != null ? entity.getName() : null;
     }
 
-    public Document getContentTypes( int[] contentTypeKeys, boolean includeContentCount )
+    private Document getContentTypes( int[] contentTypeKeys, boolean includeContentCount )
     {
         List<ContentTypeEntity> list;
 
@@ -297,12 +272,6 @@ public final class ContentHandler
         }
 
         return createContentTypesDoc( list, includeContentCount );
-    }
-
-    public UserKey getOwnerKey( int contentKey )
-    {
-        ContentEntity content = contentDao.findByKey( new ContentKey( contentKey ) );
-        return content.getOwner().getKey();
     }
 
     private Document doGetContents(User user, Set<Integer> referencedKeys, Element contentsElem, String sql,
@@ -800,150 +769,12 @@ public final class ContentHandler
         return doc;
     }
 
-    public int getContentCountByContentType( int contentTypeKey )
+    private int getContentCountByContentType( int contentTypeKey )
     {
         ContentView contentView = ContentView.getInstance();
         StringBuffer countSQL =
             XDG.generateSelectSQL( contentView, contentView.con_lKey.getCountColumn(), false, contentView.cat_cty_lKey );
         return getCommonHandler().getInt(countSQL.toString(), contentTypeKey);
-    }
-
-    public String getContentHandlerClassForContentType( int contentTypeKey )
-    {
-        final ContentTypeEntity entity = contentTypeDao.findByKey( contentTypeKey );
-        if ( entity == null )
-        {
-            return null;
-        }
-        return entity.getHandler().getClassName();
-    }
-
-    public org.jdom.Document getContentHandler( final int contentHandlerKey )
-    {
-        final ContentHandlerEntity entity = this.contentHandlerDao.findByKey(new ContentHandlerKey(contentHandlerKey));
-        List<ContentHandlerEntity> list = Collections.emptyList();
-
-        if (entity != null) {
-            list = Collections.singletonList(entity);
-        }
-
-        return toDocument(list);
-    }
-
-    private org.jdom.Document toDocument(final List<ContentHandlerEntity> list)
-    {
-        final org.jdom.Element root = new org.jdom.Element("contenthandlers");
-
-        for (final ContentHandlerEntity entity : list) {
-            final org.jdom.Element elem = new org.jdom.Element("contenthandler");
-            root.addContent(elem);
-            
-            elem.setAttribute( "key", entity.getKey().toString() );
-
-            elem.addContent(new org.jdom.Element("name").setText(entity.getName()));
-            elem.addContent(new org.jdom.Element("class").setText(entity.getClassName()));
-
-            final String description = entity.getDescription();
-            if (description != null) {
-                elem.addContent(new org.jdom.Element("description").setText(description));
-            }
-
-            final org.jdom.Document xmlConfig = entity.getXmlConfig();
-            if (xmlConfig != null) {
-                elem.addContent(xmlConfig.getRootElement().detach());
-            }
-            else
-            {
-                elem.addContent(new org.jdom.Element("xmlconfig"));
-            }
-
-            final String timestamp = CalendarUtil.formatTimestamp(entity.getTimestamp(), true);
-            elem.addContent(new org.jdom.Element("timestamp").setText(timestamp));
-        }
-
-        return new org.jdom.Document(root);
-    }
-
-    public int createContentHandler(Document doc)
-    {
-        Connection con = null;
-        PreparedStatement preparedStmt = null;
-        int key = -1;
-
-        try
-        {
-            con = getConnection();
-
-            preparedStmt = con.prepareStatement( HAN_INSERT );
-
-            Element root = doc.getDocumentElement();
-
-            String keyStr = root.getAttribute( "key" );
-
-            if ( keyStr.length() > 0 )
-            {
-                key = Integer.parseInt( keyStr );
-            }
-            else
-            {
-                key = getNextKey( HAN_TABLE );
-            }
-
-            Map<String, Element> subelems = XMLTool.filterElements( root.getChildNodes() );
-
-            Element subelem = subelems.get( "name" );
-            String name = XMLTool.getElementText( subelem );
-            subelem = subelems.get( "class" );
-            String className = XMLTool.getElementText( subelem );
-
-            subelem = subelems.get( "description" );
-            String description;
-            if ( subelem != null )
-            {
-                description = XMLTool.getElementText( subelem );
-            }
-            else
-            {
-                description = null;
-            }
-
-            subelem = subelems.get( "xmlconfig" );
-            Document configDoc = XMLTool.createDocument();
-            configDoc.appendChild( configDoc.importNode( subelem, true ) );
-            byte[] cdocBytes = XMLTool.documentToBytes( configDoc, "UTF-8" );
-
-            preparedStmt.setInt( 1, key );
-            preparedStmt.setString(2, name);
-            preparedStmt.setString(3, className);
-            if ( description != null )
-            {
-                preparedStmt.setString(4, description);
-            }
-            else
-            {
-                preparedStmt.setNull( 4, Types.VARCHAR );
-            }
-            preparedStmt.setBytes(5, cdocBytes);
-
-            // add the content handler
-            int result = preparedStmt.executeUpdate();
-            if ( result == 0 )
-            {
-                String message = "Failed to create content handler. No content handler created.";
-                VerticalEngineLogger.errorCreate(message, null );
-            }
-        }
-        catch ( SQLException sqle )
-        {
-            String message = "Failed to create content handler: %t";
-            VerticalEngineLogger.errorCreate(message, sqle );
-        }
-        finally
-        {
-            close( preparedStmt );
-        }
-
-        return key;
     }
 
     public int getCurrentVersionKey( int contentKey )

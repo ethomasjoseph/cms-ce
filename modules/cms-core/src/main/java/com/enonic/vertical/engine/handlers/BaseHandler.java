@@ -13,7 +13,6 @@ import com.enonic.cms.store.dao.*;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.enonic.esl.sql.model.Table;
 import com.enonic.vertical.VerticalProperties;
 import com.enonic.vertical.engine.BaseEngine;
 import com.enonic.vertical.engine.dbmodel.VerticalDatabase;
@@ -130,11 +129,6 @@ public abstract class BaseHandler
         securityService = service;
     }
 
-    protected final CategoryHandler getCategoryHandler()
-    {
-        return baseEngine.getCategoryHandler();
-    }
-
     protected final ContentHandler getContentHandler()
     {
         return baseEngine.getContentHandler();
@@ -155,19 +149,9 @@ public abstract class BaseHandler
         return baseEngine.getLanguageHandler();
     }
 
-    protected final MenuHandler getMenuHandler()
-    {
-        return baseEngine.getMenuHandler();
-    }
-
     protected final PageHandler getPageHandler()
     {
         return baseEngine.getPageHandler();
-    }
-
-    protected final PageTemplateHandler getPageTemplateHandler()
-    {
-        return baseEngine.getPageTemplateHandler();
     }
 
     protected final SectionHandler getSectionHandler()
@@ -178,11 +162,6 @@ public abstract class BaseHandler
     protected final SecurityHandler getSecurityHandler()
     {
         return baseEngine.getSecurityHandler();
-    }
-
-    protected final UserHandler getUserHandler()
-    {
-        return baseEngine.getUserHandler();
     }
 
     protected final void close( ResultSet resultSet )
@@ -206,10 +185,5 @@ public abstract class BaseHandler
     public final int getNextKey( String tableName )
     {
         return keyService.generateNextKeySafe( tableName );
-    }
-
-    public final int getNextKey( Table table )
-    {
-        return keyService.generateNextKeySafe( table.getName() );
     }
 }

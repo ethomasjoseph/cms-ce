@@ -560,7 +560,7 @@ public final class MenuHandler
 
     }
 
-    public String getMenuItemName( int menuItemKey )
+    private String getMenuItemName( int menuItemKey )
     {
         StringBuffer sql = XDG.generateSelectSQL( db.tMenuItem, db.tMenuItem.mei_sName, false, db.tMenuItem.mei_lKey );
         return getCommonHandler().getString( sql.toString(), menuItemKey );

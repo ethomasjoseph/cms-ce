@@ -35,12 +35,6 @@ public class SectionHandler
         return getCommonHandler().getIntArray( sql.toString(), new Object[]{menuItemSectionKey} );
     }
 
-    public MenuItemKey getMenuItemKeyBySection( int sectionKey )
-    {
-        StringBuffer sql = XDG.generateSelectSQL( db.tMenuItem, db.tMenuItem.mei_lKey, new Column[]{db.tMenuItem.mei_lKey, db.tMenuItem.mei_bSection} );
-        return new MenuItemKey( getCommonHandler().getInt( sql.toString(), new Object[]{sectionKey, 1} ) );
-    }
-
     public MenuItemKey getSectionKeyByMenuItem( MenuItemKey menuItemKey )
     {
         StringBuffer sql = XDG.generateSelectSQL( db.tMenuItem, db.tMenuItem.mei_lKey, new Column[]{db.tMenuItem.mei_lKey, db.tMenuItem.mei_bSection} );

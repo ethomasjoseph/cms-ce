@@ -9,7 +9,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
@@ -21,8 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.StringTokenizer;
-import java.util.zip.InflaterInputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -37,7 +34,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import com.google.common.base.Preconditions;
-import org.apache.commons.fileupload.FileItem;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.springframework.util.xml.DomUtils;
@@ -46,7 +42,6 @@ import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
@@ -56,7 +51,6 @@ import org.xml.sax.SAXException;
 
 import com.google.common.io.Closeables;
 
-import com.enonic.esl.containers.ExtendedMap;
 import com.enonic.esl.util.StringUtil;
 
 /**
@@ -151,7 +145,6 @@ public final class XMLTool
 
         return cdataSection;
     }
-
 
     /**
      * Create XML/XHTML nodes in a XML DOM from a HTML string. All
@@ -357,28 +350,6 @@ public final class XMLTool
         return elem;
     }
 
-    public static void makeTree( Element[] elems )
-    {
-        HashMap<String, Element> superKeys = new HashMap<String, Element>();
-        String superKeyName = "superkey";
-
-        // Put all elements in a hashmap
-        for ( Element elem : elems )
-        {
-            superKeys.put( elem.getAttribute( "key" ), elem );
-        }
-
-        // Go through all elements and move them to the correct parent
-        for ( Element elem : elems )
-        {
-            String superKey = elem.getAttribute( superKeyName );
-            if ( superKey.length() > 0 )
-            {
-                XMLTool.moveNode( elem, superKeys.get( superKey ) );
-            }
-        }
-    }
-
     public static Element createElement( Document doc, Element root, String name, String text )
     {
 
@@ -484,19 +455,6 @@ public final class XMLTool
     }
 
     /**
-     * Read an XML document from the reader and parse it into a DOM document.
-     *
-     * @param reader Reader
-     * @return Document
-     */
-    public static Document domparse( Reader reader )
-    {
-
-        InputSource inputSource = new InputSource( reader );
-        return domparse( inputSource, null );
-    }
-
-    /**
      * Get an element's sub-elements as an Element array. Returns an empty array if root element is null or the element does not have any
      * sub-elements.
      *
@@ -569,25 +527,6 @@ public final class XMLTool
             throw new RuntimeException( e );
         }
     }
-    
-
-    public static Element[] selectElements( Element elem, String xpath )
-    {
-        NodeList nl = selectNodeList(elem, xpath);
-        Node[] elementNodes = filterNodes( nl, Node.ELEMENT_NODE );
-        Element[] elements = new Element[elementNodes.length];
-        for ( int i = 0; i < elements.length; i++ )
-        {
-            elements[i] = (Element) elementNodes[i];
-        }
-
-        return elements;
-    }
-
-    public static Element[] getElements( Document doc, String xpath )
-    {
-        return selectElements( doc.getDocumentElement(), xpath );
-    }
 
     /**
      * Get an element's named sub-elements as an Element array. Returns an empty array if root element is null or the element does not have
@@ -651,18 +590,6 @@ public final class XMLTool
     {
         InputSource inputSource = new InputSource( new StringReader( xmlData ) );
         return domparse( inputSource, null );
-    }
-
-    public static Document domparse( String xmlData, String rootName )
-    {
-        InputSource inputSource = new InputSource( new StringReader( xmlData ) );
-        return domparse( inputSource, new String[]{rootName} );
-    }
-
-    public static Document domparse( String xmlData, String[] rootNames )
-    {
-        InputSource inputSource = new InputSource( new StringReader( xmlData ) );
-        return domparse( inputSource, rootNames );
     }
 
     private static Document domparse( InputSource inputSource, String[] rootNames )
@@ -882,21 +809,6 @@ public final class XMLTool
         }
     }
 
-    /**
-     * Retrieve a text from an element or attribute using an xpath expression.
-     *
-     * @param doc   The source document that the text is to be retrieved from.
-     * @param xpath The xpath that selects the element or attribute containing the text.
-     * @return The element text.
-     */
-    public static String getElementText( Document doc, String xpath )
-    {
-
-        Node node = selectNode( doc.getDocumentElement(), xpath );
-
-        return getNodeText( node );
-    }
-
     public static String getNodeText( Node node )
     {
         if ( node == null )
@@ -978,29 +890,6 @@ public final class XMLTool
 
         }
     }
-    
-    /**
-     * Print a document to a specific stream.
-     *
-     * @param out    The output stream.
-     * @param doc    The document
-     * @param indent Use the specified indentation level.
-     */
-    public static void printDocument( OutputStream out, Document doc, int indent )
-    {
-        Preconditions.checkNotNull(doc, "The supplied document is null (doc==" + doc + ")" );
-        serialize( out, doc, indent );
-    }
-
-    static public String elementToString( Element elem )
-    {
-        if ( elem == null )
-        {
-            return null;
-        }
-
-        return serialize(elem, 0);
-    }
 
     private static String serialize( Node node, int indent )
     {
@@ -1016,12 +905,6 @@ public final class XMLTool
     }
 
     private static void serialize( Writer out, Node node, int indent )
-    {
-        final StreamResult result = new StreamResult(out);
-        serialize(result, node, indent);
-    }
-
-    private static void serialize( OutputStream out, Node node, int indent )
     {
         final StreamResult result = new StreamResult(out);
         serialize(result, node, indent);
@@ -1101,13 +984,6 @@ public final class XMLTool
         }
     }
 
-    public static Node moveNode( Node node, Node toParent )
-    {
-        Node fromParent = node.getParentNode();
-        fromParent.removeChild( node );
-        return toParent.appendChild(node);
-    }
-
     public static String serialize( Node n )
     {
         return serialize( n, false );
@@ -1151,143 +1027,6 @@ public final class XMLTool
         return serialize( df, 4 );
     }
 
-    /**
-     * <p/> A generic method that builds the xml block of arbitrary depth. All fields starting with a specified prefix and an '_' character
-     * followed element names separated by '_' characters are translated to nested xml elements where the prefix names the top specified
-     * with the root element. The last element can be specified with one of the following prefix and suffixes: <ul> <li>@      (prefix) -
-     * element text will be set as an attribute to the parent element <li>_CDATA (suffix) - element text will be wrapped in a CDATA element
-     * <li>_XHTML (suffix) - element text will be turned into XHTML elements </ul> When reaching one of the prefix and suffixes, the element
-     * creating process will terminate for this field. </p> <p/> <p>Elements already created with the same path will be reused.</p> <p/>
-     * <p>Example:<br> The key 'contentdata_foo_bar_zot_CDATA' with the value '<b>alpha</b>' will transform into the following xml:
-     * <pre>
-     * &lt;contentdata&gt;
-     *   &lt;foo&gt;
-     *     &lt;bar&gt;
-     *       &lt;zot&gt;
-     *         &lt;[!CDATA[&lt;b&gt;<b>alpha</b>&lt;/b&gt;]]&gt;
-     *       &lt;/zot&gt;
-     *     &lt;/bar&gt;
-     *   &lt;/foo&gt;
-     * &lt;/contentdata&gt;
-     * </pre>
-     * </p>
-     */
-    public static void buildSubTree( Document doc, Element rootElement, String prefix, ExtendedMap items )
-    {
-
-        for ( Object o : items.keySet() )
-        {
-            String key = (String) o;
-            String[] values = items.getStringArray( key );
-            StringTokenizer keyTokenizer = new StringTokenizer( key, "_" );
-
-            if ( prefix.equals( keyTokenizer.nextToken() ) )
-            {
-                Element tmpRoot = rootElement;
-                while ( keyTokenizer.hasMoreTokens() )
-                {
-                    String keyToken = keyTokenizer.nextToken();
-                    if ( "CDATA".equals( keyToken ) )
-                    {
-                        String data = values[0];
-                        data = StringUtil.replaceAll( data, "\r\n", "\n" );
-                        createCDATASection( doc, tmpRoot, data );
-                        break;
-                    }
-                    else if ( "XML".equals( keyToken ) )
-                    {
-                        String xmlDoc = values[0];
-                        Document tempDoc = domparse( xmlDoc );
-                        tmpRoot.appendChild( doc.importNode( tempDoc.getDocumentElement(), true ) );
-                        break;
-                    }
-                    else if ( "XHTML".equals( keyToken ) )
-                    {
-                        createXHTMLNodes( doc, tmpRoot, values[0], true );
-                        break;
-                    }
-                    else if ( "FILEITEM".equals( keyToken ) )
-                    {
-                        FileItem fileItem = items.getFileItem( key );
-                        tmpRoot.setAttribute( "field", fileItem.getFieldName() );
-                    }
-                    else if ( keyToken.charAt( 0 ) == '@' )
-                    {
-                        if ( values.length == 1 )
-                        {
-                            tmpRoot.setAttribute( keyToken.substring( 1 ), items.getString( key ) );
-                        }
-                        else
-                        {
-                            Element parentElem = (Element) tmpRoot.getParentNode();
-                            String elementName = tmpRoot.getTagName();
-                            Element[] elements = getElements( parentElem, elementName );
-                            for ( int i = 0; i < elements.length && i < values.length; i++ )
-                            {
-                                elements[i].setAttribute( keyToken.substring( 1 ), values[i] );
-                            }
-                            if ( elements.length < values.length )
-                            {
-                                for ( int i = elements.length; i < values.length; i++ )
-                                {
-                                    Element element = createElement( doc, parentElem, elementName );
-                                    element.setAttribute( keyToken.substring( 1 ), values[i] );
-                                }
-                            }
-                        }
-                        break;
-                    }
-                    else
-                    {
-                        if ( !keyTokenizer.hasMoreTokens() && values.length > 1 )
-                        {
-                            Element[] elements = getElements( tmpRoot, keyToken );
-                            for ( int i = 0; i < elements.length && i < values.length; i++ )
-                            {
-                                createTextNode( doc, elements[i], values[i] );
-                            }
-                            if ( elements.length < values.length )
-                            {
-                                for ( int i = elements.length; i < values.length; i++ )
-                                {
-                                    createElement( doc, tmpRoot, keyToken, values[i] );
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Element elem = getElement( tmpRoot, keyToken );
-                            if ( elem == null )
-                            {
-                                tmpRoot = createElement( doc, tmpRoot, keyToken );
-                            }
-                            else
-                            {
-                                tmpRoot = elem;
-                            }
-                            if ( !keyTokenizer.hasMoreTokens() )
-                            {
-                                createTextNode( doc, tmpRoot, items.getString( key ) );
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public static void mergeDocuments( Document destDoc, Document srcDoc )
-    {
-        mergeDocuments( destDoc, srcDoc, false );
-    }
-
-    public static void mergeDocuments( Document destDoc, String xmlDoc, boolean copyRoot )
-    {
-        Document srcDoc = XMLTool.domparse( xmlDoc );
-        mergeDocuments( destDoc, srcDoc, copyRoot );
-    }
-
     public static void mergeDocuments( Element destDocElem, Document srcDoc, boolean copyRoot )
     {
         if ( copyRoot )
@@ -1307,34 +1046,6 @@ public final class XMLTool
 
     }
 
-    public static void mergeDocuments( Document destDoc, Document srcDoc, boolean copyRoot )
-    {
-        Element destDocElem = destDoc.getDocumentElement();
-
-        if ( copyRoot )
-        {
-            Element element = srcDoc.getDocumentElement();
-            destDocElem.appendChild( destDoc.importNode( element, true ) );
-        }
-        else
-        {
-            NodeList nodes = srcDoc.getDocumentElement().getChildNodes();
-
-            for ( int i = 0; i < nodes.getLength(); i++ )
-            {
-                destDocElem.appendChild( destDoc.importNode( nodes.item( i ), true ) );
-            }
-        }
-
-    }
-
-    public static void replaceElement( Element oldElem, Element newElem )
-    {
-        Document doc = oldElem.getOwnerDocument();
-        Node importedNew = doc.importNode( newElem, true );
-        oldElem.getParentNode().replaceChild( importedNew, oldElem );
-    }
-
     public static int getElementIndex( Element elem )
     {
         Element[] elems = XMLTool.getElements( (Element) elem.getParentNode(), elem.getNodeName() );
@@ -1346,13 +1057,6 @@ public final class XMLTool
             }
         }
         return 0;
-    }
-
-    public static Document deflatedBytesToDocument( byte[] bytes )
-    {
-        ByteArrayInputStream in = new ByteArrayInputStream( bytes );
-        InflaterInputStream iis = new InflaterInputStream( in );
-        return domparse( iis );
     }
 
     public static void sortChildElements( Element elem, String orderByAttribute, boolean descending, boolean recursive )
@@ -1379,33 +1083,6 @@ public final class XMLTool
         Document doc = createDocument();
         doc.appendChild( doc.importNode( root, true ) );
         return doc;
-    }
-
-    public static Element renameElement( Element elem, String newName )
-    {
-        Document doc = elem.getOwnerDocument();
-
-        // Create an element with the new name
-        Element elem2 = doc.createElement( newName );
-
-        // Copy the attributes to the new element
-        NamedNodeMap attrs = elem.getAttributes();
-        for ( int i = 0; i < attrs.getLength(); i++ )
-        {
-            Attr attr2 = (Attr) doc.importNode( attrs.item( i ), true );
-            elem2.getAttributes().setNamedItem( attr2 );
-        }
-
-        // Move all the children
-        while ( elem.hasChildNodes() )
-        {
-            elem2.appendChild( elem.getFirstChild() );
-        }
-
-        // Replace the old node with the new node
-        elem.getParentNode().replaceChild( elem2, elem );
-
-        return elem2;
     }
 
     private static void loadTidyProperties()
