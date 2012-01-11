@@ -33,11 +33,11 @@ Ext.define( 'App.view.wizard.group.WizardStepMembersPanel', {
                         displayField: 'name',
                         itemClassResolver: function (values)
                         {
-                            if (values.type === 'user')
+                            if (values.type === 'user' && !values.builtIn)
                             {
                                 return 'cms-user-item';
                             }
-                            if (values.type === 'role')
+                            if (values.type === 'role' || values.builtIn)
                             {
                                 return 'cms-role-item';
                             }
