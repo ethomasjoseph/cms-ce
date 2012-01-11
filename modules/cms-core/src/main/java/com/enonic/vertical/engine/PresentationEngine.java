@@ -9,7 +9,6 @@ import org.w3c.dom.Document;
 import com.enonic.vertical.engine.handlers.CategoryHandler;
 import com.enonic.vertical.engine.handlers.CommonHandler;
 import com.enonic.vertical.engine.handlers.ContentHandler;
-import com.enonic.vertical.engine.handlers.ContentObjectHandler;
 import com.enonic.vertical.engine.handlers.GroupHandler;
 import com.enonic.vertical.engine.handlers.LanguageHandler;
 import com.enonic.vertical.engine.handlers.LogHandler;
@@ -32,8 +31,6 @@ public class PresentationEngine
     private CommonHandler commonHandler;
 
     private ContentHandler contentHandler;
-
-    private ContentObjectHandler contentObjectHandler;
 
     private GroupHandler groupHandler;
 
@@ -78,11 +75,6 @@ public class PresentationEngine
     public ContentHandler getContentHandler()
     {
         return contentHandler;
-    }
-
-    public ContentObjectHandler getContentObjectHandler()
-    {
-        return contentObjectHandler;
     }
 
     public GroupHandler getGroupHandler()
@@ -173,11 +165,6 @@ public class PresentationEngine
     public void setContentHandler( ContentHandler contentHandler )
     {
         this.contentHandler = contentHandler;
-    }
-
-    public void setContentObjectHandler( ContentObjectHandler contentObjectHandler )
-    {
-        this.contentObjectHandler = contentObjectHandler;
     }
 
     public void setGroupHandler( GroupHandler groupHandler )

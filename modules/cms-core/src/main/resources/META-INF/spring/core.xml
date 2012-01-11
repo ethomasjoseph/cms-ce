@@ -434,7 +434,6 @@
     <property name="commonHandler" ref="commonHandler"/>
     <property name="contentHandler" ref="contentHandler"/>
     <property name="categoryHandler" ref="categoryHandler"/>
-    <property name="contentObjectHandler" ref="contentObjectHandler"/>
     <property name="groupHandler" ref="groupHandler"/>
     <property name="languageHandler" ref="languageHandler"/>
     <property name="logHandler" ref="logHandler"/>
@@ -447,12 +446,9 @@
   </bean>
 
   <bean id="adminEngine" class="com.enonic.vertical.engine.AdminEngine" parent="abstractBaseEngine">
-    <property name="binaryDataHandler" ref="binaryDataHandler"/>
     <property name="commonHandler" ref="commonHandler"/>
     <property name="contentHandler" ref="contentHandler"/>
-    <property name="contentService" ref="contentService"/>
     <property name="categoryHandler" ref="categoryHandler"/>
-    <property name="contentObjectHandler" ref="contentObjectHandler"/>
     <property name="groupHandler" ref="groupHandler"/>
     <property name="languageHandler" ref="languageHandler"/>
     <property name="logHandler" ref="logHandler"/>
@@ -461,9 +457,7 @@
     <property name="pageTemplateHandler" ref="pageTemplateHandler"/>
     <property name="sectionHandler" ref="sectionHandler"/>
     <property name="securityHandler" ref="securityHandler"/>
-    <property name="securityService" ref="securityService"/>
     <property name="systemHandler" ref="systemHandler"/>
-    <property name="unitHandler" ref="unitHandler"/>
     <property name="userHandler" ref="userHandler"/>
   </bean>
 
@@ -483,10 +477,6 @@
   </bean>
 
   <bean id="categoryHandler" class="com.enonic.vertical.engine.handlers.CategoryHandler" parent="baseHandler">
-  </bean>
-
-  <bean id="contentObjectHandler" class="com.enonic.vertical.engine.handlers.ContentObjectHandler"
-        parent="baseHandler">
   </bean>
 
   <bean id="groupHandler" class="com.enonic.vertical.engine.handlers.GroupHandler" parent="baseHandler">
@@ -510,9 +500,6 @@
   </bean>
 
   <bean id="securityHandler" class="com.enonic.vertical.engine.handlers.SecurityHandler" parent="baseHandler">
-  </bean>
-
-  <bean id="unitHandler" class="com.enonic.vertical.engine.handlers.UnitHandler" parent="baseHandler">
   </bean>
 
   <bean id="userHandler" class="com.enonic.vertical.engine.handlers.UserHandler" parent="baseHandler">

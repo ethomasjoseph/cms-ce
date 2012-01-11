@@ -14,7 +14,6 @@ import org.springframework.jdbc.support.JdbcUtils;
 import com.enonic.vertical.engine.handlers.CategoryHandler;
 import com.enonic.vertical.engine.handlers.CommonHandler;
 import com.enonic.vertical.engine.handlers.ContentHandler;
-import com.enonic.vertical.engine.handlers.ContentObjectHandler;
 import com.enonic.vertical.engine.handlers.GroupHandler;
 import com.enonic.vertical.engine.handlers.LanguageHandler;
 import com.enonic.vertical.engine.handlers.LogHandler;
@@ -47,11 +46,6 @@ public abstract class BaseEngine
     }
 
     public ContentHandler getContentHandler()
-    {
-        throw new RuntimeException();
-    }
-
-    public ContentObjectHandler getContentObjectHandler()
     {
         throw new RuntimeException();
     }

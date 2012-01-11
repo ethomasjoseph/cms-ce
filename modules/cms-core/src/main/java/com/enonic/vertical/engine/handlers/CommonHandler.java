@@ -561,43 +561,6 @@ public class CommonHandler
         return getTimestamp(sql, paramValue);
     }
 
-    public String[] getStringArray( String sql, int[] paramValues )
-    {
-        Connection con = null;
-        PreparedStatement preparedStmt = null;
-        ResultSet resultSet = null;
-        ArrayList<String> strings = new ArrayList<String>();
-        try
-        {
-            con = getConnection();
-            preparedStmt = con.prepareStatement( sql );
-            if ( paramValues != null )
-            {
-                for ( int i = 0; i < paramValues.length; i++ )
-                {
-                    preparedStmt.setInt( i + 1, paramValues[i] );
-                }
-            }
-            resultSet = preparedStmt.executeQuery();
-            while ( resultSet.next() )
-            {
-                strings.add( resultSet.getString( 1 ) );
-            }
-        }
-        catch ( SQLException sqle )
-        {
-            String message = "Failed to get string: %t";
-            VerticalEngineLogger.error(message, sqle );
-        }
-        finally
-        {
-            close( resultSet );
-            close( preparedStmt );
-        }
-
-        return strings.toArray(new String[strings.size()]);
-    }
-
     public String getString( String sql, int paramValue )
     {
         return getString(sql, new Object[]{paramValue});
@@ -618,54 +581,6 @@ public class CommonHandler
         {
             return getObjects( sql, new Object[]{paramValue} );
         }
-    }
-
-    public String[] getStrings( String sql, Object[] paramValues )
-    {
-        Connection con;
-        PreparedStatement preparedStmt = null;
-        ResultSet resultSet = null;
-        String[] strings;
-
-        try
-        {
-            con = getConnection();
-            preparedStmt = con.prepareStatement( sql );
-            if ( paramValues != null )
-            {
-                for ( int i = 0; i < paramValues.length; i++ )
-                {
-                    preparedStmt.setObject( i + 1, paramValues[i] );
-                }
-            }
-            resultSet = preparedStmt.executeQuery();
-            if ( resultSet.next() )
-            {
-                int columnCount = resultSet.getMetaData().getColumnCount();
-                strings = new String[columnCount];
-                for ( int i = 1; i <= columnCount; i++ )
-                {
-                    strings[i - 1] = resultSet.getString(i);
-                }
-            }
-            else
-            {
-                strings = new String[0];
-            }
-        }
-        catch ( SQLException sqle )
-        {
-            String message = "Failed to get string: %t";
-            VerticalEngineLogger.error(message, sqle );
-            strings = new String[0];
-        }
-        finally
-        {
-            close( resultSet );
-            close( preparedStmt );
-        }
-
-        return strings;
     }
 
     private Object[] getObjects( String sql, Object[] paramValues )
@@ -754,39 +669,6 @@ public class CommonHandler
             close( preparedStmt );
         }
         return hasRows;
-    }
-
-    public Document getSingleData( int type, int key )
-    {
-        Connection con;
-        PreparedStatement preparedStmt = null;
-        ResultSet resultSet = null;
-        Document doc = null;
-        Table table = Types.getTable( type );
-
-        try
-        {
-            con = getConnection();
-
-            StringBuffer sql = XDG.generateSelectWherePrimaryKeySQL( table );
-            preparedStmt = con.prepareStatement( sql.toString() );
-            preparedStmt.setInt( 1, key );
-            resultSet = preparedStmt.executeQuery();
-
-            doc = XDG.resultSetToXML( table, resultSet, null, null, null, -1 );
-        }
-        catch ( SQLException sqle )
-        {
-            String message = "SQL error: %t";
-            VerticalEngineLogger.error(message, sqle );
-        }
-        finally
-        {
-            close( resultSet );
-            close( preparedStmt );
-        }
-
-        return doc;
     }
 
     public Document getData( int type, int[] keys )

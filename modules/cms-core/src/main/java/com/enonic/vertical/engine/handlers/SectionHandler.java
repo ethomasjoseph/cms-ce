@@ -14,9 +14,7 @@ import org.w3c.dom.Element;
 
 import com.enonic.esl.sql.model.Column;
 import com.enonic.esl.xml.XMLTool;
-import com.enonic.vertical.engine.VerticalCreateException;
 import com.enonic.vertical.engine.VerticalEngineLogger;
-import com.enonic.vertical.engine.VerticalRemoveException;
 import com.enonic.vertical.engine.XDG;
 import com.enonic.cms.core.structure.menuitem.MenuItemEntity;
 import com.enonic.cms.core.structure.menuitem.MenuItemKey;
@@ -30,85 +28,11 @@ public class SectionHandler
         return getContentHandler().getContentTypesDocument( contentTypeKeys );
     }
 
-    public void createSection( int menuItemKey, boolean ordered, int[] contentTypes )
-        throws VerticalCreateException
-    {
-        StringBuffer sql = XDG.generateUpdateSQL( db.tMenuItem, new Column[]{db.tMenuItem.mei_bSection, db.tMenuItem.mei_bOrderedSection},
-                                                  new Column[]{db.tMenuItem.mei_lKey} );
-        getCommonHandler().executeSQL( sql.toString(), new int[]{1, ordered ? 1 : 0, menuItemKey} );
-        setContentTypesForSection( menuItemKey, contentTypes );
-    }
-
     private int[] getContentTypesForSection( int menuItemSectionKey )
     {
         StringBuffer sql =
             XDG.generateSelectSQL( db.tSecConTypeFilter2, db.tSecConTypeFilter2.sctf_cty_lKey, false, db.tSecConTypeFilter2.sctf_mei_lKey );
         return getCommonHandler().getIntArray( sql.toString(), new Object[]{menuItemSectionKey} );
-    }
-
-    public void setContentTypesForSection( int sectionKey, int[] contentTypeKeys )
-        throws VerticalCreateException
-    {
-
-        Connection con = null;
-        PreparedStatement preparedStmt = null;
-
-        try
-        {
-            removeContentTypesForSection( sectionKey );
-            con = getConnection();
-            StringBuffer sql = XDG.generateInsertSQL( db.tSecConTypeFilter2 );
-            preparedStmt = con.prepareStatement( sql.toString() );
-            preparedStmt.setInt( 3, sectionKey );
-
-            for ( int contentTypeKey : contentTypeKeys )
-            {
-                int sectionFilterKey = getCommonHandler().getNextKey( db.tSecConTypeFilter2.getName() );
-                preparedStmt.setInt( 1, sectionFilterKey );
-                preparedStmt.setInt( 2, contentTypeKey );
-                int result = preparedStmt.executeUpdate();
-                if ( result == 0 )
-                {
-                    String message = "Failed to create section contenttype filter.";
-                    VerticalEngineLogger.errorCreate(message, null );
-                }
-            }
-        }
-        catch ( SQLException sqle )
-        {
-            String message = "Failed to create section contenttype filter: %t";
-            VerticalEngineLogger.errorCreate(message, sqle );
-        }
-        finally
-        {
-            close( preparedStmt );
-        }
-    }
-
-    private void removeContentTypesForSection( int sectionKey )
-        throws VerticalRemoveException
-    {
-
-        Connection con = null;
-        PreparedStatement preparedStmt = null;
-
-        try
-        {
-            con = getConnection();
-            StringBuffer sql = XDG.generateRemoveSQL( db.tSecConTypeFilter2, db.tSecConTypeFilter2.sctf_mei_lKey );
-            preparedStmt = con.prepareStatement( sql.toString() );
-            preparedStmt.setInt( 1, sectionKey );
-            preparedStmt.executeUpdate();
-        }
-        catch ( SQLException sqle )
-        {
-            String message = "Failed to remove section contenttype filter: %t";
-            VerticalEngineLogger.errorRemove(message, sqle );
-        }
-        finally
-        {
-            close( preparedStmt );
-        }
     }
 
     public MenuItemKey getMenuItemKeyBySection( int sectionKey )

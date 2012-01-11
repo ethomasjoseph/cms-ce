@@ -145,11 +145,6 @@ public abstract class BaseHandler
         return baseEngine.getCommonHandler();
     }
 
-    protected final ContentObjectHandler getContentObjectHandler()
-    {
-        return baseEngine.getContentObjectHandler();
-    }
-
     protected final GroupHandler getGroupHandler()
     {
         return baseEngine.getGroupHandler();

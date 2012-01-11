@@ -18,11 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.enonic.esl.sql.model.Column;
-import com.enonic.esl.util.ArrayUtil;
 import com.enonic.esl.xml.XMLTool;
 import com.enonic.vertical.engine.VerticalEngineLogger;
-import com.enonic.vertical.engine.XDG;
 import com.enonic.vertical.event.VerticalEventListener;
 import com.enonic.cms.core.security.group.GroupEntity;
 import com.enonic.cms.core.security.group.GroupKey;
@@ -292,29 +289,6 @@ public final class GroupHandler
         }
 
         return groups;
-    }
-
-
-    public String[] getGroupMembers( String[] groups, String[] excludeGroups )
-    {
-        if ( groups == null || groups.length == 0 )
-        {
-            return new String[0];
-        }
-
-        StringBuffer sql = XDG.generateSelectSQL( db.tGrpGrpMembership, db.tGroup.grp_hKey, true, (Column) null );
-        XDG.appendJoinSQL( sql, db.tGrpGrpMembership.ggm_mbr_grp_hKey );
-        XDG.appendWhereInSQL( sql, db.tGrpGrpMembership.ggm_grp_hKey, groups );
-        String[] groupMembers = getCommonHandler().getStringArray( sql.toString(), null );
-        String[] filteredGroups = ArrayUtil.filter( groupMembers, excludeGroups );
-
-        if ( excludeGroups == null )
-        {
-            excludeGroups = new String[0];
-        }
-
-        String[] recursiveGroups = getGroupMembers( filteredGroups, ArrayUtil.concat( filteredGroups, excludeGroups, false ) );
-        return ArrayUtil.concat( filteredGroups, recursiveGroups, false );
     }
 
     private String[] getGroupMemberships( Connection _con, String[] groups, Set<String> excludeGroups )
