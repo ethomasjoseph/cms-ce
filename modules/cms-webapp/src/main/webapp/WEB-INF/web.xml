@@ -42,16 +42,6 @@
     </servlet>
 
     <servlet>
-        <servlet-name>admin</servlet-name>
-        <servlet-class>com.enonic.cms.server.service.servlet.CmsDispatcherServlet</servlet-class>
-        <init-param>
-            <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/servlet/adminServlet.xml</param-value>
-        </init-param>
-        <load-on-startup>2</load-on-startup>
-    </servlet>
-
-    <servlet>
         <servlet-name>site</servlet-name>
         <servlet-class>com.enonic.cms.server.service.servlet.CmsDispatcherServlet</servlet-class>
         <init-param>
@@ -67,25 +57,9 @@
         <load-on-startup>2</load-on-startup>
     </servlet>
 
-    <servlet>
-        <servlet-name>dwr</servlet-name>
-        <servlet-class>com.enonic.cms.server.service.dwr.DwrServletWrapper</servlet-class>
-        <load-on-startup>2</load-on-startup>
-    </servlet>
-
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>admin</servlet-name>
-        <url-pattern>/admin/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>dwr</servlet-name>
-        <url-pattern>/admin/dwr/*</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
