@@ -30,7 +30,7 @@ import org.w3c.dom.Text;
 import com.enonic.esl.sql.model.Column;
 import com.enonic.esl.util.StringUtil;
 import com.enonic.esl.xml.XMLTool;
-import com.enonic.vertical.adminweb.VerticalAdminLogger;
+import com.enonic.vertical.VerticalLogger;
 import com.enonic.vertical.engine.AccessRight;
 import com.enonic.vertical.engine.MenuAccessRight;
 import com.enonic.vertical.engine.MenuItemAccessRight;
@@ -238,9 +238,8 @@ public final class MenuHandler
                     documentElem.removeChild( n );
                     XMLTool.createXHTMLNodes( doc, documentElem, docString, true );
                     String menuKey = menuitemElem.getAttribute( "menukey" );
-                    VerticalAdminLogger.error(
-                            "Received invalid XML from database, menukey=" + menuKey + ", menuitem key=" + menuItemKey +
-                                                   ", name=" + menuItemName + ". Running Tidy.." );
+                    VerticalLogger.error( "Received invalid XML from database, menukey=" + menuKey + ", menuitem key=" + menuItemKey +
+                                              ", name=" + menuItemName + ". Running Tidy.." );
                 }
                 documentElem.setAttribute( "mode", "xhtml" );
             }

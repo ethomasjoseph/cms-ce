@@ -31,8 +31,8 @@ import org.springframework.web.servlet.mvc.Controller;
 
 import com.enonic.esl.containers.ExtendedMap;
 import com.enonic.esl.containers.MultiValueMap;
+import com.enonic.vertical.VerticalLogger;
 import com.enonic.vertical.VerticalProperties;
-import com.enonic.vertical.adminweb.VerticalAdminLogger;
 import com.enonic.vertical.engine.VerticalCreateException;
 import com.enonic.vertical.engine.VerticalEngineException;
 import com.enonic.vertical.engine.VerticalRemoveException;
@@ -375,12 +375,12 @@ public abstract class AbstractUserServicesHandlerController
         catch ( FileUploadException fue )
         {
             String message = "Error occured with file upload: %t";
-            VerticalAdminLogger.error( message, fue );
+            VerticalLogger.error( message, fue );
         }
         catch ( UnsupportedEncodingException uee )
         {
             String message = "Character encoding not supported: %t";
-            VerticalAdminLogger.error( message, uee );
+            VerticalLogger.error( message, uee );
         }
 
         // Add parameters from url
