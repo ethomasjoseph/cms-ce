@@ -8,6 +8,8 @@ Ext.define( 'App.view.EditUserFormPanel', {
         'App.view.UserFormField'
     ],
 
+    cls: 'cms-form-panel',
+
     statics: {
             fieldLabels: {
                 'username': 'User Name',
@@ -368,8 +370,14 @@ Ext.define( 'App.view.EditUserFormPanel', {
 
     createTextField: function( field )
     {
+        var validationResultType = 'none';
+        if (field.type == 'username')
+        {
+            validationResultType = 'short';
+        }
         return {
             xtype: 'userFormField',
+            validationResultType: validationResultType,
             type: 'text'
         };
     },
@@ -394,6 +402,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
     {
         return {
             xtype: 'userFormField',
+            validationResultType: field.type == 'repeat-password' ? 'detail' : 'none',
             type: 'password'
         };
     },

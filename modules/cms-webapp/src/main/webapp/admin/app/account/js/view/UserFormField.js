@@ -8,7 +8,9 @@ Ext.define( 'App.view.UserFormField', {
         type: 'hbox'
     },
 
-    width: 600,
+    validationResultType: 'none',
+
+    width: 1000,
 
     actionName: undefined,
 
@@ -40,7 +42,6 @@ Ext.define( 'App.view.UserFormField', {
         }
         this.items = [];
         var fieldConfig = {
-            flex: 1,
             enableKeyEvents: true,
             disabled: this.readonly,
             allowBlank: !this.required,
@@ -49,13 +50,14 @@ Ext.define( 'App.view.UserFormField', {
             itemId: this.fieldname,
             action: this.actionName,
             value: this.fieldValue,
+            width: 600,
             listeners: {
                 'validitychange': me.validityChanged
             }
         };
         if ( this.fieldWidth[this.fieldname] )
         {
-            this.width = this.fieldWidth[this.fieldname];
+            fieldConfig.width = this.fieldWidth[this.fieldname];
         }
         var builderFunction;
         if ( this.type )
@@ -94,29 +96,50 @@ Ext.define( 'App.view.UserFormField', {
         {
             this.fieldLabel += "<span style=\"color:red;\" ext:qtip=\"This field is required\">*</span>";
         }
-        var greenLabel = {
-            xtype: 'image',
-            itemId: 'greenMark',
-            src: 'resources/icons/16x16/check.png',
-            height: 16,
-            width: 16,
-            style: {
-                visibility:'hidden',
-                margin: '2px 0 0 5px'
-            },
-            setVisibility: function( isVisible )
-            {
-                if ( isVisible )
+        var validationLabel;
+        if (this.validationResultType == 'short')
+        {
+            validationLabel = {
+                itemId: 'validationLabel',
+                height: 16,
+                width: 16,
+                tpl: Templates.account.shortValidationResult,
+                setVisibility: function( isVisible )
                 {
-                    this.el.setStyle( {visibility: 'visible'} );
+                    if ( isVisible )
+                    {
+                        this.el.setStyle( {visibility: 'visible'} );
+                    }
+                    else
+                    {
+                        this.el.setStyle( {visibility: 'hidden'} );
+                    }
                 }
-                else
-                {
-                    this.el.setStyle( {visibility: 'hidden'} );
-                }
-            }
+            };
+            Ext.Array.include( this.items, validationLabel );
         }
-        Ext.Array.include( this.items, greenLabel );
+        if (this.validationResultType == 'detail')
+        {
+            validationLabel = {
+                itemId: 'validationLabel',
+                tpl: '<div class="validationStatus">{text}</div> ',
+                data: {text: ''},
+                width: 200,
+                setVisibility: function( isVisible )
+                {
+                    if ( isVisible )
+                    {
+                        this.el.setStyle( {visibility: 'visible'} );
+                    }
+                    else
+                    {
+                        this.el.setStyle( {visibility: 'hidden'} );
+                    }
+                }
+            };
+            Ext.Array.include( this.items, validationLabel );
+        }
+
         this.callParent( arguments );
         this.addEvents( 'validitychange' );
     },
@@ -188,6 +211,7 @@ Ext.define( 'App.view.UserFormField', {
 
         if ( me.fieldname == 'password' )
         {
+            me.cls = 'cms-glowing-item';
             passwordConfig = {
                 xtype: 'passwordMeter'
             }
@@ -220,6 +244,11 @@ Ext.define( 'App.view.UserFormField', {
         {
             textConfig.validator = me.validateUserName;
             textConfig.validValue = true;
+        } else if ( me.fieldname === 'email' )
+        {
+            textConfig.validator = me.validateUniqueEmail;
+            textConfig.validValue = true;
+            textConfig.listeners = {change: me.emailChanged, scope:me};
         }
         return Ext.apply( fieldConfig, textConfig );
     },
@@ -272,16 +301,78 @@ Ext.define( 'App.view.UserFormField', {
 
     },
 
+    emailChanged: function ( field )
+    {
+        field.pendingServerValidation = true;
+    },
+
+    validateUniqueEmail: function( value )
+    {
+        var me = this;
+        if ( (me.prevValue !== value) && (me.pendingServerValidation === true) )
+        {
+            me.prevValue = value;
+            if ( !Ext.data.validations.email( {}, value ) )
+            {
+                // skip server unique-email validation, invalid email format will be triggered
+                return true;
+            }
+
+            var userForm = me.up( 'editUserFormPanel' );
+            var userWizard = userForm.up('userWizardPanel');
+            var currentUserKey = (!userWizard.isNewUser()) ? userWizard.userFields['key'] : null;
+
+            var userStoreName = userForm.currentUser ? userForm.currentUser.userStore : userForm.defaultUserStoreName;
+            Ext.Ajax.request( {
+                                  url: 'data/account/verifyUniqueEmail',
+                                  method: 'GET',
+                                  params: {
+                                      'userstore': userStoreName,
+                                      'email': value
+                                  },
+                                  success: function( response )
+                                  {
+                                      var respObj = Ext.decode( response.responseText, true );
+                                      console.info(respObj);
+                                      if ( respObj.emailInUse )
+                                      {
+                                          me.validValue = (respObj.userkey === currentUserKey);
+                                      }
+                                      else
+                                      {
+                                          me.validValue = true;
+                                      }
+                                      me.pendingServerValidation = false;
+                                      me.validate();
+                                  }
+                              } );
+        }
+        return me.validValue || "A user with this email already exists in the userstore";
+    },
+
     validityChanged: function( field, isValid, opts )
     {
         var parentField = field.up( 'userFormField' );
-        parentField.fireEvent( 'validitychange', parentField, isValid, opts );
-    },
+        var validationLabel = parentField.down('#validationLabel');
+        if (parentField.validationResultType == 'detail')
+        {
 
-    showGreenMark: function( visible )
-    {
-        var greenMark = this.down( '#greenMark' );
-        greenMark.setVisibility( visible );
+            var errors = field.getErrors();
+            console.log(validationLabel);
+            if (errors.length > 0)
+            {
+                validationLabel.update({text: errors[0]});
+            }
+            else
+            {
+                validationLabel.update({text: ''});
+            }
+        }
+        if (parentField.validationResultType == 'short')
+        {
+            validationLabel.update({valid: isValid});
+        }
+        parentField.fireEvent( 'validitychange', parentField, isValid, opts );
     }
 
 
