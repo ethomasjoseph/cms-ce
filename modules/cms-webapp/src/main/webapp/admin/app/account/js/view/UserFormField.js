@@ -97,11 +97,12 @@ Ext.define( 'App.view.UserFormField', {
         var greenLabel = {
             xtype: 'image',
             itemId: 'greenMark',
-            src: 'resources/icons/16x16/finish.png',
+            src: 'resources/icons/16x16/check.png',
             height: 16,
             width: 16,
             style: {
-                visibility:'hidden'
+                visibility:'hidden',
+                margin: '2px 0 0 5px'
             },
             setVisibility: function( isVisible )
             {
