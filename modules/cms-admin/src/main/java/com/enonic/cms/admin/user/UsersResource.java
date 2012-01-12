@@ -294,7 +294,7 @@ public final class UsersResource
         }
 
         final UserEntity entity = this.userDao.findByKey( key );
-        if ( entity == null )
+        if ( ( entity == null ) || entity.isDeleted() )
         {
             throw new NotFoundException();
         }
