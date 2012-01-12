@@ -338,7 +338,7 @@ public final class GroupResource
         }
 
         final GroupEntity entity = this.groupDao.find( key );
-        if ( entity == null )
+        if ( ( entity == null ) || entity.isDeleted() )
         {
             throw new NotFoundException();
         }

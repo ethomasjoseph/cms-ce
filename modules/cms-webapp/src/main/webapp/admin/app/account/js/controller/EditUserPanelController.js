@@ -90,7 +90,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
 
         Ext.Ajax.request(
             {
-                url: 'data/user/delete',
+                url: 'data/account/delete',
                 method: 'POST',
                 params: { key: key },
                 success: onSuccessCallback,

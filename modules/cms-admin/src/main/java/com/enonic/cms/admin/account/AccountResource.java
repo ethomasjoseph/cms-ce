@@ -37,8 +37,11 @@ import com.enonic.cms.core.search.account.AccountSearchQuery;
 import com.enonic.cms.core.search.account.AccountSearchResults;
 import com.enonic.cms.core.search.account.AccountSearchService;
 import com.enonic.cms.core.search.account.AccountType;
+import com.enonic.cms.core.security.group.DeleteGroupCommand;
 import com.enonic.cms.core.security.group.GroupEntity;
 import com.enonic.cms.core.security.group.GroupKey;
+import com.enonic.cms.core.security.group.GroupSpecification;
+import com.enonic.cms.core.security.user.DeleteUserCommand;
 import com.enonic.cms.core.security.user.UserEntity;
 import com.enonic.cms.core.security.user.UserKey;
 import com.enonic.cms.core.security.user.UserSpecification;
@@ -217,7 +220,7 @@ public final class AccountResource
         final AccountSearchResults accounts = new AccountSearchResults( 0, keys.length );
         for ( final String key : keys )
         {
-            final AccountType type = userDao.findByKey( key ) == null ? AccountType.GROUP : AccountType.USER;
+            final AccountType type = findAccountType( key );
             final AccountSearchHit account = new AccountSearchHit( new AccountKey( key ), type, 0 );
             accounts.add( account );
         }
@@ -332,6 +335,64 @@ public final class AccountResource
         sendMailService.sendNotificationMail( to, cc, messageSetting );
         response.put( "status", "ok" );
         return Response.ok( response ).build();
+    }
+
+    @POST
+    @Path("delete")
+    public Map<String, Object> deleteAccount( @FormParam("key") final List<String> keys )
+    {
+        final Map<String, Object> res = new HashMap<String, Object>();
+
+        boolean success = true;
+
+        final UserEntity deleter = getCurrentUser();
+        for ( String accountKey : keys )
+        {
+            try
+            {
+                final AccountType type = findAccountType( accountKey );
+                switch ( type )
+                {
+                    case USER:
+                        final UserSpecification userSpec = new UserSpecification();
+                        userSpec.setKey( new UserKey( accountKey ) );
+                        final DeleteUserCommand deleteUserCommand = new DeleteUserCommand( deleter.getKey(), userSpec );
+                        userStoreService.deleteUser( deleteUserCommand );
+                        LOG.info( "User deleted: " + accountKey );
+                        break;
+
+                    case GROUP:
+                        final GroupSpecification groupSpec = new GroupSpecification();
+                        groupSpec.setKey( new GroupKey( accountKey ) );
+                        final DeleteGroupCommand deleteGroupCommand = new DeleteGroupCommand( deleter, groupSpec );
+                        userStoreService.deleteGroup( deleteGroupCommand );
+
+                        LOG.info( "Group deleted: " + accountKey );
+                        break;
+                }
+                removeAccountIndex( accountKey );
+            }
+            catch ( Exception e )
+            {
+                LOG.error( "Unable to delete account: " + accountKey, e );
+                success = false;
+                res.put( "error", "Unable to delete account with key '" + accountKey + "'" );
+                break;
+            }
+        }
+
+        res.put( "success", success );
+        return res;
+    }
+
+    private void removeAccountIndex( final String accountKey )
+    {
+        searchService.deleteIndex( accountKey );
+    }
+
+    private AccountType findAccountType( final String accountKey )
+    {
+        return userDao.findByKey( accountKey ) == null ? AccountType.GROUP : AccountType.USER;
     }
 
     private UserEntity getCurrentUser()
