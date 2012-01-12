@@ -120,6 +120,13 @@
                 "text": "System",
                 "menu": {
                     "items": [{
+                        "text": "Userstores",
+                        "id": "app-855",
+                        "cms": {
+                            "appUrl": "app-userstore.html"
+                        },
+                        "iconCls": "icon-userstore-24"
+                    },{
                         "text": "Cache",
                         "id": "app-860",
                         "cms": {

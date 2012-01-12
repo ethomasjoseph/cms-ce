@@ -53,6 +53,9 @@
 .icon-application-24 {
     background: transparent url("../icons/24x24/application.png") 0 0 no-repeat;
 }
+.icon-userstore-24 {
+    background: transparent url("../icons/24x24/address_book3.png") 0 0 no-repeat;
+}
 
 .icon-export-24 {
     background: transparent url("../icons/24x24/export.png") 0 0 no-repeat;
