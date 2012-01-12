@@ -8,7 +8,9 @@ Ext.define( 'App.view.UserFormField', {
         type: 'hbox'
     },
 
-    width: 600,
+    validationResultType: 'none',
+
+    width: 1000,
 
     actionName: undefined,
 
@@ -40,7 +42,6 @@ Ext.define( 'App.view.UserFormField', {
         }
         this.items = [];
         var fieldConfig = {
-            flex: 1,
             enableKeyEvents: true,
             disabled: this.readonly,
             allowBlank: !this.required,
@@ -49,13 +50,14 @@ Ext.define( 'App.view.UserFormField', {
             itemId: this.fieldname,
             action: this.actionName,
             value: this.fieldValue,
+            width: 600,
             listeners: {
                 'validitychange': me.validityChanged
             }
         };
         if ( this.fieldWidth[this.fieldname] )
         {
-            this.width = this.fieldWidth[this.fieldname];
+            fieldConfig.width = this.fieldWidth[this.fieldname];
         }
         var builderFunction;
         if ( this.type )
@@ -94,28 +96,50 @@ Ext.define( 'App.view.UserFormField', {
         {
             this.fieldLabel += "<span style=\"color:red;\" ext:qtip=\"This field is required\">*</span>";
         }
-        var greenLabel = {
-            xtype: 'image',
-            itemId: 'greenMark',
-            src: 'resources/icons/16x16/finish.png',
-            height: 16,
-            width: 16,
-            style: {
-                visibility:'hidden'
-            },
-            setVisibility: function( isVisible )
-            {
-                if ( isVisible )
+        var validationLabel;
+        if (this.validationResultType == 'short')
+        {
+            validationLabel = {
+                itemId: 'validationLabel',
+                height: 16,
+                width: 16,
+                tpl: Templates.account.shortValidationResult,
+                setVisibility: function( isVisible )
                 {
-                    this.el.setStyle( {visibility: 'visible'} );
+                    if ( isVisible )
+                    {
+                        this.el.setStyle( {visibility: 'visible'} );
+                    }
+                    else
+                    {
+                        this.el.setStyle( {visibility: 'hidden'} );
+                    }
                 }
-                else
-                {
-                    this.el.setStyle( {visibility: 'hidden'} );
-                }
-            }
+            };
+            Ext.Array.include( this.items, validationLabel );
         }
-        Ext.Array.include( this.items, greenLabel );
+        if (this.validationResultType == 'detail')
+        {
+            validationLabel = {
+                itemId: 'validationLabel',
+                tpl: '<div class="validationStatus">{text}</div> ',
+                data: {text: ''},
+                width: 200,
+                setVisibility: function( isVisible )
+                {
+                    if ( isVisible )
+                    {
+                        this.el.setStyle( {visibility: 'visible'} );
+                    }
+                    else
+                    {
+                        this.el.setStyle( {visibility: 'hidden'} );
+                    }
+                }
+            };
+            Ext.Array.include( this.items, validationLabel );
+        }
+
         this.callParent( arguments );
         this.addEvents( 'validitychange' );
     },
@@ -187,6 +211,7 @@ Ext.define( 'App.view.UserFormField', {
 
         if ( me.fieldname == 'password' )
         {
+            me.cls = 'cms-glowing-item';
             passwordConfig = {
                 xtype: 'passwordMeter'
             }
@@ -274,13 +299,26 @@ Ext.define( 'App.view.UserFormField', {
     validityChanged: function( field, isValid, opts )
     {
         var parentField = field.up( 'userFormField' );
-        parentField.fireEvent( 'validitychange', parentField, isValid, opts );
-    },
+        var validationLabel = parentField.down('#validationLabel');
+        if (parentField.validationResultType == 'detail')
+        {
 
-    showGreenMark: function( visible )
-    {
-        var greenMark = this.down( '#greenMark' );
-        greenMark.setVisibility( visible );
+            var errors = field.getErrors();
+            console.log(validationLabel);
+            if (errors.length > 0)
+            {
+                validationLabel.update({text: errors[0]});
+            }
+            else
+            {
+                validationLabel.update({text: ''});
+            }
+        }
+        if (parentField.validationResultType == 'short')
+        {
+            validationLabel.update({valid: isValid});
+        }
+        parentField.fireEvent( 'validitychange', parentField, isValid, opts );
     }
 
 

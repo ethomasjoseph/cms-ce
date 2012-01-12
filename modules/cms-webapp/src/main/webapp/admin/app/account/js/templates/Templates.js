@@ -150,6 +150,12 @@ Templates.account = {
                     '<div class="cms-left" style="margin-top:5px">' +
                     'Are you sure you want to delete the selected {selectionLength} items?' + '</div>' + '</div>'
 
+    ,shortValidationResult:
+            '<tpl if="(valid)"><img src="resources/icons/16x16/finish.png"/></tpl>'
+
+    ,passwordStatus:
+            '<div class="passwordStatus" style="color: {color};">{text}</div>'
+
 
 
 };

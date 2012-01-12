@@ -456,7 +456,7 @@ Ext.define( 'App.controller.UserWizardController', {
 
     userFieldValidityChange: function( field, isValid )
     {
-        if ( field.fieldname === 'repeat-password' || field.fieldname === 'password' || field.fieldname === 'username' )
+        if ( field.fieldname === 'repeat-password' || field.fieldname === 'password' )
         {
             var repeatPassword = field.up( 'fieldset' ).down( '#repeat-password' );
             var passwordMeter = field.up( 'fieldset' ).down( '#password' );
@@ -468,9 +468,8 @@ Ext.define( 'App.controller.UserWizardController', {
             {
                 passwordMeter.validate();
             }
-            field.showGreenMark( isValid );
-        }
 
+        }
     },
 
     updateWizardHeader: function ( wizard, data )
