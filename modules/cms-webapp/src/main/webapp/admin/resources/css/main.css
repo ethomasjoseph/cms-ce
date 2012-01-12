@@ -37,36 +37,6 @@ body,
     padding: 0 15px;
 }
 
-.x-mask {
-    height: 100%;
-    left: 0;
-    opacity: 0.5;
-    position: absolute;
-    top: 0;
-    width: 100%;
-    z-index: 100;
-}
-
-.x-mask-msg {
-    background-color: #fff;
-    border: none;
-    border-radius: 3px;
-    left: 0;
-    padding: 2px;
-    position: absolute;
-    top: 0;
-    z-index: 20001;
-}
-
-.x-mask-msg div {
-    background: url("../../resources/images/cms-waitsplash.gif") no-repeat 1px 2px;
-    border: none !important;
-    color: #222222;
-    font: 11px tahoma,arial,verdana,sans-serif;
-    height: 70px;
-    padding: 25px 10px 5px 75px;
-}
-
 /*----- Generic -----*/
 
 .cms-no-border {
@@ -970,4 +940,29 @@ li.cms-user-item:hover{
 .cms-mega-menu-item.medium .x-menu-item-icon {
     width: 24px;
     height: 24px;
+}
+
+.passwordStatus {
+    padding-left: 5px;
+    padding-top: 5px;
+    font-weight: bold;
+}
+
+.validationStatus {
+    padding-left: 5px;
+    padding-top: 5px;
+    color: #8b0000;
+}
+
+.cms-form-panel .cms-glowing-item div {
+    overflow: visible !important;
+}
+
+.cms-form-panel .x-fieldset-body {
+    padding: 5px;
+}
+
+.cms-password-extra-strong {
+    box-shadow: 0 0 5px #3B8150;
+    z-index: 1000;
 }
