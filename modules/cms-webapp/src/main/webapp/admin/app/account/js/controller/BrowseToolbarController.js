@@ -101,42 +101,51 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         var selected = me.getAccountDetailPanel().getCurrentAccount();
         if ( selected.type === 'user' )
         {
-            Ext.Ajax.request( {
-                                  url: 'data/user/userinfo',
-                                  method: 'GET',
-                                  params: {key: selected.key },
-                                  success: function( response )
-                                  {
-                                      var jsonObj = Ext.JSON.decode( response.responseText );
-                                      me.getCmsTabPanel().addTab( {
-                                                                      title: jsonObj.displayName + ' (' +
-                                                                              jsonObj.qualifiedName + ')',
-                                                                      xtype: 'userPreviewPanel',
-                                                                      data: jsonObj,
-                                                                      user: selected
-                                                                  } );
-
-                                  }
-                              } );
+            Ext.Ajax.request(
+                {
+                    url: 'data/user/userinfo',
+                    method: 'GET',
+                    params: {key: selected.key },
+                    success: function( response )
+                    {
+                        var jsonObj = Ext.JSON.decode( response.responseText );
+                        me.getCmsTabPanel().addTab(
+                            {
+                                title: jsonObj.displayName + ' (' +
+                                  jsonObj.qualifiedName + ')',
+                                id: 'preview-user-' + jsonObj.userStore + '-' + jsonObj.name,
+                                xtype: 'userPreviewPanel',
+                                data: jsonObj,
+                                user: selected
+                          }
+                      );
+                    }
+                }
+            );
         }
         else
         {
-            Ext.Ajax.request( {
-                                  url: 'data/account/groupinfo',
-                                  method: 'GET',
-                                  params: {key: selected.key },
-                                  success: function( response )
-                                  {
-                                      var jsonObj = Ext.JSON.decode( response.responseText );
+            Ext.Ajax.request(
+                {
+                    url: 'data/account/groupinfo',
+                    method: 'GET',
+                    params: {key: selected.key },
+                    success: function( response )
+                    {
+                        var jsonObj = Ext.JSON.decode( response.responseText );
 
-                                      me.getCmsTabPanel().addTab( {
-                                                                      title: jsonObj.group.displayName,
-                                                                      xtype: 'groupPreviewPanel',
-                                                                      data: jsonObj.group,
-                                                                      group: selected
-                                                                  } );
-                                  }
-                              } );
+                        me.getCmsTabPanel().addTab(
+                            {
+                                title: jsonObj.group.displayName,
+                                id: 'preview-group-' + selected.key,
+                                xtype: 'groupPreviewPanel',
+                                data: jsonObj.group,
+                                group: selected
+                            }
+                        );
+                    }
+                }
+            );
         }
     },
 
