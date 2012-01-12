@@ -219,6 +219,11 @@ Ext.define( 'App.view.UserFormField', {
         {
             textConfig.validator = me.validateUserName;
             textConfig.validValue = true;
+        } else if ( me.fieldname === 'email' )
+        {
+            textConfig.validator = me.validateUniqueEmail;
+            textConfig.validValue = true;
+            textConfig.listeners = {change: me.emailChanged, scope:me};
         }
         return Ext.apply( fieldConfig, textConfig );
     },
@@ -269,6 +274,55 @@ Ext.define( 'App.view.UserFormField', {
         }
         return me.validValue == true ? me.validValue : "User with this user name already exists";
 
+    },
+
+    emailChanged: function ( field )
+    {
+        field.pendingServerValidation = true;
+    },
+
+    validateUniqueEmail: function( value )
+    {
+        var me = this;
+        if ( (me.prevValue !== value) && (me.pendingServerValidation === true) )
+        {
+            me.prevValue = value;
+            if ( !Ext.data.validations.email( {}, value ) )
+            {
+                // skip server unique-email validation, invalid email format will be triggered
+                return true;
+            }
+
+            var userForm = me.up( 'editUserFormPanel' );
+            var userWizard = userForm.up('userWizardPanel');
+            var currentUserKey = (!userWizard.isNewUser()) ? userWizard.userFields['key'] : null;
+
+            var userStoreName = userForm.currentUser ? userForm.currentUser.userStore : userForm.defaultUserStoreName;
+            Ext.Ajax.request( {
+                                  url: 'data/account/verifyUniqueEmail',
+                                  method: 'GET',
+                                  params: {
+                                      'userstore': userStoreName,
+                                      'email': value
+                                  },
+                                  success: function( response )
+                                  {
+                                      var respObj = Ext.decode( response.responseText, true );
+                                      console.info(respObj);
+                                      if ( respObj.emailInUse )
+                                      {
+                                          me.validValue = (respObj.userkey === currentUserKey);
+                                      }
+                                      else
+                                      {
+                                          me.validValue = true;
+                                      }
+                                      me.pendingServerValidation = false;
+                                      me.validate();
+                                  }
+                              } );
+        }
+        return me.validValue || "A user with this email already exists in the userstore";
     },
 
     validityChanged: function( field, isValid, opts )

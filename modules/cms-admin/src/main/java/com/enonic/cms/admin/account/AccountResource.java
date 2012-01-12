@@ -40,7 +40,10 @@ import com.enonic.cms.core.search.account.AccountType;
 import com.enonic.cms.core.security.group.GroupEntity;
 import com.enonic.cms.core.security.group.GroupKey;
 import com.enonic.cms.core.security.user.UserEntity;
+import com.enonic.cms.core.security.user.UserKey;
+import com.enonic.cms.core.security.user.UserSpecification;
 import com.enonic.cms.core.security.userstore.UserStoreEntity;
+import com.enonic.cms.core.security.userstore.UserStoreKey;
 import com.enonic.cms.core.security.userstore.UserStoreService;
 import com.enonic.cms.store.dao.GroupDao;
 import com.enonic.cms.store.dao.UserDao;
@@ -87,9 +90,9 @@ public final class AccountResource
     public Map<String, Object> list( @InjectParam final AccountLoadRequest req )
     {
         LOG.info( "Search accounts: query='" + req.getQuery() + "' , index=" + req.getStart() + ", count=" +
-                          req.getLimit() + ", selectUsers=" + req.isSelectUsers() + ", selectGroups=" +
-                          req.isSelectGroups() + ", userstores=" + req.getUserstores() + ", orgs=" +
-                          req.getOrganizations() );
+                      req.getLimit() + ", selectUsers=" + req.isSelectUsers() + ", selectGroups=" +
+                      req.isSelectGroups() + ", userstores=" + req.getUserstores() + ", orgs=" +
+                      req.getOrganizations() );
 
         final AccountSearchResults searchResults = search( req );
 
@@ -111,8 +114,7 @@ public final class AccountResource
             }
         }
 
-        final EntityPageList accountList =
-                new EntityPageList( searchResults.getCount(), searchResults.getTotal(), list );
+        final EntityPageList accountList = new EntityPageList( searchResults.getCount(), searchResults.getTotal(), list );
         AccountsModel accountsModel = modelTranslator.toModel( accountList );
 
         setFacets( accountsModel, searchResults );
@@ -131,11 +133,10 @@ public final class AccountResource
         final String[] organizationList = ( organizations == null ) ? new String[0] : organizations.split( "," );
 
         final AccountSearchQuery searchQueryCountFacets =
-                new AccountSearchQuery().setIncludeResults( true ).setCount( req.getLimit() ).setFrom(
-                        req.getStart() ).setQuery( req.getQuery() ).setGroups( req.isSelectGroups() ).setUsers(
-                        req.isSelectUsers() ).setUserStores( userstoreList ).setOrganizations(
-                        organizationList ).setSortField( AccountIndexField.parse( req.getSort() ) ).setSortOrder(
-                        SearchSortOrder.valueOf( req.getSortDir() ) );
+            new AccountSearchQuery().setIncludeResults( true ).setCount( req.getLimit() ).setFrom( req.getStart() ).setQuery(
+                req.getQuery() ).setGroups( req.isSelectGroups() ).setUsers( req.isSelectUsers() ).setUserStores(
+                userstoreList ).setOrganizations( organizationList ).setSortField( AccountIndexField.parse( req.getSort() ) ).setSortOrder(
+                SearchSortOrder.valueOf( req.getSortDir() ) );
 
         final AccountSearchResults searchResults = searchService.search( searchQueryCountFacets );
         return searchResults;
@@ -162,7 +163,7 @@ public final class AccountResource
     public Response exportAsCsv( @InjectParam final AccountExportRequest req,
                                  @DefaultValue("ISO-8859-1") @FormParam("encoding") String characterEncoding,
                                  @DefaultValue(SEPARATOR_PARAM_TAB) @FormParam("separator") String separator )
-            throws UnsupportedEncodingException
+        throws UnsupportedEncodingException
     {
         final int accountsExportLimit = 5000;
 
@@ -198,7 +199,7 @@ public final class AccountResource
         {
             separatorChar = "\t";
         }
-        
+
         csvExport.setSeparator( separatorChar );
         final String content = csvExport.generateCsv( searchResults );
         final String filename = csvExport.getExportFileName( new Date() );
@@ -206,9 +207,8 @@ public final class AccountResource
 
         final byte[] data = content.getBytes( characterEncoding );
 
-        return Response.ok( data ).type( "text/csv; charset=" + characterEncoding ).header( "Content-Encoding",
-                                                                                            characterEncoding ).header(
-                "Content-Disposition", attachmentHeader ).build();
+        return Response.ok( data ).type( "text/csv; charset=" + characterEncoding ).header( "Content-Encoding", characterEncoding ).header(
+            "Content-Disposition", attachmentHeader ).build();
     }
 
     private AccountSearchResults getAccountListForKeys( final String[] keys )
@@ -239,8 +239,7 @@ public final class AccountResource
             return Response.status( Response.Status.NOT_FOUND ).build();
         }
 
-        final String suggestedUserName =
-                userIdGenerator.generateUserId( firstName.trim(), lastName.trim(), store.getKey() );
+        final String suggestedUserName = userIdGenerator.generateUserId( firstName.trim(), lastName.trim(), store.getKey() );
         final Map<String, String> response = new HashMap<String, String>();
         response.put( "username", suggestedUserName );
         return Response.ok( response ).build();
@@ -258,6 +257,34 @@ public final class AccountResource
         AccountModel groupModel = modelTranslator.toGroupInfo( group );
         final Map<String, Object> response = new HashMap<String, Object>();
         response.put( "group", groupModel );
+        return Response.ok( response ).build();
+    }
+
+    @GET
+    @Path("verifyUniqueEmail")
+    public Response verifyUniqueEmail( @QueryParam("userstore") @DefaultValue("") final String userStoreName,
+                                       @QueryParam("email") @DefaultValue("") final String email)
+    {
+        final Map<String, Object> response = new HashMap<String, Object>();
+        final UserStoreEntity userStore = userStoreService.findByName( userStoreName );
+        if ( userStore == null )
+        {
+            return Response.status( Response.Status.NOT_FOUND ).build();
+        }
+        else
+        {
+            final UserKey existingUserWithEmail = findUserByEmail( userStore.getKey(), email );
+
+            if ( existingUserWithEmail == null )
+            {
+                response.put( "emailInUse", false );
+            }
+            else
+            {
+                response.put( "emailInUse", true );
+                response.put( "userkey", existingUserWithEmail.toString() );
+            }
+        }
         return Response.ok( response ).build();
     }
 
@@ -293,7 +320,7 @@ public final class AccountResource
     public Response sendNotificationEmail( @FormParam("to") @DefaultValue("") final String to,
                                            @FormParam("cc") @DefaultValue("") final String cc,
                                            @FormParam("subject") @DefaultValue("") final String subject,
-                                           @FormParam("message") @DefaultValue("") final String message)
+                                           @FormParam("message") @DefaultValue("") final String message )
     {
         final Map<String, Object> response = new HashMap<String, Object>();
         UserEntity currentUser = getCurrentUser();
@@ -312,4 +339,22 @@ public final class AccountResource
         return userDao.findBuiltInEnterpriseAdminUser();
     }
 
+    private UserKey findUserByEmail( final UserStoreKey userStoreKey, final String email )
+    {
+        final UserSpecification userByEmailSpec = new UserSpecification();
+        userByEmailSpec.setEmail( email );
+        userByEmailSpec.setUserStoreKey( userStoreKey );
+        userByEmailSpec.setDeletedStateNotDeleted();
+
+        final List<UserEntity> usersWithThisEmail = userDao.findBySpecification( userByEmailSpec );
+
+        if ( usersWithThisEmail.size() == 0 )
+        {
+            return null;
+        }
+        else
+        {
+            return usersWithThisEmail.get( 0 ).getKey();
+        }
+    }
 }
