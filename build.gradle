@@ -12,8 +12,13 @@ allprojects {
 
 versions = [
 	servlet: '2.5',
-	junit: '4.10',
-	spring: '3.1.0.RELEASE'
+	junit: '4.8.2',
+	spring: '3.1.0.RELEASE',
+    spring_osgi: '1.2.1',
+    hibernate: '3.5.6-Final',
+    slf4j: '1.6.1',
+    saxon: '9.1.0.8',
+    jackrabbit: '2.3.0'
 ]
 
 apply from: "$scriptDir/wrapper.gradle"
