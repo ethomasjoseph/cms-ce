@@ -1,0 +1,32 @@
+apply plugin: 'idea'
+
+idea {
+	// pathVariables GRADLE_HOME: gradle.gradleUserHomeDir
+
+	module {
+		downloadJavadoc = false
+		downloadSources = true
+
+		iml {
+			beforeMerged { module ->
+				module.dependencies.clear()
+			}
+		}
+	}
+
+	if (rootProject == project) {
+    	project {
+        	javaVersion = '1.6'
+
+			ipr {
+				beforeMerged { project ->
+					project.modulePaths.clear()
+				}
+
+				withXml { provider ->
+					provider.node.component.find { it.@name == 'VcsDirectoryMappings' }.mapping.@vcs = 'Git'
+				}
+			}
+		}
+	}
+}

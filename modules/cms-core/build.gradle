@@ -1,0 +1,10 @@
+
+configurations {
+	all*.exclude group: 'xml-apis'
+	all*.exclude group: 'commons-logging'
+	all*.exclude group: 'xerces'
+}
+
+dependencies {
+	compile project(':cms-api')
+}

@@ -1,0 +1,37 @@
+
+allprojects {
+	group = 'com.enonic.cms'
+	buildNumber = new Date().format("yyyyMMdd.HHmmss")
+	scriptDir = "$rootDir/gradle"
+
+	repositories {
+		mavenCentral()
+		mavenRepo url: 'http://repo.enonic.com/maven'
+	}
+}
+
+versions = [
+	servlet: '2.5',
+	junit: '4.10',
+	spring: '3.1.0.RELEASE'
+]
+
+apply from: "$scriptDir/wrapper.gradle"
+apply from: "$scriptDir/idea.gradle"
+
+javaProjects = subprojects.findAll { project ->
+	!project.path.startsWith(':cms-distro')
+}
+
+warProjects = subprojects.findAll { project ->
+	project.path.equals(':cms-webapp')
+}
+
+configure(javaProjects) {
+	apply from: "$scriptDir/java.gradle"
+    apply from: "$scriptDir/idea.gradle"
+}
+
+configure(warProjects) {
+	apply from: "$scriptDir/war.gradle"
+}

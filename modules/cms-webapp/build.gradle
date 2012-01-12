@@ -1,0 +1,5 @@
+
+dependencies {
+	compile project(':cms-web')
+	providedCompile "javax.servlet:servlet-api:${versions.servlet}"
+}
