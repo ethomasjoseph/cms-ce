@@ -15,7 +15,6 @@
     <!-- Third party plugins -->
     <script type="text/javascript" src="common/js/fileupload/plupload/js/plupload.full.js"></script>
 
-
     <script type="text/javascript">
 
         Ext.Loader.setConfig({
@@ -46,11 +45,8 @@
             ],
 
             requires: [
-                'Common.TabPanel'//,
-//                'App.view.ShowPanel',
-//                'App.view.FilterPanel'
+                'Common.TabPanel'
             ],
-
 
             launch: function() {
                 Ext.create('Ext.container.Viewport', {
@@ -84,7 +80,6 @@
                     ]
                 });
             }
-
 
         });
 

@@ -50,6 +50,7 @@ body,
 .x-mask-msg {
     background-color: #fff;
     border: none;
+    border-radius: 3px;
     left: 0;
     padding: 2px;
     position: absolute;

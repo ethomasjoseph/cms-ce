@@ -1,22 +1,20 @@
 Ext.define( 'App.view.preview.user.UserPreviewPanel', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.userPreviewPanel',
-
-
-    requires: ['App.view.preview.user.UserPreviewToolbar', 'Common.WizardPanel'],
+    requires: [
+        'App.view.preview.user.UserPreviewToolbar',
+        'Common.WizardPanel'
+    ],
 
     dialogTitle: 'User Preview',
 
     autoWidth: true,
     autoScroll: true,
 
-    tbar: {
-        xtype: 'userPreviewToolbar'
-    },
-
     cls: 'cms-user-preview-panel',
     width: undefined,
 
+    showToolbar: true,
 
     initComponent: function()
     {
@@ -41,6 +39,13 @@ Ext.define( 'App.view.preview.user.UserPreviewPanel', {
             }
         ];
         var profileData = this.generateProfileData( this.data );
+
+        if ( this.showToolbar )
+        {
+            this.tbar = {
+                xtype:'userPreviewToolbar'
+            };
+        }
 
         this.items = [
             {

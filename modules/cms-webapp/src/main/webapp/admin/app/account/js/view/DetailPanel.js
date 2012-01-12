@@ -65,14 +65,16 @@ Ext.define('App.view.DetailPanel', {
     createUserPreviewPanel: function()
     {
         return {
-            xtype: 'userPreviewPanel'
+            xtype: 'userPreviewPanel',
+            showToolbar: false
         };
     },
 
     createGroupPreviewPanel: function()
     {
         return {
-            xtype: 'groupPreviewPanel'
+            xtype: 'groupPreviewPanel',
+            showToolbar: false
         };
     },
 

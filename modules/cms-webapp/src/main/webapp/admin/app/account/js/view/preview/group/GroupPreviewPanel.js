@@ -2,19 +2,18 @@ Ext.define( 'App.view.preview.group.GroupPreviewPanel', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.groupPreviewPanel',
 
-
-    requires: ['App.view.preview.group.GroupPreviewToolbar', 'Common.WizardPanel'],
+    requires: [
+        'App.view.preview.group.GroupPreviewToolbar',
+        'Common.WizardPanel'
+    ],
 
     autoWidth: true,
     autoScroll: true,
 
-    tbar: {
-        xtype: 'groupPreviewToolbar'
-    },
-
     cls: 'cms-user-preview-panel',
     width: undefined,
 
+    showToolbar: true,
 
     initComponent: function()
     {
@@ -70,6 +69,14 @@ Ext.define( 'App.view.preview.group.GroupPreviewPanel', {
                 ]
             }
         ];
+
+        if ( this.showToolbar )
+        {
+            this.tbar = {
+                xtype:'groupPreviewToolbar'
+            };
+        }
+
         this.callParent( arguments );
     },
 
