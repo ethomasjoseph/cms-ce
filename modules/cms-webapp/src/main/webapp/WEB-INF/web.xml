@@ -13,13 +13,47 @@
   <servlet>
     <servlet-name>main</servlet-name>
     <servlet-class>com.enonic.cms.web.main.MainServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
   </servlet>
-  
+
+  <servlet>
+    <servlet-name>portal</servlet-name>
+    <servlet-class>com.enonic.cms.web.portal.PortalServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet>
+    <servlet-name>admin</servlet-name>
+    <servlet-class>com.enonic.cms.web.admin.AdminServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet>
+    <servlet-name>rest</servlet-name>
+    <servlet-class>com.enonic.cms.web.rest.RestServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>main</servlet-name>
     <url-pattern>/*</url-pattern>
   </servlet-mapping>
-  
+
+  <servlet-mapping>
+    <servlet-name>portal</servlet-name>
+    <url-pattern>/site/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>admin</servlet-name>
+    <url-pattern>/admin/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>rest</servlet-name>
+    <url-pattern>/admin/rest/*</url-pattern>
+  </servlet-mapping>
+
   <session-config>
     <session-timeout>120</session-timeout>
   </session-config>
