@@ -1,6 +1,8 @@
 
 include ':cms-api'
 include ':cms-core'
+include ':cms-web'
+include ':cms-webapp'
 
 rootProject.name = 'cms'
 

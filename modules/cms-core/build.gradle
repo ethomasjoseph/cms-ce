@@ -45,6 +45,6 @@ dependencies {
     testCompile "org.springframework:spring-test:${versions.spring}"
     testCompile 'org.easymock:easymock:2.2'
     testCompile 'org.easymock:easymockclassextension:2.2.1'
-    testCompile 'org.mockito:mockito-all:1.8.5'
+    testCompile "org.mockito:mockito-all:${versions.mockito}"
     testCompile 'xmlunit:xmlunit:1.2'
 }
