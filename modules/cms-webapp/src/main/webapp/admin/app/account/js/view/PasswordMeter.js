@@ -58,8 +58,6 @@ Ext.define( 'App.view.PasswordMeter', {
     calculatePasswordStrength: function ( pwd )
     {
         var featuresNumber = 0;
-        var hasOnlyNumbers = pwd.match(/^\d+$/g) != null;
-        var hasOnlyAlphas = pwd.match(/^[A-Za-z]+$/g) != null;
 
         // Calculating feature count
         // Has text and numbers
@@ -99,7 +97,7 @@ Ext.define( 'App.view.PasswordMeter', {
         {
             return 2;
         }
-        if ((pwd.length >= 6) && (hasOnlyNumbers ^ hasOnlyAlphas))
+        if ((pwd.length >= 6) && (pwd.match(/\d+/g) || pwd.match(/[A-Za-z]+/g)))
         {
             return 1;
         }
