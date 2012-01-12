@@ -151,7 +151,7 @@ Templates.account = {
                     'Are you sure you want to delete the selected {selectionLength} items?' + '</div>' + '</div>'
 
     ,shortValidationResult:
-            '<tpl if="(valid)"><img src="resources/icons/16x16/finish.png"/></tpl>'
+            '<tpl if="(valid)"><img src="resources/icons/16x16/check.png"/></tpl>'
 
     ,passwordStatus:
             '<div class="passwordStatus" style="color: {color};">{text}</div>'

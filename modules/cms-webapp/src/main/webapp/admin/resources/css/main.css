@@ -94,6 +94,11 @@ body,
     font-style: italic;
 }
 
+.cms-validation-label,
+.cms-password-meter-status {
+    margin: 2px 0 0 5px;
+}
+
 /*----- Accounts -----*/
 
 img.cms-grid-thumbnail {
@@ -934,11 +939,6 @@ li.cms-user-item:hover{
     color: #555;
     border: 1px solid #B5B8C8;
     padding: 10px;
-}
-
-.cms-password-meter > .x-progress-bar {
-    background: url("../images/meter.gif") repeat;
-    background-size: 250px;
 }
 
 /*****  Mega Menu   *****/

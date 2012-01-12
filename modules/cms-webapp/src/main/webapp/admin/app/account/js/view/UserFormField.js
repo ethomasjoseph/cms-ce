@@ -103,6 +103,7 @@ Ext.define( 'App.view.UserFormField', {
                 itemId: 'validationLabel',
                 height: 16,
                 width: 16,
+                cls: 'cms-validation-label',
                 tpl: Templates.account.shortValidationResult,
                 setVisibility: function( isVisible )
                 {
@@ -125,6 +126,7 @@ Ext.define( 'App.view.UserFormField', {
                 tpl: '<div class="validationStatus">{text}</div> ',
                 data: {text: ''},
                 width: 200,
+                cls: 'cms-validation-label',
                 setVisibility: function( isVisible )
                 {
                     if ( isVisible )

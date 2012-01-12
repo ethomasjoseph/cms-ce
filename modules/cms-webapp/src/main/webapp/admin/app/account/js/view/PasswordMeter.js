@@ -128,6 +128,7 @@ Ext.define( 'App.view.PasswordMeter', {
             },
             {
                 itemId: 'passwordStatus',
+                cls: 'cms-password-meter-status',
                 width: 100,
                 tpl: Templates.account.passwordStatus,
                 data: me.passwordStatuses[0]
