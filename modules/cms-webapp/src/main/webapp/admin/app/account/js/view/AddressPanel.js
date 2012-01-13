@@ -2,7 +2,6 @@ Ext.define( 'App.view.AddressPanel', {
     extend: 'Ext.form.Panel',
     alias: 'widget.addressPanel',
 
-//    xtype: 'form',
     draggable: true,
     frame: true,
     layout: {
@@ -29,6 +28,11 @@ Ext.define( 'App.view.AddressPanel', {
             this.values = [];
         }
         this.title = this.values['label'] == null ? '[no title]' : this.values['label'];
+
+        if( this.remote ) {
+            this.cls += ' remote'
+        }
+
         var countryField, regionField;
         if ( this.iso )
         {

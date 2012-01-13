@@ -215,6 +215,11 @@ img.photo {
     background: #fff;
 }
 
+.address.remote .x-panel-header-text-container {
+    padding-left: 16px;
+    background: url("../images/icon_remote_10px.gif") 0 3px no-repeat;
+}
+
 .cms-form-label>span {
     color: red;
 }

@@ -71,7 +71,13 @@ Ext.define( 'App.view.UserFormField', {
         fieldConfig = builderFunction( fieldConfig, this );
         if ( this.remote )
         {
-            var remoteIcon = {xtype: 'image', src: 'resources/images/icon_remote_10px.gif'};
+            var remoteIcon = {
+                xtype: 'image',
+                width: 10,
+                height: 10,
+                margin: '3 3 3 3',
+                src: 'resources/images/icon_remote_10px.gif'
+            };
             Ext.Array.include( this.items, remoteIcon );
         }
         if ( this.fieldname == 'display-name' )

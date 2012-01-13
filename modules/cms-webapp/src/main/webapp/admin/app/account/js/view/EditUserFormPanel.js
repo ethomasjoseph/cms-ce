@@ -221,11 +221,11 @@ Ext.define( 'App.view.EditUserFormPanel', {
                     var tabs = [];
                     for ( var index in addresses )
                     {
-                        Ext.Array.include( tabs, me.generateAddressPanel( field, index != 0, addresses[index] ) );
+                        Ext.Array.include( tabs, me.generateAddressPanel( field, index != 0, addresses[index], index == 0 ) );
                     }
                     if (tabs.length == 0)
                     {
-                        Ext.Array.include(tabs, me.generateAddressPanel( field ));
+                        Ext.Array.include(tabs, me.generateAddressPanel( field, false, null, true ));
                     }
                     return {
                         sourceField: field,
@@ -235,7 +235,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
                 }
                 else
                 {
-                    var tabItem = me.generateAddressPanel( field );
+                    var tabItem = me.generateAddressPanel( field, false, null, true );
                     return {
                         sourceField: field,
                         xtype: 'addressContainer',
@@ -527,15 +527,15 @@ Ext.define( 'App.view.EditUserFormPanel', {
         }
     },
 
-    generateAddressPanel: function ( field, closable, values )
+    generateAddressPanel: function ( field, closable, values, remote )
     {
         var addressPanel = {
             xtype: 'addressPanel',
             values: values,
             closable: closable || false,
             readonly: field.readonly,
-            iso: field.iso
-
+            iso: field.iso,
+            remote: remote
         };
         return addressPanel;
     },

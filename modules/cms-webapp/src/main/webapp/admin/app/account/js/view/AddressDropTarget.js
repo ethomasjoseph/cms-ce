@@ -150,10 +150,12 @@ Ext.define( 'App.view.AddressDropTarget', {
                            if (index == 0)
                            {
                                item.setClosable( false );
+                               item.addCls( 'remote' );
                            }
                            else
                            {
                                item.setClosable( true );
+                               item.removeCls( 'remote' );
                            }
                        });
         return true
