@@ -47,49 +47,53 @@ Ext.define( 'Common.WizardPanel', {
         
         if ( this.showControls )
         {
-            Ext.each( this.items, function( item, index, all ) {
-                var isFirst = index == 0,
-                    isLast = ( index == ( all.length - 1 ) );
-                item.bbar = {
-                    xtype: 'container',
-                    margin: '10 20',
-                    height: 40,
-                    itemId: 'controls',
-                    defaults: {
-                        xtype: 'button',
-                        scale: 'medium'
-                    },
-                    items: [
+            wizard.bbar = {
+                xtype: 'container',
+                margin: '10 20',
+                height: 40,
+                itemId: 'controls',
+                defaults: {
+                    xtype: 'button',
+                    scale: 'medium'
+                },
+                items: [
+                    {
+                        itemId: 'prev',
+                        iconCls: 'icon-left-24',
+                        width: 40,
+                        margin: '0 0 0 50',
+                        hideMode: 'display',
+                        handler: function( btn, evt )
                         {
-                            itemId: 'prev',
-                            iconCls: 'icon-left-24',
-                            width: 40,
-                            margin: '0 0 0 50',
-                            hideMode: 'display',
-                            hidden: isFirst,
-                            handler: function( btn, evt )
-                            {
-                                wizard.prev();
-                            }
-                        },
-                        {
-                            text: isLast ? 'Finish' : 'Next',
-                            itemId: isLast ? 'finish' : 'next',
-                            iconAlign: 'right',
-                            margin: isFirst ? '0 0 0 100' : '0 0 0 10',
-                            formBind: true,
-                            iconCls: isLast ? 'icon-ok-24' : 'icon-right-24',
-                            handler: function( btn, evt )
-                            {
-                                wizard.next();
-                            }
+                            wizard.prev();
                         }
-                    ]
-                };
+                    },
+                    {
+                        text: 'Next',
+                        itemId: 'next',
+                        iconAlign: 'right',
+                        margin: '0 0 0 10',
+                        formBind: true,
+                        iconCls: 'icon-right-24',
+                        handler: function( btn, evt )
+                        {
+                            wizard.next();
+                        }
+                    },
+                    {
+                        text: 'Finish',
+                        itemId: 'finish',
+                        margin: '0 0 0 10',
+                        iconCls: 'icon-ok-24',
+                        hidden: true,
+                        handler: function( btn, evt )
+                        {
+                            wizard.finish();
+                        }
+                    }
+                ]
+            };
 
-                item.getBoundItems = wizard.getWizardBoundItems;
-
-            });
         }
 
         this.dockedItems = [{
@@ -165,13 +169,16 @@ Ext.define( 'Common.WizardPanel', {
         if( !wizard.boundItems ) {
             wizard.boundItems = [];
         }
+        if ( this.showControls ) {
+            var controls = this.getDockedComponent('controls');
+            this.boundItems.push( controls.down( '#finish' ) );
+        }
 
         if( !wizard.validateItems ) {
             wizard.validateItems = [];
         }
 
         // bind afterrender events
-
         this.on( 'afterrender', this.bindItemListeners );
         this.on( 'render', function(cmp)
         {
@@ -186,7 +193,7 @@ Ext.define( 'Common.WizardPanel', {
         var firstStep = this.items.getCount() > 0 ? this.items.first() : undefined;
         if( firstStep ) {
             firstStep.on('afterrender', function (item) {
-                wizard.fireEvent('stepchanged', wizard, null, item);
+                wizard.onAnimationFinished( item, null )
             })
         }
 
@@ -215,6 +222,9 @@ Ext.define( 'Common.WizardPanel', {
 
         for ( i = 0; i < cmp.items.items.length; i++ ) {
             var item = cmp.items.items[i];
+
+            this.getBoundItems = this.getWizardBoundItems;
+
             var itemForm = Ext.isFunction( item.getForm ) ? item.getForm() : undefined;
             if ( itemForm ) {
                 itemForm.on( {
@@ -313,6 +323,10 @@ Ext.define( 'Common.WizardPanel', {
         return this.navigate( "prev", btn );
     },
 
+    finish: function() {
+        this.fireEvent( "finished", this, this.getData()  );
+    },
+
     getNext: function()
     {
         return this.getLayout().getNext();
@@ -344,7 +358,7 @@ Ext.define( 'Common.WizardPanel', {
                     if ( this.getNext() ) {
                         newStep = this.getLayout().next();
                     } else {
-                        this.fireEvent( "finished", this, this.getData()  );
+                        this.finish();
                     }
                     break;
                 default:
@@ -404,25 +418,15 @@ Ext.define( 'Common.WizardPanel', {
     {
         if( toolbar ) {
             var prev = toolbar.down( '#prev' ),
-                next = toolbar.down( '#next' ),
-                finish = toolbar.down( '#finish' ),
-                save = toolbar.down( '#save' );
+                next = toolbar.down( '#next' );
             var hasNext = this.getNext(),
                 hasPrev = this.getPrev();
             if( prev ) {
                 prev.setDisabled( disable || !hasPrev );
+                prev.setVisible( hasPrev );
             }
             if( next ) {
-                if ( finish ) {
-                    next.setDisabled( disable || !hasNext );
-                    finish.setDisabled( disable || hasNext )
-                } else {
-                    next.setText( hasNext ? 'Next' : 'Finish' );
-                    next.setDisabled( disable );
-                }
-            }
-            if ( save ) {
-                save.setDisabled( disable || !hasNext );
+                next.setDisabled( disable || !hasNext);
             }
         }
     },

@@ -199,7 +199,7 @@ Ext.define( 'App.controller.UserWizardController', {
         var tb = wizard.up('userWizardPanel').down('userWizardToolbar');
         var pb = wizard.getProgressBar();
         var save = tb.down( '#save' );
-        var finish = tb.down( '#finish' );
+        var finish = wizard.down( '#controls #finish' );
         var conditionsMet = valid && ( wizard.isWizardDirty || wizard.isNew );
         save.setDisabled( !conditionsMet );
         finish.setVisible( conditionsMet );
@@ -215,7 +215,7 @@ Ext.define( 'App.controller.UserWizardController', {
         var tb = wizard.up('userWizardPanel').down('userWizardToolbar');
         var pb = wizard.getProgressBar();
         var save = tb.down( '#save' );
-        var finish = tb.down( '#finish' );
+        var finish = wizard.down( '#controls #finish' );
         var conditionsMet = (dirty || wizard.isNew ) && wizard.isWizardValid;
         save.setDisabled( !conditionsMet );
         finish.setVisible( conditionsMet );
