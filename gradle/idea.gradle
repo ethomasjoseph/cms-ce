@@ -1,7 +1,6 @@
 apply plugin: 'idea'
 
 idea {
-	// pathVariables GRADLE_HOME: gradle.gradleUserHomeDir
 
 	module {
 		downloadJavadoc = false
@@ -11,7 +10,13 @@ idea {
 			beforeMerged { module ->
 				module.dependencies.clear()
 			}
-		}
+
+			withXml { provider ->
+				provider.node.depthFirst().root.each {
+					it.@url = it.@url.replace(gradle.gradleUserHomeDir.toString(), '$GRADLE_USER_HOME$')
+				}
+			}
+		}		
 	}
 
 	if (rootProject == project) {
