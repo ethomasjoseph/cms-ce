@@ -65,6 +65,7 @@ Ext.define( 'App.view.wizard.group.WizardStepMembersPanel', {
         ];
 
         this.callParent( arguments );
+        this.down( '#members' ).getStore().sort('type', 'ASC'); // show group accounts first
         
         if (this.modelData && this.modelData.members)
         {
