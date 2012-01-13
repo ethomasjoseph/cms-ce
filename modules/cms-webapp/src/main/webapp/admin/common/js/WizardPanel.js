@@ -61,7 +61,7 @@ Ext.define( 'Common.WizardPanel', {
                         itemId: 'prev',
                         iconCls: 'icon-left-24',
                         width: 40,
-                        margin: '0 0 0 50',
+                        margin: '0 0 0 60',
                         hideMode: 'display',
                         handler: function( btn, evt )
                         {
@@ -427,6 +427,9 @@ Ext.define( 'Common.WizardPanel', {
             }
             if( next ) {
                 next.setDisabled( disable || !hasNext);
+                next.el.setStyle( {
+                    margin: hasPrev ? '0 0 0 10': '0 0 0 110'
+                } )
             }
         }
     },
