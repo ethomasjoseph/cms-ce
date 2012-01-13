@@ -6,6 +6,7 @@ import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.admin.indices.exists.IndicesExistsRequest;
 import org.elasticsearch.action.admin.indices.exists.IndicesExistsResponse;
+import org.elasticsearch.action.admin.indices.flush.FlushRequest;
 import org.elasticsearch.action.admin.indices.mapping.delete.DeleteMappingRequest;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
@@ -301,12 +302,24 @@ public class AccountSearchService
     }
 
     public void deleteIndex(String id) {
-            final DeleteRequest deleteRequest = new DeleteRequest(  )
-                .index( CMS_INDEX )
-                .type( ACCOUNT_INDEX_TYPE )
-                .id( id );
-            this.client.delete( deleteRequest ).actionGet();
+        deleteIndex( id, false );
+    }
+
+    public void deleteIndex(String id, boolean flushDataAfterDelete) {
+        final DeleteRequest deleteRequest = new DeleteRequest(  )
+            .index( CMS_INDEX )
+            .type( ACCOUNT_INDEX_TYPE )
+            .id( id );
+        this.client.delete( deleteRequest ).actionGet();
+
+        if ( flushDataAfterDelete ) {
+            flush();
         }
+    }
+    
+    private void flush() {
+        this.client.admin().indices().flush( new FlushRequest( CMS_INDEX ).refresh( true ) ).actionGet();        
+    }
 
     @Autowired
     public void setClient( Client client )

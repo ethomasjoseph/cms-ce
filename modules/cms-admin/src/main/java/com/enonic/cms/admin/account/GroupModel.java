@@ -1,5 +1,6 @@
 package com.enonic.cms.admin.account;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class GroupModel
 
     public GroupModel()
     {
+        this.members = new ArrayList<AccountModel>();
     }
 
     @Override

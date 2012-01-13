@@ -72,9 +72,17 @@ Ext.define( 'App.controller.EditUserPanelController', {
             key = deleteAccountWindow.modelData.key;
         }
 
+        var me = this;
         var parentApp = parent.mainApp;
         function onSuccessCallback(response, opts)
         {
+            // clear account selection
+            var gridSelectionPlugin = me.getPersistentGridSelectionPlugin();
+            gridSelectionPlugin.clearSelection();
+            // refresh account grid panel
+            var accountGrid = me.getUserGrid();
+            accountGrid.getStore().load();
+
             deleteAccountWindow.close();
             if ( parentApp )
             {
@@ -97,6 +105,16 @@ Ext.define( 'App.controller.EditUserPanelController', {
                 failure: onFailureCallback
             }
         );
+    },
+
+    getPersistentGridSelectionPlugin: function()
+    {
+        return this.getUserGrid().getPlugin( 'persistentGridSelection' );
+    },
+
+    getUserGrid: function()
+    {
+        return Ext.ComponentQuery.query( 'accountGrid' )[0];
     },
 
     countryChangeHandler: function( field, newValue, oldValue, options )

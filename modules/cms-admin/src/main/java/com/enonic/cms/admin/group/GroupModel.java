@@ -1,5 +1,6 @@
 package com.enonic.cms.admin.group;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,11 @@ public class GroupModel
     private List<Map<String, String>> members;
 
     private boolean builtIn;
+
+    public GroupModel()
+    {
+        this.members = new ArrayList<Map<String, String>>();
+    }
 
     public String getType()
     {

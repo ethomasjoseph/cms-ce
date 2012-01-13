@@ -387,7 +387,7 @@ public final class AccountResource
 
     private void removeAccountIndex( final String accountKey )
     {
-        searchService.deleteIndex( accountKey );
+        searchService.deleteIndex( accountKey, true );
     }
 
     private AccountType findAccountType( final String accountKey )
