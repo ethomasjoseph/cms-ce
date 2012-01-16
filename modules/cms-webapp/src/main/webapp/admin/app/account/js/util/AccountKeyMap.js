@@ -59,7 +59,6 @@ Ext.define( 'App.util.AccountKeyMap', {
                 ctrl: false,
                 shift: false,
                 alt: false,
-                defaultEventAction: 'stopEvent',
                 fn: actionHandlers.deleteItem
             }
         ]] );
