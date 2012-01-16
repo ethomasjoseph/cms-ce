@@ -174,8 +174,9 @@ Ext.define( 'App.controller.GroupWizardController', {
     {
         var groupWizard = this.getGroupWizardPanel();
         var generalStep = groupWizard.down('wizardStepGeneralPanel');
-        var displayNameField = generalStep.query('#displayName')[0];
-        return displayNameField.value;
+        var displayNameFieldValue = generalStep ? generalStep.query('#displayName')[0].value : groupWizard.getData().displayName;
+        console.log(displayNameFieldValue);
+        return displayNameFieldValue;
     },
 
     updateGroup:function ( groupData, onSuccess )

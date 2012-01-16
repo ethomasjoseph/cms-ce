@@ -36,6 +36,8 @@ public final class UserModel implements AccountModel
 
     private boolean builtIn;
 
+    private boolean editable;
+
     private UserInfoModel userInfo;
 
     private String lastLogged;
@@ -183,6 +185,17 @@ public final class UserModel implements AccountModel
     public boolean isBuiltIn()
     {
         return builtIn;
+    }
+
+    @Override
+    public boolean isEditable()
+    {
+        return editable;
+    }
+
+    public void setEditable(boolean editable)
+    {
+        this.editable = editable;
     }
 
     public void setHasPhoto( boolean hasPhoto )

@@ -51,4 +51,7 @@ interface AccountModel
     public void setBuiltIn( boolean builtIn );
 
     public boolean isBuiltIn();
+
+    @JsonProperty("isEditable")
+    public boolean isEditable();
 }

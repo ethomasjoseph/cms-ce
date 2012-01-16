@@ -34,6 +34,7 @@ public final class AccountModelTranslator
         model.setDisplayName( entity.getDisplayName() );
         model.setLastModified( entity.getLastModified() );
         model.setBuiltIn( entity.isBuiltIn() );
+        model.setEditable( !entity.isAnonymous() && !entity.isEnterpriseAdmin() );
         //TODO: not implemented
         model.setLastLogged( "2001-01-01" );
         //TODO: not implemented
@@ -138,6 +139,7 @@ public final class AccountModelTranslator
         model.setBuiltIn( entity.isBuiltIn() );
         model.setPublic( !entity.isRestricted() );
         model.setDescription( entity.getDescription() );
+        model.setEditable( !entity.isOfType( GroupType.AUTHENTICATED_USERS, true ) );
         if ( entity.getUserStore() != null )
         {
             model.setUserStore( entity.getUserStore().getName() );

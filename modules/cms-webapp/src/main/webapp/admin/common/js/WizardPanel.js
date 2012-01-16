@@ -190,13 +190,6 @@ Ext.define( 'Common.WizardPanel', {
             });
         });
 
-        var firstStep = this.items.getCount() > 0 ? this.items.first() : undefined;
-        if( firstStep ) {
-            firstStep.on('afterrender', function (item) {
-                wizard.onAnimationFinished( item, null )
-            })
-        }
-
     },
 
     bindItemListeners: function( cmp ) {
@@ -222,7 +215,10 @@ Ext.define( 'Common.WizardPanel', {
 
         for ( i = 0; i < cmp.items.items.length; i++ ) {
             var item = cmp.items.items[i];
-
+            if (i == 0)
+            {
+                cmp.onAnimationFinished( item, null );
+            }
             this.getBoundItems = this.getWizardBoundItems;
 
             var itemForm = Ext.isFunction( item.getForm ) ? item.getForm() : undefined;

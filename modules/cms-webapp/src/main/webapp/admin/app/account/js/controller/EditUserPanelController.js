@@ -266,6 +266,10 @@ Ext.define( 'App.controller.EditUserPanelController', {
         }
         else
         {
+            if (!account.isEditable)
+            {
+                return ;
+            }
             var tabPane = this.getCmsTabPanel();
             var me = this;
             if (account.type === 'user'){

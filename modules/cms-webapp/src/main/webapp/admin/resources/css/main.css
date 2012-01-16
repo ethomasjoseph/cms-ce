@@ -976,3 +976,26 @@ li.cms-user-item:hover{
     width: 24px;
     height: 24px;
 }
+
+.passwordStatus {
+    padding-left: 5px;
+    padding-top: 5px;
+    font-weight: bold;
+}
+
+.validationStatus {
+    padding-left: 5px;
+    padding-top: 5px;
+    color: #8b0000;
+}
+
+.cms-form-panel .cms-glowing-item div {
+    overflow: visible !important;
+}
+
+.cms-form-panel .x-fieldset-body {
+    padding: 5px;
+}.cms-password-extra-strong {
+    box-shadow: 0 0 5px #3B8150;
+    z-index: 1000;
+}
