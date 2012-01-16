@@ -282,7 +282,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
                           var jsonObj = Ext.JSON.decode( response.responseText );
                           var tab = {
                               xtype: 'userWizardPanel',
-                              id: 'edit-user-' + account.userStore + '-' + account.name,
+                              id: 'tab-edit-user-' + account.userStore + '-' + account.name,
                               title: account.displayName + ' (' + account.qualifiedName + ')',
                               iconCls: 'icon-edit-user',
                               closable: true,
@@ -317,7 +317,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
                           var jsonObj = Ext.JSON.decode( response.responseText );
                           var tab = {
                               title: jsonObj.group.displayName,
-                              id: 'edit-group-' + account.key,
+                              id: 'tab-edit-group-' + account.key,
                               iconCls: 'icon-new-group',
                               xtype: 'groupWizardPanel',
                               modelData: jsonObj.group

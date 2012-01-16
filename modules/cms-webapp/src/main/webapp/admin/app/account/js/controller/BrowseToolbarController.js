@@ -113,7 +113,7 @@ Ext.define( 'App.controller.BrowseToolbarController', {
                             {
                                 title: jsonObj.displayName + ' (' +
                                   jsonObj.qualifiedName + ')',
-                                id: 'preview-user-' + jsonObj.userStore + '-' + jsonObj.name,
+                                id: 'tab-preview-user-' + jsonObj.userStore + '-' + jsonObj.name,
                                 xtype: 'userPreviewPanel',
                                 data: jsonObj,
                                 user: selected
@@ -137,7 +137,7 @@ Ext.define( 'App.controller.BrowseToolbarController', {
                         me.getCmsTabPanel().addTab(
                             {
                                 title: jsonObj.group.displayName,
-                                id: 'preview-group-' + selected.key,
+                                id: 'tab-preview-group-' + selected.key,
                                 xtype: 'groupPreviewPanel',
                                 data: jsonObj.group,
                                 group: selected
