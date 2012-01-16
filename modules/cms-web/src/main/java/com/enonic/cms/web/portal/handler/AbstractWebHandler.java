@@ -1,6 +1,7 @@
 package com.enonic.cms.web.portal.handler;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Response;
 
@@ -57,6 +58,11 @@ abstract class AbstractWebHandler
     protected final SiteDao getSiteDao()
     {
         return this.siteDao;
+    }
+
+    protected final HttpServletRequest getRequest()
+    {
+        return request;
     }
 
     public final void setSitePath( final SitePath sitePath )
