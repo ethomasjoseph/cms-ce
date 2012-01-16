@@ -46,8 +46,8 @@ Ext.define( 'App.view.BrowseToolbar', {
                     {
                         text: 'Edit',
                         action: 'edit',
-                        iconCls: 'icon-edit-user-24',
-                        disableOnMultipleSelection: true
+                        iconCls: 'icon-edit-user-24'
+//                        disableOnMultipleSelection: true
                     },
                     {
                         text: 'Delete',
@@ -78,8 +78,8 @@ Ext.define( 'App.view.BrowseToolbar', {
                     {
                         text: 'View',
                         action: 'viewUser',
-                        iconCls: 'icon-view-24',
-                        disableOnMultipleSelection: true
+                        iconCls: 'icon-view-24'
+//                        disableOnMultipleSelection: true
                     }
                 ]
             },

@@ -87,65 +87,110 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         var ctrl = this.getController( 'EditUserPanelController' );
         if ( ctrl )
         {
-            var account;
-            if ( "newUser" != el.action ) {
-                account = this.getAccountDetailPanel().getCurrentAccount();
+            var selection;
+            var tabs = this.getCmsTabPanel().el;
+            if ( "newUser" == el.action ) {
+                ctrl.showEditUserForm( null );
+            } else {
+                selection = this.getPersistentGridSelectionPlugin().getSelection();
+                if ( selection.length > 0 && selection.length <= 5 ) {
+                    tabs.mask("Loading...");
+                    ctrl.showEditUserForm( selection, function() {
+                        tabs.unmask();
+                    } );
+                } else if (selection.length > 5 && selection.length <= 50) {
+                    var confirmText = Ext.String.format("You have select {0} account(s) for editing/viewing. Are you sure you want to continue?", selection.length);
+                    Ext.MessageBox.confirm("Conform multi-account action", confirmText,
+                            function ( button ) {
+                                if ( button == "yes" ) {
+                                    tabs.mask("Loading...");
+                                    ctrl.showEditUserForm( selection, function() {
+                                        tabs.unmask();
+                                    } );
+                                }
+                            }, this);
+                } else if (selection.length > 50) {
+                    var alertText = Ext.String.format("You have selected {0} account(s) for editing/viewing, however for performance reasons the maximum number of items you can bulk open has been limited to {1}, please limit your selection and try again",
+                            selection.length, 50);
+                    Ext.MessageBox.alert("Too many items selected", alertText);
+                }
             }
-            ctrl.showEditUserForm( account );
         }
     },
 
     showAccountPreviewPanel: function( el, e )
     {
         var me = this;
-        var selected = me.getAccountDetailPanel().getCurrentAccount();
-        if ( selected.type === 'user' )
-        {
-            Ext.Ajax.request(
-                {
-                    url: 'data/user/userinfo',
-                    method: 'GET',
-                    params: {key: selected.key },
-                    success: function( response )
-                    {
-                        var jsonObj = Ext.JSON.decode( response.responseText );
-                        me.getCmsTabPanel().addTab(
-                            {
-                                title: jsonObj.displayName + ' (' +
-                                  jsonObj.qualifiedName + ')',
-                                id: 'tab-preview-user-' + jsonObj.userStore + '-' + jsonObj.name,
-                                xtype: 'userPreviewPanel',
-                                data: jsonObj,
-                                user: selected
-                          }
-                      );
-                    }
-                }
-            );
-        }
-        else
-        {
-            Ext.Ajax.request(
-                {
-                    url: 'data/account/groupinfo',
-                    method: 'GET',
-                    params: {key: selected.key },
-                    success: function( response )
-                    {
-                        var jsonObj = Ext.JSON.decode( response.responseText );
+        var selection = me.getPersistentGridSelectionPlugin().getSelection();
 
-                        me.getCmsTabPanel().addTab(
+        if ( selection.length > 0 && selection.length <= 5 ) {
+            this.openSelectionInNewTabs( selection );
+        } else if (selection.length > 5 && selection.length <= 50) {
+            var confirmText = Ext.String.format("You have select {0} account(s) for editing/viewing. Are you sure you want to continue?", selection.length);
+            Ext.MessageBox.confirm("Conform multi-account action", confirmText,
+                    function ( button ) {
+                        if ( button == "yes" ) {
+                            this.openSelectionInNewTabs( selection );
+                        }
+                    }, this);
+        } else if (selection.length > 50) {
+            var alertText = Ext.String.format("You have selected {0} account(s) for editing/viewing, however for performance reasons the maximum number of items you can bulk open has been limited to {1}, please limit your selection and try again",
+            selection.length, 50);
+            Ext.MessageBox.alert("Too many items selected", alertText);
+        }
+    },
+
+    openSelectionInNewTabs: function( selection ) {
+        var me = this;
+        for (var i = 0; i < selection.length; i++) {
+            var selected = selection[i].data || selection[i];
+            if ( selected.type === 'user' )
+            {
+                Ext.Ajax.request(
+                        {
+                            url: 'data/user/userinfo',
+                            method: 'GET',
+                            params: {key: selected.key },
+                            success: function( response )
                             {
-                                title: jsonObj.group.displayName,
-                                id: 'tab-preview-group-' + selected.key,
-                                xtype: 'groupPreviewPanel',
-                                data: jsonObj.group,
-                                group: selected
+                                var jsonObj = Ext.JSON.decode( response.responseText );
+                                me.getCmsTabPanel().addTab(
+                                        {
+                                            title: jsonObj.displayName + ' (' +
+                                                    jsonObj.qualifiedName + ')',
+                                            id: 'tab-preview-user-' + jsonObj.userStore + '-' + jsonObj.name,
+                                            xtype: 'userPreviewPanel',
+                                            data: jsonObj,
+                                            user: jsonObj
+                                        }
+                                );
                             }
-                        );
-                    }
-                }
-            );
+                        }
+                );
+            }
+            else
+            {
+                Ext.Ajax.request(
+                        {
+                            url: 'data/account/groupinfo',
+                            method: 'GET',
+                            params: {key: selected.key },
+                            success: function( response )
+                            {
+                                var jsonObj = Ext.JSON.decode( response.responseText );
+                                me.getCmsTabPanel().addTab(
+                                        {
+                                            title: jsonObj.group.displayName,
+                                            id: 'tab-preview-group-' + jsonObj.group.key,
+                                            xtype: 'groupPreviewPanel',
+                                            data: jsonObj.group,
+                                            group: jsonObj.group
+                                        }
+                                );
+                            }
+                        }
+                );
+            }
         }
     },
 

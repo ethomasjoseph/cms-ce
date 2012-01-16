@@ -257,73 +257,72 @@ Ext.define( 'App.controller.EditUserPanelController', {
         }
     },
 
-    showEditUserForm: function( account, callback, index )
+    showEditUserForm: function( account, callback, indexToInsertTab )
     {
-        if ( !account )
-        {
+        if ( !account ) {
             var window = Ext.create( 'widget.selectUserStoreWindow', {caller: 'user'} );
             window.show();
-        }
-        else
-        {
+        } else {
             var tabPane = this.getCmsTabPanel();
             var me = this;
-            if (account.type === 'user'){
-                Ext.Ajax.request( {
-                      url: 'data/user/userinfo',
-                      method: 'GET',
-                      params: {key: account.key},
-                      success: function( response )
-                      {
-                          var jsonObj = Ext.JSON.decode( response.responseText );
-                          var tab = {
-                              xtype: 'userWizardPanel',
-                              id: 'tab-edit-user-' + account.userStore + '-' + account.name,
-                              title: account.displayName + ' (' + account.qualifiedName + ')',
-                              iconCls: 'icon-edit-user',
-                              closable: true,
-                              userstore: jsonObj.userStore,
-                              qUserName: account.name,
-                              userFields: jsonObj,
-                              hasPhoto: account.hasPhoto,
-                              autoScroll: true
-                          };
-                          var tabCmp = tabPane.addTab( tab, index );
-                          var wizardPanel = tabCmp.down('wizardPanel');
+            // Make sure it is array
+            account = [].concat(account);
+            for (var i = 0; i < account.length; i++) {
+                var selected = account[i].data || account[i];
+                if (selected.type === 'user') {
+                    Ext.Ajax.request( {
+                        url: 'data/user/userinfo',
+                        method: 'GET',
+                        params: {key: selected.key},
+                        success: function( response )
+                        {
+                            var jsonObj = Ext.JSON.decode( response.responseText );
+                            var tab = {
+                                xtype: 'userWizardPanel',
+                                id: 'tab-edit-user-' + jsonObj.userStore + '-' + jsonObj.name,
+                                title: jsonObj.displayName + ' (' + jsonObj.qualifiedName + ')',
+                                iconCls: 'icon-edit-user',
+                                closable: true,
+                                userstore: jsonObj.userStore,
+                                qUserName: jsonObj.name,
+                                userFields: jsonObj,
+                                hasPhoto: jsonObj.hasPhoto,
+                                autoScroll: true
+                            };
+                            var tabCmp = tabPane.addTab( tab, indexToInsertTab );
+                            var wizardPanel = tabCmp.down('wizardPanel');
 
-                          var data = me.userInfoToWizardData(jsonObj);
-                          wizardPanel.addData( data );
-                          tabCmp.updateHeader( {value: account.displayName, edited: true} );
+                            var data = me.userInfoToWizardData(jsonObj);
+                            wizardPanel.addData( data );
+                            tabCmp.updateHeader( {value: selected.displayName, edited: true} );
 
-                          if ( Ext.isFunction( callback ) ) {
-                              callback();
-                          }
-                      }
-                  } );
-            }
-            else
-            {
-                Ext.Ajax.request( {
-                      url: 'data/account/groupinfo',
-                      method: 'GET',
-                      params: {key: account.key},
-                      success: function( response )
-                      {
-                          console.log(account.key);
-                          var jsonObj = Ext.JSON.decode( response.responseText );
-                          var tab = {
-                              title: jsonObj.group.displayName,
-                              id: 'tab-edit-group-' + account.key,
-                              iconCls: 'icon-new-group',
-                              xtype: 'groupWizardPanel',
-                              modelData: jsonObj.group
-                          };
-                          me.getCmsTabPanel().addTab( tab, index );
-                          if ( Ext.isFunction( callback ) ) {
-                              callback();
-                          }
-                      }
-                } );
+                            if ( Ext.isFunction( callback ) ) {
+                                callback();
+                            }
+                        }
+                    } );
+                } else {
+                    Ext.Ajax.request( {
+                        url: 'data/account/groupinfo',
+                        method: 'GET',
+                        params: {key: selected.key},
+                        success: function( response )
+                        {
+                            var jsonObj = Ext.JSON.decode( response.responseText );
+                            var tab = {
+                                title: jsonObj.group.displayName,
+                                id: 'tab-edit-group-' + jsonObj.group.key,
+                                iconCls: 'icon-new-group',
+                                xtype: 'groupWizardPanel',
+                                modelData: jsonObj.group
+                            };
+                            me.getCmsTabPanel().addTab( tab, indexToInsertTab );
+                            if ( Ext.isFunction( callback ) ) {
+                                callback();
+                            }
+                        }
+                    } );
+                }
             }
         }
     },
