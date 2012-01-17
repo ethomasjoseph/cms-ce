@@ -75,6 +75,9 @@ public final class UserModel
 
     private List<Map<String, String>> groups;
 
+    @JsonProperty("isEditable")
+    private boolean editable;
+
 
 
     private boolean builtIn;
@@ -234,5 +237,15 @@ public final class UserModel
     public void setBuiltIn( boolean builtIn )
     {
         this.builtIn = builtIn;
+    }
+
+    public boolean isEditable()
+    {
+        return editable;
+    }
+
+    public void setEditable(boolean editable)
+    {
+        this.editable = editable;
     }
 }

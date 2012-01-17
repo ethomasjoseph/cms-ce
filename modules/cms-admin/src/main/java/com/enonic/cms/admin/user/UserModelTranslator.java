@@ -56,6 +56,7 @@ public final class UserModelTranslator
         model.setDisplayName( entity.getDisplayName() );
         model.setLastModified( entity.getLastModified() );
         model.setBuiltIn( entity.isBuiltIn() );
+        model.setEditable( !entity.isAnonymous() && !entity.isEnterpriseAdmin() );
         //TODO: not implemented
         model.setLastLogged( "01-01-2001" );
         //TODO: not implemented

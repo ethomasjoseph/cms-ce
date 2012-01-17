@@ -40,7 +40,7 @@ Ext.define( 'App.view.preview.user.UserPreviewPanel', {
         ];
         var profileData = this.generateProfileData( this.data );
 
-        if ( this.showToolbar )
+        if ( this.showToolbar && this.data.isEditable)
         {
             this.tbar = {
                 xtype:'userPreviewToolbar'
