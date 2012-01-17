@@ -91,7 +91,7 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
     getSteps: function()
     {
         var me = this;
-        var isRole = me.modelData != undefined ? me.modelData.type === 'role' : true;
+        var isRole = me.modelData != undefined ? me.modelData.type === 'role' : false;
         var generalStep = {
             stepTitle: "General",
             modelData: this.modelData,

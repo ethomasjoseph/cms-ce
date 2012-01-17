@@ -265,16 +265,16 @@ Ext.define( 'App.controller.EditUserPanelController', {
         }
         else
         {
-            if (!account.isEditable)
-            {
-                return ;
-            }
             var tabPane = this.getCmsTabPanel();
             var me = this;
             // Make sure it is array
             account = [].concat(account);
             for (var i = 0; i < account.length; i++) {
                 var selected = account[i].data || account[i];
+                if (!selected.isEditable)
+                {
+                    continue ;
+                }
                 if (selected.type === 'user') {
                     Ext.Ajax.request( {
                         url: 'data/user/userinfo',
