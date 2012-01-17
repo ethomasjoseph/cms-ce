@@ -84,7 +84,8 @@ Ext.define( 'App.controller.GridPanelController', {
     updateActionItems: function()
     {
         var components2d = [];
-        components2d.push( Ext.ComponentQuery.query( '*[action=edit]' ) );
+        var editButton = Ext.ComponentQuery.query( '*[action=edit]' );
+        components2d.push( editButton );
         components2d.push( Ext.ComponentQuery.query( '*[action=showDeleteWindow]' ) );
         components2d.push( Ext.ComponentQuery.query( '*[action=changePassword]' ) );
         components2d.push( Ext.ComponentQuery.query( '*[action=viewUser]' ) );
@@ -104,6 +105,15 @@ Ext.define( 'App.controller.GridPanelController', {
                 {
                     items[j].setDisabled( true );
                 }
+            }
+        }
+
+        var selection = this.getPersistentGridSelectionPlugin().getSelection();
+        if ( selectionCount == 1 )
+        {
+            for ( var j = 0; j < editButton.length; j++ )
+            {
+                editButton[j].setDisabled( !selection[0].get('isEditable'));
             }
         }
     },

@@ -263,7 +263,14 @@ public final class GroupResource
             return false;
         }
 
-        return validateMembersInUserStore(groupData);
+        if (groupData.isBuiltIn())
+        {
+            return true;
+        }
+        else
+        {
+            return validateMembersInUserStore(groupData);
+        }
     }
 
     private boolean validateMembersInUserStore( GroupModel groupData )

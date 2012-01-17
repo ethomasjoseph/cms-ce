@@ -19,7 +19,6 @@ public class GroupModel
 
     private String qualifiedName;
 
-    @JsonProperty(DISPLAY_NAME)
     private String displayName;
 
     private String userStore;
@@ -31,6 +30,8 @@ public class GroupModel
     private List<AccountModel> members;
 
     private boolean builtIn;
+
+    private boolean editable;
 
     private String description;
 
@@ -143,6 +144,17 @@ public class GroupModel
     public boolean isBuiltIn()
     {
         return this.builtIn;
+    }
+
+    @Override
+    public boolean isEditable()
+    {
+        return editable;
+    }
+
+    public void setEditable(boolean editable)
+    {
+        this.editable = editable;
     }
 
     public String getDescription()

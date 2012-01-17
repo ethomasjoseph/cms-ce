@@ -7,16 +7,15 @@ Ext.define( 'App.view.wizard.group.WizardStepMembersPanel', {
 
     initComponent: function()
     {
-        this.items = [
+        var memberKeys = [];
+        if (this.modelData && this.modelData.members)
+        {
+            Ext.Array.each(this.modelData.members, function (member)
             {
-                xtype: 'fieldset',
-                title: 'Members',
-                padding: '10px 15px',
-                defaults: {
-                    width: 600
-                },
-                items: [
-                    {
+                Ext.Array.include(memberKeys, member.key);
+            });
+        }
+        var membersList = {
                         fieldLabel: 'Select members',
                         allowBlank: true,
                         minChars: 1,
@@ -28,6 +27,7 @@ Ext.define( 'App.view.wizard.group.WizardStepMembersPanel', {
                         resizable: false,
                         name: 'members',
                         itemId: 'members',
+                        value: memberKeys,
                         store: new App.store.AccountStore(),
                         mode: 'local',
                         displayField: 'name',
@@ -59,24 +59,37 @@ Ext.define( 'App.view.wizard.group.WizardStepMembersPanel', {
                         pinList: false,
                         labelTpl: '<tpl if="type==\'user\'">{displayName} ({qualifiedName})</tpl>' +
                                   '<tpl if="type!=\'user\'">{name} ({userStore})</tpl>'
-                    }
-                ]
+                    };
+        var formItems = []
+        if (this.modelData && this.modelData.type === 'role')
+        {
+            var roleDescription = this.getRoleDescription(this.modelData.name);
+            var descriptionItem = {
+                xtype: 'displayfield',
+                fieldLabel: 'Description',
+                value: roleDescription
+            }
+            formItems = [descriptionItem, membersList];
+        }
+        else
+        {
+            formItems = [membersList];
+        }
+        this.items = [
+            {
+                xtype: 'fieldset',
+                title: 'Members',
+                padding: '10px 15px',
+                defaults: {
+                    width: 600
+                },
+                items: formItems
             }
         ];
 
         this.callParent( arguments );
         this.down( '#members' ).getStore().sort('type', 'ASC'); // show group accounts first
         
-        if (this.modelData && this.modelData.members)
-        {
-            var members = this.down('#members');
-            var memberKeys = [];
-            Ext.Array.each(this.modelData.members, function (member)
-            {
-                Ext.Array.include(memberKeys, member.key);
-            });
-            members.setValue(memberKeys);
-        }
     },
 
     getData: function()
@@ -90,5 +103,26 @@ Ext.define( 'App.view.wizard.group.WizardStepMembersPanel', {
         });
         var userData = { members: groupsSelected };
         return userData;
+    },
+
+    getRoleDescription: function(name)
+    {
+        if (name === 'Contributors')
+        {
+            return 'Sed at commodo arcu. Integer mattis lorem pharetra ligula dignissim. ';
+        }
+        if (name === 'Developers')
+        {
+            return 'Curabitur suscipit condimentum ultrices. Nam dolor sem, suscipit ac faucibus. ';
+        }
+        if (name === 'Enterprise Administrators')
+        {
+            return 'Mauris pellentesque diam in ligula pulvinar luctus. Donec ac elit. ';
+        }
+        if (name === 'Expert Contributors')
+        {
+            return 'Morbi vulputate purus non neque dignissim eu iaculis sapien auctor. ';
+        }
+        return '';
     }
 } );

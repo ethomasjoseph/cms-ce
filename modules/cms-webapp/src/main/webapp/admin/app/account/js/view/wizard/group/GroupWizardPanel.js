@@ -21,9 +21,9 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
     initComponent: function()
     {
         var me = this;
-        var isNew = this.modelData == undefined;
-        var displayNameValue = isNew ? 'Display name' : this.modelData.displayName;
-
+        var isNew = me.modelData == undefined;
+        var displayNameValue = isNew ? 'Display name' : me.modelData.displayName;
+        var steps = me.getSteps();
         var groupWizardHeader = Ext.create( 'Ext.container.Container', {
             itemId: 'wizardHeader',
             autoHeight: true,
@@ -68,27 +68,8 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
                     {
                         xtype: 'wizardPanel',
                         showControls: true,
-                        validateItems: [
-                            groupWizardHeader
-                        ],
                         isNew: isNew,
-                        items: [
-                            {
-                                stepTitle: "General",
-                                modelData: this.modelData,
-                                xtype: 'wizardStepGeneralPanel'
-                            },
-                            {
-                                stepTitle: "Members",
-                                modelData: this.modelData,
-                                xtype: 'wizardStepMembersPanel'
-                            },
-                            {
-                                stepTitle: "Summary",
-                                modelData: this.modelData,
-                                xtype: 'wizardStepGroupSummaryPanel'
-                            }
-                        ]
+                        items: steps
                     }
                 ]
             }
@@ -96,13 +77,52 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
 
         this.callParent( arguments );
 
-        if (this.modelData)
+        if (me.modelData)
         {
-            var wizard = this.down('wizardPanel');
-            wizard.addData({userStore: this.modelData.userStore});
-            wizard.addData({key: this.modelData.key});
+            var wizard = me.down('wizardPanel');
+            wizard.addData({userStore: me.modelData.userStore});
+            wizard.addData({key: me.modelData.key});
+            wizard.addData({'displayName': me.modelData.displayName});
+            wizard.addData({builtIn: me.modelData.type === 'role'});
         }
 
+    },
+
+    getSteps: function()
+    {
+        var me = this;
+        var isRole = me.modelData != undefined ? me.modelData.type === 'role' : false;
+        var generalStep = {
+            stepTitle: "General",
+            modelData: this.modelData,
+            xtype: 'wizardStepGeneralPanel'
+        };
+        var membersStep = {
+            stepTitle: "Members",
+            modelData: this.modelData,
+            xtype: 'wizardStepMembersPanel'
+        };
+        var summaryStep = {
+            stepTitle: "Summary",
+            modelData: this.modelData,
+            xtype: 'wizardStepGroupSummaryPanel'
+        };
+
+        if (isRole)
+        {
+            return [membersStep, summaryStep];
+        }
+        else
+        {
+            return [generalStep, membersStep, summaryStep];
+        }
+
+    },
+
+    getData: function()
+    {
+        var wizard = this.down('wizardPanel');
+        return wizard.getData();
     }
 
 } );

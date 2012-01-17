@@ -70,10 +70,11 @@ Ext.define( 'App.view.preview.group.GroupPreviewPanel', {
             }
         ];
 
-        if ( this.showToolbar )
+        if ( this.showToolbar && this.data.isEditable)
         {
             this.tbar = {
-                xtype:'groupPreviewToolbar'
+                xtype:'groupPreviewToolbar',
+                editable: this.data.isEditable
             };
         }
 
