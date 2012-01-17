@@ -11,6 +11,8 @@ Ext.define( 'App.view.PasswordMeter', {
 
     height: 28,
 
+    passwordInputName: undefined,
+
     passwordStatuses: {
         0: {
             text: 'Too short',
@@ -109,11 +111,13 @@ Ext.define( 'App.view.PasswordMeter', {
     initComponent: function ()
     {
         var me = this;
+        var passwordInputName = me.passwordInputName;
         me.items = [
             {
                 xtype: 'textfield',
                 inputType: 'password',
                 itemId: 'passwordInput',
+                name: passwordInputName,
                 enableKeyEvents: true,
                 allowBlank: this.allowBlank,
                 listeners: {
@@ -138,6 +142,11 @@ Ext.define( 'App.view.PasswordMeter', {
         me.width += 100;
         me.callParent( arguments );
         me.addEvents( 'validitychange' );
+    },
+
+    getField: function()
+    {
+        return this.down( 'textfield' );
     },
 
     getValue: function()

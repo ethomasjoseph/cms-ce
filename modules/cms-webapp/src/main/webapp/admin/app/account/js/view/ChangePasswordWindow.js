@@ -2,10 +2,27 @@ Ext.define( 'App.view.ChangePasswordWindow', {
     extend: 'Common.view.BaseDialogWindow',
     alias: 'widget.userChangePasswordWindow',
 
+    requires: ['App.view.PasswordMeter'],
     dialogTitle: 'Change Password',
+
+    afterRender: function()
+    {
+        var password1 = Ext.ComponentQuery.query( '#newPassword' )[0];
+        password1.getField().on('change', function() {
+            this.enableDisableChangePasswordButton();
+        }, this);
+
+        this.enableDisableChangePasswordButton();
+
+        password1.getField().focus(false, 500);
+
+        this.callParent( arguments );
+    },
 
     initComponent: function()
     {
+        var me = this;
+
         this.items = [
             {
                 xtype: 'form',
@@ -16,27 +33,32 @@ Ext.define( 'App.view.ChangePasswordWindow', {
                 bodyCls: 'cms-no-border',
                 layout: 'anchor',
                 defaults: {
-                    xtype: 'textfield',
-                    anchor: '100%',
-                    inputType: 'password',
                     allowBlank: false,
                     listeners: {
-                        change: this.doChange,
+                        change: this.enableDisableChangePasswordButton,
                         scope: this
                     }
                 },
                 items: [
                     {
                         fieldLabel: 'New Password',
-                        name: 'cpw_password',
-                        itemId: 'cpw_password',
+                        xtype: 'passwordMeter',
+                        name: 'newPassword',
+                        itemId: 'newPassword',
+                        cls: 'cms-glowing-item',
+                        passwordInputName: 'newPassword',
+                        anchor: '100%',
+                        width: 260,
                         allowBlank: false
                     },
                     {
                         fieldLabel: 'Confirm Password',
-                        name: 'cpw_password2',
-                        itemId: 'cpw_password2',
+                        xtype: 'textfield',
+                        inputType: 'password',
+                        name: 'newPassword2',
+                        itemId: 'newPassword2',
                         submitValue: false,
+                        width: 365,
                         allowBlank: false
                     },
                     {
@@ -55,10 +77,27 @@ Ext.define( 'App.view.ChangePasswordWindow', {
                                 disabled: true,
                                 handler: function()
                                 {
+                                    var parentApp = parent.mainApp;
                                     var form = Ext.getCmp( 'userChangePasswordForm' ).getForm();
+                                    var submitOptions = {
+                                        params: {
+                                            userKey: me.modelData.key
+                                        },
+                                        success: function( form, action ) {
+                                            me.close();
+                                            if ( parentApp )
+                                            {
+                                                parentApp.fireEvent( 'notifier.show', "Password was changed", "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.");
+                                            }
+                                        },
+                                        failure: function( form, action ) {
+                                            Ext.Msg.alert('Failed', action.result.msg);
+                                        }
+                                    };
+
                                     if ( form.isValid() )
                                     {
-                                        form.submit();
+                                        form.submit(submitOptions);
                                     }
                                 }
                             }
@@ -71,14 +110,18 @@ Ext.define( 'App.view.ChangePasswordWindow', {
         this.callParent( arguments );
     },
 
-    doChange: function( e )
+    enableDisableChangePasswordButton: function()
     {
-        var password1 = Ext.ComponentQuery.query( '#cpw_password' )[0];
-        var password2 = Ext.ComponentQuery.query( '#cpw_password2' )[0];
         var changePasswordButton = Ext.ComponentQuery.query( '#changePasswordButton' )[0];
-        var disable = password1.getValue() !== password2.getValue();
+        var password1 = Ext.ComponentQuery.query( '#newPassword' )[0];
+        var password2 = Ext.ComponentQuery.query( '#newPassword2' )[0];
+        var password1Value = password1.getValue();
+        var password2Value = password2.getValue();
+        var fieldsHasEqualValues = password1Value === password2Value;
 
-        changePasswordButton.setDisabled( disable );
+        var enable = (password1Value !== '' && password2Value !== '') && fieldsHasEqualValues;
+
+        changePasswordButton.setDisabled( !enable );
     }
 
 } );

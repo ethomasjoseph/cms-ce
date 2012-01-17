@@ -178,12 +178,12 @@ public final class UsersResource
 
     @POST
     @Path("changepassword")
-    public Map<String, Object> changePassword( @FormParam("cpw_password") final String password,
+    public Map<String, Object> changePassword( @FormParam("newPassword") final String newPassword,
                                                @FormParam("userKey") final String userKey )
     {
 
         Map<String, Object> res = new HashMap<String, Object>();
-        if ( password.length() <= User.MAX_PASSWORD_LENGTH && password.length() >= User.MIN_PASSWORD_LENGTH )
+        if ( newPassword.length() <= User.MAX_PASSWORD_LENGTH && newPassword.length() >= User.MIN_PASSWORD_LENGTH )
         {
             LOG.info( "Password has been changed for user " + userKey );
             res.put( "success", true );

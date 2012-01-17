@@ -767,9 +767,13 @@ ul.cms-wizard-navigation li a.current.last {
     border: 0 none;
 }
 
+.cms-wizard>div>.x-panel-body,
+.cms-glowing-item .x-panel-body,
 .cms-wizard .x-panel-body {
     border: 0 none;
 }
+
+
 
 /*----- Wizard header -----*/
 
