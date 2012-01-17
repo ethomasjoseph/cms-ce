@@ -51,6 +51,7 @@ Ext.define( 'App.view.UserFormField', {
             action: this.actionName,
             value: this.fieldValue,
             width: 600,
+            padding: '0 0 0 20',
             listeners: {
                 'validitychange': me.validityChanged
             }
@@ -71,14 +72,7 @@ Ext.define( 'App.view.UserFormField', {
         fieldConfig = builderFunction( fieldConfig, this );
         if ( this.remote )
         {
-            var remoteIcon = {
-                xtype: 'image',
-                width: 10,
-                height: 10,
-                margin: '3 3 3 3',
-                src: 'resources/images/icon_remote_10px.gif'
-            };
-            Ext.Array.include( this.items, remoteIcon );
+            fieldConfig.cls = 'cms-remote-field';
         }
         if ( this.fieldname == 'display-name' )
         {
