@@ -53,7 +53,17 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
                         width: 128,
                         height: 128,
                         cls: me.modelData &&
-                                (me.modelData.type === 'role') ? 'icon-role-128' : 'icon-group-128'
+                                (me.modelData.type === 'role') ? 'icon-role-128' : 'icon-group-128',
+                        listeners: {
+                            render: function( cmp ) {
+                                Ext.tip.QuickTipManager.register({
+                                    target: cmp.el,
+                                    text: me.modelData ? Ext.String.capitalize( me.modelData.type ) : 'Group',
+                                    width: 100,
+                                    dismissDelay: 10000 // Hide after 10 seconds hover
+                                });
+                            }
+                        }
                     }
                 ]
             },

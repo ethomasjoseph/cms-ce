@@ -58,7 +58,17 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
                         width: 111,
                         height: 111,
                         photoUrl: photoUrl,
-                        progressBarHeight: 6
+                        progressBarHeight: 6,
+                        listeners: {
+                            render: function( cmp ) {
+                                Ext.tip.QuickTipManager.register({
+                                    target: cmp.el,
+                                    text: 'User',
+                                    width: 100,
+                                    dismissDelay: 10000
+                                });
+                            }
+                        }
                     },
                     {
                         styleHtmlContent: true,
@@ -68,7 +78,14 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
                         html: '<div class="x-tip x-tip-default x-layer" role="tooltip">' +
                                 '<div class="x-tip-anchor x-tip-anchor-top"></div>' +
                                 '<div class="x-tip-body  x-tip-body-default x-tip-body-default">' +
-                                'Click to upload photo</div></div>'
+                                'Click to upload photo</div></div>',
+                        listeners: {
+                            afterrender: function( cmp ) {
+                                Ext.Function.defer( function() {
+                                    cmp.hide();
+                                }, 10000 );
+                            }
+                        }
                     }
                 ]
             },
