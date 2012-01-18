@@ -10,15 +10,35 @@ Ext.define( 'Common.TabPanel', {
         this.callParent( arguments );
     },
 
-    addTab: function( items, index )
+    addTab: function( item, index, requestConfig )
     {
         var tabPanel = this;
-        var tab = this.getTabById( items.id );
+        var tab = this.getTabById( item.id );
         // Create a new tab if it is not already created
         if ( !tab )
         {
-            tab = this.insert( index || this.items.length, items );
-
+            if (requestConfig)
+            {
+                tab = this.insert( index || this.items.length, item );
+                this.setActiveTab( tab );
+                var mask = new Ext.LoadMask( tab, {msg:"Please wait..."} );
+                mask.show();
+                var createTabFromResponse = requestConfig.createTabFromResponse;
+                requestConfig.success = function successCallback(response)
+                {
+                    var tabContent = createTabFromResponse(response);
+                    tab.add(tabContent);
+                    mask.hide();
+                    // There is a need to call doLayout manually, since it isn't called for background tabs
+                    // after content was added
+                    tab.on('activate', function(){this.doLayout();}, tab, {single: true});
+                }
+                Ext.Ajax.request( requestConfig );
+            }
+            else
+            {
+                tab = this.insert( index || this.items.length, item );
+            }
             if ( tab.closable )
             {
                 tab.on({
