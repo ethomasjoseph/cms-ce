@@ -276,58 +276,68 @@ Ext.define( 'App.controller.EditUserPanelController', {
                     continue ;
                 }
                 if (selected.type === 'user') {
-                    Ext.Ajax.request( {
+                    var requestConfig = {
                         url: 'data/user/userinfo',
                         method: 'GET',
                         params: {key: selected.key},
-                        success: function( response )
+                        createTabFromResponse: function (response)
                         {
                             var jsonObj = Ext.JSON.decode( response.responseText );
                             var tab = {
                                 xtype: 'userWizardPanel',
-                                id: 'tab-edit-user-' + jsonObj.userStore + '-' + jsonObj.name,
-                                title: jsonObj.displayName + ' (' + jsonObj.qualifiedName + ')',
-                                iconCls: 'icon-edit-user',
-                                closable: true,
                                 userstore: jsonObj.userStore,
                                 qUserName: jsonObj.name,
                                 userFields: jsonObj,
                                 hasPhoto: jsonObj.hasPhoto,
                                 autoScroll: true
                             };
-                            var tabCmp = tabPane.addTab( tab, indexToInsertTab );
+                            var tabCmp = Ext.widget(tab.xtype, tab);
                             var wizardPanel = tabCmp.down('wizardPanel');
 
                             var data = me.userInfoToWizardData(jsonObj);
                             wizardPanel.addData( data );
-                            tabCmp.updateHeader( {value: selected.displayName, edited: true} );
-
+                            tabCmp.updateHeader( {value: jsonObj.displayName, edited: true} );
                             if ( Ext.isFunction( callback ) ) {
                                 callback();
                             }
+                            return tabCmp;
                         }
-                    } );
+                    };
+                    var tabItem = {
+                        id: 'tab-edit-user-' + selected.userStore + '-' + selected.name,
+                        title: selected.displayName + ' (' + selected.qualifiedName + ')',
+                        iconCls: 'icon-edit-user',
+                        closable: true,
+                        layout: 'fit'
+                    };
+                    tabPane.addTab(tabItem, indexToInsertTab, requestConfig);
                 } else {
-                    Ext.Ajax.request( {
+                    var requestConfig = {
                         url: 'data/account/groupinfo',
                         method: 'GET',
                         params: {key: selected.key},
-                        success: function( response )
+                        createTabFromResponse: function (response)
                         {
                             var jsonObj = Ext.JSON.decode( response.responseText );
                             var tab = {
-                                title: jsonObj.group.displayName,
-                                id: 'tab-edit-group-' + jsonObj.group.key,
-                                iconCls: 'icon-new-group',
                                 xtype: 'groupWizardPanel',
-                                modelData: jsonObj.group
+                                modelData: jsonObj.group,
+                                autoScroll: true
                             };
-                            me.getCmsTabPanel().addTab( tab, indexToInsertTab );
                             if ( Ext.isFunction( callback ) ) {
                                 callback();
                             }
+                            return tab;
                         }
-                    } );
+                    };
+                    var tabItem = {
+                        id: 'tab-edit-group-' + selected.key,
+                        title: selected.displayName,
+                        iconCls: 'icon-new-group',
+                        closable: true,
+                        layout: 'fit'
+                    };
+                    tabPane.addTab(tabItem, indexToInsertTab, requestConfig);
                 }
             }
         }

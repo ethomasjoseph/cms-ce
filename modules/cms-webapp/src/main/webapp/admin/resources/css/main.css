@@ -995,7 +995,6 @@ li.cms-user-item:hover{
 }
 
 .validationStatus {
-    padding-left: 5px;
     padding-top: 5px;
     color: #8b0000;
 }
@@ -1016,4 +1015,14 @@ li.cms-user-item:hover{
 .cms-member-preview-el {
     margin: 0px 5px 5px 10px !important;
     padding: 5px 20px 4px 5px !important;
+}
+
+.cms-prev-button
+{
+    margin: 0 0 0 10px;
+}
+
+.cms-button
+{
+    margin: 0 0 0 130px;
 }

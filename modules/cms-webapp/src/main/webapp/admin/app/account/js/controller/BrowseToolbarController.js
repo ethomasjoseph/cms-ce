@@ -94,18 +94,14 @@ Ext.define( 'App.controller.BrowseToolbarController', {
             } else {
                 selection = this.getPersistentGridSelectionPlugin().getSelection();
                 if ( selection.length > 0 && selection.length <= 5 ) {
-                    tabs.mask("Loading...");
                     ctrl.showEditUserForm( selection, function() {
-                        tabs.unmask();
                     } );
                 } else if (selection.length > 5 && selection.length <= 50) {
                     var confirmText = Ext.String.format("You have select {0} account(s) for editing/viewing. Are you sure you want to continue?", selection.length);
                     Ext.MessageBox.confirm("Conform multi-account action", confirmText,
                             function ( button ) {
                                 if ( button == "yes" ) {
-                                    tabs.mask("Loading...");
                                     ctrl.showEditUserForm( selection, function() {
-                                        tabs.unmask();
                                     } );
                                 }
                             }, this);
@@ -146,51 +142,48 @@ Ext.define( 'App.controller.BrowseToolbarController', {
             var selected = selection[i].data || selection[i];
             if ( selected.type === 'user' )
             {
-                Ext.Ajax.request(
-                        {
-                            url: 'data/user/userinfo',
-                            method: 'GET',
-                            params: {key: selected.key },
-                            success: function( response )
-                            {
-                                var jsonObj = Ext.JSON.decode( response.responseText );
-                                console.log(jsonObj);
-                                me.getCmsTabPanel().addTab(
-                                        {
-                                            title: jsonObj.displayName + ' (' +
-                                                    jsonObj.qualifiedName + ')',
-                                            id: 'tab-preview-user-' + jsonObj.userStore + '-' + jsonObj.name,
-                                            xtype: 'userPreviewPanel',
-                                            data: jsonObj,
-                                            user: jsonObj
-                                        }
-                                );
-                            }
+                var requestConfig = {
+                    url: 'data/user/userinfo',
+                    method: 'GET',
+                    params: {key: selected.key },
+                    createTabFromResponse: function (response)
+                    {
+                        var jsonObj = Ext.JSON.decode( response.responseText );
+                        return {
+                            xtype: 'userPreviewPanel',
+                            data: jsonObj,
+                            user: jsonObj
                         }
-                );
+                    }
+                };
+                var tabItem = {
+                    title: selected.displayName + ' (' +
+                            selected.qualifiedName + ')',
+                    id: 'tab-preview-user-' + selected.userStore + '-' + selected.name
+                };
+                me.getCmsTabPanel().addTab(tabItem, undefined, requestConfig);
             }
             else
             {
-                Ext.Ajax.request(
-                        {
-                            url: 'data/account/groupinfo',
-                            method: 'GET',
-                            params: {key: selected.key },
-                            success: function( response )
-                            {
-                                var jsonObj = Ext.JSON.decode( response.responseText );
-                                me.getCmsTabPanel().addTab(
-                                        {
-                                            title: jsonObj.group.displayName,
-                                            id: 'tab-preview-group-' + jsonObj.group.key,
-                                            xtype: 'groupPreviewPanel',
-                                            data: jsonObj.group,
-                                            group: jsonObj.group
-                                        }
-                                );
-                            }
+                var requestConfig = {
+                    url: 'data/account/groupinfo',
+                    method: 'GET',
+                    params: {key: selected.key },
+                    createTabFromResponse: function (response)
+                    {
+                        var jsonObj = Ext.JSON.decode( response.responseText );
+                        return {
+                            xtype: 'groupPreviewPanel',
+                            data: jsonObj.group,
+                            group: jsonObj.group
                         }
-                );
+                    }
+                };
+                var tabItem = {
+                    title: selected.displayName,
+                    id: 'tab-preview-group-' + selected.key
+                };
+                me.getCmsTabPanel().addTab(tabItem, undefined, requestConfig);
             }
         }
     },
