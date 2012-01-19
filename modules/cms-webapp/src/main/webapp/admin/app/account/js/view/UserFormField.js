@@ -337,7 +337,6 @@ Ext.define( 'App.view.UserFormField', {
                                   success: function( response )
                                   {
                                       var respObj = Ext.decode( response.responseText, true );
-                                      console.info(respObj);
                                       if ( respObj.emailInUse )
                                       {
                                           me.validValue = (respObj.userkey === currentUserKey);
@@ -362,7 +361,6 @@ Ext.define( 'App.view.UserFormField', {
         {
 
             var errors = field.getErrors();
-            console.log(validationLabel);
             if (errors.length > 0)
             {
                 validationLabel.update({text: errors[0]});
