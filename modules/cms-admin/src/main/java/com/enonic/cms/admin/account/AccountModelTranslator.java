@@ -3,6 +3,7 @@ package com.enonic.cms.admin.account;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -214,6 +215,7 @@ public final class AccountModelTranslator
             }
             members.add( accountModel );
         }
+        Collections.sort(members);
         groupModel.setMembers( members );
         return groupModel;
     }

@@ -99,6 +99,9 @@ body,
     margin: 2px 0 0 5px;
 }
 
+.label {
+    vertical-align: top;
+}
 /*----- Accounts -----*/
 
 img.cms-grid-thumbnail {
@@ -1003,7 +1006,14 @@ li.cms-user-item:hover{
 
 .cms-form-panel .x-fieldset-body {
     padding: 5px;
-}.cms-password-extra-strong {
+}
+
+.cms-password-extra-strong {
     box-shadow: 0 0 5px #3B8150;
     z-index: 1000;
+}
+
+.cms-member-preview-el {
+    margin: 0px 5px 5px 10px !important;
+    padding: 5px 20px 4px 5px !important;
 }

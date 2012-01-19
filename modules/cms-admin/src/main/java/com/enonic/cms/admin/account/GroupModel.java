@@ -176,4 +176,18 @@ public class GroupModel
     {
         isPublic = aPublic;
     }
+
+    @Override
+    public int compareTo( AccountModel o )
+    {
+        if (o instanceof GroupModel)
+        {
+            return this.getDisplayName().compareTo( o.getDisplayName() );
+        }
+        if (o instanceof UserModel)
+        {
+            return -1;
+        }
+        return this.getName().compareTo( o.getName() );
+    }
 }

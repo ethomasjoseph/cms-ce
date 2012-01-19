@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-interface AccountModel
+interface AccountModel extends Comparable<AccountModel>
 {
     public final static String USER_NAME = "username";
 
