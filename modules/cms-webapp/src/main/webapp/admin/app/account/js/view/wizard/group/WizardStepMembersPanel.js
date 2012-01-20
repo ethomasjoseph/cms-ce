@@ -105,6 +105,7 @@ Ext.define( 'App.view.wizard.group.WizardStepMembersPanel', {
         return userData;
     },
 
+    //TODO: Should be replaced, better move to some kind of service
     getRoleDescription: function(name)
     {
         if (name === 'Contributors')

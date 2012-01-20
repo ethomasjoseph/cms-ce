@@ -153,11 +153,17 @@ Templates.account = {
                     '<div class="container"><table><thead><tr><th>Last position</th></tr></thead></table></div>'
 
     ,groupPreviewCommonInfo:
+            '<tpl if="type===\'role\'">' +
+                '<div class="container"><table><thead>' +
+                '<tr><th >Description</th></tr></thead><tbody><tr>' +
+                '<td>{staticDesc}</td></tr></tbody>' +
+            '</table></div></tpl>' +
+            '<tpl if="type===\'group\'">' +
             '<div class="container"><table><thead>' +
                 '<tr><th colspan="2">Properties</th></tr></thead><tbody><tr>' +
                 '<td class="label">Public:</td><td>{[values.public ? "yes" : "no"]}</td></tr><tr>' +
                 '<td class="label">Description:</td><td>{description}</td></tr></tbody>' +
-            '</table></div>' +
+            '</table></div></tpl>' +
             '<div class="container"><table><thead>' +
                 '<tr><th colspan="2">Statistics</th></tr></thead><tbody><tr>' +
                 '<td class="label">Member count:</td><td>{members.length}</td></tr><tr>' +
