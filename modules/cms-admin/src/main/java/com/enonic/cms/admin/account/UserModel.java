@@ -203,4 +203,17 @@ public final class UserModel implements AccountModel
         this.hasPhoto = hasPhoto;
     }
 
+    @Override
+    public int compareTo( AccountModel o )
+    {
+        if (o instanceof UserModel)
+        {
+            return this.getDisplayName().compareTo( o.getDisplayName() );
+        }
+        if (o instanceof GroupModel)
+        {
+            return 1;
+        }
+        return this.getName().compareTo( o.getName() );
+    }
 }

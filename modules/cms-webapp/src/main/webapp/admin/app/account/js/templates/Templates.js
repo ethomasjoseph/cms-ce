@@ -128,8 +128,16 @@ Templates.account = {
                     '<span class="email">&nbsp;{email}</span></div></div>'
 
     ,previewMemberships:
-            '<div class="container">' + '<ul>' + '<tpl for="members">' +
-                    '<li class="{[values.type === \"user\" ? "user-el" : "group-el"]}">{displayName}</li>' + '</tpl></ul></div>'
+            '<tpl for="members">' +
+                '<div class="clearfix cms-member-preview-el x-boxselect-item">' +
+                    '<div class="cms-left">' +
+                        '<span class="{[values.type==="user" && !values.builtIn ? "icon-user" : ' +
+                        'values.type==="role" || values.builtIn ? "icon-role" : "icon-group"]} cms-list-item"></span></div>' +
+                        '<div class="cms-left"><span><tpl if="type==\'user\'"> {displayName} ({qualifiedName})</tpl>' +
+                        '<tpl if="type!=\'user\'">{name} ({userStore})</tpl></span>' +
+                    '</div>' +
+                '</div><br>' +
+            '</tpl>'
 
     ,userPreviewCommonInfo:
             '<div class="container"><table><thead><tr>' + '<th>Roles</th></tr></thead><tbody>' + '<tpl for="groups">' +
@@ -143,6 +151,18 @@ Templates.account = {
                     '</tr><tr><td class="label">Created:</td><td>{created}</td></tr><tr>' +
                     '<td class="label">Owner of:</td><td>394</td></tr></tbody></table></div>' +
                     '<div class="container"><table><thead><tr><th>Last position</th></tr></thead></table></div>'
+
+    ,groupPreviewCommonInfo:
+            '<div class="container"><table><thead>' +
+                '<tr><th colspan="2">Properties</th></tr></thead><tbody><tr>' +
+                '<td class="label">Public:</td><td>{[values.public ? "yes" : "no"]}</td></tr><tr>' +
+                '<td class="label">Description:</td><td>{description}</td></tr></tbody>' +
+            '</table></div>' +
+            '<div class="container"><table><thead>' +
+                '<tr><th colspan="2">Statistics</th></tr></thead><tbody><tr>' +
+                '<td class="label">Member count:</td><td>{members.length}</td></tr><tr>' +
+                '<td class="label">Last updated:</td><td>{lastModified}</td></tr></tbody>' +
+            '</table></div>'
 
     ,deleteManyUsers:
             '<div class="cms-delete-user-confirmation-message">' +

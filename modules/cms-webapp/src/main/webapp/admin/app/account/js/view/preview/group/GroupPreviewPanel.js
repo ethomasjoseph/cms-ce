@@ -51,13 +51,11 @@ Ext.define( 'App.view.preview.group.GroupPreviewPanel', {
                             },
                             {
                                 flex: 1,
-                                xtype: 'wizardPanel',
-                                presentationMode: true,
-                                showControls: false,
+                                cls: 'center',
+                                xtype: 'tabpanel',
                                 items: [
                                     {
-                                        stepNumber: 1,
-                                        stepTitle: "Memberships",
+                                        title: "Memberships",
                                         itemId: 'membershipsTab',
                                         tpl: Templates.account.previewMemberships,
                                         data: this.data
@@ -65,6 +63,14 @@ Ext.define( 'App.view.preview.group.GroupPreviewPanel', {
                                 ]
                             }
                         ]
+                    },
+                    {
+                        width: 300,
+                        margin: 5,
+                        itemId: 'previewInfo',
+                        cls: 'east',
+                        tpl: Templates.account.groupPreviewCommonInfo,
+                        data: this.data
                     }
                 ]
             }
