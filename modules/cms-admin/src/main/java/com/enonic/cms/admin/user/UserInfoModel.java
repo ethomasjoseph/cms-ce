@@ -253,7 +253,6 @@ public class UserInfoModel
         this.locale = locale;
     }
 
-    @JsonProperty("nick-name")
     public String getNickName()
     {
         return nickName;
@@ -264,7 +263,6 @@ public class UserInfoModel
         this.nickName = nickName;
     }
 
-    @JsonProperty("personal-id")
     public String getPersonalId()
     {
         return personalId;
@@ -275,7 +273,6 @@ public class UserInfoModel
         this.personalId = personalId;
     }
 
-    @JsonProperty("member-id")
     public String getMemberId()
     {
         return memberId;
@@ -286,7 +283,6 @@ public class UserInfoModel
         this.memberId = memberId;
     }
 
-    @JsonProperty("organization")
     public String getOrganization()
     {
         return organization;
@@ -327,7 +323,6 @@ public class UserInfoModel
         this.title = title;
     }
 
-    @JsonProperty("home-page")
     public String getHomePage()
     {
         return homePage;
