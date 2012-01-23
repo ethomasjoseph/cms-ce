@@ -135,8 +135,8 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
                                 itemId: "userPanel",
                                 xtype: 'editUserFormPanel',
                                 userFields: me.userFields,
-                                includedFields: ['username', 'email', 'password', 'repeat-password', 'photo',
-                                    'country', 'locale', 'timezone', 'global-position'],
+                                includedFields: ['username', 'email', 'password', 'repeatPassword', 'photo',
+                                    'country', 'locale', 'timezone', 'globalPosition'],
                                 enableToolbar: false
                             },
                             {

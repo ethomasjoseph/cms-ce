@@ -21,17 +21,17 @@ Ext.define( 'App.view.preview.user.UserPreviewPanel', {
         this.fieldSets = [
             {
                 title: 'Name',
-                fields: [ 'prefix', 'first-name', 'middle-name',
-                    'last-name', 'suffix', 'initials', 'nick-name']
+                fields: [ 'prefix', 'firstName', 'middleName',
+                    'lastName', 'suffix', 'initials', 'nickName']
             },
             {
                 title: 'Personal Information',
-                fields: ['personal-id', 'member-id', 'organization', 'birthday',
-                    'gender', 'title', 'description', 'html-email', 'homepage']
+                fields: ['personalId', 'memberId', 'organization', 'birthday',
+                    'gender', 'title', 'description', 'htmlEmail', 'homepage']
             },
             {
                 title: 'Settings',
-                fields: ['timezone', 'locale', 'country', 'global-position']
+                fields: ['timezone', 'locale', 'country', 'globalPosition']
             },
             {
                 title: 'Communication',

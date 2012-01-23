@@ -15,29 +15,29 @@ Ext.define( 'App.view.EditUserFormPanel', {
                 'username': 'User Name',
                 'email': 'E-mail',
                 'password': 'Password',
-                'repeat-password': 'Repeat Password',
+                'repeatPassword': 'Repeat Password',
                 'timezone': 'Timezone',
                 /* general fields */
                 'prefix': 'Prefix',
-                'first-name': 'First Name',
-                'middle-name': 'Middle Name',
-                'last-name': 'Last Name',
+                'firstName': 'First Name',
+                'middleName': 'Middle Name',
+                'lastName': 'Last Name',
                 'suffix': 'Suffix',
                 'initials': 'Initials',
-                'nick-name': 'Nick Name',
-                'personal-id': 'Personal ID',
-                'member-id': 'Member ID',
+                'nickName': 'Nick Name',
+                'personalId': 'Personal ID',
+                'memberId': 'Member ID',
                 'organization': 'Organisation',
                 'birthday': 'Birthday',
                 'gender': 'Gender',
                 'title': 'Title',
                 'description': 'Descripion',
-                'html-email': 'E-mail',
-                'home-page': 'Web Page',
-                'time-zone': 'Time Zone',
+                'htmlEmail': 'E-mail',
+                'homePage': 'Web Page',
+                'timeZone': 'Time Zone',
                 'locale': 'Locale',
                 'country': 'Country',
-                'global-position': 'Global Position',
+                'globalPosition': 'Global Position',
                 'phone': 'Phone Number',
                 'mobile': 'Mobile Number',
                 'fax': 'Fax Number',
@@ -77,7 +77,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
                 },
                 {
                     label: 'Repeat password',
-                    type: 'repeat-password',
+                    type: 'repeatPassword',
                     required: true,
                     remote: false,
                     readonly: false
@@ -92,7 +92,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
                 },
                 {
                     label: 'Display name',
-                    type: 'display-name',
+                    type: 'displayName',
                     required: true,
                     remote: false,
                     readonly: false
@@ -126,7 +126,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
                     "iso":true
                 },
                 {
-                    "type":"global-position",
+                    "type":"globalPosition",
                     "readOnly":false,
                     "required":false,
                     "remote":false,
@@ -136,8 +136,8 @@ Ext.define( 'App.view.EditUserFormPanel', {
         }
         if ( !this.excludedFields )
         {
-            this.excludedFields = ["username", "email", "country", "global-position", "locale",
-                "address", "photo", "password", "repeat-password", "timezone"];
+            this.excludedFields = ["username", "email", "country", "globalPosition", "locale",
+                "address", "photo", "password", "repeatPassword", "timezone"];
         }
 
         if ( this.enableToolbar )
@@ -179,33 +179,33 @@ Ext.define( 'App.view.EditUserFormPanel', {
         };
         this.securityFieldSet = {
             'password': this.createPasswordField,
-            'repeat-password': this.createPasswordField
+            'repeatPassword': this.createPasswordField
         };
         this.nameFieldSet = {
             'prefix': this.createTextField,
-            'first-name': this.createTextField,
-            'middle-name': this.createTextField,
-            'last-name': this.createTextField,
+            'firstName': this.createTextField,
+            'middleName': this.createTextField,
+            'lastName': this.createTextField,
             'suffix': this.createTextField,
             'initials': this.createTextField,
-            'nick-name': this.createTextField
+            'nickName': this.createTextField
         };
         this.detailsFieldSet = {
-            'personal-id': this.createTextField,
-            'member-id': this.createTextField,
+            'personalId': this.createTextField,
+            'memberId': this.createTextField,
             'organization': this.createTextField,
             'birthday': this.createDateField,
             'gender': this.createComboBoxField,
             'title': this.createTextField,
             'description': this.createTextField,
-            'html-email': this.createCheckBoxField,
+            'htmlEmail': this.createCheckBoxField,
             'homepage': this.createTextField
         };
         this.locationFieldSet = {
             'timezone': this.createComboBoxField,
             'locale': this.createComboBoxField,
             'country': this.createComboBoxField,
-            'global-position': this.createTextField
+            'globalPosition': this.createTextField
         };
         this.communicationFieldSet = {
             'phone': this.createAutoCompleteField,
@@ -402,7 +402,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
     {
         return {
             xtype: 'userFormField',
-            validationResultType: field.type == 'repeat-password' ? 'detail' : 'none',
+            validationResultType: field.type == 'repeatPassword' ? 'detail' : 'none',
             type: 'password'
         };
     },
@@ -551,7 +551,8 @@ Ext.define( 'App.view.EditUserFormPanel', {
 
     getAddresses: function(formValues)
     {
-        var addressFields = ['country', 'region', 'street', 'postal-code', 'postal-address', 'label', 'iso-country', 'iso-region'];
+        var addressFields = ['country', 'region', 'street',
+            'postalCode', 'postalAddress', 'label', 'isoCountry', 'isoRegion'];
         var address;
         var addresses = [];
         if ( Ext.isArray( formValues.label ) )

@@ -25,7 +25,6 @@ public final class UserModel implements AccountModel
 
     private String qualifiedName;
 
-    @JsonProperty(DISPLAY_NAME)
     private String displayName;
 
     private String userStore;
