@@ -8,11 +8,11 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class UserInfoModel
 {
-    public static final String FIRST_NAME = "first-name";
+    public static final String FIRST_NAME = "firstName";
 
-    public static final String LAST_NAME = "last-name";
+    public static final String LAST_NAME = "lastName";
 
-    public static final String MIDDLE_NAME = "middle-name";
+    public static final String MIDDLE_NAME = "middleName";
 
     public static final String BIRTHDAY = "birthday";
 
@@ -22,13 +22,13 @@ public class UserInfoModel
 
     public static final String INITIALS = "initials";
 
-    public static final String GLOBAL_POSITION = "global-position";
+    public static final String GLOBAL_POSITION = "globalPosition";
 
     public static final String LOCALE = "locale";
 
-    public static final String NICK_NAME = "nick-name";
+    public static final String NICK_NAME = "nickName";
 
-    public static final String PERSONAL_ID = "personal-id";
+    public static final String PERSONAL_ID = "personalId";
 
     public static final String ORGANIZATION = "organization";
 
@@ -38,7 +38,7 @@ public class UserInfoModel
 
     public static final String TITLE = "title";
 
-    public static final String HOME_PAGE = "home-page";
+    public static final String HOME_PAGE = "homePage";
 
     public static final String MOBILE = "mobile";
 
@@ -52,9 +52,9 @@ public class UserInfoModel
 
     public static final String ADDRESSES = "addresses";
 
-    public static final String MEMBER_ID = "member-id";
+    public static final String MEMBER_ID = "memberId";
 
-    public static final String HTML_EMAIL = "html-email";
+    public static final String HTML_EMAIL = "htmlEmail";
 
 
     public UserInfoModel()

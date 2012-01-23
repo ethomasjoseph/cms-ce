@@ -40,26 +40,23 @@ Ext.define( 'App.controller.UserPreviewToolbarController', {
     {
         var ctrl = this.getController( 'EditUserPanelController' );
         if ( ctrl ) {
-            var userPreview = el.up('userPreviewPanel');
+            var userPreview = this.getCmsTabPanel().getActiveTab();//el.up('userPreviewPanel');
             var index = this.getCmsTabPanel().items.indexOf( userPreview );
             // check if we are inside the account detail view
             // beneath the grid or in separate tab
             var inTab = index >= 0;
             var user;
             if ( inTab ) {
-                user = userPreview.user;
+                user = userPreview.user ?
+                        userPreview.user :
+                        userPreview.down('userPreviewPanel');
             } else {
                 index = undefined;
                 user = this.getAccountDetailPanel().getCurrentAccount();
             }
             if ( user ) {
-                userPreview.el.mask("Loading...");
-                ctrl.showEditUserForm( user, function() {
-                    userPreview.el.unmask();
-                    if ( inTab ) {
-                        userPreview.close();
-                    }
-                }, index );
+                userPreview.close();
+                ctrl.showEditUserForm( user, index );
             }
         }
     },

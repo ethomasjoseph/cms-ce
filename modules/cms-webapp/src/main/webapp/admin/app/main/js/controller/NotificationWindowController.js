@@ -150,7 +150,7 @@ Ext.define('App.controller.NotificationWindowController', {
     {
         return {
                    "username":"mer",
-                   "display-name":"Morten Øien Eriksen",
+                   "displayName":"Morten Øien Eriksen",
                    "name":"mer",
                    "key":"2AF735F668BB0B75F8AF886C4D304F049460EE43",
                    "displayName":"Morten Eriksen",

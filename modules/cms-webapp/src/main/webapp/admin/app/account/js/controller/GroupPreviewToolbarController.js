@@ -29,26 +29,23 @@ Ext.define( 'App.controller.GroupPreviewToolbarController', {
     {
         var ctrl = this.getController( 'EditUserPanelController' );
         if ( ctrl ) {
-            var groupPreview = el.up('groupPreviewPanel');
+            var groupPreview = this.getCmsTabPanel().getActiveTab();//el.up('groupPreviewPanel');
             var index = this.getCmsTabPanel().items.indexOf( groupPreview );
             // check if we are inside the account detail view
             // beneath the grid or in separate tab
             var inTab = index >= 0;
             var group;
             if ( inTab ) {
-                group = groupPreview.group;
+                group = groupPreview.group ?
+                        groupPreview.group :
+                        groupPreview.down('groupPreviewPanel').group;
             } else {
                 index = undefined;
                 group = this.getAccountDetailPanel().getCurrentAccount();
             }
             if ( group ) {
-                groupPreview.el.mask("Loading...");
-                ctrl.showEditUserForm( group, function() {
-                    groupPreview.el.unmask();
-                    if ( inTab ) {
-                        groupPreview.close();
-                    }
-                }, index );
+                groupPreview.close();
+                ctrl.showEditUserForm( group, index );
             }
         }
     },

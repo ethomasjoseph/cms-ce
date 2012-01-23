@@ -18,26 +18,11 @@ Ext.define( 'App.controller.EditUserPanelController', {
                 '*[action=toggleDisplayNameField]': {
                     click: this.toggleDisplayNameField
                 },
-                'addressPanel #iso-country' : {
+                'addressPanel #isoCountry' : {
                     select: this.countryChangeHandler
                 },
                 '*[action=deleteAccount]': {
                     click: this.deleteAccount
-                },
-                'editUserPanel textfield[name=prefix]': {
-                    keyup: this.textFieldHandleEnterKey
-                },
-                'editUserPanel textfield[name=first-name]': {
-                    keyup: this.textFieldHandleEnterKey
-                },
-                'editUserPanel textfield[name=middle-name]': {
-                    keyup: this.textFieldHandleEnterKey
-                },
-                'editUserPanel textfield[name=last-name]': {
-                    keyup: this.textFieldHandleEnterKey
-                },
-                'editUserPanel textfield[name=suffix]': {
-                    keyup: this.textFieldHandleEnterKey
                 },
                 'editUserPanel textfield[name=label]': {
                     keyup: this.updateTabTitle
@@ -119,7 +104,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
 
     countryChangeHandler: function( field, newValue, oldValue, options )
     {
-        var region = field.up( 'addressPanel' ).down( '#iso-region' );
+        var region = field.up( 'addressPanel' ).down( '#isoRegion' );
         if ( region )
         {
             region.clearValue();
@@ -139,25 +124,6 @@ Ext.define( 'App.controller.EditUserPanelController', {
         return true;
     },
 
-    textFieldHandleEnterKey: function( field, event )
-    {
-        var formPanel = field.up( 'editUserPanel' );
-        var prefix = formPanel.down( '#prefix' ) ? Ext.String.trim( formPanel.down( '#prefix' ).getValue() ) : '';
-        var firstName = formPanel.down( '#first-name' ) ? Ext.String.trim( formPanel.down( '#first-name' ).getValue() )
-                : '';
-        var middleName = formPanel.down( '#middle-name' )
-                ? Ext.String.trim( formPanel.down( '#middle-name' ).getValue() ) : '';
-        var lastName = formPanel.down( '#last-name' ) ? Ext.String.trim( formPanel.down( '#last-name' ).getValue() )
-                : '';
-        var suffix = formPanel.down( '#suffix' ) ? Ext.String.trim( formPanel.down( '#suffix' ).getValue() ) : '';
-        var displayName = Ext.get( 'display-name' );
-        if ( displayName )
-        {
-            var displayNameValue = prefix + ' ' + firstName + ' ' + middleName + ' ' + lastName + ' ' + suffix;
-            displayName.dom.value = Ext.String.trim( displayNameValue.replace( /  /g, ' ' ) );
-        }
-    },
-
     updateTabTitle: function ( field, event )
     {
         var addressPanel = field.up( 'addressPanel' );
@@ -170,7 +136,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
                 : 'new-user';
         var locked = 'icon-locked';
         var open = 'icon-unlocked';
-        var displayNameField = this.getCmsTabPanel().down( '#' + tabId ).down( '#display-name' );
+        var displayNameField = this.getCmsTabPanel().down( '#' + tabId ).down( '#displayName' );
         if ( button.iconCls == locked )
         {
             button.setIconCls( open );
@@ -212,7 +178,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
             var formValues = editUserForm.getValues();
             var userData = {
                 username: formValues['username'],
-                'display-name': Ext.get( 'display-name' ).dom.value,
+                'displayName': Ext.get( 'displayName' ).dom.value,
                 email: formValues['email'],
                 key: editUserForm.userFields.key,
                 userStore: editUserForm.userFields.userStore ? editUserForm.userFields.userStore
@@ -257,7 +223,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
         }
     },
 
-    showEditUserForm: function( account, callback, indexToInsertTab )
+    showEditUserForm: function( account, indexToInsertTab, callback)
     {
         if ( !account ) {
             var window = Ext.create( 'widget.selectUserStoreWindow', {caller: 'user'} );
@@ -350,7 +316,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
             'key': userData.key,
             'email': userData.email,
             'username': userData.username,
-            'display-name': userData['display-name'],
+            'displayName': userData['displayName'],
             'userInfo': userData.userInfo
         };
         return data;
