@@ -35,7 +35,7 @@ public final class AccountModelTranslator
         model.setDisplayName( entity.getDisplayName() );
         model.setLastModified( entity.getLastModified() );
         model.setBuiltIn( entity.isBuiltIn() );
-        model.setEditable( !entity.isAnonymous() && !entity.isEnterpriseAdmin() );
+        model.setEditable( !entity.isAnonymous() && !isEnterpriseAdminUser( entity ) );
         //TODO: not implemented
         model.setLastLogged( "2001-01-01" );
         //TODO: not implemented
@@ -140,7 +140,7 @@ public final class AccountModelTranslator
         model.setBuiltIn( entity.isBuiltIn() );
         model.setPublic( !entity.isRestricted() );
         model.setDescription( entity.getDescription() );
-        model.setEditable( !entity.isOfType( GroupType.AUTHENTICATED_USERS, true ) );
+        model.setEditable( !isAuthenticatedUsersRole( entity ) && !isEnterpriseAdminsRole( entity ) );
         if ( entity.getUserStore() != null )
         {
             model.setUserStore( entity.getUserStore().getName() );
@@ -151,6 +151,32 @@ public final class AccountModelTranslator
         }
 
         return model;
+    }
+
+    private boolean isEnterpriseAdminUser( final UserEntity entity )
+    {
+        if ( entity.isRoot() )
+        {
+            return true;
+        }
+        else if ( entity.isAnonymous() || ( entity.getUserGroup() == null ) )
+        {
+            return false;
+        }
+        else
+        {
+            return GroupType.ENTERPRISE_ADMINS.equals( entity.getUserGroup().getType() );
+        }
+    }
+
+    private boolean isEnterpriseAdminsRole( final GroupEntity entity )
+    {
+        return entity.getType().equals( GroupType.ENTERPRISE_ADMINS );
+    }
+
+    private boolean isAuthenticatedUsersRole( final GroupEntity entity )
+    {
+        return entity.getType().equals( GroupType.AUTHENTICATED_USERS );
     }
 
     AccountsModel toModel( final Collection<UserEntity> userList, final Collection<GroupEntity> groupList )
@@ -215,7 +241,7 @@ public final class AccountModelTranslator
             }
             members.add( accountModel );
         }
-        Collections.sort(members);
+        Collections.sort( members );
         groupModel.setMembers( members );
         return groupModel;
     }
