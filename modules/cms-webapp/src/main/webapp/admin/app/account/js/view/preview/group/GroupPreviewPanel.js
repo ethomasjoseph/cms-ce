@@ -84,7 +84,7 @@ Ext.define( 'App.view.preview.group.GroupPreviewPanel', {
         {
             this.tbar = {
                 xtype:'groupPreviewToolbar',
-                editable: this.data.isEditable
+                deletable: this.data.type != 'role'
             };
         }
 
@@ -126,7 +126,7 @@ Ext.define( 'App.view.preview.group.GroupPreviewPanel', {
         {
             return 'Morbi vulputate purus non neque dignissim eu iaculis sapien auctor. ';
         }
-        return '';
+        return 'Vivamus tellus turpis, varius vel hendrerit et, commodo vitae ipsum.';
     }
 
 } );

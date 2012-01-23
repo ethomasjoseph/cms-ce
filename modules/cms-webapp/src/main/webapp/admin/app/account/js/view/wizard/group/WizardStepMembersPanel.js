@@ -124,6 +124,6 @@ Ext.define( 'App.view.wizard.group.WizardStepMembersPanel', {
         {
             return 'Morbi vulputate purus non neque dignissim eu iaculis sapien auctor. ';
         }
-        return '';
+        return 'Vivamus tellus turpis, varius vel hendrerit et, commodo vitae ipsum.';
     }
 } );
