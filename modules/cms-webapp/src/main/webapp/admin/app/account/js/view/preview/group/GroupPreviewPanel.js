@@ -17,6 +17,10 @@ Ext.define( 'App.view.preview.group.GroupPreviewPanel', {
 
     initComponent: function()
     {
+        if (this.data && this.data.type == 'role')
+        {
+            this.data.staticDesc = this.getRoleDescription(this.data.name);
+        }
         this.items = [
             {
                 xtype: 'panel',
@@ -80,7 +84,7 @@ Ext.define( 'App.view.preview.group.GroupPreviewPanel', {
         {
             this.tbar = {
                 xtype:'groupPreviewToolbar',
-                editable: this.data.isEditable
+                deletable: this.data.type != 'role'
             };
         }
 
@@ -101,6 +105,28 @@ Ext.define( 'App.view.preview.group.GroupPreviewPanel', {
             var previewInfo = this.down( '#membershipsTab' );
             previewInfo.update( data );
         }
+    },
+
+    //TODO: Should be replaced, better move to some kind of service
+    getRoleDescription: function(name)
+    {
+        if (name === 'Contributors')
+        {
+            return 'Sed at commodo arcu. Integer mattis lorem pharetra ligula dignissim. ';
+        }
+        if (name === 'Developers')
+        {
+            return 'Curabitur suscipit condimentum ultrices. Nam dolor sem, suscipit ac faucibus. ';
+        }
+        if (name === 'Enterprise Administrators')
+        {
+            return 'Mauris pellentesque diam in ligula pulvinar luctus. Donec ac elit. ';
+        }
+        if (name === 'Expert Contributors')
+        {
+            return 'Morbi vulputate purus non neque dignissim eu iaculis sapien auctor. ';
+        }
+        return 'Vivamus tellus turpis, varius vel hendrerit et, commodo vitae ipsum.';
     }
 
 } );

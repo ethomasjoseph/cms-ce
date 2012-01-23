@@ -34,7 +34,14 @@ Ext.define( 'App.view.preview.group.GroupPreviewToolbar', {
                     iconCls: 'icon-edit-user-24'
                 }
             ]};
-        this.items = [ ediUser, deleteBtn];
+        if (this.deletable)
+        {
+            this.items = [ ediUser, deleteBtn];
+        }
+        else
+        {
+            this.items = [ ediUser ];
+        }
         this.callParent( arguments );
     }
 
