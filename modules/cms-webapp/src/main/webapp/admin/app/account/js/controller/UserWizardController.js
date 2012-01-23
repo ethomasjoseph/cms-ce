@@ -456,7 +456,7 @@ Ext.define( 'App.controller.UserWizardController', {
 
     userFieldValidityChange: function( field, isValid )
     {
-        if ( field.fieldname === 'repeat-password' || field.fieldname === 'password' )
+        if ( field.fieldname === 'repeat-password' )
         {
             var repeatPassword = field.up( 'fieldset' ).down( '#repeat-password' );
             var passwordMeter = field.up( 'fieldset' ).down( '#password' );

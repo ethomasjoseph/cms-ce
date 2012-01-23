@@ -224,10 +224,11 @@ Ext.define( 'App.view.UserFormField', {
         {
             passwordConfig = {
                 xtype: 'textfield',
-                inputType: 'password'
+                inputType: 'password',
+                validator: me.validatePassword
             };
         }
-        passwordConfig.validator = me.validatePassword;
+//        passwordConfig.validator = me.validatePassword;
         return Ext.apply( fieldConfig, passwordConfig );
     },
 

@@ -35,7 +35,7 @@ Ext.define( 'App.view.PasswordMeter', {
             color: '#3B8150'
         },
         5: {
-            text: 'Very Strong',
+            text: 'Extremely Strong',
             color: '#3B8150'
         }
     },
@@ -45,6 +45,7 @@ Ext.define( 'App.view.PasswordMeter', {
     {
         var passwordLevel = this.calculatePasswordStrength( field.getValue() );
         var passwordStatus = this.down( '#passwordStatus' );
+        passwordStatus.setVisible( true );
         var passwordInput = this.down( '#passwordInput' );
         if (passwordLevel == 5)
         {
@@ -134,6 +135,7 @@ Ext.define( 'App.view.PasswordMeter', {
                 itemId: 'passwordStatus',
                 cls: 'cms-password-meter-status',
                 width: 100,
+                hidden: true,
                 tpl: Templates.account.passwordStatus,
                 data: me.passwordStatuses[0]
             }
