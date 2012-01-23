@@ -47,9 +47,9 @@ Ext.define( 'App.view.AddressPanel', {
                 queryMode: 'local',
                 minChars: 1,
                 emptyText: 'Please select',
-                name: 'iso-country',
-                itemId: 'iso-country',
-                value: this.values['iso-country'],
+                name: 'isoCountry',
+                itemId: 'isoCountry',
+                value: this.values['isoCountry'],
                 width: 400,
                 disabled: this.readonly
             };
@@ -62,22 +62,22 @@ Ext.define( 'App.view.AddressPanel', {
                    minChars: 1,
                    emptyText: 'Please select',
                    fieldLabel: 'Region',
-                   name: 'iso-region',
-                   itemId: 'iso-region',
+                   name: 'isoRegion',
+                   itemId: 'isoRegion',
                    width: 400,
-                   value: this.values['iso-region'],
-                   disabled: this.values['iso-region'] == null
+                   value: this.values['isoRegion'],
+                   disabled: this.values['isoRegion'] == null
                } );
-            if ( this.values['iso-country'] && this.values['iso-region'] )
+            if ( this.values['isoCountry'] && this.values['isoRegion'] )
             {
                 Ext.apply( regionStore.proxy.extraParams, {
-                    'countryCode': this.values['iso-country']
+                    'countryCode': this.values['isoCountry']
                 } );
                 regionStore.load( {
                                       scope: this,
                                       callback: function()
                                       {
-                                          regionField.setValue( this.values['iso-region'] );
+                                          regionField.setValue( this.values['isoRegion'] );
                                       }
                                   } );
             }
@@ -125,17 +125,17 @@ Ext.define( 'App.view.AddressPanel', {
             {
                 xtype: 'textfield',
                 fieldLabel: 'Postal Code',
-                name: 'postal-code',
+                name: 'postalCode',
                 itemId: 'address-postal-code',
-                value: this.values['postal-code'],
+                value: this.values['postalCode'],
                 disabled: this.readonly
             },
             {
                 xtype: 'textfield',
                 fieldLabel: 'Postal Address',
-                name: 'postal-address',
+                name: 'postalAddress',
                 itemId: 'address-postal-address',
-                value: this.values['postal-address'],
+                value: this.values['postalAddress'],
                 disabled: this.readonly
             },
             countryField,

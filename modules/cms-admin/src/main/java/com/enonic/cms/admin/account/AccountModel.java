@@ -12,8 +12,6 @@ interface AccountModel extends Comparable<AccountModel>
 
     public final static String KEY = "key";
 
-    public final static String DISPLAY_NAME = "display-name";
-
     public final static String USER_INFO = "userInfo";
 
     public final static String USERSTORE = "userStore";

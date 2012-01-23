@@ -157,7 +157,12 @@ Ext.define( 'App.controller.GroupWizardController', {
 
     getGroupWizardPanel: function()
     {
-        return Ext.ComponentQuery.query( 'groupWizardPanel' )[0];
+        return this.getCmsTabPanel().getActiveTab();
+    },
+
+    getCmsTabPanel: function()
+    {
+        return Ext.ComponentQuery.query( 'cmsTabPanel' )[0];
     },
 
     getGroupWizardToolbar: function()

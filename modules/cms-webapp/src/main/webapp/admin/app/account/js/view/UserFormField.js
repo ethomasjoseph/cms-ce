@@ -32,13 +32,13 @@ Ext.define( 'App.view.UserFormField', {
             'gender': 200,
             'country': 400,
             'timezone': 400,
-            'global-position': 200,
+            'globalPosition': 200,
             'locale': 300,
             'fax': 300,
             'mobile': 300,
             'phone': 300,
             'password': 250,
-            'repeat-password': 250
+            'repeatPassword': 250
         }
         this.items = [];
         var fieldConfig = {
@@ -74,24 +74,7 @@ Ext.define( 'App.view.UserFormField', {
         {
             fieldConfig.cls = 'cms-remote-field';
         }
-        if ( this.fieldname == 'display-name' )
-        {
-            fieldConfig.readOnly = true;
-            fieldConfig.readOnlyCls = 'cms-display-name-readonly';
-            fieldConfig.cls = 'cms-display-name';
-            fieldConfig.height = 40;
-            var lockButton = {
-                xtype: 'button',
-                iconCls: 'icon-locked',
-                action: 'toggleDisplayNameField',
-                currentUser: this.currentUser
-            };
-            Ext.Array.include( this.items, [fieldConfig, lockButton] );
-        }
-        else
-        {
-            Ext.Array.include( this.items, fieldConfig );
-        }
+        Ext.Array.include( this.items, fieldConfig );
         if ( this.required && (this.fieldLabel != undefined) )
         {
             this.fieldLabel += "<span style=\"color:red;\" ext:qtip=\"This field is required\">*</span>";
@@ -260,7 +243,7 @@ Ext.define( 'App.view.UserFormField', {
     validatePassword: function()
     {
         var passwordField = this.up( 'fieldset' ).down( '#password' );
-        var repeatPasswordField = this.up( 'fieldset' ).down( '#repeat-password' );
+        var repeatPasswordField = this.up( 'fieldset' ).down( '#repeatPassword' );
         if ( passwordField.getValue() == repeatPasswordField.getValue() )
         {
             return true;

@@ -18,7 +18,7 @@ public final class UserModel
 
     public final static String KEY = "key";
 
-    public final static String DISPLAY_NAME = "display-name";
+    public final static String DISPLAY_NAME = "displayName";
 
     public final static String USER_INFO = "userInfo";
 

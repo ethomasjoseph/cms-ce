@@ -10,17 +10,17 @@ public class AddressModel
 
     public static final String STREET = "street";
 
-    public static final String POSTAL_ADDRESS = "postal-address";
+    public static final String POSTAL_ADDRESS = "postalAddress";
 
-    public static final String POSTAL_CODE = "postal-code";
+    public static final String POSTAL_CODE = "postalCode";
 
     public static final String REGION = "region";
 
     public static final String COUNTRY = "country";
 
-    public static final String ISO_REGION = "iso-region";
+    public static final String ISO_REGION = "isoRegion";
 
-    public static final String ISO_COUNTRY = "iso-country";
+    public static final String ISO_COUNTRY = "isoCountry";
 
     private String label;
 
