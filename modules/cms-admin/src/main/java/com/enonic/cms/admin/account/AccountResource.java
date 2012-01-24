@@ -17,6 +17,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,14 +91,26 @@ public final class AccountResource
 
     @GET
     @Path("search")
-    public Map<String, Object> list( @InjectParam final AccountLoadRequest req )
+    public Map<String, Object> list( @InjectParam final AccountLoadRequest req,
+                                     @QueryParam("key") @DefaultValue("") final String accountKeys )
     {
-        LOG.info( "Search accounts: query='" + req.getQuery() + "' , index=" + req.getStart() + ", count=" +
-                      req.getLimit() + ", selectUsers=" + req.isSelectUsers() + ", selectGroups=" +
-                      req.isSelectGroups() + ", userstores=" + req.getUserstores() + ", orgs=" +
-                      req.getOrganizations() );
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Search accounts: query='" + req.getQuery() + "' , index=" + req.getStart() + ", count=" +
+                          req.getLimit() + ", selectUsers=" + req.isSelectUsers() + ", selectGroups=" +
+                          req.isSelectGroups() + ", userstores=" + req.getUserstores() + ", orgs=" +
+                          req.getOrganizations() + ", keys=" + accountKeys );
+        }
 
-        final AccountSearchResults searchResults = search( req );
+        final AccountSearchResults searchResults;
+        if ( StringUtils.isNotBlank( accountKeys ) )
+        {
+            searchResults = findAccountsByKey( accountKeys );
+        }
+        else
+        {
+            searchResults = search( req );
+        }
 
         final List list = new ArrayList();
 
@@ -107,12 +120,18 @@ public final class AccountResource
             {
                 case GROUP:
                     GroupEntity groupEntity = this.groupDao.findByKey( new GroupKey( searchHit.getKey().toString() ) );
-                    list.add( groupEntity );
+                    if ( groupEntity != null )
+                    {
+                        list.add( groupEntity );
+                    }
                     break;
 
                 case USER:
                     UserEntity userEntity = this.userDao.findByKey( searchHit.getKey().toString() );
-                    list.add( userEntity );
+                    if ( userEntity != null )
+                    {
+                        list.add( userEntity );
+                    }
                     break;
             }
         }
@@ -125,6 +144,19 @@ public final class AccountResource
         Map<String, Object> result = new HashMap<String, Object>();
         result.put( "results", accountsModel );
         return result;
+    }
+
+    private AccountSearchResults findAccountsByKey( String accountKeys )
+    {
+        final String[] keys = accountKeys.split( "," );
+        final AccountSearchResults searchResults = new AccountSearchResults( 0, keys.length );
+        for ( String key : keys )
+        {
+            key = key.trim();
+            final AccountType type = findAccountType( key );
+            searchResults.add( new AccountKey( key ), type, 1 );
+        }
+        return searchResults;
     }
 
     private AccountSearchResults search( final AccountLoadRequest req )
