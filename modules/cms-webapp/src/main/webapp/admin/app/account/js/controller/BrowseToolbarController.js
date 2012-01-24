@@ -94,15 +94,13 @@ Ext.define( 'App.controller.BrowseToolbarController', {
             } else {
                 selection = this.getPersistentGridSelectionPlugin().getSelection();
                 if ( selection.length > 0 && selection.length <= 5 ) {
-                    ctrl.showEditUserForm( selection, function() {
-                    } );
+                    ctrl.showEditUserForm( selection );
                 } else if (selection.length > 5 && selection.length <= 50) {
                     var confirmText = Ext.String.format("You have select {0} account(s) for editing/viewing. Are you sure you want to continue?", selection.length);
                     Ext.MessageBox.confirm("Conform multi-account action", confirmText,
                             function ( button ) {
                                 if ( button == "yes" ) {
-                                    ctrl.showEditUserForm( selection, function() {
-                                    } );
+                                    ctrl.showEditUserForm( selection );
                                 }
                             }, this);
                 } else if (selection.length > 50) {
