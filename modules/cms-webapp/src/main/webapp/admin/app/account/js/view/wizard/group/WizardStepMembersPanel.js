@@ -89,7 +89,14 @@ Ext.define( 'App.view.wizard.group.WizardStepMembersPanel', {
 
         this.callParent( arguments );
         this.down( '#members' ).getStore().sort('type', 'ASC'); // show group accounts first
-        
+
+        // only select members from same userstore
+        this.down( '#members' ).getStore().getProxy().extraParams = {userstores: this.getSelectedUserStore()};
+    },
+
+    getSelectedUserStore:function ()
+    {
+        return this.userStore || this.modelData.userStore;
     },
 
     getData: function()

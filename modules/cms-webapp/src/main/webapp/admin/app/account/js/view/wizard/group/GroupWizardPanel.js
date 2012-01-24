@@ -110,6 +110,7 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
         var membersStep = {
             stepTitle: "Members",
             modelData: this.modelData,
+            userStore: this.userstore,
             xtype: 'wizardStepMembersPanel'
         };
         var summaryStep = {

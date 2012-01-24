@@ -281,6 +281,7 @@ Ext.define( 'App.controller.UserWizardController', {
             tab = {
                 title: 'New Group',
                 iconCls: 'icon-new-group',
+                userstore: userStoreName,
                 xtype: 'groupWizardPanel'
             };
         }
