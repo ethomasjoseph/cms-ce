@@ -1019,10 +1019,10 @@ li.cms-user-item:hover{
 
 .cms-prev-button
 {
-    margin: 0 0 0 10px;
+    margin: 0 0 0 10px !important;
 }
 
 .cms-button
 {
-    margin: 0 0 0 130px;
+    margin: 0 0 0 135px !important;
 }

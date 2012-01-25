@@ -425,7 +425,7 @@ Ext.define( 'Common.WizardPanel', {
                 next.setDisabled( disable || !hasNext);
                 next.removeCls('cms-prev-button');
                 next.removeCls('cms-button');
-                next.addCls(hasNext ? 'cms-prev-button' : 'cms-button');
+                next.addCls(hasPrev ? 'cms-prev-button' : 'cms-button');
             }
         }
     },
