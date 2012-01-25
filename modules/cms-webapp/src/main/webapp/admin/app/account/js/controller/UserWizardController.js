@@ -162,7 +162,8 @@ Ext.define( 'App.controller.UserWizardController', {
             var parentApp = parent.mainApp;
             if ( parentApp )
             {
-                parentApp.fireEvent( 'notifier.show', "User was created",
+                var title = isNewUser ? "User was created" : "User was updated";
+                parentApp.fireEvent( 'notifier.show', title,
                                      "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.",
                                      {userKey: userkey, newUser: isNewUser, notifyUser: true});
             }
