@@ -61,6 +61,7 @@ Ext.define( 'App.controller.UserWizardController', {
 
     saveNewUser: function( btn, evt, opts, closeWizard )
     {
+        var me = this;
         var userWizard = btn.up('userWizardPanel');
         var wizardPanel = userWizard.down( 'wizardPanel' );
         var data = userWizard.getData();
@@ -85,10 +86,10 @@ Ext.define( 'App.controller.UserWizardController', {
                                      false );
             }
             if ( closeWizard ) {
-                userWizard.close();
+                me.getCmsTabPanel().getActiveTab();
             }
         };
-        this.updateUser( data , onUpdateUserSuccess );
+        me.updateUser( data , onUpdateUserSuccess );
     },
 
     validateStep: function( wizard, step )
@@ -146,8 +147,9 @@ Ext.define( 'App.controller.UserWizardController', {
 
     wizardFinished: function( wizard, data )
     {
+        var me = this;
         var userWizard = wizard.up( 'userWizardPanel' );
-        data['displayName'] = this.getDisplayNameValue( userWizard );
+        data['displayName'] = me.getDisplayNameValue( userWizard );
 
         var onUpdateUserSuccess = function( userkey ) {
 
@@ -155,7 +157,7 @@ Ext.define( 'App.controller.UserWizardController', {
             if ( userWizard )
             {
                 isNewUser = userWizard.isNewUser();
-                userWizard.close();
+                me.getCmsTabPanel().getActiveTab().close();
             }
             var parentApp = parent.mainApp;
             if ( parentApp )
@@ -165,7 +167,7 @@ Ext.define( 'App.controller.UserWizardController', {
                                      {userKey: userkey, newUser: isNewUser, notifyUser: true});
             }
         }
-        this.updateUser( data , onUpdateUserSuccess );
+        me.updateUser( data , onUpdateUserSuccess );
     },
 
     updateUser: function ( userData, onSuccess )
