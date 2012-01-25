@@ -437,7 +437,14 @@ Ext.define( 'Common.WizardPanel', {
 
     getData: function()
     {
-        return this.data;
+        var me = this;
+        me.items.each(function(item){
+            if (item.getData)
+            {
+                me.addData(item.getData());
+            }
+        });
+        return me.data;
     },
 
     getProgressBar: function() {
