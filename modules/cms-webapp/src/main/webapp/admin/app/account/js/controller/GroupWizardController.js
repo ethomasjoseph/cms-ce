@@ -186,6 +186,7 @@ Ext.define( 'App.controller.GroupWizardController', {
 
     updateGroup:function ( groupData, onSuccess )
     {
+        var me = this;
         Ext.Ajax.request( {
                               url: 'data/group/update',
                               method: 'POST',
@@ -201,12 +202,19 @@ Ext.define( 'App.controller.GroupWizardController', {
                                   {
                                       onSuccess( serverResponse.userkey );
                                   }
+                                  var current = me.getAccountGridPanel().store.currentPage;
+                                  me.getAccountGridPanel().store.loadPage(current);
                               },
                               failure:function ( response, opts )
                               {
                                   Ext.Msg.alert( 'Error', 'Unable to update group' );
                               }
                           } );
+    },
+
+    getAccountGridPanel: function()
+    {
+        return Ext.ComponentQuery.query( 'accountGrid' )[0];
     }
 
 } );
