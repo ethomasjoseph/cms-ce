@@ -140,7 +140,7 @@ public final class AccountModelTranslator
         model.setBuiltIn( entity.isBuiltIn() );
         model.setPublic( !entity.isRestricted() );
         model.setDescription( entity.getDescription() );
-        model.setEditable( !isAuthenticatedUsersRole( entity ) && !isEnterpriseAdminsRole( entity ) );
+        model.setEditable( !isAuthenticatedUsersRole( entity ) && !isAnonymousUsersRole( entity ) );
         if ( entity.getUserStore() != null )
         {
             model.setUserStore( entity.getUserStore().getName() );
@@ -177,6 +177,11 @@ public final class AccountModelTranslator
     private boolean isAuthenticatedUsersRole( final GroupEntity entity )
     {
         return entity.getType().equals( GroupType.AUTHENTICATED_USERS );
+    }
+
+    private boolean isAnonymousUsersRole( final GroupEntity entity )
+    {
+        return entity.getType().equals( GroupType.ANONYMOUS );
     }
 
     AccountsModel toModel( final Collection<UserEntity> userList, final Collection<GroupEntity> groupList )
