@@ -36,6 +36,7 @@ Ext.define( 'App.view.UserFormField', {
             'boolean': this.createCheckBoxConfig
         };
         me.fieldWidth = {
+            'username': 100,
             'initials': 150,
             'birthday': 300,
             'gender': 200,
