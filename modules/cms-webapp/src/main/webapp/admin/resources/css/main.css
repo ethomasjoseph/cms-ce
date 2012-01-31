@@ -994,9 +994,14 @@ li.cms-user-item:hover{
     font-weight: bold;
 }
 
-.validationStatus {
+.validationError {
     padding-top: 5px;
     color: #8b0000;
+}
+
+.validationInfo {
+    padding-top: 5px;
+    color: green;
 }
 
 .cms-form-panel .cms-glowing-item div {

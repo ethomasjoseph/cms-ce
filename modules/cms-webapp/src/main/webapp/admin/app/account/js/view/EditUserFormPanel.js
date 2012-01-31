@@ -371,13 +371,16 @@ Ext.define( 'App.view.EditUserFormPanel', {
     createTextField: function( field )
     {
         var validationResultType = 'none';
+        var delayValidation = false;
         if (field.type == 'username')
         {
-            validationResultType = 'short';
+            validationResultType = 'detail';
+            delayValidation = true;
         }
         return {
             xtype: 'userFormField',
             validationResultType: validationResultType,
+            delayValidation: delayValidation,
             type: 'text'
         };
     },

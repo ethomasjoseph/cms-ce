@@ -14,10 +14,19 @@ Ext.define( 'App.view.UserFormField', {
 
     actionName: undefined,
 
+    delayValidation: false,
+
+    delayValidationTime: 1000,
+
+    validationTask: undefined,
+
     initComponent: function()
     {
         var me = this;
-        this.fieldConfigBuilders = {
+        me.validationTask = new Ext.util.DelayedTask(function(){
+            me.validate();
+        });
+        me.fieldConfigBuilders = {
             'date': this.createDateConfig,
             'file': this.createFileConfig,
             'combo': this.createComboConfig,
@@ -26,7 +35,7 @@ Ext.define( 'App.view.UserFormField', {
             'text': this.createTextConfig,
             'boolean': this.createCheckBoxConfig
         };
-        this.fieldWidth = {
+        me.fieldWidth = {
             'initials': 150,
             'birthday': 300,
             'gender': 200,
@@ -39,8 +48,8 @@ Ext.define( 'App.view.UserFormField', {
             'phone': 300,
             'password': 250,
             'repeatPassword': 250
-        }
-        this.items = [];
+        };
+        me.items = [];
         var fieldConfig = {
             enableKeyEvents: true,
             disabled: this.readonly,
@@ -52,35 +61,39 @@ Ext.define( 'App.view.UserFormField', {
             value: this.fieldValue,
             width: 600,
             padding: '0 0 0 20',
+            validateOnChange: !me.delayValidation,
+            validateOnBlur: !me.delayValidation,
             listeners: {
-                'validitychange': me.validityChanged
+                'validitychange': me.validityChanged,
+                'change': me.delayValidation ?
+                        me.callValidationTask : function(){}
             }
         };
-        if ( this.fieldWidth[this.fieldname] )
+        if ( me.fieldWidth[me.fieldname] )
         {
-            fieldConfig.width = this.fieldWidth[this.fieldname];
+            fieldConfig.width = me.fieldWidth[me.fieldname];
         }
         var builderFunction;
-        if ( this.type )
+        if ( me.type )
         {
-            builderFunction = this.fieldConfigBuilders[this.type];
+            builderFunction = me.fieldConfigBuilders[me.type];
         }
         else
         {
-            builderFunction = this.fieldConfigBuilders.text;
+            builderFunction = me.fieldConfigBuilders.text;
         }
-        fieldConfig = builderFunction( fieldConfig, this );
-        if ( this.remote )
+        fieldConfig = builderFunction( fieldConfig, me );
+        if ( me.remote )
         {
             fieldConfig.cls = 'cms-remote-field';
         }
-        Ext.Array.include( this.items, fieldConfig );
-        if ( this.required && (this.fieldLabel != undefined) )
+        Ext.Array.include( me.items, fieldConfig );
+        if ( me.required && (me.fieldLabel != undefined) )
         {
-            this.fieldLabel += "<span style=\"color:red;\" ext:qtip=\"This field is required\">*</span>";
+            me.fieldLabel += "<span style=\"color:red;\" ext:qtip=\"This field is required\">*</span>";
         }
         var validationLabel;
-        if (this.validationResultType == 'short')
+        if (me.validationResultType == 'short')
         {
             validationLabel = {
                 itemId: 'validationLabel',
@@ -101,13 +114,13 @@ Ext.define( 'App.view.UserFormField', {
                     }
                 }
             };
-            Ext.Array.include( this.items, validationLabel );
+            Ext.Array.include( me.items, validationLabel );
         }
-        if (this.validationResultType == 'detail')
+        if (me.validationResultType == 'detail')
         {
             validationLabel = {
                 itemId: 'validationLabel',
-                tpl: '<div class="validationStatus">{text}</div> ',
+                tpl: '<div class="{[ values.type==="info" ? "validationInfo" : "validationError" ]}">{text}</div> ',
                 data: {text: ''},
                 width: 200,
                 cls: 'cms-validation-label',
@@ -124,11 +137,19 @@ Ext.define( 'App.view.UserFormField', {
                     }
                 }
             };
-            Ext.Array.include( this.items, validationLabel );
+            Ext.Array.include( me.items, validationLabel );
         }
 
-        this.callParent( arguments );
-        this.addEvents( 'validitychange' );
+        me.callParent( arguments );
+        me.addEvents( 'validitychange' );
+    },
+
+    callValidationTask: function()
+    {
+        var userField = this.up('userFormField');
+        var validationTask = userField.validationTask;
+        if (validationTask)
+            validationTask.delay(userField.delayValidationTime);
     },
 
     createCheckBoxConfig: function( fieldConfig )
@@ -243,14 +264,17 @@ Ext.define( 'App.view.UserFormField', {
 
     validatePassword: function()
     {
+        var validationStatus = this.up('userFormField').down('#validationLabel');
         var passwordField = this.up( 'fieldset' ).down( '#password' );
         var repeatPasswordField = this.up( 'fieldset' ).down( '#repeatPassword' );
         if ( passwordField.getValue() == repeatPasswordField.getValue() )
         {
+            validationStatus.update({type: 'info', text: ''});
             return true;
         }
         else
         {
+            validationStatus.update({type: 'error', text: 'Passwords don\'t match'});
             return 'Passwords don\'t match';
         }
     },
@@ -258,6 +282,8 @@ Ext.define( 'App.view.UserFormField', {
     validateUserName: function( value )
     {
         var me = this;
+        var userField = me.up('userFormField');
+        var validationStatus = userField.down('#validationLabel');
         if ( me.prevValue != value && value !== '' )
         {
             this.prevValue = value;
@@ -276,16 +302,24 @@ Ext.define( 'App.view.UserFormField', {
                                       if ( respObj.userkey != null )
                                       {
                                           me.validValue = false;
+                                          validationStatus.update({type: 'error', text: 'Not available'});
                                       }
                                       else
                                       {
                                           me.validValue = true;
+                                          validationStatus.update({type: 'info', text: 'Available'});
                                       }
                                       me.validate();
                                   }
                               } );
         }
-        return me.validValue == true ? me.validValue : "User with this user name already exists";
+        if (value === '')
+        {
+            validationStatus.update({type: 'info', text: ''});
+            return true;
+        }
+        var msg = "User with this user name already exists";
+        return me.validValue || msg ;
 
     },
 
@@ -341,24 +375,23 @@ Ext.define( 'App.view.UserFormField', {
     {
         var parentField = field.up( 'userFormField' );
         var validationLabel = parentField.down('#validationLabel');
-        if (parentField.validationResultType == 'detail')
+        if (parentField.validationResultType != 'none')
         {
-
-            var errors = field.getErrors();
-            if (errors.length > 0)
-            {
-                validationLabel.update({text: errors[0]});
-            }
-            else
-            {
-                validationLabel.update({text: ''});
-            }
+            field.clearInvalid();
         }
         if (parentField.validationResultType == 'short')
         {
             validationLabel.update({valid: isValid});
         }
         parentField.fireEvent( 'validitychange', parentField, isValid, opts );
+    },
+
+    validate: function()
+    {
+        this.items.each(function(item){
+            if (item.validate)
+                item.validate();
+        })
     }
 
 
