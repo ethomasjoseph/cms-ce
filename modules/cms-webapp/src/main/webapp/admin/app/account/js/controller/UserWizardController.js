@@ -173,6 +173,8 @@ Ext.define( 'App.controller.UserWizardController', {
 
     updateUser: function ( userData, onSuccess )
     {
+        var me = this;
+
         Ext.Ajax.request( {
               url: 'data/user/update',
               method: 'POST',
@@ -188,6 +190,8 @@ Ext.define( 'App.controller.UserWizardController', {
                   {
                       onSuccess( serverResponse.userkey );
                   }
+                  var current = me.getAccountGridPanel().store.currentPage;
+                  me.getAccountGridPanel().store.loadPage(current);
               },
               failure: function( response, opts )
               {
@@ -501,6 +505,11 @@ Ext.define( 'App.controller.UserWizardController', {
     getCmsTabPanel: function()
     {
         return Ext.ComponentQuery.query( 'cmsTabPanel' )[0];
+    },
+
+    getAccountGridPanel: function()
+    {
+        return Ext.ComponentQuery.query( 'accountGrid' )[0];
     },
 
     autoSuggestUsername: function( firstName, lastName, userStoreName, usernameField )

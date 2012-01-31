@@ -81,10 +81,10 @@ Ext.define( 'Common.WizardPanel', {
                         }
                     },
                     {
-                        text: 'Finish',
+                        text: 'Save and Close',
                         itemId: 'finish',
                         margin: '0 0 0 10',
-                        iconCls: 'icon-ok-24',
+                        iconCls: 'icon-save-24',
                         hidden: true,
                         handler: function( btn, evt )
                         {
