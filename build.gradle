@@ -1,8 +1,9 @@
 
+def buildSrcDir = "$rootDir/buildSrc"
+def buildNumber = new Date().format("yyyyMMdd.HHmmss")
+
 allprojects {
 	group = 'com.enonic.cms'
-	buildNumber = new Date().format("yyyyMMdd.HHmmss")
-	scriptDir = "$rootDir/gradle"
 
 	repositories {
 		mavenCentral()
@@ -23,8 +24,8 @@ versions = [
     mockito: '1.8.5'
 ]
 
-apply from: "$scriptDir/wrapper.gradle"
-apply from: "$scriptDir/idea.gradle"
+apply from: "$buildSrcDir/wrapper.gradle"
+apply from: "$buildSrcDir/idea.gradle"
 
 javaProjects = subprojects.findAll { project ->
 	!project.path.startsWith(':cms-distro')
@@ -35,10 +36,10 @@ warProjects = subprojects.findAll { project ->
 }
 
 configure(javaProjects) {
-	apply from: "$scriptDir/java.gradle"
-    apply from: "$scriptDir/idea.gradle"
+	apply from: "$buildSrcDir/java.gradle"
+    apply from: "$buildSrcDir/idea.gradle"
 }
 
 configure(warProjects) {
-	apply from: "$scriptDir/war.gradle"
+	apply from: "$buildSrcDir/war.gradle"
 }
