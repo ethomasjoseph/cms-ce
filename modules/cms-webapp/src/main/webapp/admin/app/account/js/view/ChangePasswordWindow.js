@@ -7,22 +7,30 @@ Ext.define( 'App.view.ChangePasswordWindow', {
 
     afterRender: function()
     {
-        var password1 = Ext.ComponentQuery.query( '#newPassword' )[0];
-        password1.getField().on('change', function() {
-            this.enableDisableChangePasswordButton();
-        }, this);
-
-        this.enableDisableChangePasswordButton();
-
-        password1.getField().focus(false, 500);
-
+        this.getPassword1().on( 'change', this.onPasswordChange, this );
+        this.getPassword2().on( 'change', this.onPasswordChange, this );
         this.callParent( arguments );
+    },
+
+    afterLayout: function ()
+    {
+        // Need to reset the gui each time the window is displayed
+        this.getPassword1().setValue('');
+        this.getPassword2().setValue('');
+        this.down( '#validationLabel' ).update({text:''});
+        this.enableDisableChangePasswordButton();
+        this.getPassword1().focus( false, 500 );
+    },
+
+    onPasswordChange: function()
+    {
+        this.enableDisableChangePasswordButton();
+        this.checkForPasswordMatch();
     },
 
     initComponent: function()
     {
         var me = this;
-
         this.items = [
             {
                 xtype: 'form',
@@ -33,11 +41,7 @@ Ext.define( 'App.view.ChangePasswordWindow', {
                 bodyCls: 'cms-no-border',
                 layout: 'anchor',
                 defaults: {
-                    allowBlank: false,
-                    listeners: {
-                        change: this.enableDisableChangePasswordButton,
-                        scope: this
-                    }
+                    allowBlank: false
                 },
                 items: [
                     {
@@ -48,18 +52,34 @@ Ext.define( 'App.view.ChangePasswordWindow', {
                         cls: 'cms-glowing-item',
                         passwordInputName: 'newPassword',
                         anchor: '100%',
-                        width: 260,
+                        width: 195,
                         allowBlank: false
                     },
                     {
-                        fieldLabel: 'Confirm Password',
-                        xtype: 'textfield',
-                        inputType: 'password',
-                        name: 'newPassword2',
-                        itemId: 'newPassword2',
-                        submitValue: false,
-                        width: 365,
-                        allowBlank: false
+                        xtype: 'container',
+                        layout: {
+                            type: 'hbox'
+                        },
+                        items: [
+                            {
+                                fieldLabel: 'Confirm Password',
+                                xtype: 'textfield',
+                                inputType: 'password',
+                                name: 'newPassword2',
+                                itemId: 'newPassword2',
+                                submitValue: false,
+                                width: 300,
+                                allowBlank: false
+                            },
+                            {
+                                itemId: 'validationLabel',
+                                tpl: '<div class="validationError">{text}</div> ',
+                                data: {text: ''},
+                                width: 120,
+                                cls: 'cms-validation-label',
+                                margin: '0 0 0 5'
+                            }
+                        ]
                     },
                     {
                         margin: '0 0 10px 105px',
@@ -110,18 +130,54 @@ Ext.define( 'App.view.ChangePasswordWindow', {
         this.callParent( arguments );
     },
 
+    testPasswordsAreEmpty: function ( password1value, password2value )
+    {
+        return password1value.length === 0 || password2value.length === 0;
+    },
+
+    testPasswordsAreEqual: function( password1value, password2value )
+    {
+        var areEqual = password1value === password2value;
+        return !this.testPasswordsAreEmpty( password1value, password2value ) && areEqual;
+    },
+
+    checkForPasswordMatch: function()
+    {
+        var password1value = this.getPassword1().getValue();
+        var password2value = this.getPassword2().getValue();
+        var validationLabel = this.down( '#validationLabel' );
+
+        if ( this.testPasswordsAreEmpty( password1value, password2value ) )
+        {
+            return;
+        }
+        if ( !this.testPasswordsAreEqual( password1value, password2value ) )
+        {
+            validationLabel.update( {text:'Passwords don\'t match'} );
+        }
+        else
+        {
+            validationLabel.update( {text:''} );
+        }
+    },
+
     enableDisableChangePasswordButton: function()
     {
         var changePasswordButton = Ext.ComponentQuery.query( '#changePasswordButton' )[0];
-        var password1 = Ext.ComponentQuery.query( '#newPassword' )[0];
-        var password2 = Ext.ComponentQuery.query( '#newPassword2' )[0];
-        var password1Value = password1.getValue();
-        var password2Value = password2.getValue();
-        var fieldsHasEqualValues = password1Value === password2Value;
-
-        var enable = (password1Value !== '' && password2Value !== '') && fieldsHasEqualValues;
-
+        var password1value = this.getPassword1().getValue();
+        var password2value = this.getPassword2().getValue();
+        var enable = this.testPasswordsAreEqual( password1value, password2value );
         changePasswordButton.setDisabled( !enable );
+    },
+
+    getPassword1: function()
+    {
+        return Ext.ComponentQuery.query( '#newPassword' )[0].down('textfield');
+    },
+
+    getPassword2: function()
+    {
+        return Ext.ComponentQuery.query( '#newPassword2' )[0];
     }
 
 } );

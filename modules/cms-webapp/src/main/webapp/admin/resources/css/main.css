@@ -9,7 +9,7 @@ body,
 }
 
 .x-form-item-label {
-    font-size: 12px;
+    font-size: 11px;
     color: #333;
 }
 
@@ -607,9 +607,6 @@ img.photo {
 
 .cms-user-info img {
     width: 48px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
 }
 
 .cms-user-info h2 {
@@ -766,8 +763,9 @@ ul.cms-wizard-navigation li a.current.last {
     border: 0 none;
 }
 
-.cms-wizard>div>.x-panel-body,
+.cms-wizard > div > .x-panel-body,
 .cms-glowing-item .x-panel-body,
+.cms-validation-label div,
 .cms-wizard .x-panel-body {
     border: 0 none;
 }
@@ -986,12 +984,12 @@ li.cms-user-item:hover{
 
 .passwordStatus {
     padding-left: 5px;
-    padding-top: 5px;
+    padding-top: 2px;
     font-weight: bold;
 }
 
 .validationError {
-    padding-top: 5px;
+    padding-top: 3px;
     color: #8b0000;
 }
 
