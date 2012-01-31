@@ -25,7 +25,7 @@ Ext.define( 'App.view.wizard.user.UserWizardToolbar', {
                     action: 'saveNewUser',
                     itemId: 'save',
                     disabled: true,
-                    iconCls: 'icon-btn-save-24'
+                    iconCls: 'icon-save-24'
                 }
             ]};
         var deleteBtn = {
