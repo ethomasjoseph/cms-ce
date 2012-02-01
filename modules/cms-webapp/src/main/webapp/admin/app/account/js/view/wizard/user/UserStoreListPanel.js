@@ -4,11 +4,8 @@ Ext.define('App.view.wizard.user.UserStoreListPanel', {
     border: false,
     store: 'UserstoreConfigStore',
 
-    autoScroll: true,
-
     initComponent: function() {
-        var tpl = Templates.account.userstoreRadioButton;
-        this.tpl = tpl;
+        this.tpl = Templates.account.userstoreRadioButton;
         this.itemSelector = 'div.cms-userstore';
         this.callParent(arguments);
     },
