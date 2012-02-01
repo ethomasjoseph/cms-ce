@@ -11,21 +11,19 @@ Ext.define( 'App.view.SelectUserStoreWindow', {
     caller: undefined,
     items: [
         {
-            xtype: 'userStoreListPanel',
-            height: 400
+            xtype: 'userStoreListPanel'
         }
     ],
 
     initComponent: function()
     {
+        // TODO: Why is caller and items set twice?
         this.items = [
         {
             xtype: 'userStoreListPanel',
-            caller: this.caller,
-            height: 400
+            caller: this.caller
         }];
         this.callParent( arguments );
     }
-
 
 });

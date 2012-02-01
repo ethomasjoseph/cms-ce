@@ -988,13 +988,16 @@ li.cms-user-item:hover{
     font-weight: bold;
 }
 
+.validationInfo,
 .validationError {
     padding-top: 3px;
+}
+
+.validationError {
     color: #8b0000;
 }
 
 .validationInfo {
-    padding-top: 5px;
     color: green;
 }
 

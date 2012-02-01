@@ -10,7 +10,11 @@ Ext.define( 'Common.view.BaseDialogWindow', {
     width: 500,
     modal: true,
     modelData: undefined,
+
     autoHeight: true,
+    maxHeight: 350,
+    autoScroll: true,
+
     cls: 'cms-dialog-window',
     closeAction: 'hide',
     bodyPadding: 10,
@@ -18,7 +22,6 @@ Ext.define( 'Common.view.BaseDialogWindow', {
 
     dialogTitle: 'Base dialog',
     dialogInfoTpl: Templates.common.userInfo,
-
 
     listeners: {
         show: function( cmp )
@@ -43,6 +46,16 @@ Ext.define( 'Common.view.BaseDialogWindow', {
                     firstField.focus();
                 }
             }
+        },
+        resize: function( window )
+        {
+            // Support maxHeight which is not actually supported for Window with autoHeight set to true.
+            if ( this.getHeight() > this.maxHeight )
+            {
+                this.setHeight( this.maxHeight );
+            }
+
+            this.center();
         }
     },
 
