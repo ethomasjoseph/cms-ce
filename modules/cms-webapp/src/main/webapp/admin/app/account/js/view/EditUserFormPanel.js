@@ -86,7 +86,6 @@ Ext.define( 'App.view.EditUserFormPanel', {
                     label: 'E-mail',
                     type: 'email',
                     required: true,
-                    vtype: 'email',
                     remote: false,
                     readonly: false
                 },
@@ -372,7 +371,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
     {
         var validationResultType = 'none';
         var delayValidation = false;
-        if (field.type == 'username')
+        if (field.type == 'username' || field.type == 'email')
         {
             validationResultType = 'detail';
             delayValidation = true;

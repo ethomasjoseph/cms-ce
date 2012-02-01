@@ -37,6 +37,7 @@ Ext.define( 'App.view.UserFormField', {
         };
         me.fieldWidth = {
             'username': 100,
+            'email': 100,
             'initials': 150,
             'birthday': 300,
             'gender': 200,
@@ -258,7 +259,6 @@ Ext.define( 'App.view.UserFormField', {
         {
             textConfig.validator = me.validateUniqueEmail;
             textConfig.validValue = true;
-            textConfig.listeners = {change: me.emailChanged, scope:me};
         }
         return Ext.apply( fieldConfig, textConfig );
     },
@@ -283,8 +283,8 @@ Ext.define( 'App.view.UserFormField', {
     validateUserName: function( value )
     {
         var me = this;
-        var userField = me.up('userFormField');
-        var validationStatus = userField.down('#validationLabel');
+        var parentField = me.up('userFormField');
+        var validationStatus = parentField.down('#validationLabel');
         if ( me.prevValue != value && value !== '' )
         {
             this.prevValue = value;
@@ -332,13 +332,20 @@ Ext.define( 'App.view.UserFormField', {
     validateUniqueEmail: function( value )
     {
         var me = this;
-        if ( (me.prevValue !== value) && (me.pendingServerValidation === true) )
+        var parentField = me.up('userFormField');
+        var validationStatus = parentField.down('#validationLabel');
+        if ( (me.prevValue !== value) && (value != '') )
         {
             me.prevValue = value;
             if ( !Ext.data.validations.email( {}, value ) )
             {
                 // skip server unique-email validation, invalid email format will be triggered
-                return true;
+                validationStatus.update({type: 'error', text: 'Invalid e-mail'});
+                return 'Invalid e-mail';
+            }
+            else
+            {
+                validationStatus.update({type: 'info', text: 'Valid e-mail'});
             }
 
             var userForm = me.up( 'editUserFormPanel' );
@@ -358,16 +365,22 @@ Ext.define( 'App.view.UserFormField', {
                                       var respObj = Ext.decode( response.responseText, true );
                                       if ( respObj.emailInUse )
                                       {
+                                          validationStatus.update({type: 'error', text: 'Not available'});
                                           me.validValue = (respObj.userkey === currentUserKey);
                                       }
                                       else
                                       {
+                                          validationStatus.update({type: 'info', text: 'Available'});
                                           me.validValue = true;
                                       }
-                                      me.pendingServerValidation = false;
                                       me.validate();
                                   }
                               } );
+        }
+        if ( value == '' )
+        {
+            validationStatus.update({type: 'info', text: ''});
+            return true;
         }
         return me.validValue || "A user with this email already exists in the userstore";
     },
