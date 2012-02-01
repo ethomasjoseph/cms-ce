@@ -259,6 +259,7 @@ Ext.define( 'App.view.UserFormField', {
         {
             textConfig.validator = me.validateUniqueEmail;
             textConfig.validValue = true;
+            textConfig.prevValue = fieldConfig.value || '';
         }
         return Ext.apply( fieldConfig, textConfig );
     },
@@ -334,7 +335,7 @@ Ext.define( 'App.view.UserFormField', {
         var me = this;
         var parentField = me.up('userFormField');
         var validationStatus = parentField.down('#validationLabel');
-        if ( me.prevValue && (me.prevValue !== value) && (value != '') )
+        if ( (me.prevValue !== value) && (value != '') )
         {
             if ( !Ext.data.validations.email( {}, value ) )
             {
