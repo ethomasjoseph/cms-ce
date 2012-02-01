@@ -337,6 +337,7 @@ Ext.define( 'App.view.UserFormField', {
         var validationStatus = parentField.down('#validationLabel');
         if ( (me.prevValue !== value) && (value != '') )
         {
+            me.prevValue = value;
             if ( !Ext.data.validations.email( {}, value ) )
             {
                 // skip server unique-email validation, invalid email format will be triggered
@@ -377,7 +378,6 @@ Ext.define( 'App.view.UserFormField', {
                                   }
                               } );
         }
-        me.prevValue = value;
         if ( value == '' )
         {
             validationStatus.update({type: 'info', text: ''});
