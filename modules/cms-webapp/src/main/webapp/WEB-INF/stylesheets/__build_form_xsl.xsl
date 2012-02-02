@@ -197,6 +197,15 @@
                 ++idx;
               </xsl:for-each>
 
+              <xsl:for-each select="//input[@required = 'true' and @type = 'relatedcontent' and @multiple = 'true']">
+                <xsl:text>validatedFields[idx] = new Array("</xsl:text>
+                <xsl:value-of select="display"/>
+                <xsl:text>", "</xsl:text>
+                <xsl:value-of select="@name"/>
+                <xsl:text>_counter", validateRelatedContentCount);</xsl:text>
+                ++idx;
+              </xsl:for-each>
+
               <xsl:for-each select="//input[@required = 'true' and @type = 'dropdown']">
                 <xsl:text>validatedFields[idx] = new Array("</xsl:text>
                 <xsl:value-of select="display"/>
@@ -755,10 +764,7 @@
               var s = textarea[i].className.split(' ');
               var settings = eval(s[1]);
 
-              // Give it a new ID straight away.
-              var ran = Math.random();
-              var id = ran.toString().split('.');
-              var edKey = 'id_' + id[1];
+              var edKey = 'id_' +  ContentFormUtil.getUniqueId();
 
               var editorInitMsg, editorContainer  = null;
               var cmsDiv = newTBody.getElementsByTagName('div');
@@ -1899,7 +1905,7 @@
                       </xsl:attribute>
                     </x:value-of>
                   </x:attribute>
-                  <x:if test="$input-readonly">
+                  <x:if test="$input-readonly = 'true'">
                     <x:attribute name="disabled">disabled</x:attribute>
                   </x:if>
                 </input>
@@ -1908,7 +1914,7 @@
                   <x:with-param name="type" select="'button'"/>
                   <x:with-param name="name" select="'relatedcontent_{$input/@name}'"/>
                   <x:with-param name="image" select="'images/icon_browse.gif'"/>
-                  <x:with-param name="disabled" select="$input-readonly"/>
+                  <x:with-param name="disabled" select="$input-readonly = 'true'"/>
                   <x:with-param name="tooltip" select="'%cmdSelectContent%'"/>
                   <x:with-param name="onclick">
                     <x:value-of select="$select-content-button-onclick"/>
@@ -1922,7 +1928,7 @@
                   </x:with-param>
                   <x:with-param name="image" select="'images/icon_remove.gif'"/>
                   <x:with-param name="type" select="'button'"/>
-                  <x:with-param name="disabled" select="$input-readonly"/>
+                  <x:with-param name="disabled" select="$input-readonly = 'true'"/>
                   <x:with-param name="tooltip" select="'%btnRemoveContent%'"/>
 
                   <x:with-param name="onclick">
@@ -2068,7 +2074,7 @@
                     </x:variable>
 
                     <span>
-                      <x:if test="$input-readonly">
+                      <x:if test="$input-readonly = 'true'">
                         <x:attribute name="class">
                           <x:text>disabled-element</x:text>
                         </x:attribute>
@@ -2090,7 +2096,7 @@
                       </x:with-param>
                       <x:with-param name="image" select="'images/icon_move_up.gif'"/>
                       <x:with-param name="type" select="'button'"/>
-                      <x:with-param name="disabled" select="$input-readonly"/>
+                      <x:with-param name="disabled" select="$input-readonly = 'true'"/>
                       <x:with-param name="tooltip" select="'%altContentMoveUp%'"/>
                       <x:with-param name="onclick">
                         <xsl:text>javaScript:moveRelatedContentUp( this, '</xsl:text>
@@ -2105,7 +2111,7 @@
                       </x:with-param>
                       <x:with-param name="image" select="'images/icon_move_down.gif'"/>
                       <x:with-param name="type" select="'button'"/>
-                      <x:with-param name="disabled" select="$input-readonly"/>
+                      <x:with-param name="disabled" select="$input-readonly = 'true'"/>
                       <x:with-param name="tooltip" select="'%altContentMoveDown%'"/>
                       <x:with-param name="onclick">
                         <xsl:text>javaScript:moveRelatedContentDown( this, '</xsl:text>
@@ -2121,7 +2127,7 @@
                       </x:with-param>
                       <x:with-param name="image" select="'images/icon_remove.gif'"/>
                       <x:with-param name="type" select="'button'"/>
-                      <x:with-param name="disabled" select="$input-readonly"/>
+                      <x:with-param name="disabled" select="$input-readonly = 'true'"/>
                       <x:with-param name="tooltip" select="'%btnRemoveContent%'"/>
 
                       <x:with-param name="onclick">
@@ -2824,8 +2830,8 @@
           </x:call-template>
         </xsl:if>
 
-        <x:variable name="random">
-          <xsl:value-of select="admin:random()"/>
+        <x:variable name="uniqueId">
+          <xsl:value-of select="admin:uniqueId()"/>
         </x:variable>
 
         <div class="radiobutton-group">
@@ -2836,7 +2842,7 @@
             <input type="radio" value="{@value}">
               <x:attribute name="name">
                 <x:text>rb:</x:text>
-                <x:value-of select="substring-after($random, '.')"/>
+                <x:value-of select="$uniqueId"/>
                 <x:text>:</x:text>
                 <xsl:value-of select="$inputname"/>
               </x:attribute>
