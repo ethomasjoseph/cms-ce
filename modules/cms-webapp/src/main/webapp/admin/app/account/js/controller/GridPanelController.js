@@ -83,27 +83,28 @@ Ext.define( 'App.controller.GridPanelController', {
 
     updateActionItems: function()
     {
-        var components2d = [];
-        var editButton = Ext.ComponentQuery.query( '*[action=edit]' );
-        components2d.push( editButton );
-        components2d.push( Ext.ComponentQuery.query( '*[action=showDeleteWindow]' ) );
-        components2d.push( Ext.ComponentQuery.query( '*[action=changePassword]' ) );
-        components2d.push( Ext.ComponentQuery.query( '*[action=viewUser]' ) );
+        var actionItems2d = [];
+        var editButtons = Ext.ComponentQuery.query( '*[action=edit]' );
+        var changePasswordButtons = Ext.ComponentQuery.query( '*[action=changePassword]' );
+        actionItems2d.push( editButtons );
+        actionItems2d.push( changePasswordButtons );
+        actionItems2d.push( Ext.ComponentQuery.query( '*[action=showDeleteWindow]' ) );
+        actionItems2d.push( Ext.ComponentQuery.query( '*[action=viewUser]' ) );
 
-        var items = [];
+        var actionItems = [];
         var selectionCount = this.getPersistentGridSelectionPlugin().getSelectionCount();
         var multipleSelection = selectionCount > 1;
         var disable = selectionCount === 0;
 
-        for ( var i = 0; i < components2d.length; i++ )
+        for ( var i = 0; i < actionItems2d.length; i++ )
         {
-            items = components2d[i];
-            for ( var j = 0; j < items.length; j++ )
+            actionItems = actionItems2d[i];
+            for ( var j = 0; j < actionItems.length; j++ )
             {
-                items[j].setDisabled( disable );
-                if ( multipleSelection && items[j].disableOnMultipleSelection )
+                actionItems[j].setDisabled( disable );
+                if ( multipleSelection && actionItems[j].disableOnMultipleSelection )
                 {
-                    items[j].setDisabled( true );
+                    actionItems[j].setDisabled( true );
                 }
             }
         }
@@ -111,9 +112,13 @@ Ext.define( 'App.controller.GridPanelController', {
         var selection = this.getPersistentGridSelectionPlugin().getSelection();
         if ( selectionCount == 1 )
         {
-            for ( var j = 0; j < editButton.length; j++ )
+            for ( j = 0; j < editButtons.length; j++ )
             {
-                editButton[j].setDisabled( !selection[0].get('isEditable'));
+                editButtons[j].setDisabled( !selection[0].get( 'isEditable' ) );
+            }
+            for ( j = 0; j < changePasswordButtons.length; j++ )
+            {
+                changePasswordButtons[j].setDisabled( selection[0].get( 'type' ) !== 'user' );
             }
         }
     },
