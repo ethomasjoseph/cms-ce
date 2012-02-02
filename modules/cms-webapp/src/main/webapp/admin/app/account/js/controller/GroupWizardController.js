@@ -94,17 +94,20 @@ Ext.define( 'App.controller.GroupWizardController', {
     {
         data['name'] = this.getDisplayNameValue();
         var tab = this.getGroupWizardPanel();
+        var groupWizardPanel = wizard.up( 'groupWizardPanel' );
         var parentApp = parent.mainApp;
-
         var onUpdateGroupSuccess = function() {
+            var isNewGroup = groupWizardPanel.isNewGroup();
+
             if ( tab )
             {
                 tab.close();
             }
             if ( parentApp )
             {
-                parentApp.fireEvent( 'notifier.show', "Group was created",
-                                     "Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.",
+                var notifyTitle = isNewGroup ? 'Group was created' : 'Group was updated';
+                parentApp.fireEvent( 'notifier.show', notifyTitle,
+                                     'Something just happened! Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.',
                                      true );
             }
         };

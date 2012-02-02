@@ -21,7 +21,7 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
     initComponent: function()
     {
         var me = this;
-        var isNew = me.modelData == undefined;
+        var isNew = this.isNewGroup();
         var displayNameValue = isNew ? 'Display name' : me.modelData.displayName;
         var steps = me.getSteps();
         var groupWizardHeader = Ext.create( 'Ext.container.Container', {
@@ -128,6 +128,11 @@ Ext.define( 'App.view.wizard.group.GroupWizardPanel', {
             return [generalStep, membersStep, summaryStep];
         }
 
+    },
+
+    isNewGroup: function()
+    {
+        return this.modelData == undefined;
     },
 
     getData: function()
