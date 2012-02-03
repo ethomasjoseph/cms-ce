@@ -1,9 +1,5 @@
 package com.enonic.cms.core.portal.mvc.controller;
 
-import com.enonic.cms.api.Version;
-import com.enonic.cms.core.portal.livetrace.LivePortalTraceService;
-import com.enonic.cms.core.portal.livetrace.PortalRequestTrace;
-import com.enonic.cms.core.portal.xtrace.JsonSerializer;
 import com.enonic.cms.core.security.InvalidCredentialsException;
 import com.enonic.cms.core.security.SecurityService;
 import com.enonic.cms.core.security.user.QualifiedUsername;
@@ -94,7 +90,6 @@ public class XTraceController
         }
 
         model.put( "userStores", createUserStoreMap() );
-        model.put( "version", Version.getVersion() );
 
         return new ModelAndView( "xtraceAuthenticationPage", model );
     }

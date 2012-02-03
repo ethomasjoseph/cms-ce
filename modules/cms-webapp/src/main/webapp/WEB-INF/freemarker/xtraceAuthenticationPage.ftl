@@ -64,9 +64,6 @@
                     </form>
                 </div>
             </div>
-            <p class="version">
-                CMS ${version}
-            </p>
         </td>
     </tr>
 </table>
