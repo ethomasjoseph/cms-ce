@@ -77,7 +77,7 @@ public class XTraceController
             {
                 authenticateUser( request );
                 HttpSession httpSession = request.getSession( true );
-                httpSession.setAttribute( "X-Trace-Server-Enabled", "true" );
+                httpSession.setAttribute( "X-Trace-Client-Authenticated", "true" );
 
                 response.sendRedirect( (String) request.getAttribute( "xtrace.originalUrl" ) );
 

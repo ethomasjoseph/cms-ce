@@ -35,14 +35,14 @@ public class XTraceInterceptor
 
     private boolean clientIsAuthenticated( HttpServletRequest request )
     {
-        return "true".equals( request.getSession().getAttribute( "X-Trace-Server-Enabled" ) );
+        return "true".equals( request.getSession().getAttribute( "X-Trace-Client-Authenticated" ) );
     }
 
     private void forwardToAuthenticationForm( HttpServletRequest request, HttpServletResponse response )
             throws Exception
     {
         request.setAttribute( "xtrace.originalUrl", request.getRequestURL().toString() );
-        request.getRequestDispatcher( request.getRequestURI() + "/_xtrace/login" ).forward( request, response );
+        request.getRequestDispatcher( request.getRequestURI() + "/_xtrace/authenticate" ).forward( request, response );
     }
 
     public void postHandle( HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView )

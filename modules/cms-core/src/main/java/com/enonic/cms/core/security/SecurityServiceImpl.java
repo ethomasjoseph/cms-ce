@@ -552,7 +552,7 @@ public class SecurityServiceImpl
         while ( attributeNames.hasMoreElements() )
         {
             String attributeName = (String) attributeNames.nextElement();
-            if ( !attributeName.equals( "X-Trace-Server-Enabled" ) )
+            if ( !attributeName.equals( "X-Trace-Client-Authenticated" ) )
             {
                 session.removeAttribute( attributeName );
             }
