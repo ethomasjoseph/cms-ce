@@ -120,9 +120,10 @@ public class XTraceController
         {
             return false;
         }
-        String xtraceAuthentication = request.getParameter( "_xtrace_authentication" );
 
-        if ( "true".equalsIgnoreCase( xtraceAuthentication ) )
+        String userName = request.getParameter( "_xtrace_username" );
+        String password = request.getParameter( "_xtrace_password" );
+        if ( userName != null && password != null )
         {
             return true;
         }
