@@ -72,7 +72,7 @@
 
                     function validateAll(formName) {
 
-                        cms.CodeArea.saveAll();
+                        cms.CodeAreaManager.saveAll();
 
                         var f = document.forms[formName];
 
