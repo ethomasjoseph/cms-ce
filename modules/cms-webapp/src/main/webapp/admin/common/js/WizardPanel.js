@@ -169,9 +169,11 @@ Ext.define( 'Common.WizardPanel', {
         if( !wizard.boundItems ) {
             wizard.boundItems = [];
         }
+        wizard.boundItems.push( wizard.getProgressBar() );
+
         if ( this.showControls ) {
             var controls = this.getDockedComponent('controls');
-            this.boundItems.push( controls.down( '#finish' ) );
+            this.boundItems.push( controls.down( '#next' ) );
         }
 
         if( !wizard.validateItems ) {
@@ -219,10 +221,13 @@ Ext.define( 'Common.WizardPanel', {
             {
                 cmp.onAnimationFinished( item, null );
             }
-            this.getBoundItems = this.getWizardBoundItems;
 
             var itemForm = Ext.isFunction( item.getForm ) ? item.getForm() : undefined;
             if ( itemForm ) {
+                Ext.apply( itemForm, {
+                    onValidityChange: cmp.formOnValidityChange,
+                    _boundItems: undefined
+                });
                 itemForm.on( {
                     'validitychange': cmp.handleValidityChange,
                     'dirtychange': cmp.handleDirtyChange,
@@ -236,14 +241,25 @@ Ext.define( 'Common.WizardPanel', {
 
     },
 
-    getWizardBoundItems: function() {
-        var boundItems = this._boundItems;
-        if ( !boundItems && this.owner.rendered ) {
-            boundItems = this._boundItems = Ext.create('Ext.util.MixedCollection');
-            boundItems.addAll(this.owner.query('[formBind]'));
+    formOnValidityChange: function() {
+        var wizard = this.owner.up( 'wizardPanel' );
+        var boundItems = wizard.getFormBoundItems( this );
+        if ( boundItems && this.owner == wizard.getLayout().getActiveItem() ) {
+            var valid = wizard.isStepValid( this.owner );
+            boundItems.each(function(cmp) {
+                if (cmp.disabled === valid) {
+                    cmp.setDisabled(!valid);
+                }
+            });
+        }
+    },
 
-            var wizard = this.owner.up( 'wizardPanel' );
-            boundItems.addAll( wizard.boundItems );
+    getFormBoundItems: function( form ) {
+        var boundItems = form._boundItems;
+        if ( !boundItems && form.owner.rendered ) {
+            boundItems = form._boundItems = Ext.create('Ext.util.MixedCollection');
+            boundItems.addAll(form.owner.query('[formBind]'));
+            boundItems.addAll( this.boundItems );
         }
         return boundItems;
     },
@@ -390,6 +406,10 @@ Ext.define( 'Common.WizardPanel', {
             if ( this.externalControls ) {
                 // try to update external controls
                 this.updateButtons( this.externalControls );
+            }
+            var newForm = newStep.getForm();
+            if ( newForm ) {
+                newForm.onValidityChange( this.isStepValid( newStep ) );
             }
             return newStep;
         }
