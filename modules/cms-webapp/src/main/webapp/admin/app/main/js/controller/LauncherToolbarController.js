@@ -90,7 +90,11 @@ Ext.define('App.controller.LauncherToolbarController', {
     {
         if ( !window.appLoadMask )
         {
-            window.appLoadMask = new Ext.LoadMask( Ext.getDom( 'main-viewport-center' ), {msg:"Please wait..."} );
+            window.appLoadMask = new Ext.LoadMask( Ext.getDom( 'main-viewport-center' ), {
+                floating: {
+                    shadow: false
+                }
+            } );
         }
 
         window.appLoadMask.show();

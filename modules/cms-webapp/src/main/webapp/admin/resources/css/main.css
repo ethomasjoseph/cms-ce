@@ -48,11 +48,10 @@ body,
 }
 
 .x-mask-msg {
-    background-color: #fafafa;
+    background: none transparent;
     border: none;
-    border-radius: 3px;
     left: 0;
-    padding: 2px;
+    padding: 0;
     position: absolute;
     top: 0;
     z-index: 20001;
@@ -62,9 +61,12 @@ body,
     background: url("../../resources/images/cms-waitsplash.gif") no-repeat 1px 2px;
     border: none !important;
     color: #222222;
+    padding: 10px;
     font: 11px tahoma,arial,verdana,sans-serif;
     height: 70px;
-    padding: 25px 10px 5px 75px;
+    width: 70px;
+    overflow: hidden;
+    text-indent: -80px;
 }
 
 /*----- Generic -----*/
