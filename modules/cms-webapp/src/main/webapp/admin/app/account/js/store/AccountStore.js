@@ -5,6 +5,10 @@ Ext.define( 'App.store.AccountStore', {
 
     pageSize: 50,
     remoteSort: true,
+    sorters: [{
+        property: 'lastModified',
+        direction: 'DESC'
+    }],
     //buffered: true,
     autoLoad: true,
 
