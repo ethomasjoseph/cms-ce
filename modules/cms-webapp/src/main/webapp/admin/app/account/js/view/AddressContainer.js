@@ -19,7 +19,7 @@ Ext.define( 'App.view.AddressContainer', {
         var button = {
             xtype: 'button',
             text: 'Add New Address',
-            action: 'addNewTab',
+            action: 'addNewAddress',
             currentUser: this.currentUser
         };
         var addresses =  this.items;

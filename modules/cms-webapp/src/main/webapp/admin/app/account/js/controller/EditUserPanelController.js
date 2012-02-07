@@ -33,8 +33,8 @@ Ext.define( 'App.controller.EditUserPanelController', {
                 '*[action=closeUserForm]': {
                     click: this.closeUserForm
                 },
-                '*[action=addNewTab]': {
-                    click: this.addNewTab
+                '*[action=addNewAddress]': {
+                    click: this.addNewAddress
                 },
                 '*[action=initValue]': {
                     added: this.initValue
@@ -335,8 +335,14 @@ Ext.define( 'App.controller.EditUserPanelController', {
         field.setValue( formField.fieldValue );
     },
 
-    addNewTab: function( button, event )
+    addNewAddress: function( button, event )
     {
+        var wizardPanel = button.up('wizardPanel');
+        if ( wizardPanel )
+        {
+            wizardPanel.fireEvent( 'dirtychange', wizardPanel, true );
+        }
+
         var tabPanel = button.up( 'addressContainer' );
         var closable = tabPanel.down( 'addressColumn' ).items.getCount() != 0;
         var newTab = this.getEditUserFormPanel().generateAddressPanel( tabPanel.sourceField, closable );
