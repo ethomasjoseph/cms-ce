@@ -242,7 +242,7 @@ Ext.define( 'App.controller.UserWizardController', {
     wizardNext: function( btn, evt )
     {
         var w = this.getWizardPanel();
-        var valid = true
+        var valid = true;
         if ( w.getLayout().getActiveItem().getForm )
         {
             valid = w.getLayout().getActiveItem().getForm().isValid();
