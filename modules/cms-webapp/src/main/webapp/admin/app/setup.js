@@ -5,6 +5,13 @@
         disableCaching: true
     });
 
+    // set the default load mask properties
+    Ext.override(Ext.LoadMask, {
+        floating: {
+            shadow: false
+        }
+    });
+
     function cms_hideLoadMaskOnLoad()
     {
         if (window.addEventListener)
