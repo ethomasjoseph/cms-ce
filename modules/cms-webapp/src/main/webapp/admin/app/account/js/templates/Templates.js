@@ -140,17 +140,60 @@ Templates.account = {
             '</tpl>'
 
     ,userPreviewCommonInfo:
-            '<div class="container"><table><thead><tr>' + '<th>Roles</th></tr></thead><tbody>' + '<tpl for="groups">' +
-                    '<tr><td>{name}</td></tr>' + '</tpl>' + '</tbody></table></div><div class="container"><table><thead>' +
-                    '<tr><th colspan="2">Settings</th></tr></thead><tbody><tr>' +
-                    '<td class="label">Locale:</td><td>{locale}</td></tr><tr>' +
-                    '<td class="label">Country:</td><td>{country}</td></tr><tr>' +
-                    '<td class="label">TimeZone:</td><td>{timezone}</td></tr></tbody></table>' +
-                    '</div><div class="container"><table><thead><tr><th colspan="2">Statistics</th></tr></thead>' +
-                    '<tbody><tr><td class="label">Last login:</td><td>{lastLogged}</td>' +
-                    '</tr><tr><td class="label">Created:</td><td>{created}</td></tr><tr>' +
-                    '<td class="label">Owner of:</td><td>394</td></tr></tbody></table></div>' +
-                    '<div class="container"><table><thead><tr><th>Last position</th></tr></thead></table></div>'
+            '<div class="container">' +
+                '<table>' +
+                    '<thead>' +
+                        '<tr><th>Login Info</th></tr>' +
+                    '</thead>' +
+                    '<tbody>' +
+                        '<tr><td class="label">User Name:</td><td>{username}</td></tr>' +
+                        '<tr><td class="label">E-mail:</td><td>{email}</td></tr>' +
+                    '</tbody>' +
+                '</table>' +
+            '</div>' +
+
+            '<div class="container cms-groups-boxselect">' +
+                '<table>' +
+                    '<thead>' +
+                        '<tr><th>Roles</th></tr>' +
+                    '</thead>' +
+                    '<tbody>' +
+                        '<tpl for="groups">' +
+                            '<tr><td>' +
+                                '<li class="x-boxselect-item cms-{type}-item">' +
+                                    '<div class="x-boxselect-item-text">{qualifiedName}</div>' +
+                                '</li>' +
+                            '</td></tr>' +
+                        '</tpl>' +
+                    '</tbody>' +
+                '</table>' +
+            '</div>' +
+
+            '<div class="container">' +
+                '<table>' +
+                    '<thead>' +
+                        '<tr><th colspan="2">Settings</th></tr>' +
+                    '</thead>' +
+                    '<tbody>' +
+                        '<tr><td class="label">Locale:</td><td>{locale}</td></tr>' +
+                        '<tr><td class="label">Country:</td><td>{country}</td></tr>' +
+                        '<tr><td class="label">TimeZone:</td><td>{timezone}</td></tr>' +
+                    '</tbody>' +
+                '</table>' +
+            '</div>' +
+
+            '<div class="container">' +
+                '<table>' +
+                    '<thead>' +
+                        '<tr><th colspan="2">Statistics</th></tr>' +
+                    '</thead>' +
+                    '<tbody>' +
+                        '<tr><td class="label">Last login:</td><td>{lastLogged}</td></tr>' +
+                        '<tr><td class="label">Created:</td><td>{created}</td></tr>' +
+                        '<tr><td class="label">Owner of:</td><td>394</td></tr>' +
+                    '</tbody>' +
+                '</table>' +
+            '</div>'
 
     ,groupPreviewCommonInfo:
             '<tpl if="type===\'role\'">' +

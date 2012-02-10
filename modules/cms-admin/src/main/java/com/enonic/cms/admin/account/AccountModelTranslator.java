@@ -41,10 +41,14 @@ public final class AccountModelTranslator
         //TODO: not implemented
         model.setCreated( "1998-09-13" );
         List<Map<String, String>> groups = new ArrayList<Map<String, String>>();
+        String qName;
         for ( GroupEntity group : entity.getDirectMemberships() )
         {
             Map<String, String> groupMap = new HashMap<String, String>();
             groupMap.put( "name", group.getDisplayName() );
+            qName = group.getQualifiedName().getUserStoreName();
+            groupMap.put( "qualifiedName", group.getDisplayName() + ( qName != null ? " (" + qName + ")" : "" ) );
+            groupMap.put( "type", group.isBuiltIn()? "role" : "group" );
             groupMap.put( "key", group.getGroupKey().toString() );
             groups.add( groupMap );
         }
