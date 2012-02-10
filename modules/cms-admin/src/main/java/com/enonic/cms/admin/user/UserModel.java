@@ -75,6 +75,8 @@ public final class UserModel
 
     private List<Map<String, String>> groups;
 
+    private List<Map<String, String>> indirectGroups;
+
     @JsonProperty("isEditable")
     private boolean editable;
 
@@ -98,6 +100,14 @@ public final class UserModel
     public void setGroups( List<Map<String, String>> groups )
     {
         this.groups = groups;
+    }
+
+    public List<Map<String, String>> getIndirectGroups() {
+        return indirectGroups;
+    }
+
+    public void setIndirectGroups(List<Map<String, String>> indirectGroups) {
+        this.indirectGroups = indirectGroups;
     }
 
     public String getLastLogged()

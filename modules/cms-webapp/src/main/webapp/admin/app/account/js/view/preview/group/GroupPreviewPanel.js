@@ -61,7 +61,7 @@ Ext.define( 'App.view.preview.group.GroupPreviewPanel', {
                                     {
                                         title: "Memberships",
                                         itemId: 'membershipsTab',
-                                        tpl: Templates.account.previewMemberships,
+                                        tpl: Templates.account.groupPreviewMemberships,
                                         data: this.data
                                     }
                                 ]
