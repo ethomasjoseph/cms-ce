@@ -16,7 +16,6 @@ Ext.define( 'App.view.wizard.group.WizardStepMembersPanel', {
             });
         }
         var membersList = {
-                        fieldLabel: 'Select members',
                         allowBlank: true,
                         minChars: 1,
                         forceSelection : true,
@@ -60,7 +59,16 @@ Ext.define( 'App.view.wizard.group.WizardStepMembersPanel', {
                         labelTpl: '<tpl if="type==\'user\'">{displayName} ({qualifiedName})</tpl>' +
                                   '<tpl if="type!=\'user\'">{name} ({userStore})</tpl>'
                     };
-        var formItems = []
+        var newGroupButton = {
+            xtype: 'button',
+            action: 'newGroup',
+            iconCls: 'icon-group-add-24',
+            iconAlign: 'left',
+            scale: 'medium',
+            width: 'auto',
+            text: 'New'
+        };
+        var formItems = [];
         if (this.modelData && this.modelData.type === 'role')
         {
             var roleDescription = this.getRoleDescription(this.modelData.name);
@@ -68,12 +76,12 @@ Ext.define( 'App.view.wizard.group.WizardStepMembersPanel', {
                 xtype: 'displayfield',
                 fieldLabel: 'Description',
                 value: roleDescription
-            }
-            formItems = [descriptionItem, membersList];
+            };
+            formItems = [descriptionItem, membersList, newGroupButton];
         }
         else
         {
-            formItems = [membersList];
+            formItems = [membersList, newGroupButton];
         }
         this.items = [
             {
