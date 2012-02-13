@@ -65,12 +65,22 @@ Ext.define( 'App.view.wizard.user.WizardStepMembershipPanel', {
                             },
                             scope: this
                         }
+                    },
+                    {
+                        xtype: 'button',
+                        action: 'newGroup',
+                        iconCls: 'icon-group-add-24',
+                        iconAlign: 'left',
+                        scale: 'medium',
+                        width: 'auto',
+                        text: 'New'
                     }
                 ]
             }
         ];
 
         this.callParent( arguments );
+
         if ( this.groups )
         {
             var selectBox = this.down( 'comboboxselect' );
