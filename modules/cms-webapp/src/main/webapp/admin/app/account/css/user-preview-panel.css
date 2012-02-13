@@ -10,7 +10,7 @@
     padding: 0 15px;
 }
 
-.cms-user-preview-panel .x-fieldset-header .x-fieldset-header-text {
+.cms-user-preview-panel .x-fieldset-header-text {
     color: #555;
     font-weight: bold;
     font-size: 12px;
@@ -158,3 +158,28 @@
 .cms-user-preview-panel .x-panel-body-default {
     border: 0 none;
 }
+
+/*****  Places Tab  *****/
+
+.cms-user-preview-panel .nodata {
+    text-align: center;
+    font-size: 21px;
+    font-weight: normal;
+    color: #ccc;
+    margin: 20px;
+}
+.cms-user-preview-panel .address {
+    margin: 15px;
+}
+.cms-user-preview-panel .address  h3 {
+    margin: 0 15px;
+}
+.cms-user-preview-panel .address .body {
+    padding: 15px;
+    border: 1px solid #ccc;
+    background: #f5f5f5;
+}
+.cms-user-preview-panel .address .body table {
+    margin: 0;
+}
+

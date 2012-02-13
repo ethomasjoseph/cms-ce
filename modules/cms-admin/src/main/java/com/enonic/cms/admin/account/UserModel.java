@@ -43,6 +43,8 @@ public final class UserModel implements AccountModel
 
     private List<Map<String, String>> groups;
 
+    private List<Map<String, String>> indirectGroups;
+
     public List<Map<String, String>> getGroups()
     {
         return groups;
@@ -51,6 +53,16 @@ public final class UserModel implements AccountModel
     public void setGroups( List<Map<String, String>> groups )
     {
         this.groups = groups;
+    }
+
+    public List<Map<String, String>> getIndirectGroups()
+    {
+        return indirectGroups;
+    }
+
+    public void setIndirectGroups(List<Map<String, String>> indirectGroups)
+    {
+        this.indirectGroups = indirectGroups;
     }
 
     public String getLastLogged()

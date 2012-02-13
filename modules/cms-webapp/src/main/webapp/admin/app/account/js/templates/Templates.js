@@ -127,7 +127,7 @@ Templates.account = {
             '<div class="container">' + '<h1>{displayName}</h1><div><span>{userStore}\\\\{name}</span>' +
                     '<span class="email">&nbsp;{email}</span></div></div>'
 
-    ,previewMemberships:
+    ,groupPreviewMemberships:
             '<tpl for="members">' +
                 '<div class="clearfix cms-member-preview-el x-boxselect-item">' +
                     '<div class="cms-left">' +
@@ -137,6 +137,75 @@ Templates.account = {
                         '<tpl if="type!=\'user\'">{name} ({userStore})</tpl></span>' +
                     '</div>' +
                 '</div><br>' +
+            '</tpl>'
+
+    ,userPreviewMemberships:
+
+            '<tpl if="(groups == null || groups.length == 0) && (indirectGroups == null || indirectGroups.length == 0)">' +
+                '<h2 class="nodata">No data</h2>' +
+            '</tpl>' +
+
+            '<tpl if="groups != null && groups.length &gt; 0">' +
+                '<fieldset class="x-fieldset x-fieldset-default cms-groups-boxselect">' +
+                    '<legend class="x-fieldset-header x-fieldset-header-default">' +
+                        '<div class="x-component x-fieldset-header-text x-component-default">Member Of</div>' +
+                    '</legend>' +
+                    '<table><tbody>' +
+                        '<tpl for="groups">' +
+                            '<tr><td>' +
+                                '<li class="x-boxselect-item cms-{type}-item">' +
+                                    '<div class="x-boxselect-item-text">{qualifiedName}</div>' +
+                                '</li>' +
+                            '</td></tr>' +
+                        '</tpl>' +
+                    '</tbody></table>' +
+                '</fieldset>' +
+            '</tpl>' +
+
+            '<tpl if="indirectGroups != null && indirectGroups.length &gt; 0">' +
+                '<fieldset class="x-fieldset x-fieldset-default cms-groups-boxselect">' +
+                    '<legend class="x-fieldset-header x-fieldset-header-default">' +
+                        '<div class="x-component x-fieldset-header-text x-component-default">Indirect Member Of</div>' +
+                    '</legend>' +
+                    '<table><tbody>' +
+                        '<tpl for="indirectGroups">' +
+                            '<tr><td>' +
+                                '<li class="x-boxselect-item cms-{type}-item">' +
+                                    '<div class="x-boxselect-item-text">{qualifiedName}</div>' +
+                                '</li>' +
+                            '</td></tr>' +
+                        '</tpl>' +
+                    '</tbody></table>' +
+                '</fieldset>' +
+            '</tpl>'
+
+    ,userPreviewPlaces:
+            '<tpl if="userInfo == null || userInfo.addresses == null || userInfo.addresses.length == 0">' +
+                '<h2 class="nodata">No data</h2>' +
+            '</tpl>' +
+
+            '<tpl if="userInfo != null && userInfo.addresses != null && userInfo.addresses.length &gt; 0">' +
+                '<fieldset class="x-fieldset x-fieldset-default cms-addresses-container">' +
+                    '<legend class="x-fieldset-header x-fieldset-header-default">' +
+                        '<div class="x-component x-fieldset-header-text x-component-default">Addresses</div>' +
+                    '</legend>' +
+                    '<tpl for="userInfo.addresses">' +
+                        '<div class="address">' +
+                            '<tpl if="label != null">' +
+                                '<h3 class="x-fieldset-header-text">{label}</h3>' +
+                            '</tpl>' +
+                            '<div class="body">' +
+                                '<table><tbody>' +
+                                    '<tr><td class="label">Street:</td><td>{street}</td></tr>' +
+                                    '<tr><td class="label">Postal Code:</td><td>{postalCode}</td></tr>' +
+                                    '<tr><td class="label">Postal Address:</td><td>{postalAddress}</td></tr>' +
+                                    '<tr><td class="label">Country:</td><td>{country}</td></tr>' +
+                                    '<tr><td class="label">Region:</td><td>{region}</td></tr>' +
+                                '</tbody></table>' +
+                            '</div>' +
+                        '</div>' +
+                    '</tpl>' +
+                '</fieldset>' +
             '</tpl>'
 
     ,userPreviewCommonInfo:

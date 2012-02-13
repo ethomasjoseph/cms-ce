@@ -67,7 +67,7 @@ Ext.define( 'App.view.preview.user.UserPreviewPanel', {
                         margin: 5
                     },
                     {
-                        columnWidth: 1,
+                        columnWidth: .99,
                         cls: 'center',
                         xtype: 'panel',
                         defaults: {
@@ -99,11 +99,15 @@ Ext.define( 'App.view.preview.user.UserPreviewPanel', {
                                     },
                                     {
                                         title: "Places",
-                                        html: 'Places'
+                                        itemId: 'placesTab',
+                                        tpl: Templates.account.userPreviewPlaces,
+                                        data: this.data
                                     },
                                     {
                                         title: "Memberships",
-                                        html: 'Memberships'
+                                        itemId: 'membershipsTab',
+                                        tpl: Templates.account.userPreviewMemberships,
+                                        data: this.data
                                     },
                                     {
                                         title: "Advanced",
@@ -172,6 +176,12 @@ Ext.define( 'App.view.preview.user.UserPreviewPanel', {
 
             var profileTab = this.down( '#profileTab' );
             profileTab.update( this.generateProfileData( data ) );
+
+            var membershipsTab = this.down( '#membershipsTab' );
+            membershipsTab.update( data );
+
+            var placesTab = this.down( '#placesTab' );
+            placesTab.update( data );
         }
     }
 

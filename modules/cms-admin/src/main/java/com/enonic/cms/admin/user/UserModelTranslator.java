@@ -61,15 +61,25 @@ public final class UserModelTranslator
         model.setLastLogged( "01-01-2001" );
         //TODO: not implemented
         model.setCreated( "13-09-1998" );
+        String qName;
         List<Map<String, String>> groups = new ArrayList<Map<String, String>>();
-        for ( GroupEntity group : entity.getDirectMemberships() )
+        List<Map<String, String>> indirectGroups = new ArrayList<Map<String, String>>();
+        for ( GroupEntity group : entity.getAllMemberships() )
         {
             Map<String, String> groupMap = new HashMap<String, String>();
             groupMap.put( "name", group.getDisplayName() );
+            qName = group.getQualifiedName().getUserStoreName();
+            groupMap.put( "qualifiedName", group.getDisplayName() + ( qName != null ? " (" + qName + ")" : "" ) );
+            groupMap.put( "type", group.isBuiltIn()? "role" : "group" );
             groupMap.put( "key", group.getGroupKey().toString() );
-            groups.add( groupMap );
+            if ( entity.isMemberOf( group, false ) ) {
+                groups.add( groupMap );
+            } else {
+                indirectGroups.add( groupMap );
+            }
         }
         model.setGroups( groups );
+        model.setIndirectGroups( indirectGroups );
         if ( entity.getUserStore() != null )
         {
             model.setUserStore( entity.getUserStore().getName() );
