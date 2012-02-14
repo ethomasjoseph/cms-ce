@@ -246,52 +246,52 @@ img.photo {
 /*----- Icons -----*/
 
 .icon-user {
-    background-image: url("../icons/16x16/user.png");
+    background-image: url("../images/icons/16x16/user.png");
 }
 
 .icon-new-user {
-    background-image: url("../icons/16x16/user_add.png");
+    background-image: url("../images/icons/16x16/user_add.png");
 }
 
 .icon-edit-user {
-    background-image: url("../icons/16x16/user_edit.png");
+    background-image: url("../images/icons/16x16/user_edit.png");
 }
 
 .icon-user-24 {
-    background-image: url("../icons/24x24/user.png");
+    background-image: url("../images/icons/24x24/user.png");
 }
 
 .icon-add-24 {
-    background-image: url("../icons/24x24/user_add.png");
+    background-image: url("../images/icons/24x24/user_add.png");
 }
 
 .icon-new-group {
-    background-image: url("../icons/16x16/group_add.png");
+    background-image: url("../images/icons/16x16/group_add.png");
 }
 
 .icon-edit-group {
-    background-image: url("../icons/16x16/group_edit.png");
+    background-image: url("../images/icons/16x16/group_edit.png");
 }
 
 .icon-group {
-    background-image: url("../icons/16x16/group.png");
+    background-image: url("../images/icons/16x16/group.png");
 }
 
 .icon-role {
-    background-image: url("../icons/16x16/masks.png");
+    background-image: url("../images/icons/16x16/masks.png");
 }
 
 .icon-edit-user-24 {
-    background-image: url("../icons/24x24/edit.png");
+    background-image: url("../images/icons/24x24/edit.png");
 }
 
 .icon-delete-user {
-    background-image: url("../icons/16x16/delete.png");
+    background-image: url("../images/icons/16x16/delete.png");
     background-position: center;
 }
 
 .icon-delete-user-24 {
-    background-image: url("../icons/24x24/garbage_delete.png");
+    background-image: url("../images/icons/24x24/garbage_delete.png");
 }
 
 .icon-change-password {
@@ -351,7 +351,7 @@ img.photo {
 }
 
 .icon-delete {
-    background-image: url("../icons/16x16/delete.png");
+    background-image: url("../images/icons/16x16/delete.png");
 }
 
 .icon-new {
@@ -375,7 +375,7 @@ img.photo {
 }
 
 .icon-question-mark-32 {
-    background: url("../../ext/resources/themes/images/default/shared/icon-question.gif") no-repeat;
+    background: url("../lib/ext/resources/themes/images/default/shared/icon-question.gif") no-repeat;
 }
 
 .icon-link {
@@ -810,7 +810,7 @@ ul.cms-wizard-navigation li a.current.last {
 
 .cms-wizard-header-container .x-form-invalid-field {
     background-color: white;
-    background-image: url('../../ext/resources/themes/images/default/grid/invalid_line.gif');
+    background-image: url('../lib/ext/resources/themes/images/default/grid/invalid_line.gif');
     background-repeat: repeat-x;
     background-position: bottom;
     border-color: #C30;
@@ -910,27 +910,27 @@ ul.cms-wizard-navigation li a.current.last {
 }
 
 li.cms-group-item {
-    background: url("../icons/16x16/group.png") no-repeat 3px 3px #DEE7F8;
+    background: url("../images/icons/16x16/group.png") no-repeat 3px 3px #DEE7F8;
 }
 
 li.cms-group-item:hover{
-    background: url("../icons/16x16/group.png") no-repeat 3px 3px #BBCEF1 !important;
+    background: url("../images/icons/16x16/group.png") no-repeat 3px 3px #BBCEF1 !important;
 }
 
 li.cms-role-item {
-    background: url("../icons/16x16/masks.png") no-repeat 3px 3px #DEE7F8;
+    background: url("../images/icons/16x16/masks.png") no-repeat 3px 3px #DEE7F8;
 }
 
 li.cms-role-item:hover{
-    background: url("../icons/16x16/masks.png") no-repeat 3px 3px #BBCEF1 !important;
+    background: url("../images/icons/16x16/masks.png") no-repeat 3px 3px #BBCEF1 !important;
 }
 
 li.cms-user-item {
-    background: url("../icons/16x16/user.png") no-repeat 3px 3px #DEE7F8;
+    background: url("../images/icons/16x16/user.png") no-repeat 3px 3px #DEE7F8;
 }
 
 li.cms-user-item:hover{
-    background: url("../icons/16x16/user.png") no-repeat 3px 3px #BBCEF1 !important;
+    background: url("../images/icons/16x16/user.png") no-repeat 3px 3px #BBCEF1 !important;
 }
 
 .cms-cursor-clickable {
