@@ -97,7 +97,7 @@
     padding: 10px 35px;
     font-weight: bold;
     font-size: 15px;
-    background: url(/admin/resources/icons/32x32/user.png) no-repeat;
+    background: url(/main/webapp/admin/resources/images/icons/32x32/user.png) no-repeat;
 }
 
 .cms-user-preview-panel li.group-el {
@@ -106,7 +106,7 @@
     padding: 10px 35px;
     font-weight: bold;
     font-size: 15px;
-    background: url(/admin/resources/icons/32x32/group.png) no-repeat;
+    background: url(/main/webapp/admin/resources/images/icons/32x32/group.png) no-repeat;
 }
 
 /*****  Tabs strip  *****/

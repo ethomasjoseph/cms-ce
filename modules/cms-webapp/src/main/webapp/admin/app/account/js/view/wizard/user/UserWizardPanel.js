@@ -32,7 +32,7 @@ Ext.define( 'App.view.wizard.user.UserWizardPanel', {
         var displayNameValue = 'Display Name';
         if ( me.userFields )
         {
-            photoUrl = me.hasPhoto ? 'data/user/photo?key=' + me.userFields.key : 'resources/icons/256x256/dummy-user.png';
+            photoUrl = me.hasPhoto ? 'data/user/photo?key=' + me.userFields.key : 'resources/images/icons/256x256/dummy-user.png';
             userGroups = me.userFields.groups;
             displayNameValue = me.userFields.displayName;
         }

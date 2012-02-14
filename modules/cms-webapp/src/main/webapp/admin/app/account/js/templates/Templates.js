@@ -41,7 +41,7 @@ Templates.account = {
                     '<div id="selected-item-box-{key}" class="cms-selected-item-box large x-btn-default-large clearfix">' +
                     '<div class="left">' +
                     '<tpl if="hasPhoto"><img alt="User" src="data/user/photo?key={key}&thumb=true" alt="{displayName}"/></tpl>' +
-                    '<tpl if="(!hasPhoto) && type===\'user\'"><img alt="User" src="resources/icons/256x256/dummy-user.png" alt="{displayName}"/></tpl>' +
+                    '<tpl if="(!hasPhoto) && type===\'user\'"><img alt="User" src="resources/images/icons/256x256/dummy-user.png" alt="{displayName}"/></tpl>' +
                     '<tpl if="type===\'group\'"><img src="resources/icons/256x256/group.png" alt="{displayName}"/></tpl>' +
                     '<tpl if="type===\'role\'"><img src="resources/icons/256x256/masks.png" alt="{displayName}"/></tpl>' +
                     '</div>' +
@@ -55,7 +55,7 @@ Templates.account = {
                     '<div id="selected-item-box-{key}" class="cms-selected-item-box small x-btn-default-small clearfix">' +
                     '<div class="cms-selected-item-box left">' +
                     '<tpl if="hasPhoto"><img alt="User" src="data/user/photo?key={key}&thumb=true" alt="{displayName}"/></tpl>' +
-                    '<tpl if="(!hasPhoto) && type===\'user\'"><img alt="User" src="resources/icons/256x256/dummy-user.png" alt="{displayName}"/></tpl>' +
+                    '<tpl if="(!hasPhoto) && type===\'user\'"><img alt="User" src="resources/images/icons/256x256/dummy-user.png" alt="{displayName}"/></tpl>' +
                     '<tpl if="type===\'group\'"><img alt="Group" src="resources/icons/256x256/group.png" alt="{displayName}"/></tpl>' +
                     '<tpl if="type===\'role\'"><img alt="Group" src="resources/icons/256x256/masks.png" alt="{displayName}"/></tpl>' +
                     '</div>' +
@@ -68,7 +68,7 @@ Templates.account = {
             '<div id="cms-user-preview" class="clearfix cms-user-preview"><div class="west cms-left">' +
                     '<div class="photo-placeholder">' +
                     '<tpl if="hasPhoto"><img src="data/user/photo?key={key}" alt="{displayName}"/></tpl>' +
-                    '<tpl if="(!hasPhoto) && type===\'user\'"><img src="resources/icons/256x256/dummy-user.png" alt="{displayName}"/></tpl>' +
+                    '<tpl if="(!hasPhoto) && type===\'user\'"><img src="resources/images/icons/256x256/dummy-user.png" alt="{displayName}"/></tpl>' +
                     '<tpl if="type===\'group\'"><img src="resources/icons/256x256/group.png" alt="{displayName}"/></tpl>' +
                     '<tpl if="type===\'role\'"><img src="resources/icons/256x256/masks.png" alt="{displayName}"/></tpl>' +
                     '</div>' +
@@ -118,7 +118,7 @@ Templates.account = {
             '<div class="west cms-left">' +
                     '<div class="photo-placeholder">' +
                     '<tpl if="hasPhoto"><img src="data/user/photo?key={key}" alt="{displayName}"/></tpl>' +
-                    '<tpl if="(!hasPhoto) && type===\'user\' && (!builtIn)"><img src="resources/icons/256x256/dummy-user.png" alt="{displayName}"/></tpl>' +
+                    '<tpl if="(!hasPhoto) && type===\'user\' && (!builtIn)"><img src="resources/images/icons/256x256/dummy-user.png" alt="{displayName}"/></tpl>' +
                     '<tpl if="type===\'group\'"><img src="resources/icons/256x256/group.png" alt="{displayName}"/></tpl>' +
                     '<tpl if="type===\'role\' || builtIn===true"><img src="resources/icons/256x256/masks.png" alt="{displayName}"/></tpl>' +
                     '</div></div>'
