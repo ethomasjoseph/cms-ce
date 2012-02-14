@@ -1,0 +1,108 @@
+<html>
+<head>
+    <title>Enonic CMS Admin</title>
+    <link rel="stylesheet" type="text/css" href="../../ext/resources/css/ext-all.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/main.css">
+    <style type="text/css">
+        /* TODO: Better / more robust selectors? */
+        .x-grid-cell-last {
+            padding-left: 5px;
+        }
+        .added .x-grid-cell-last {
+            background-color: #e0edd4;
+        }
+        .modified .x-grid-cell-last {
+            background-color: #d2e3fe;
+        }
+        .removed .x-grid-cell-last {
+            background-color: #ffdbd9;
+        }
+    </style>
+    <script type="text/javascript" src="../../ext/ext-all-debug.js"></script>
+    <script type="text/javascript" src="summary-data.js"></script>
+    <script type="text/javascript">
+        Ext.Loader.setConfig(
+            {
+                enabled: true
+            }
+        );
+
+
+        Ext.define('Summary', {
+            extend: 'Ext.data.Model',
+            fields:[
+                {name: 'field', type: 'string'},
+                {name: 'value', type: 'string'},
+                {name: 'changeType', type: 'string'}
+            ]
+        });
+
+
+        var store = Ext.create('Ext.data.TreeStore', {
+            model: 'Summary',
+            root: summaryData
+        });
+
+
+        var tree = Ext.create('Ext.tree.Panel', {
+            height: 300,
+            renderTo: Ext.getBody(),
+            border: false,
+            useArrows: true,
+            rootVisible: false,
+            store: store,
+            multiSelect: false,
+            singleExpand: false,
+            columns: [
+                {
+                    xtype: 'treecolumn',
+                    text: 'Field',
+                    flex: 1,
+                    sortable: true,
+                    dataIndex: 'field'
+                },
+                {
+                    text: 'Value',
+                    flex: 5,
+                    dataIndex: 'value',
+                    sortable: true
+                }
+            ],
+            viewConfig: {
+                getRowClass: function(record, index) {
+                    return record.get('changeType');
+                }
+            }
+
+        });
+
+
+        Ext.application(
+            {
+                name: 'App',
+                controllers: [
+                ],
+                launch: function() {
+                    Ext.create('Ext.container.Viewport', {
+                        layout: 'border',
+                        padding: 5,
+                        items: [
+                            {
+                                region: 'center',
+                                xtype: 'panel',
+                                autoScroll: true,
+                                items: [
+                                    tree
+                                ]
+                            }
+                        ]
+                    });
+                }
+            });
+    </script>
+
+</head>
+<body>
+
+</body>
+</html>
