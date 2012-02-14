@@ -48,5 +48,5 @@ templates-index ul li {
 .cms-question {
     width: 32px;
     height: 32px;
-    background: TRANSPARENT url("../../../ext/resources/themes/images/default/shared/icon-question.gif") no-repeat;
+    background: TRANSPARENT url("../../../resources/lib/ext/resources/themes/images/default/shared/icon-question.gif") no-repeat;
 }

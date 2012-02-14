@@ -375,7 +375,7 @@ img.photo {
 }
 
 .icon-question-mark-32 {
-    background: url("../../ext/resources/themes/images/default/shared/icon-question.gif") no-repeat;
+    background: url("../lib/ext/resources/themes/images/default/shared/icon-question.gif") no-repeat;
 }
 
 .icon-link {
@@ -810,7 +810,7 @@ ul.cms-wizard-navigation li a.current.last {
 
 .cms-wizard-header-container .x-form-invalid-field {
     background-color: white;
-    background-image: url('../../ext/resources/themes/images/default/grid/invalid_line.gif');
+    background-image: url('../lib/ext/resources/themes/images/default/grid/invalid_line.gif');
     background-repeat: repeat-x;
     background-position: bottom;
     border-color: #C30;
