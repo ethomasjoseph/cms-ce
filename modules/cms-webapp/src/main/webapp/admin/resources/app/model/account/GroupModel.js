@@ -1,4 +1,4 @@
-Ext.define( 'App.model.GroupModel', {
+Ext.define( 'Cms.model.account.GroupModel', {
     extend: 'Ext.data.Model',
 
     fields: [

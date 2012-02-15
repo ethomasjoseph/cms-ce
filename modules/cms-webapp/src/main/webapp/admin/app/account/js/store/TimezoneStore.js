@@ -1,7 +1,7 @@
 Ext.define('App.store.TimezoneStore', {
     extend: 'Ext.data.Store',
 
-    model: 'App.model.TimezoneModel',
+    model: 'Cms.model.account.TimezoneModel',
 
     pageSize: 50,
     autoLoad: true,

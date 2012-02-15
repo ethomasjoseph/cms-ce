@@ -1,7 +1,7 @@
 Ext.define('App.store.CountryStore', {
     extend: 'Ext.data.Store',
 
-    model: 'App.model.CountryModel',
+    model: 'Cms.model.account.CountryModel',
 
     //pageSize: 100,
     autoLoad: true,

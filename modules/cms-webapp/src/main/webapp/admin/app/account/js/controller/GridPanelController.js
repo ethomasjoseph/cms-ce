@@ -6,7 +6,7 @@ Ext.define( 'App.controller.GridPanelController', {
         'AccountStore'
     ],
     models: [
-        'AccountModel'
+        'Cms.model.account.AccountModel'
     ],
     views: [
         'BrowseToolbar',

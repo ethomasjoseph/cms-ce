@@ -1,4 +1,4 @@
-Ext.define('App.model.RegionModel', {
+Ext.define('Cms.model.account.RegionModel', {
     extend: 'Ext.data.Model',
 
     fields: [

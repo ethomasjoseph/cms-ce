@@ -9,11 +9,11 @@ Ext.define( 'App.controller.UserWizardController', {
         'LocaleStore'
     ],
     models: [
-        'UserstoreConfigModel',
-        'CountryModel',
-        'RegionModel',
-        'TimezoneModel',
-        'LocaleModel'
+        'Cms.model.account.UserstoreConfigModel',
+        'Cms.model.account.CountryModel',
+        'Cms.model.account.RegionModel',
+        'Cms.model.account.TimezoneModel',
+        'Cms.model.account.LocaleModel'
     ],
     views: [],
 

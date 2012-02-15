@@ -1,6 +1,6 @@
 Ext.define('App.store.UserstoreConfigStore', {
     extend: 'Ext.data.Store',
-    model: 'App.model.UserstoreConfigModel',
+    model: 'Cms.model.account.UserstoreConfigModel',
     pageSize: 100,
     autoLoad: true,
 

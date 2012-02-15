@@ -1,4 +1,4 @@
-Ext.define('App.model.LanguageModel', {
+Ext.define('Cms.model.account.LanguageModel', {
     extend: 'Ext.data.Model',
 
     fields: [

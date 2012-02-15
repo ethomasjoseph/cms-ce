@@ -1,7 +1,7 @@
 Ext.define('App.store.RegionStore', {
     extend: 'Ext.data.Store',
 
-    model: 'App.model.RegionModel',
+    model: 'Cms.model.account.RegionModel',
 
     //pageSize: 100,
     autoLoad: false,

@@ -1,7 +1,7 @@
 Ext.define('App.store.LocaleStore', {
     extend: 'Ext.data.Store',
 
-    model: 'App.model.LocaleModel',
+    model: 'Cms.model.account.LocaleModel',
 
     pageSize: 50,
     autoLoad: true,

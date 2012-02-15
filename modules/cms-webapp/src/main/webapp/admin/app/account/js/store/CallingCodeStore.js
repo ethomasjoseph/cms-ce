@@ -1,7 +1,7 @@
 Ext.define( 'App.store.CallingCodeStore', {
     extend: 'Ext.data.Store',
 
-    model: 'App.model.CallingCodeModel',
+    model: 'Cms.model.account.CallingCodeModel',
 
     autoLoad: true,
 

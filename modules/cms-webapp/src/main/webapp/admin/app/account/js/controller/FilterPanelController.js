@@ -6,7 +6,7 @@ Ext.define( 'App.controller.FilterPanelController', {
         'UserstoreConfigStore'
     ],
     models: [
-        'AccountModel'
+        'Cms.model.account.AccountModel'
     ],
     views: [],
 

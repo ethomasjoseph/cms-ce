@@ -1,4 +1,4 @@
-Ext.define('App.model.UserstoreConfigModel', {
+Ext.define('Cms.model.account.UserstoreConfigModel', {
     extend: 'Ext.data.Model',
 
     idProperty: 'id',

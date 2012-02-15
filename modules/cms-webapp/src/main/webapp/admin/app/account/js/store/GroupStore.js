@@ -1,7 +1,7 @@
 Ext.define('App.store.GroupStore', {
     extend: 'Ext.data.Store',
 
-    model: 'App.model.GroupModel',
+    model: 'Cms.model.account.GroupModel',
 
     remoteFilter: true,
     //autoLoad: true,

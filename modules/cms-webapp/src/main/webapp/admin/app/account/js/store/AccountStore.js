@@ -1,7 +1,7 @@
 Ext.define( 'App.store.AccountStore', {
     extend: 'Ext.data.Store',
 
-    model: 'App.model.AccountModel',
+    model: 'Cms.model.account.AccountModel',
 
     pageSize: 50,
     remoteSort: true,

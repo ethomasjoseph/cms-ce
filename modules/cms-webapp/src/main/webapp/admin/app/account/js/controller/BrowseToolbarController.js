@@ -6,8 +6,8 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         'CallingCodeStore'
     ],
     models: [
-        'GroupModel',
-        'CallingCodeModel'
+        'Cms.model.account.GroupModel',
+        'Cms.model.account.CallingCodeModel'
     ],
     views: [
         'ChangePasswordWindow',
