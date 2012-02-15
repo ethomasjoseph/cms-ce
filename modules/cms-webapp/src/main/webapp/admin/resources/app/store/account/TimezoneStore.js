@@ -1,18 +1,18 @@
-Ext.define('App.store.LocaleStore', {
+Ext.define('Cms.store.account.TimezoneStore', {
     extend: 'Ext.data.Store',
 
-    model: 'Cms.model.account.LocaleModel',
+    model: 'Cms.model.account.TimezoneModel',
 
     pageSize: 50,
     autoLoad: true,
 
     proxy: {
         type: 'ajax',
-        url: 'data/misc/locale/list',
+        url: 'data/misc/timezone/list',
         simpleSortMode: true,
         reader: {
             type: 'json',
-            root: 'locales',
+            root: 'timezones',
             totalProperty : 'total'
         }
     }

@@ -1,4 +1,4 @@
-Ext.define('App.store.LanguageStore', {
+Ext.define('Cms.store.account.LanguageStore', {
     extend: 'Ext.data.Store',
 
     model: 'Cms.model.account.LanguageModel',

@@ -1,4 +1,4 @@
-Ext.define( 'App.store.CallingCodeStore', {
+Ext.define( 'Cms.store.account.CallingCodeStore', {
     extend: 'Ext.data.Store',
 
     model: 'Cms.model.account.CallingCodeModel',

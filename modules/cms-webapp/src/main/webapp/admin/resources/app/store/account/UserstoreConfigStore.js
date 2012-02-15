@@ -1,4 +1,4 @@
-Ext.define('App.store.UserstoreConfigStore', {
+Ext.define('Cms.store.account.UserstoreConfigStore', {
     extend: 'Ext.data.Store',
     model: 'Cms.model.account.UserstoreConfigModel',
     pageSize: 100,

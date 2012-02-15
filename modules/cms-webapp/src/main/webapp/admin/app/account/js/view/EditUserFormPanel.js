@@ -52,7 +52,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
     defaultUserStoreName: 'default',
     enableToolbar: true,
 
-    store: 'UserstoreConfigStore',
+    store: 'Cms.store.account.UserstoreConfigStore',
 
     initComponent: function()
     {
@@ -262,7 +262,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
 
     createAutoCompleteField: function ( field )
     {
-        var callingCodeStore = Ext.data.StoreManager.lookup( 'CallingCodeStore' );
+        var callingCodeStore = Ext.data.StoreManager.lookup( 'Cms.store.account.CallingCodeStore' );
         var f = {
             xtype: 'userFormField',
             type: 'autocomplete',
@@ -290,7 +290,7 @@ Ext.define( 'App.view.EditUserFormPanel', {
 
         if ( field.type == 'timezone' )
         {
-            fieldStore = Ext.data.StoreManager.lookup( 'TimezoneStore' );
+            fieldStore = Ext.data.StoreManager.lookup( 'Cms.store.account.TimezoneStore' );
             valueField = 'id';
             displayField = 'humanizedIdAndOffset';
             displayConfig = {
@@ -323,22 +323,22 @@ Ext.define( 'App.view.EditUserFormPanel', {
 
         } else if ( field.type == 'locale' )
         {
-            fieldStore = Ext.data.StoreManager.lookup( 'LocaleStore' );
+            fieldStore = Ext.data.StoreManager.lookup( 'Cms.store.account.LocaleStore' );
             valueField = 'id';
             displayField = 'displayName';
         } else if ( field.type == 'country' )
         {
-            fieldStore = Ext.data.StoreManager.lookup( 'CountryStore' );
+            fieldStore = Ext.data.StoreManager.lookup( 'Cms.store.account.CountryStore' );
             valueField = 'code';
             displayField = 'englishName';
         } else if ( field.type == 'region' )
         {
-            fieldStore = new App.store.RegionStore();
+            fieldStore = Ext.create( 'Cms.store.account.RegionStore' );
             valueField = 'code';
             displayField = 'englishName';
         } else if ( field.type == 'locale' )
         {
-            fieldStore = Ext.data.StoreManager.lookup( 'LanguageStore' );
+            fieldStore = Ext.data.StoreManager.lookup( 'Cms.store.account.LanguageStore' );
             valueField = 'languageCode';
             displayField = 'description';
         } else if ( field.type == 'gender' )

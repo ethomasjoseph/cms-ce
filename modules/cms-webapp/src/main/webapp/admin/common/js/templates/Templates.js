@@ -15,12 +15,12 @@ Templates.common = {
     ,userInfo:
             '<div><div class="cms-user-info clearfix"><div class="cms-user-photo cms-left">' +
             '<tpl if="type===\'user\' && builtIn===false">' +
-            '<img alt="User" src="data/user/photo?key={key}&thumb=true&def=admin/resources%2Ficons%2F256x256%2Fdummy-user.png"/></tpl>' +
+            '<img alt="User" src="data/user/photo?key={key}&thumb=true&def=admin/resources%2Fimages%2Ficons%2F256x256%2Fdummy-user.png"/></tpl>' +
             '<tpl if="type===\'group\'">' +
-            '<img src="resources/icons/256x256/group.png" alt="{displayName}"/>' +
+            '<img src="resources/images/icons/256x256/group.png" alt="{displayName}"/>' +
             '</tpl>' +
             '<tpl if="type===\'role\' || builtIn===true">' +
-            '<img src="resources/icons/256x256/masks.png" alt="{displayName}"/>' +
+            '<img src="resources/images/icons/256x256/masks.png" alt="{displayName}"/>' +
             '</tpl></div>' +
             '<div class="cms-left"><h2>{displayName}</h2>({qualifiedName})<br/>' +
             '<a href="mailto:{email}:">{email}</a></div></div></div>'

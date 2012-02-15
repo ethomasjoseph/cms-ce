@@ -11,7 +11,7 @@ Ext.define( 'App.view.GridPanel', {
     multiSelect: true,
     columnLines: true,
     frame: false,
-    store: 'AccountStore',
+    store: 'Cms.store.account.AccountStore',
 
     initComponent: function()
     {
@@ -97,7 +97,7 @@ Ext.define( 'App.view.GridPanel', {
         else
         {
             photoUrl = !account.builtIn && account.type === 'user' ? 'resources/images/icons/256x256/dummy-user.png' :
-                    account.builtIn ? 'resources/icons/256x256/masks.png'  : 'resources/icons/256x256/group.png';
+                    account.builtIn ? 'resources/images/icons/256x256/masks.png'  : 'resources/images/icons/256x256/group.png';
         }
         return Ext.String.format( Templates.account.gridPanelNameRenderer, photoUrl, value, account.name, account.userStore );
     },

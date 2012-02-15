@@ -2,8 +2,8 @@ Ext.define( 'App.controller.BrowseToolbarController', {
     extend: 'Ext.app.Controller',
 
     stores: [
-        'GroupStore',
-        'CallingCodeStore'
+        'Cms.store.account.GroupStore',
+        'Cms.store.account.CallingCodeStore'
     ],
     models: [
         'Cms.model.account.GroupModel',

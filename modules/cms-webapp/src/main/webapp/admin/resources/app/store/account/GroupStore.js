@@ -1,4 +1,4 @@
-Ext.define('App.store.GroupStore', {
+Ext.define('Cms.store.account.GroupStore', {
     extend: 'Ext.data.Store',
 
     model: 'Cms.model.account.GroupModel',

@@ -1,4 +1,4 @@
-Ext.define('App.store.CountryStore', {
+Ext.define('Cms.store.account.CountryStore', {
     extend: 'Ext.data.Store',
 
     model: 'Cms.model.account.CountryModel',

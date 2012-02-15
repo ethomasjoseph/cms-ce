@@ -3,7 +3,7 @@ Ext.define( 'App.controller.GridPanelController', {
 
     requires: ['App.util.AccountKeyMap'],
     stores: [
-        'AccountStore'
+        'Cms.store.account.AccountStore'
     ],
     models: [
         'Cms.model.account.AccountModel'

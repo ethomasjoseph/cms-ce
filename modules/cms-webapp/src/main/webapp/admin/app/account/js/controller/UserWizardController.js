@@ -2,11 +2,11 @@ Ext.define( 'App.controller.UserWizardController', {
     extend: 'Ext.app.Controller',
 
     stores: [
-        'UserstoreConfigStore',
-        'CountryStore',
-        'RegionStore',
-        'TimezoneStore',
-        'LocaleStore'
+        'Cms.store.account.UserstoreConfigStore',
+        'Cms.store.account.CountryStore',
+        'Cms.store.account.RegionStore',
+        'Cms.store.account.TimezoneStore',
+        'Cms.store.account.LocaleStore'
     ],
     models: [
         'Cms.model.account.UserstoreConfigModel',

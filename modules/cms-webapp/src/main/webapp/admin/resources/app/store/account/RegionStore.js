@@ -1,4 +1,4 @@
-Ext.define('App.store.RegionStore', {
+Ext.define('Cms.store.account.RegionStore', {
     extend: 'Ext.data.Store',
 
     model: 'Cms.model.account.RegionModel',

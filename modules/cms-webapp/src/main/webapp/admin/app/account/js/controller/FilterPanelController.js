@@ -2,8 +2,8 @@ Ext.define( 'App.controller.FilterPanelController', {
     extend: 'Ext.app.Controller',
 
     stores: [
-        'AccountStore',
-        'UserstoreConfigStore'
+        'Cms.store.account.AccountStore',
+        'Cms.store.account.UserstoreConfigStore'
     ],
     models: [
         'Cms.model.account.AccountModel'
@@ -21,8 +21,8 @@ Ext.define( 'App.controller.FilterPanelController', {
                               click: this.searchFilter
                           }
                       } );
-        this.getStore( 'UserstoreConfigStore' ).on( 'load', this.initFilterPanelUserStoreOptions, this );
-        this.getStore( 'AccountStore' ).on( 'load', this.updateFilterFacets, this );
+        this.getStore( 'Cms.store.account.UserstoreConfigStore' ).on( 'load', this.initFilterPanelUserStoreOptions, this );
+        this.getStore( 'Cms.store.account.AccountStore' ).on( 'load', this.updateFilterFacets, this );
     },
 
     onFilterPanelRender: function()
@@ -55,7 +55,7 @@ Ext.define( 'App.controller.FilterPanelController', {
     {
         this.setBrowseTabActive();
 
-        var usersStore = this.getStore('AccountStore');
+        var usersStore = this.getStore('Cms.store.account.AccountStore');
         var textField = this.getFilterTextField();
         var userStoreField = this.getFilterUserStoreField();
         var accountTypeField = this.getFilterAccountTypeField();

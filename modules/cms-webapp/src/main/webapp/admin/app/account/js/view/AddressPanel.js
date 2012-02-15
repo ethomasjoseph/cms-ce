@@ -36,8 +36,8 @@ Ext.define( 'App.view.AddressPanel', {
         var countryField, regionField;
         if ( this.iso )
         {
-            var countryStore = Ext.data.StoreManager.lookup( 'CountryStore' );
-            var regionStore = new App.store.RegionStore();
+            var countryStore = Ext.data.StoreManager.lookup( 'Cms.store.account.CountryStore' );
+            var regionStore = Ext.create( 'Cms.store.account.RegionStore' );
             countryField = {
                 xtype: 'combobox',
                 store: countryStore,

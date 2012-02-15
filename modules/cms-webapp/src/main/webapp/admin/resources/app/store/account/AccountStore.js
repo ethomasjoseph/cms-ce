@@ -1,4 +1,4 @@
-Ext.define( 'App.store.AccountStore', {
+Ext.define( 'Cms.store.account.AccountStore', {
     extend: 'Ext.data.Store',
 
     model: 'Cms.model.account.AccountModel',

@@ -59,7 +59,7 @@ Ext.define( 'App.view.wizard.user.WizardStepLoginInfoPanel', {
                     queryMode: 'local',
                     minChars: 1,
                     emptyText: 'Please select',
-                    fieldStore: Ext.data.StoreManager.lookup( 'CountryStore' ),
+                    fieldStore: Ext.data.StoreManager.lookup( 'Cms.store.account.CountryStore' ),
                     valueField: 'code',
                     displayField: 'englishName'
                 }
