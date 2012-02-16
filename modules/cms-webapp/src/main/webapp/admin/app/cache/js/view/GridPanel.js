@@ -3,7 +3,7 @@ Ext.define( 'App.view.GridPanel', {
     alias : 'widget.systemCacheGrid',
 
     requires: [
-        'Common.PageSizePlugin'
+        'Lib.plugins.PageSizePlugin'
     ],
     title: 'System Caches',
     layout: 'fit',

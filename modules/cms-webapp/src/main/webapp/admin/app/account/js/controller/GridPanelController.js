@@ -1,7 +1,7 @@
 Ext.define( 'App.controller.GridPanelController', {
     extend: 'Ext.app.Controller',
 
-    requires: ['App.util.AccountKeyMap'],
+    requires: ['Cms.view.account.AccountKeyMap'],
     stores: [
         'Cms.store.account.AccountStore'
     ],
@@ -9,10 +9,10 @@ Ext.define( 'App.controller.GridPanelController', {
         'Cms.model.account.AccountModel'
     ],
     views: [
-        'BrowseToolbar',
-        'FilterPanel',
-        'ShowPanel',
-        'ContextMenu'
+        'Cms.view.account.BrowseToolbar',
+        'Cms.view.account.FilterPanel',
+        'Cms.view.account.ShowPanel',
+        'Cms.view.account.ContextMenu'
     ],
 
     init: function()
@@ -153,7 +153,7 @@ Ext.define( 'App.controller.GridPanelController', {
     {
         var me = this;
         var cmsTabPanel = this.getCmsTabPanel();
-        var keyMap = new App.util.AccountKeyMap( {
+        var keyMap = new Cms.view.account.AccountKeyMap( {
                                                      newMegaMenu: function()
                                                      {
                                                          var activeTab = cmsTabPanel.getActiveTab();

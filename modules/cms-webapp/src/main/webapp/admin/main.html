@@ -8,14 +8,15 @@
     <script type="text/javascript" src="resources/lib/ext/ext-all.js"></script>
     <script type="text/javascript" src="app/main/js/templates/Templates.js"></script>
     <script type="text/javascript" src="common/js/templates/Templates.js"></script>
-    <script type="text/javascript" src="common/js/date/humane.js"></script>
+    <script type="text/javascript" src="resources/lib/plugins/humane.js"></script>
     <script type="text/javascript">
 
         Ext.Loader.setConfig({
             enabled: true,
             paths: {
                 'App' : 'app/main/js',
-                'Common' : 'common/js'
+                'Common' : 'common/js',
+                'Cms': 'resources/app'
             },
             disableCaching: false
         });

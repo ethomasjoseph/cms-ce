@@ -3,7 +3,7 @@ Ext.define( 'Common.controller.NotifyUserController', {
 
     stores: [],
     models: [],
-    views: [ 'NotifyUserWindow'],
+    views: [ 'Cms.view.NotifyUserWindow'],
 
     init: function()
     {

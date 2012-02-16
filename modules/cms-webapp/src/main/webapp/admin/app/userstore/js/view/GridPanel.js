@@ -3,7 +3,7 @@ Ext.define( 'App.view.GridPanel', {
     alias : 'widget.userstoreGrid',
 
     requires: [
-        'Common.PageSizePlugin'
+        'Lib.plugins.PageSizePlugin'
     ],
 
     layout: 'fit',

@@ -28,13 +28,14 @@
             background-image: url("../../resources/images/delete.png");
         }
     </style>
-    <script type="text/javascript" src="../../common/js/fileupload/plupload/js/plupload.full.js"></script>
+    <script type="text/javascript" src="../../resources/lib/plugins/fileupload/plupload/js/plupload.full.js"></script>
     <script type="text/javascript" src="../../resources/lib/ext/ext-all-debug.js"></script>
     <script type="text/javascript">
         Ext.Loader.setConfig({
             enabled: true,
             paths: {
-                'Common' : '../../common/js'
+                'Common' : '../../common/js',
+                'Lib': '../../resources/lib'
             }
         });
 
@@ -45,8 +46,8 @@
             ],
 
             requires: [
-                'Common.fileupload.PhotoUploadButton',
-                'Common.fileupload.FileUploadGrid'
+                'Lib.plugins.fileupload.PhotoUploadButton',
+                'Lib.plugins.fileupload.FileUploadGrid'
             ],
 
             launch: function() {

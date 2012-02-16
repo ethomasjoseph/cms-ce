@@ -4,7 +4,7 @@ Ext.define('App.view.GridPanel', {
 
     requires: [
         'App.view.Toolbar',
-        'Common.PageSizePlugin'
+        'Lib.plugins.PageSizePlugin'
     ],
     layout: 'fit',
     loadMask: true,

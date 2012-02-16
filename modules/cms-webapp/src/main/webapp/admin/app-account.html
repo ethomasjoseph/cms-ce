@@ -13,7 +13,7 @@
     <script type="text/javascript" src="app/setup.js"></script>
 
     <!-- Third party plugins -->
-    <script type="text/javascript" src="common/js/fileupload/plupload/js/plupload.full.js"></script>
+    <script type="text/javascript" src="resources/lib/plugins/fileupload/plupload/js/plupload.full.js"></script>
 
     <script type="text/javascript">
 
@@ -23,7 +23,8 @@
                 'App' : 'app/account/js',
                 'Common' : 'common/js',
                 'Main' : 'app/main/js',
-                'Cms': 'resources/app'
+                'Cms': 'resources/app',
+                'Lib': 'resources/lib'
             },
             disableCaching: false
         });
@@ -46,7 +47,7 @@
             ],
 
             requires: [
-                'Common.TabPanel'
+                'Cms.view.TabPanel'
             ],
 
             launch: function() {

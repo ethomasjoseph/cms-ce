@@ -10,13 +10,13 @@ Ext.define( 'App.controller.BrowseToolbarController', {
         'Cms.model.account.CallingCodeModel'
     ],
     views: [
-        'ChangePasswordWindow',
-        'DeleteAccountWindow',
-        'wizard.user.UserWizardPanel',
-        'wizard.group.GroupWizardPanel',
-        'preview.user.UserPreviewPanel',
-        'preview.group.GroupPreviewPanel',
-        'ExportAccountsWindow'
+        'Cms.view.account.ChangePasswordWindow',
+        'Cms.view.account.DeleteAccountWindow',
+        'Cms.view.account.wizard.user.UserWizardPanel',
+        'Cms.view.account.wizard.group.GroupWizardPanel',
+        'Cms.view.account.preview.user.UserPreviewPanel',
+        'Cms.view.account.preview.group.GroupPreviewPanel',
+        'Cms.view.account.ExportAccountsWindow'
     ],
 
     init: function()

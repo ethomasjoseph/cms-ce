@@ -4,7 +4,7 @@ Ext.define( 'App.controller.EditUserPanelController', {
     stores: [],
     models: [],
     views: [
-        'SelectUserStoreWindow'
+        'Cms.view.account.SelectUserStoreWindow'
     ],
 
     init: function()
