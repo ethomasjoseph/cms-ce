@@ -1,4 +1,4 @@
-Ext.define( 'App.controller.UserWizardController', {
+Ext.define( 'Cms.controller.account.UserWizardController', {
     extend: 'Ext.app.Controller',
 
     stores: [

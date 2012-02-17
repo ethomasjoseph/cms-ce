@@ -1,4 +1,4 @@
-Ext.define( 'App.controller.BrowseToolbarController', {
+Ext.define( 'Cms.controller.account.BrowseToolbarController', {
     extend: 'Ext.app.Controller',
 
     stores: [
@@ -84,7 +84,7 @@ Ext.define( 'App.controller.BrowseToolbarController', {
 
     showEditUserForm: function( el, e )
     {
-        var ctrl = this.getController( 'EditUserPanelController' );
+        var ctrl = this.getController( 'Cms.controller.account.EditUserPanelController' );
         if ( ctrl )
         {
             var selection;

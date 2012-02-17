@@ -1,4 +1,4 @@
-Ext.define( 'App.controller.DetailPanelController', {
+Ext.define( 'Cms.controller.account.DetailPanelController', {
     extend: 'Ext.app.Controller',
 
     stores: [],

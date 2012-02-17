@@ -1,4 +1,4 @@
-Ext.define( 'App.controller.GridPanelController', {
+Ext.define( 'Cms.controller.account.GridPanelController', {
     extend: 'Ext.app.Controller',
 
     requires: ['Cms.view.account.AccountKeyMap'],
@@ -132,7 +132,7 @@ Ext.define( 'App.controller.GridPanelController', {
 
     showEditUserForm: function( el, e )
     {
-        var ctrl = this.getController( 'EditUserPanelController' );
+        var ctrl = this.getController( 'Cms.controller.account.EditUserPanelController' );
         if ( ctrl )
         {
             var account = this.getAccountDetailPanel().getCurrentAccount();
@@ -142,7 +142,7 @@ Ext.define( 'App.controller.GridPanelController', {
 
     showAccountPreviewPanel: function( el, e )
     {
-        var ctrl = this.getController( 'BrowseToolbarController' );
+        var ctrl = this.getController( 'Cms.controller.account.BrowseToolbarController' );
         if ( ctrl )
         {
             ctrl.showAccountPreviewPanel( el, e );
@@ -185,7 +185,7 @@ Ext.define( 'App.controller.GridPanelController', {
                                                          if ( activeTab.isXType( "groupWizardPanel" ) ||
                                                                  activeTab.isXType( "userWizardPanel" ) )
                                                          {
-                                                             me.getController( "UserWizardController" ).saveNewUser();
+                                                             me.getController( "Cms.controller.account.UserWizardController" ).saveNewUser();
                                                          }
                                                      },
                                                      prevStep: function()
@@ -194,7 +194,7 @@ Ext.define( 'App.controller.GridPanelController', {
                                                          if ( activeTab.isXType( "groupWizardPanel" ) ||
                                                                  activeTab.isXType( "userWizardPanel" ) )
                                                          {
-                                                             me.getController( "UserWizardController" ).wizardPrev();
+                                                             me.getController( "Cms.controller.account.UserWizardController" ).wizardPrev();
                                                          }
                                                      },
                                                      nextStep: function()
@@ -203,7 +203,7 @@ Ext.define( 'App.controller.GridPanelController', {
                                                          if ( activeTab.isXType( "groupWizardPanel" ) ||
                                                                  activeTab.isXType( "userWizardPanel" ) )
                                                          {
-                                                             me.getController( "UserWizardController" ).wizardNext();
+                                                             me.getController( "Cms.controller.account.UserWizardController" ).wizardNext();
                                                          }
                                                      },
                                                      deleteItem: function(keyCode, event)
@@ -211,7 +211,7 @@ Ext.define( 'App.controller.GridPanelController', {
                                                          var activeTab = cmsTabPanel.getActiveTab();
                                                          if ( activeTab.getId() == "tab-browse" )
                                                          {
-                                                             me.getController( "BrowseToolbarController" ).showDeleteAccountWindow();
+                                                             me.getController( "Cms.controller.account.BrowseToolbarController" ).showDeleteAccountWindow();
                                                              event.stopEvent();
                                                          }
                                                      }

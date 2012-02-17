@@ -33,7 +33,7 @@ Ext.define( 'Cms.view.account.BrowseToolbar', {
                                     width: '100%'
                                 }
                             },
-                            url: 'app/account/js/data/accountMenu.json'
+                            url: 'resources/data/accountMenu.json'
                         } )
                     }
                 ]

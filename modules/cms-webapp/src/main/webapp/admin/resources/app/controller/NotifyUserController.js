@@ -1,4 +1,4 @@
-Ext.define( 'Common.controller.NotifyUserController', {
+Ext.define( 'Cms.controller.NotifyUserController', {
     extend: 'Ext.app.Controller',
 
     stores: [],

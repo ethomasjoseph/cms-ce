@@ -4,12 +4,12 @@
     <link rel="stylesheet" type="text/css" href="resources/lib/ext/resources/css/ext-all.css">
     <link rel="stylesheet" type="text/css" href="resources/css/main.css">
     <link rel="stylesheet" type="text/css" href="resources/css/icons.css">
-    <link rel="stylesheet" type="text/css" href="app/account/css/user-preview.css">
-    <link rel="stylesheet" type="text/css" href="app/account/css/user-preview-panel.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/user-preview.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/user-preview-panel.css">
     <link rel="stylesheet" type="text/css" href="resources/css/BoxSelect.css">
     <script type="text/javascript" src="resources/lib/ext/ext-all-debug.js"></script>
-    <script type="text/javascript" src="common/js/templates/Templates.js"></script>
-    <script type="text/javascript" src="app/account/js/templates/Templates.js"></script>
+    <script type="text/javascript" src="resources/app/template/Account.js"></script>
+    <script type="text/javascript" src="resources/app/template/Common.js"></script>
     <script type="text/javascript" src="app/setup.js"></script>
 
     <!-- Third party plugins -->
@@ -34,16 +34,16 @@
             appFolder: 'app/account/js',
 
             controllers: [
-                'GridPanelController',
-                'BrowseToolbarController',
-                'DetailPanelController',
-                'FilterPanelController',
-                'EditUserPanelController',
-                'UserWizardController',
-                'GroupWizardController',
-                'UserPreviewToolbarController',
-                'GroupPreviewToolbarController',
-                'Common.controller.NotifyUserController'
+                'Cms.controller.account.GridPanelController',
+                'Cms.controller.account.BrowseToolbarController',
+                'Cms.controller.account.DetailPanelController',
+                'Cms.controller.account.FilterPanelController',
+                'Cms.controller.account.EditUserPanelController',
+                'Cms.controller.account.UserWizardController',
+                'Cms.controller.account.GroupWizardController',
+                'Cms.controller.account.UserPreviewToolbarController',
+                'Cms.controller.account.GroupPreviewToolbarController',
+                'Cms.controller.NotifyUserController'
             ],
 
             requires: [

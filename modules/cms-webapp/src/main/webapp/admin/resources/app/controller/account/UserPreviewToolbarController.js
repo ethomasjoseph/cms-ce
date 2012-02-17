@@ -1,4 +1,4 @@
-Ext.define( 'App.controller.UserPreviewToolbarController', {
+Ext.define( 'Cms.controller.account.UserPreviewToolbarController', {
     extend: 'Ext.app.Controller',
 
     stores: [],
@@ -22,7 +22,7 @@ Ext.define( 'App.controller.UserPreviewToolbarController', {
 
     deleteAccount: function( el, e )
     {
-        var ctrl = this.getController( 'BrowseToolbarController' );
+        var ctrl = this.getController( 'Cms.controller.account.BrowseToolbarController' );
         if ( ctrl ) {
             ctrl.showDeleteAccountWindow();
         }
@@ -30,7 +30,7 @@ Ext.define( 'App.controller.UserPreviewToolbarController', {
 
     changePassword: function( el, e )
     {
-        var ctrl = this.getController( 'BrowseToolbarController' );
+        var ctrl = this.getController( 'Cms.controller.account.BrowseToolbarController' );
         if ( ctrl ) {
             ctrl.showChangePasswordWindow();
         }
@@ -38,7 +38,7 @@ Ext.define( 'App.controller.UserPreviewToolbarController', {
 
     editUser: function( el, e )
     {
-        var ctrl = this.getController( 'EditUserPanelController' );
+        var ctrl = this.getController( 'Cms.controller.account.EditUserPanelController' );
         if ( ctrl ) {
             var userPreview = this.getCmsTabPanel().getActiveTab();//el.up('userPreviewPanel');
             var index = this.getCmsTabPanel().items.indexOf( userPreview );

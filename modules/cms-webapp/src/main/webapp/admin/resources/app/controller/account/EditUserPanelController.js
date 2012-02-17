@@ -1,4 +1,4 @@
-Ext.define( 'App.controller.EditUserPanelController', {
+Ext.define( 'Cms.controller.account.EditUserPanelController', {
     extend: 'Ext.app.Controller',
 
     stores: [],

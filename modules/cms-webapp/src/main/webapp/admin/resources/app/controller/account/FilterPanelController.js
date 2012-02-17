@@ -1,4 +1,4 @@
-Ext.define( 'App.controller.FilterPanelController', {
+Ext.define( 'Cms.controller.account.FilterPanelController', {
     extend: 'Ext.app.Controller',
 
     stores: [
