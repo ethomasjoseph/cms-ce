@@ -93,7 +93,7 @@
         <xsl:if test="$manual-setup = false()">
           <script type="text/javascript">
             cms.CodeAreaManager.add({
-              id: '<xsl:value-of select="$name"/>',
+              name: '<xsl:value-of select="$name"/>',
               required: '<xsl:value-of select="$required"/>',
               mode: '<xsl:value-of select="$mode"/>',
               readonly: <xsl:value-of select="$readonly"/>,

@@ -685,7 +685,7 @@
                 tabPane1.setSelectedPage('tab-page-5');
 
                 cms.CodeAreaManager.add({
-                  id: 'datasources',
+                  name: 'datasources',
                   required: false,
                   mode: 'xml',
                   readonly: false,

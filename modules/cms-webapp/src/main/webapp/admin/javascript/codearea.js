@@ -1,22 +1,19 @@
 if ( !cms ) var cms = {};
 if ( !cms.CodeAreaManager ) cms.CodeAreaManager = {};
-/*
-    TODO:
-        rename id to name
-*/
+
 cms.CodeAreaManager = {
     editors:[],
 
     add: function ( config )
     {
-        var aceInstance = ace.edit( 'cms_codeArea_' + config.id );
+        var aceInstance = ace.edit( 'cms_codeArea_' + config.name );
         aceInstance.setReadOnly(config.readonly);
 
         this.setMode( aceInstance, config.mode );
 
         this.editors.push({
             ace: aceInstance,
-            id: config.id,
+            name: config.name,
             required: config.required,
 
             getValue: function ()
@@ -31,7 +28,7 @@ cms.CodeAreaManager = {
 
             save: function ()
             {
-                document.getElementById( 'cms_codeArea_textArea_' + config.id ).value = this.getValue();
+                document.getElementById( 'cms_codeArea_textArea_' + config.name ).value = this.getValue();
             }
         });
     },
@@ -40,7 +37,7 @@ cms.CodeAreaManager = {
     {
         for ( var i = 0; i < this.editors.length; i++ )
         {
-            if ( this.editors[i].id === name )
+            if ( this.editors[i].name === name )
             {
                 return this.editors[i];
             }
