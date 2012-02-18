@@ -66,8 +66,11 @@
             <script type="text/javascript" src="tinymce/jscripts/cms/Util.js">//</script>
             <script type="text/javascript" src="tinymce/jscripts/cms/Editor.js">//</script>
             <script type="text/javascript" src="tinymce/jscripts/tiny_mce/tiny_mce.js">//</script>
-            <script type="text/javascript" src="codemirror/js/codemirror.js">//</script>
-            <script type="text/javascript" src="javascript/codearea.js">//</script>
+
+            <!-- CodeArea JavaScript -->
+            <script type="text/javascript" src="ace/src/ace.js" charset="utf-8">//</script>
+            <script type="text/javascript" src="ace/src/mode-xml.js" charset="utf-8">//</script>
+            <script type="text/javascript" src="javascript/codearea.js" charset="utf-8">//</script>
 
             <xsl:call-template name="waitsplash"/>
 
@@ -87,7 +90,7 @@
 				{
 					var f = document.forms[formName];
 
-              f.datasources.value = codeArea_datasources.getCode();
+          cms.CodeAreaManager.saveAll();
 
            // copy editor body to hidden textbox
            if (document.getElementById('type').value == 'document')
@@ -467,7 +470,6 @@
             </script>
 
             <link type="text/css" rel="StyleSheet" href="javascript/tab.webfx.css"/>
-            <link rel="stylesheet" type="text/css" href="css/codearea.css"/>
             <link rel="stylesheet" type="text/css" href="css/admin.css"/>
 
             <body onload="setFocus()">
@@ -1137,7 +1139,8 @@
                         tabPane1.addTabPage( document.getElementById( "tab-page-4" ) );
                         function previewDataSource() {
                           tinyMCE.triggerSave();
-                          document.forms['formAdminDataSource'].datasources.value = codeArea_datasources.getCode();
+
+                          document.forms['formAdminDataSource'].datasources.value = cms.CodeAreaManager.getByName('datasources').getValue();
                           document.forms['formAdminDataSource'].submit();
                         }
                     </script>
@@ -1149,11 +1152,8 @@
                               <xsl:with-param name="name" select="'datasources'"/>
                               <xsl:with-param name="width" select="'100%'"/>
                               <xsl:with-param name="height" select="'380px'"/>
-                              <xsl:with-param name="line-numbers" select="true()"/>
-                              <xsl:with-param name="read-only" select="false()"/>
                               <xsl:with-param name="selectnode" select="$datasources"/>
-                              <xsl:with-param name="buttons" select="'find,replace,indentall,indentselection,gotoline'"/>
-                              <xsl:with-param name="status-bar" select="true()"/>
+                              <xsl:with-param name="manual-setup" select="true()"/>
                             </xsl:call-template>
                           </tr>
                           <tr>
@@ -1192,15 +1192,29 @@
             <script type="text/javascript" language="JavaScript">
                 tabPane1.enablePageClickEvent();
 
-                <xsl:choose>
-                    <xsl:when test="$selectedtabpageid != 'none'">
-                        setupAllTabs();
-                        tabPane1.setSelectedPage("<xsl:value-of select="$selectedtabpageid"/>");
-                    </xsl:when>
-                    <xsl:otherwise>
-                        setupAllTabs();
-                    </xsl:otherwise>
-                </xsl:choose>
+                setupAllTabs();
+
+                /*
+                  CodeArea needs to be visible in order to render correctly
+
+                  Select the datasource tab
+                  Add a codeArea
+                  Select the first (general) tab again.
+                */
+                tabPane1.setSelectedPage('tab-page-4');
+
+                cms.CodeAreaManager.add({
+                  name: 'datasources',
+                  required: false,
+                  mode: 'xml',
+                  readonly: false,
+                });
+
+                tabPane1.setSelectedPage('tab-page-1');
+
+                <xsl:if test="$selectedtabpageid != 'none'">
+                    tabPane1.setSelectedPage("<xsl:value-of select="$selectedtabpageid"/>");
+                </xsl:if>
             </script>
 
     </xsl:template>
