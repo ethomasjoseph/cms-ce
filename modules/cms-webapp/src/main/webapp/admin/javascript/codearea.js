@@ -4,17 +4,13 @@ if ( !cms.CodeAreaManager ) cms.CodeAreaManager = {};
 cms.CodeAreaManager = {
     editors:[],
 
-    create: function ( config )
+    add: function ( config )
     {
-        var ace = ace.edit( 'cms_codeArea_' + config.id );
-        ace.setReadOnly(config.readonly);
+        var aceInstance = ace.edit( 'cms_codeArea_' + config.id );
+        aceInstance.setReadOnly(config.readonly);
 
-        this.setMode( ace, config.mode );
-        this.add( ace, config );
-    },
+        this.setMode( aceInstance, config.mode );
 
-    add: function ( aceInstance, config )
-    {
         this.editors.push({
             ace: aceInstance,
             id: config.id,

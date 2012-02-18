@@ -91,7 +91,7 @@
         <pre id="{$idForPreElement}" style="position: absolute; margin: 0; right:0; width: {$width}; height: {$height};"><xsl:value-of select="$selectnode"/></pre>
 
         <script type="text/javascript">
-          cms.CodeArea.create({
+          cms.CodeAreaManager.add({
             id: '<xsl:value-of select="$name"/>',
             required: '<xsl:value-of select="$required"/>',
             mode: '<xsl:value-of select="$mode"/>',
