@@ -1,6 +1,9 @@
 if ( !cms ) var cms = {};
 if ( !cms.CodeAreaManager ) cms.CodeAreaManager = {};
-
+/*
+    TODO:
+        rename id to name
+*/
 cms.CodeAreaManager = {
     editors:[],
 
@@ -31,6 +34,18 @@ cms.CodeAreaManager = {
                 document.getElementById( 'cms_codeArea_textArea_' + config.id ).value = this.getValue();
             }
         });
+    },
+
+    getByName: function(name)
+    {
+        for ( var i = 0; i < this.editors.length; i++ )
+        {
+            if ( this.editors[i].id === name )
+            {
+                return this.editors[i];
+            }
+        }
+        return null;
     },
 
     setMode: function ( aceInstance, mode )

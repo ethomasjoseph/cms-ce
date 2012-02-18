@@ -61,6 +61,7 @@
     <xsl:param name="height" select="'500px'"/>
     <xsl:param name="mode" select="'xml'"/>
     <xsl:param name="readonly" select="false()"/>
+    <xsl:param name="manual-setup" select="false()"/>
 
     <xsl:variable name="idForTextArea" select="concat('cms_codeArea_textArea_',$name)" />
     <xsl:variable name="idForPreElement" select="concat('cms_codeArea_',$name)" />
@@ -89,16 +90,17 @@
 
         <!-- Editor display -->
         <pre id="{$idForPreElement}" style="position: absolute; margin: 0; right:0; width: {$width}; height: {$height};"><xsl:value-of select="$selectnode"/></pre>
+        <xsl:if test="$manual-setup = false()">
+          <script type="text/javascript">
+            cms.CodeAreaManager.add({
+              id: '<xsl:value-of select="$name"/>',
+              required: '<xsl:value-of select="$required"/>',
+              mode: '<xsl:value-of select="$mode"/>',
+              readonly: <xsl:value-of select="$readonly"/>,
+            });
 
-        <script type="text/javascript">
-          cms.CodeAreaManager.add({
-            id: '<xsl:value-of select="$name"/>',
-            required: '<xsl:value-of select="$required"/>',
-            mode: '<xsl:value-of select="$mode"/>',
-            readonly: <xsl:value-of select="$readonly"/>,
-          });
-
-        </script>
+          </script>
+        </xsl:if>
       </div>
     </td>
   </xsl:template>

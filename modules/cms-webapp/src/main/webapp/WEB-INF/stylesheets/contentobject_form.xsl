@@ -52,17 +52,19 @@
         <html>
             <head>
                 <link rel="stylesheet" type="text/css" href="css/admin.css"/>
-                <link rel="stylesheet" type="text/css" href="css/codearea.css"/>
 
-                <script type="text/javascript" language="JavaScript" src="javascript/admin.js">//</script>
-                <script type="text/javascript" language="JavaScript" src="javascript/validate.js">//</script>
+                <script type="text/javascript" src="javascript/admin.js">//</script>
+                <script type="text/javascript" src="javascript/validate.js">//</script>
                 <script type="text/javascript" src="javascript/tabpane.js">//</script>
                 <script type="text/javascript" src="javascript/accessrights.js">//</script>
                 <script type="text/javascript" src="tinymce/jscripts/cms/Util.js">//</script>
                 <script type="text/javascript" src="tinymce/jscripts/cms/Editor.js">//</script>
                 <script type="text/javascript" src="tinymce/jscripts/tiny_mce/tiny_mce.js">//</script>
-                <script type="text/javascript" src="codemirror/js/codemirror.js">//</script>
-                <script type="text/javascript" src="javascript/codearea.js">//</script>
+
+                <!-- CodeArea JavaScript -->
+                <script type="text/javascript" src="ace/src/ace.js" charset="utf-8">//</script>
+                <script type="text/javascript" src="ace/src/mode-xml.js" charset="utf-8">//</script>
+                <script type="text/javascript" src="javascript/codearea.js" charset="utf-8">//</script>
 
                 <link type="text/css" rel="StyleSheet" href="javascript/tab.webfx.css"/>
 
@@ -77,7 +79,7 @@
                   {
                       var f = document.forms[formName];
 
-                      f.datasources.value = codeArea_datasources.getCode();
+                      cms.CodeAreaManager.saveAll();
 
                       if ( !checkAll(formName, validatedFields) )
                           return;
@@ -605,7 +607,7 @@
 
                     function previewDataSource() {
                       tinyMCE.triggerSave();
-                      document.formAdminDataSource.datasources.value = codeArea_datasources.getCode();
+                      document.formAdminDataSource.datasources.value = cms.CodeAreaManager.getByName('datasources').getValue();
                       document.formAdminDataSource.document.value = document.formAdmin.contentdata_body.value;
                       document.formAdminDataSource.submit();
                     }
@@ -620,11 +622,8 @@
                             <xsl:with-param name="name" select="'datasources'"/>
                             <xsl:with-param name="width" select="'100%'"/>
                             <xsl:with-param name="height" select="'380px'"/>
-                            <xsl:with-param name="line-numbers" select="true()"/>
-                            <xsl:with-param name="read-only" select="false()"/>
                             <xsl:with-param name="selectnode" select="$queryparam"/>
-                            <xsl:with-param name="buttons" select="'find,replace,indentall,indentselection,gotoline'"/>
-                            <xsl:with-param name="status-bar" select="true()"/>
+                            <xsl:with-param name="manual-setup" select="true()"/>
                           </xsl:call-template>
                         </tr>
                         <tr>
@@ -675,6 +674,24 @@
 
             <script type="text/javascript" language="JavaScript">
                 setupAllTabs();
+
+                /*
+                  CodeArea needs to be visible in order to render correctly
+
+                  Select the datasource tab
+                  Add a codeArea
+                  Select the first (general) tab again.
+                */
+                tabPane1.setSelectedPage('tab-page-5');
+
+                cms.CodeAreaManager.add({
+                  id: 'datasources',
+                  required: false,
+                  mode: 'xml',
+                  readonly: false,
+                });
+
+                tabPane1.setSelectedPage('tab-page-1');
 
                 <xsl:if test="$rememberselectedtab != ''">
 
