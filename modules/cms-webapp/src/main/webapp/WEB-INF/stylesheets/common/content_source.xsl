@@ -12,9 +12,10 @@
 
   <xsl:template name="content_source">
 
-    <script type="text/javascript" src="codemirror/js/codemirror.js">//</script>
-    <script type="text/javascript" src="javascript/codearea.js">//</script>
-    <link rel="stylesheet" type="text/css" href="css/codearea.css"/>
+    <!-- CodeArea JavaScript -->
+    <script type="text/javascript" src="ace/src/ace.js" charset="utf-8">//</script>
+    <script type="text/javascript" src="ace/src/mode-xml.js" charset="utf-8">//</script>
+    <script type="text/javascript" src="javascript/codearea.js" charset="utf-8">//</script>
 
     <xsl:if test="/contents/source">
 
@@ -34,13 +35,10 @@
             <tr>
               <xsl:call-template name="codearea">
                 <xsl:with-param name="name" select="'_source_xml_data'"/>
-                <xsl:with-param name="width" select="'100%'"/>
-                <xsl:with-param name="height" select="'300px'"/>
-                <xsl:with-param name="line-numbers" select="true()"/>
                 <xsl:with-param name="read-only" select="true()"/>
+                <xsl:with-param name="height" select="'300px'"/>
                 <xsl:with-param name="selectnode" select="$source/data"/>
-                <xsl:with-param name="buttons" select="''"/>
-                <xsl:with-param name="status-bar" select="false()"/>
+                <xsl:with-param name="manual-setup" select="true()"/>
               </xsl:call-template>
             </tr>
           </table>

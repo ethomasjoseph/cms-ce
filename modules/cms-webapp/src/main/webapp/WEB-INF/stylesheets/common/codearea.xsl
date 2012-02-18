@@ -96,7 +96,7 @@
               name: '<xsl:value-of select="$name"/>',
               required: '<xsl:value-of select="$required"/>',
               mode: '<xsl:value-of select="$mode"/>',
-              readonly: <xsl:value-of select="$readonly"/>,
+              readonly: <xsl:value-of select="$readonly"/>
             });
 
           </script>

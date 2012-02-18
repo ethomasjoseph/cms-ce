@@ -7,7 +7,11 @@ cms.CodeAreaManager = {
     add: function ( config )
     {
         var aceInstance = ace.edit( 'cms_codeArea_' + config.name );
-        aceInstance.setReadOnly(config.readonly);
+        if ( config.readonly )
+        {
+            aceInstance.setReadOnly(true);
+            aceInstance.setHighlightActiveLine(false);
+        }
 
         this.setMode( aceInstance, config.mode );
 

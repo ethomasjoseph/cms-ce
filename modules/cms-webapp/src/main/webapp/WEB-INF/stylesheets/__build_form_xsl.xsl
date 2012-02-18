@@ -1100,6 +1100,24 @@
                     </div>
                     <script type="text/javascript">
                       setupAllTabs();
+
+                      /*
+                        CodeArea needs to be visible in order to render correctly
+
+                        Select the datasource tab
+                        Add a codeArea
+                        Select the first (general) tab again.
+                      */
+                      tabPane1.setSelectedPage('tab-page-source');
+
+                      cms.CodeAreaManager.add({
+                        name: '_source_xml_data',
+                        required: false,
+                        mode: 'xml',
+                        readonly: true,
+                      });
+                      tabPane1.setSelectedPage('tab-page-1');
+
                     </script>
                   </td>
                 </tr>

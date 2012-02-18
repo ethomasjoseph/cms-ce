@@ -1047,3 +1047,7 @@ input.calendar-icon[disabled]
     font-weight: bold;
     text-decoration: underline;
 }
+
+.ace_gutter {
+    background-color: #f7f7f7 !important;
+}
