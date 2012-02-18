@@ -90,10 +90,10 @@
                         </xsl:if>
                     </xsl:for-each>
 
-                    var configTextArea = document.getElementById("config");
-                    if ( configTextArea &amp;&amp; codeArea_config )
+                    var configTextArea = document.getElementById("cms_codeArea_textArea_config");
+                    if ( configTextArea &amp;&amp; cms.CodeAreaManager )
                     {
-                      configTextArea.value = codeArea_config.getCode();
+                      cms.CodeAreaManager.saveAll();
                     }
 
                     return true;

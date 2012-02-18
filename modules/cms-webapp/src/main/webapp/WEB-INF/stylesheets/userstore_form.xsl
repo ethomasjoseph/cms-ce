@@ -86,15 +86,16 @@
       </xsl:call-template>
     </xsl:if>
 
-    <link rel="stylesheet" type="text/css" href="css/codearea.css"/>
-
     <script type="text/javascript">
       var g_number_of_available_connectors = <xsl:value-of select="count($availableConnectors)"/>;
       var g_is_remote = <xsl:value-of select="$remote = 'true'"/>;
     </script>
     <script type="text/javascript" src="javascript/userstore_form.js">//</script>
-    <script type="text/javascript" src="codemirror/js/codemirror.js">//</script>
-    <script type="text/javascript" src="javascript/codearea.js">//</script>
+
+    <!-- CodeArea JavaScript -->
+    <script type="text/javascript" src="ace/src/ace.js" charset="utf-8">//</script>
+    <script type="text/javascript" src="ace/src/mode-xml.js" charset="utf-8">//</script>
+    <script type="text/javascript" src="javascript/codearea.js" charset="utf-8">//</script>
 
     <div class="tab-pane" id="tab-pane-1">
       <script type="text/javascript" language="JavaScript">
@@ -261,11 +262,8 @@
               <xsl:call-template name="codearea">
                 <xsl:with-param name="name" select="'config'"/>
                 <xsl:with-param name="label" select="'%fldConfig%:'"/>
-                <xsl:with-param name="width" select="'100%'"/>
-                <xsl:with-param name="height" select="'380px'"/>
-                <xsl:with-param name="line-numbers" select="true()"/>
                 <xsl:with-param name="selectnode" select="$selectnode"/>
-                <xsl:with-param name="buttons" select="'find, replace, indentall, indentselection, gotoline'"/>
+                <xsl:with-param name="mode" select="'xml'"/>
               </xsl:call-template>
             </tr>
           </table>
