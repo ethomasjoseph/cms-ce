@@ -1,6 +1,8 @@
 Ext.define( 'Cms.view.account.AccountKeyMap', {
     extend: 'Ext.util.KeyMap',
 
+    disableOnMask: true,
+
     constructor: function( actionHandlers )
     {
         var me = this;
@@ -59,9 +61,18 @@ Ext.define( 'Cms.view.account.AccountKeyMap', {
                 ctrl: false,
                 shift: false,
                 alt: false,
+                defaultEventAction: 'stopEvent',
                 fn: actionHandlers.deleteItem
             }
         ]] );
+    },
+
+    checkModifiers: function( binding, e ) {
+        var isMasked = false;
+        if ( this.disableOnMask ) {
+            isMasked = Ext.getDoc().select( 'body.x-body-masked' ).getCount() > 0;
+        }
+        return !isMasked && this.callParent( arguments );
     }
 
 } );

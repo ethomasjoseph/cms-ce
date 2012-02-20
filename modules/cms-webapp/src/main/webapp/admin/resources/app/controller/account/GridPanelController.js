@@ -153,7 +153,7 @@ Ext.define( 'Cms.controller.account.GridPanelController', {
     {
         var me = this;
         var cmsTabPanel = this.getCmsTabPanel();
-        var keyMap = new Cms.view.account.AccountKeyMap( {
+        var keyMap = Ext.create( 'Cms.view.account.AccountKeyMap', {
                                                      newMegaMenu: function()
                                                      {
                                                          var activeTab = cmsTabPanel.getActiveTab();
