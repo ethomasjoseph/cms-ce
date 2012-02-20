@@ -1,70 +1,38 @@
 tinyMCEPopup.requireLangPack();
 tinyMCEPopup.onInit.add(onLoadInit);
 
-var g_codemirror;
+var aceInstance;
 
 function onLoadInit()
 {
     tinyMCEPopup.resizeToInnerSize();
 
-    document.getElementById('htmlSource').value = blockElementsWithNewlines(tinyMCEPopup.editor.getContent());
+    document.getElementById('htmlSource').innerHTML = formatContent(tinyMCEPopup.editor.getContent());
 
-    resizeInputs();
-
-    g_codemirror = CodeMirror.fromTextArea('htmlSource', {
-        lineNumbers: true,
-        textWrapping: true,
-        path: "../../../../../codemirror/js/",
-        tabMode: 'shift',
-        indentUnit: 2,
-        parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js", "parsehtmlmixed.js"],
-        stylesheet: ["../../../../../codemirror/css/cms.xmlcolors.css", "../../../../../codemirror/css/cms.jscolors.css", "../../../../../codemirror/css/cms.csscolors.css"],
-        parserConfig: { useHTMLKludges: true },
-        reindentOnLoad: true
-    });
+    aceInstance = ace.edit( 'htmlSource' );
+    var XmlMode = require( "ace/mode/xml" ).Mode;
+    aceInstance.getSession().setMode( new XmlMode() );
 }
 
-function blockElementsWithNewlines( content )
+function formatContent( content )
 {
-    var contentWithNewlines = content;
+    var c = content;
 
     // P
-    contentWithNewlines     = contentWithNewlines.replace(/(<p(?:\s+[^>]*)?>)/gim, '$1\n');
-    contentWithNewlines     = contentWithNewlines.replace(/<\/p>/gim, '\n</p>');
+    c = c.replace(/(<p(?:\s+[^>]*)?>)/gim, '$1\n\t');
+    c = c.replace(/<\/p>/gim, '\n</p>');
 
     // H1-6
-    contentWithNewlines     = contentWithNewlines.replace(/(<h[1-6].*?>)/gim, '$1\n');
-    contentWithNewlines     = contentWithNewlines.replace(/(<\/h[1-6].*?>)/gim, '\n$1');
+    c = c.replace(/(<h[1-6].*?>)/gim, '$1\n\t');
+    c = c.replace(/(<\/h[1-6].*?>)/gim, '\n$1');
+    c = c.replace(/>/gim, '&gt;');
+    c = c.replace(/</gim, '&lt;');
 
-    return contentWithNewlines;
+    return c;
 }
 
 function saveContent()
 {
-    tinyMCEPopup.editor.setContent(g_codemirror.getCode());
+    tinyMCEPopup.editor.setContent(aceInstance.getSession().getValue());
     tinyMCEPopup.close();
-}
-
-var wHeight = 0, wWidth = 0, owHeight = 0, owWidth = 0;
-
-function resizeInputs()
-{
-    var el = document.getElementsByTagName('iframe')[0] || document.getElementById('htmlSource');
-
-    if ( !el )
-        return;
-
-    if ( !tinymce.isIE )
-    {
-        wHeight = self.innerHeight - 65;
-        //wWidth = self.innerWidth - 16;
-    }
-    else
-    {
-        wHeight = document.body.clientHeight - 70;
-        //wWidth = document.body.clientWidth - 16;
-    }
-
-    el.style.height = Math.abs(wHeight) + 'px';
-    //el.style.width = Math.abs(wWidth) + 'px';
 }
