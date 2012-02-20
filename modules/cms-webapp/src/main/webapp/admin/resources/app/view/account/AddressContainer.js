@@ -1,4 +1,4 @@
-Ext.define( 'Cms.view.account.AddressContainer', {
+Ext.define( 'Admin.view.account.AddressContainer', {
     extend: 'Ext.form.FieldSet',
     alias: 'widget.addressContainer',
 
@@ -10,8 +10,8 @@ Ext.define( 'Cms.view.account.AddressContainer', {
     dropConfig: undefined,
 
     requires: [
-        "Cms.view.account.AddressDropTarget",
-        "Cms.view.account.AddressColumn"
+        "Admin.view.account.AddressDropTarget",
+        "Admin.view.account.AddressColumn"
     ],
 
     initComponent: function()
@@ -44,7 +44,7 @@ Ext.define( 'Cms.view.account.AddressContainer', {
     initEvents: function ()
     {
         this.callParent();
-        this.dd = Ext.create("Cms.view.account.AddressDropTarget", this, this.dropConfig);
+        this.dd = Ext.create("Admin.view.account.AddressDropTarget", this, this.dropConfig);
     },
 
     beforeDestroy: function () {

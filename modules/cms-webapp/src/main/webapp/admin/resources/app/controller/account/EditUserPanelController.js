@@ -1,10 +1,10 @@
-Ext.define( 'Cms.controller.account.EditUserPanelController', {
+Ext.define( 'Admin.controller.account.EditUserPanelController', {
     extend: 'Ext.app.Controller',
 
     stores: [],
     models: [],
     views: [
-        'Cms.view.account.SelectUserStoreWindow'
+        'Admin.view.account.SelectUserStoreWindow'
     ],
 
     init: function()

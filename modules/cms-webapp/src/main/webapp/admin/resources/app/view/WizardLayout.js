@@ -1,4 +1,4 @@
-Ext.define( 'Cms.view.WizardLayout', {
+Ext.define( 'Admin.view.WizardLayout', {
     extend: 'Ext.layout.container.Card',
     alias: 'layout.wizard',
     mixins: ['Ext.util.Animate'],

@@ -1,7 +1,7 @@
-Ext.define('Cms.store.account.GroupStore', {
+Ext.define('Admin.store.account.GroupStore', {
     extend: 'Ext.data.Store',
 
-    model: 'Cms.model.account.GroupModel',
+    model: 'Admin.model.account.GroupModel',
 
     remoteFilter: true,
     //autoLoad: true,

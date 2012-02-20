@@ -1,7 +1,7 @@
-Ext.define('Cms.store.account.TimezoneStore', {
+Ext.define('Admin.store.account.TimezoneStore', {
     extend: 'Ext.data.Store',
 
-    model: 'Cms.model.account.TimezoneModel',
+    model: 'Admin.model.account.TimezoneModel',
 
     pageSize: 50,
     autoLoad: true,

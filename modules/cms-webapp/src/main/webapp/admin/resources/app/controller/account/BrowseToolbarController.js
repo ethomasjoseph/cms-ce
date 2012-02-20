@@ -1,22 +1,22 @@
-Ext.define( 'Cms.controller.account.BrowseToolbarController', {
+Ext.define( 'Admin.controller.account.BrowseToolbarController', {
     extend: 'Ext.app.Controller',
 
     stores: [
-        'Cms.store.account.GroupStore',
-        'Cms.store.account.CallingCodeStore'
+        'Admin.store.account.GroupStore',
+        'Admin.store.account.CallingCodeStore'
     ],
     models: [
-        'Cms.model.account.GroupModel',
-        'Cms.model.account.CallingCodeModel'
+        'Admin.model.account.GroupModel',
+        'Admin.model.account.CallingCodeModel'
     ],
     views: [
-        'Cms.view.account.ChangePasswordWindow',
-        'Cms.view.account.DeleteAccountWindow',
-        'Cms.view.account.wizard.user.UserWizardPanel',
-        'Cms.view.account.wizard.group.GroupWizardPanel',
-        'Cms.view.account.preview.user.UserPreviewPanel',
-        'Cms.view.account.preview.group.GroupPreviewPanel',
-        'Cms.view.account.ExportAccountsWindow'
+        'Admin.view.account.ChangePasswordWindow',
+        'Admin.view.account.DeleteAccountWindow',
+        'Admin.view.account.wizard.user.UserWizardPanel',
+        'Admin.view.account.wizard.group.GroupWizardPanel',
+        'Admin.view.account.preview.user.UserPreviewPanel',
+        'Admin.view.account.preview.group.GroupPreviewPanel',
+        'Admin.view.account.ExportAccountsWindow'
     ],
 
     init: function()
@@ -84,7 +84,7 @@ Ext.define( 'Cms.controller.account.BrowseToolbarController', {
 
     showEditUserForm: function( el, e )
     {
-        var ctrl = this.getController( 'Cms.controller.account.EditUserPanelController' );
+        var ctrl = this.getController( 'Admin.controller.account.EditUserPanelController' );
         if ( ctrl )
         {
             var selection;

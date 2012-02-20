@@ -1,8 +1,8 @@
-Ext.define( 'Cms.view.WizardPanel', {
+Ext.define( 'Admin.view.WizardPanel', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.wizardPanel',
 
-    requires: ['Cms.view.WizardLayout'],
+    requires: ['Admin.view.WizardLayout'],
 
     layout: {
         type: 'wizard',

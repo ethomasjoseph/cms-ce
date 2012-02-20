@@ -1,9 +1,9 @@
-Ext.define( 'Cms.view.account.preview.user.UserPreviewPanel', {
+Ext.define( 'Admin.view.account.preview.user.UserPreviewPanel', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.userPreviewPanel',
     requires: [
-        'Cms.view.account.preview.user.UserPreviewToolbar',
-        'Cms.view.WizardPanel'
+        'Admin.view.account.preview.user.UserPreviewToolbar',
+        'Admin.view.WizardPanel'
     ],
 
     dialogTitle: 'User Preview',
@@ -143,8 +143,8 @@ Ext.define( 'Cms.view.account.preview.user.UserPreviewPanel', {
                 Ext.Array.each( fieldSet.fields, function( field )
                 {
                     var value = userData[field] || (userData.userInfo ? userData.userInfo[field] : undefined);
-                    var title = Cms.view.account.EditUserFormPanel.fieldLabels[field]
-                            ? Cms.view.account.EditUserFormPanel.fieldLabels[field] : field
+                    var title = Admin.view.account.EditUserFormPanel.fieldLabels[field]
+                            ? Admin.view.account.EditUserFormPanel.fieldLabels[field] : field
                     if ( value )
                     {
                         Ext.Array.include( fieldSetData.fields, {title: title, value: value} );

@@ -1,9 +1,9 @@
-Ext.define( 'Cms.controller.NotifyUserController', {
+Ext.define( 'Admin.controller.NotifyUserController', {
     extend: 'Ext.app.Controller',
 
     stores: [],
     models: [],
-    views: [ 'Cms.view.NotifyUserWindow'],
+    views: [ 'Admin.view.NotifyUserWindow'],
 
     init: function()
     {

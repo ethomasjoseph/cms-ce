@@ -1,4 +1,4 @@
-Ext.define( 'Cms.view.account.AccountKeyMap', {
+Ext.define( 'Admin.view.account.AccountKeyMap', {
     extend: 'Ext.util.KeyMap',
 
     disableOnMask: true,

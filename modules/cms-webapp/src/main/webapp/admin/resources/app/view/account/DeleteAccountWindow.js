@@ -1,5 +1,5 @@
-Ext.define( 'Cms.view.account.DeleteAccountWindow', {
-    extend: 'Cms.view.BaseDialogWindow',
+Ext.define( 'Admin.view.account.DeleteAccountWindow', {
+    extend: 'Admin.view.BaseDialogWindow',
     alias: 'widget.deleteAccountWindow',
 
     dialogTitle: 'Delete Account(s)',

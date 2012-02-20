@@ -1,4 +1,4 @@
-Ext.define( 'Cms.view.BaseDialogWindow', {
+Ext.define( 'Admin.view.BaseDialogWindow', {
     extend: 'Ext.window.Window',
     alias: 'widget.baseDialogWindow',
 

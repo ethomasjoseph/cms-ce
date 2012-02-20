@@ -1,4 +1,4 @@
-Ext.define( 'Cms.view.account.AddressPanel', {
+Ext.define( 'Admin.view.account.AddressPanel', {
     extend: 'Ext.form.Panel',
     alias: 'widget.addressPanel',
 
@@ -36,8 +36,8 @@ Ext.define( 'Cms.view.account.AddressPanel', {
         var countryField, regionField;
         if ( this.iso )
         {
-            var countryStore = Ext.data.StoreManager.lookup( 'Cms.store.account.CountryStore' );
-            var regionStore = Ext.create( 'Cms.store.account.RegionStore' );
+            var countryStore = Ext.data.StoreManager.lookup( 'Admin.store.account.CountryStore' );
+            var regionStore = Ext.create( 'Admin.store.account.RegionStore' );
             countryField = {
                 xtype: 'combobox',
                 store: countryStore,

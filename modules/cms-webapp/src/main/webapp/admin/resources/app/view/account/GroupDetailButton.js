@@ -1,4 +1,4 @@
-Ext.define( 'Cms.view.account.GroupDetailButton', {
+Ext.define( 'Admin.view.account.GroupDetailButton', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.groupDetailButton',
 

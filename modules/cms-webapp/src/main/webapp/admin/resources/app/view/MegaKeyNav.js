@@ -1,4 +1,4 @@
-Ext.define('Cms.view.MegaKeyNav', {
+Ext.define('Admin.view.MegaKeyNav', {
     extend: 'Ext.util.KeyNav',
 
     requires: ['Ext.FocusManager'],

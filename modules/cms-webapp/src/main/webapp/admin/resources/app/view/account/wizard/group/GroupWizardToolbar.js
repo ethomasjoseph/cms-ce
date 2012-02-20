@@ -1,4 +1,4 @@
-Ext.define( 'Cms.view.account.wizard.group.GroupWizardToolbar', {
+Ext.define( 'Admin.view.account.wizard.group.GroupWizardToolbar', {
     extend: 'Ext.toolbar.Toolbar',
     alias : 'widget.groupWizardToolbar',
 

@@ -1,5 +1,5 @@
-Ext.define( 'Cms.view.account.ExportAccountsWindow', {
-    extend: 'Cms.view.BaseDialogWindow',
+Ext.define( 'Admin.view.account.ExportAccountsWindow', {
+    extend: 'Admin.view.BaseDialogWindow',
     alias: 'widget.exportAccountsWindow',
 
     dialogTitle: 'Export Accounts',

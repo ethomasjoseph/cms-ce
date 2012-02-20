@@ -1,8 +1,8 @@
-Ext.define( 'Cms.view.MegaMenu', {
+Ext.define( 'Admin.view.MegaMenu', {
     extend: 'Ext.menu.Menu',
     alias: 'megaMenu',
 
-    requires: [ 'Cms.view.MegaKeyNav'],
+    requires: [ 'Admin.view.MegaKeyNav'],
 
     bodyCls: 'cms-mega-menu',
     plain: true,
@@ -85,7 +85,7 @@ Ext.define( 'Cms.view.MegaMenu', {
         this.callParent( arguments );
         if( this.keyNav )
             this.keyNav.destroy();
-        this.keyNav = new Ext.create( 'Cms.view.MegaKeyNav', me );
+        this.keyNav = new Ext.create( 'Admin.view.MegaKeyNav', me );
         this.createItemMap();
     },
 

@@ -1,4 +1,4 @@
-Ext.define( 'Cms.view.account.wizard.user.WizardStepMembershipPanel', {
+Ext.define( 'Admin.view.account.wizard.user.WizardStepMembershipPanel', {
     extend: 'Ext.form.Panel',
     alias : 'widget.wizardStepMembershipPanel',
 
@@ -24,7 +24,7 @@ Ext.define( 'Cms.view.account.wizard.user.WizardStepMembershipPanel', {
                         resizable: false,
                         name: 'memberships',
                         anchor:'100%',
-                        store: 'Cms.store.account.GroupStore',
+                        store: 'Admin.store.account.GroupStore',
                         mode: 'local',
                         displayField: 'name',
                         itemClassResolver: function (values)

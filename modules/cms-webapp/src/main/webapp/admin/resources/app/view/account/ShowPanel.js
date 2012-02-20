@@ -1,11 +1,11 @@
-Ext.define( 'Cms.view.account.ShowPanel', {
+Ext.define( 'Admin.view.account.ShowPanel', {
     extend: 'Ext.panel.Panel',
     alias : 'widget.accountShow',
 
     requires: [
-        'Cms.view.account.BrowseToolbar',
-        'Cms.view.account.GridPanel',
-        'Cms.view.account.DetailPanel'
+        'Admin.view.account.BrowseToolbar',
+        'Admin.view.account.GridPanel',
+        'Admin.view.account.DetailPanel'
     ],
 
     layout: 'border',

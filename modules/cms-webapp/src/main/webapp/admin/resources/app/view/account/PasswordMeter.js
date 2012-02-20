@@ -1,4 +1,4 @@
-Ext.define( 'Cms.view.account.PasswordMeter', {
+Ext.define( 'Admin.view.account.PasswordMeter', {
     extend: 'Ext.form.FieldContainer',
     alias: 'widget.passwordMeter',
 

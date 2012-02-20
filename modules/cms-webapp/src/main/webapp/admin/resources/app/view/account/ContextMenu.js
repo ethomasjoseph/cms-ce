@@ -1,4 +1,4 @@
-Ext.define('Cms.view.account.ContextMenu', {
+Ext.define('Admin.view.account.ContextMenu', {
     extend: 'Ext.menu.Menu',
     alias: 'widget.accountContextMenu',
 

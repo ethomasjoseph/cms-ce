@@ -1,4 +1,4 @@
-Ext.define('Cms.view.account.DetailPanel', {
+Ext.define('Admin.view.account.DetailPanel', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.accountDetail',
     split: true,

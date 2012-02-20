@@ -1,10 +1,10 @@
-Ext.define( 'Cms.view.account.preview.group.GroupPreviewPanel', {
+Ext.define( 'Admin.view.account.preview.group.GroupPreviewPanel', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.groupPreviewPanel',
 
     requires: [
-        'Cms.view.account.preview.group.GroupPreviewToolbar',
-        'Cms.view.WizardPanel'
+        'Admin.view.account.preview.group.GroupPreviewToolbar',
+        'Admin.view.WizardPanel'
     ],
 
     autoWidth: true,

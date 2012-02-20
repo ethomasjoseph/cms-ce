@@ -1,7 +1,7 @@
-Ext.define('Cms.store.account.RegionStore', {
+Ext.define('Admin.store.account.RegionStore', {
     extend: 'Ext.data.Store',
 
-    model: 'Cms.model.account.RegionModel',
+    model: 'Admin.model.account.RegionModel',
 
     //pageSize: 100,
     autoLoad: false,

@@ -1,7 +1,7 @@
-Ext.define('Cms.store.account.LocaleStore', {
+Ext.define('Admin.store.account.LocaleStore', {
     extend: 'Ext.data.Store',
 
-    model: 'Cms.model.account.LocaleModel',
+    model: 'Admin.model.account.LocaleModel',
 
     pageSize: 50,
     autoLoad: true,

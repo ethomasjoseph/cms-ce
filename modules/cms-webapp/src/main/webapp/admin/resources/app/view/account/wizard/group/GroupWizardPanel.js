@@ -1,12 +1,12 @@
-Ext.define( 'Cms.view.account.wizard.group.GroupWizardPanel', {
+Ext.define( 'Admin.view.account.wizard.group.GroupWizardPanel', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.groupWizardPanel',
     requires: [
-        'Cms.view.WizardPanel',
-        'Cms.view.account.wizard.group.GroupWizardToolbar',
-        'Cms.view.account.wizard.group.WizardStepGeneralPanel',
-        'Cms.view.account.wizard.group.WizardStepMembersPanel',
-        'Cms.view.account.wizard.group.WizardStepGroupSummaryPanel'
+        'Admin.view.WizardPanel',
+        'Admin.view.account.wizard.group.GroupWizardToolbar',
+        'Admin.view.account.wizard.group.WizardStepGeneralPanel',
+        'Admin.view.account.wizard.group.WizardStepMembersPanel',
+        'Admin.view.account.wizard.group.WizardStepGroupSummaryPanel'
     ],
 
     layout: 'column',

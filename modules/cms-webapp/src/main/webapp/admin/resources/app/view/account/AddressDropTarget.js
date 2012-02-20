@@ -1,4 +1,4 @@
-Ext.define( 'Cms.view.account.AddressDropTarget', {
+Ext.define( 'Admin.view.account.AddressDropTarget', {
     extend: 'Ext.dd.DropTarget',
 
     requires: [
@@ -15,7 +15,7 @@ Ext.define( 'Cms.view.account.AddressDropTarget', {
     constructor: function (el, config) {
         this.portal = el;
         Ext.dd.ScrollManager.register(el.body);
-        Cms.view.account.AddressDropTarget.superclass.constructor.call(this, el.body, config);
+        Admin.view.account.AddressDropTarget.superclass.constructor.call(this, el.body, config);
         el.body.ddScrollConfig = this.ddScrollConfig
     },
     createEvent: function (source, event, data, colIndex, column, pos) {
@@ -173,6 +173,6 @@ Ext.define( 'Cms.view.account.AddressDropTarget', {
     },
     unreg: function () {
         Ext.dd.ScrollManager.unregister(this.portal.body);
-        Cms.view.account.AddressDropTarget.superclass.unreg.call(this)
+        Admin.view.account.AddressDropTarget.superclass.unreg.call(this)
     }
 });

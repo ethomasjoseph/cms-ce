@@ -1,9 +1,9 @@
-Ext.define( 'Cms.view.account.wizard.user.WizardStepLoginInfoPanel', {
+Ext.define( 'Admin.view.account.wizard.user.WizardStepLoginInfoPanel', {
     extend: 'Ext.form.Panel',
     alias: 'widget.wizardStepLoginInfoPanel',
 
     requires: [
-        'Cms.view.account.UserFormField'
+        'Admin.view.account.UserFormField'
     ],
 
     defaults: {
@@ -59,7 +59,7 @@ Ext.define( 'Cms.view.account.wizard.user.WizardStepLoginInfoPanel', {
                     queryMode: 'local',
                     minChars: 1,
                     emptyText: 'Please select',
-                    fieldStore: Ext.data.StoreManager.lookup( 'Cms.store.account.CountryStore' ),
+                    fieldStore: Ext.data.StoreManager.lookup( 'Admin.store.account.CountryStore' ),
                     valueField: 'code',
                     displayField: 'englishName'
                 }

@@ -1,4 +1,4 @@
-Ext.define( 'Cms.controller.account.GroupPreviewToolbarController', {
+Ext.define( 'Admin.controller.account.GroupPreviewToolbarController', {
     extend: 'Ext.app.Controller',
 
     stores: [],
@@ -19,7 +19,7 @@ Ext.define( 'Cms.controller.account.GroupPreviewToolbarController', {
 
     deleteGroup: function( el, e )
     {
-        var ctrl = this.getController( 'Cms.controller.account.BrowseToolbarController' );
+        var ctrl = this.getController( 'Admin.controller.account.BrowseToolbarController' );
         if ( ctrl ) {
             ctrl.showDeleteAccountWindow();
         }
@@ -27,7 +27,7 @@ Ext.define( 'Cms.controller.account.GroupPreviewToolbarController', {
 
     editGroup: function( el, e )
     {
-        var ctrl = this.getController( 'Cms.controller.account.EditUserPanelController' );
+        var ctrl = this.getController( 'Admin.controller.account.EditUserPanelController' );
         if ( ctrl ) {
             var groupPreview = this.getCmsTabPanel().getActiveTab();//el.up('groupPreviewPanel');
             var index = this.getCmsTabPanel().items.indexOf( groupPreview );

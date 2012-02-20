@@ -1,6 +1,6 @@
-Ext.define('Cms.store.account.UserstoreConfigStore', {
+Ext.define('Admin.store.account.UserstoreConfigStore', {
     extend: 'Ext.data.Store',
-    model: 'Cms.model.account.UserstoreConfigModel',
+    model: 'Admin.model.account.UserstoreConfigModel',
     pageSize: 100,
     autoLoad: true,
 

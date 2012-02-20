@@ -1,4 +1,4 @@
-Ext.define( 'Cms.view.account.BrowseToolbar', {
+Ext.define( 'Admin.view.account.BrowseToolbar', {
     extend: 'Ext.toolbar.Toolbar',
     alias : 'widget.browseToolbar',
 
@@ -25,7 +25,7 @@ Ext.define( 'Cms.view.account.BrowseToolbar', {
                         action: 'newUser',
                         iconCls: 'icon-add-24',
                         cls: 'x-btn-as-arrow',
-                        menu: Ext.create( 'Cms.view.MegaMenu', {
+                        menu: Ext.create( 'Admin.view.MegaMenu', {
                             maxColumns: 1,
                             itemId: "newItemMenu",
                             tableAttrs: {

@@ -1,19 +1,19 @@
-Ext.define( 'Cms.controller.account.UserWizardController', {
+Ext.define( 'Admin.controller.account.UserWizardController', {
     extend: 'Ext.app.Controller',
 
     stores: [
-        'Cms.store.account.UserstoreConfigStore',
-        'Cms.store.account.CountryStore',
-        'Cms.store.account.RegionStore',
-        'Cms.store.account.TimezoneStore',
-        'Cms.store.account.LocaleStore'
+        'Admin.store.account.UserstoreConfigStore',
+        'Admin.store.account.CountryStore',
+        'Admin.store.account.RegionStore',
+        'Admin.store.account.TimezoneStore',
+        'Admin.store.account.LocaleStore'
     ],
     models: [
-        'Cms.model.account.UserstoreConfigModel',
-        'Cms.model.account.CountryModel',
-        'Cms.model.account.RegionModel',
-        'Cms.model.account.TimezoneModel',
-        'Cms.model.account.LocaleModel'
+        'Admin.model.account.UserstoreConfigModel',
+        'Admin.model.account.CountryModel',
+        'Admin.model.account.RegionModel',
+        'Admin.model.account.TimezoneModel',
+        'Admin.model.account.LocaleModel'
     ],
     views: [],
 

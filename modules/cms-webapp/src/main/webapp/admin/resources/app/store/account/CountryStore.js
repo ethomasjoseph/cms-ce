@@ -1,7 +1,7 @@
-Ext.define('Cms.store.account.CountryStore', {
+Ext.define('Admin.store.account.CountryStore', {
     extend: 'Ext.data.Store',
 
-    model: 'Cms.model.account.CountryModel',
+    model: 'Admin.model.account.CountryModel',
 
     //pageSize: 100,
     autoLoad: true,

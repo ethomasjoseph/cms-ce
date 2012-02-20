@@ -4,7 +4,7 @@ Ext.define('App.view.LauncherToolbar', {
     id: 'app-launcher-toolbar',
 
     requires: ['App.view.LoggedInUserButton',
-                'Cms.view.MegaMenu'],
+                'Admin.view.MegaMenu'],
 
     height: 42,
 
@@ -34,7 +34,7 @@ Ext.define('App.view.LauncherToolbar', {
             xtype: 'button',
             scale: 'medium',
             text: 'Dashboard',
-            menu: Ext.create( 'Cms.view.MegaMenu', {
+            menu: Ext.create( 'Admin.view.MegaMenu', {
                 maxColumns: 6,
                 url: 'app/main/data/megaMenu.json'
             } )

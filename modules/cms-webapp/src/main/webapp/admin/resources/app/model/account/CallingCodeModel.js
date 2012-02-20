@@ -1,4 +1,4 @@
-Ext.define('Cms.model.account.CallingCodeModel', {
+Ext.define('Admin.model.account.CallingCodeModel', {
     extend: 'Ext.data.Model',
 
     fields: [

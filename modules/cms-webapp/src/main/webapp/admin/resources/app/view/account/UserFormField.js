@@ -1,8 +1,8 @@
-Ext.define( 'Cms.view.account.UserFormField', {
+Ext.define( 'Admin.view.account.UserFormField', {
     extend: 'Ext.form.FieldContainer',
     alias: 'widget.userFormField',
 
-    requires: ['Cms.view.account.PasswordMeter'],
+    requires: ['Admin.view.account.PasswordMeter'],
 
     layout: {
         type: 'hbox'

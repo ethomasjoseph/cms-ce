@@ -1,4 +1,4 @@
-Ext.define('Cms.model.account.UserFieldModel', {
+Ext.define('Admin.model.account.UserFieldModel', {
     extend: 'Ext.data.Model',
     fields: [{name: 'id', type: 'int'},
         {name: 'userstore_id', type: 'int'},

@@ -1,7 +1,7 @@
-Ext.define( 'Cms.store.account.CallingCodeStore', {
+Ext.define( 'Admin.store.account.CallingCodeStore', {
     extend: 'Ext.data.Store',
 
-    model: 'Cms.model.account.CallingCodeModel',
+    model: 'Admin.model.account.CallingCodeModel',
 
     autoLoad: true,
 

@@ -1,4 +1,4 @@
-Ext.define('Cms.model.account.TimezoneModel', {
+Ext.define('Admin.model.account.TimezoneModel', {
     extend: 'Ext.data.Model',
 
     fields: [

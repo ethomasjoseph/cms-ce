@@ -1,8 +1,8 @@
-Ext.define( 'Cms.view.account.ChangePasswordWindow', {
-    extend: 'Cms.view.BaseDialogWindow',
+Ext.define( 'Admin.view.account.ChangePasswordWindow', {
+    extend: 'Admin.view.BaseDialogWindow',
     alias: 'widget.userChangePasswordWindow',
 
-    requires: ['Cms.view.account.PasswordMeter'],
+    requires: ['Admin.view.account.PasswordMeter'],
     dialogTitle: 'Change Password',
 
     afterRender: function()

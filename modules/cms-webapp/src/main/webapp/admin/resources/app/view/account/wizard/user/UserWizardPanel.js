@@ -1,14 +1,14 @@
-Ext.define( 'Cms.view.account.wizard.user.UserWizardPanel', {
+Ext.define( 'Admin.view.account.wizard.user.UserWizardPanel', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.userWizardPanel',
     requires: [
-        'Cms.view.WizardPanel',
-        'Cms.view.account.wizard.user.UserStoreListPanel',
-        'Cms.view.account.wizard.user.UserWizardToolbar',
-        'Cms.view.account.EditUserFormPanel',
-        'Cms.view.account.wizard.user.WizardStepLoginInfoPanel',
-        'Cms.view.account.wizard.user.WizardStepMembershipPanel',
-        'Cms.view.account.wizard.user.WizardStepUserSummaryPanel',
+        'Admin.view.WizardPanel',
+        'Admin.view.account.wizard.user.UserStoreListPanel',
+        'Admin.view.account.wizard.user.UserWizardToolbar',
+        'Admin.view.account.EditUserFormPanel',
+        'Admin.view.account.wizard.user.WizardStepLoginInfoPanel',
+        'Admin.view.account.wizard.user.WizardStepMembershipPanel',
+        'Admin.view.account.wizard.user.WizardStepUserSummaryPanel',
         'Lib.plugins.fileupload.PhotoUploadButton'
     ],
 

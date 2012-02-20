@@ -1,4 +1,4 @@
-Ext.define('Cms.view.account.FilterPanel', {
+Ext.define('Admin.view.account.FilterPanel', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.accountFilter',
     cls: 'facet-navigation',

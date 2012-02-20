@@ -1,4 +1,4 @@
-Ext.define( 'Cms.view.account.GroupItemField', {
+Ext.define( 'Admin.view.account.GroupItemField', {
     extend: 'Ext.form.FieldContainer',
     alias: 'widget.groupItemField',
 

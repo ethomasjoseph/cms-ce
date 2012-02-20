@@ -1,8 +1,8 @@
-Ext.define( 'Cms.view.account.SelectUserStoreWindow', {
-    extend: 'Cms.view.BaseDialogWindow',
+Ext.define( 'Admin.view.account.SelectUserStoreWindow', {
+    extend: 'Admin.view.BaseDialogWindow',
     alias: 'widget.selectUserStoreWindow',
 
-    requires: ['Cms.view.account.wizard.user.UserStoreListPanel'],
+    requires: ['Admin.view.account.wizard.user.UserStoreListPanel'],
 
     dialogTitle: 'Select user store',
     dialogInfoTpl: undefined,

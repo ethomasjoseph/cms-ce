@@ -1,4 +1,4 @@
-Ext.define( 'Cms.view.account.wizard.user.WizardStepUserSummaryPanel', {
+Ext.define( 'Admin.view.account.wizard.user.WizardStepUserSummaryPanel', {
     extend: 'Ext.form.Panel',
     alias : 'widget.wizardStepUserSummaryPanel',
 

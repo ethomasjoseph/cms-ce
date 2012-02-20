@@ -1,4 +1,4 @@
-Ext.define( 'Cms.view.account.GridPanel', {
+Ext.define( 'Admin.view.account.GridPanel', {
     extend: 'Ext.grid.Panel',
     alias : 'widget.accountGrid',
 
@@ -11,7 +11,7 @@ Ext.define( 'Cms.view.account.GridPanel', {
     multiSelect: true,
     columnLines: true,
     frame: false,
-    store: 'Cms.store.account.AccountStore',
+    store: 'Admin.store.account.AccountStore',
 
     initComponent: function()
     {

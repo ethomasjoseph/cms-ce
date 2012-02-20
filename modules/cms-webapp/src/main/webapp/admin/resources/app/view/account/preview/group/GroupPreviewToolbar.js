@@ -1,4 +1,4 @@
-Ext.define( 'Cms.view.account.preview.group.GroupPreviewToolbar', {
+Ext.define( 'Admin.view.account.preview.group.GroupPreviewToolbar', {
     extend: 'Ext.toolbar.Toolbar',
     alias : 'widget.groupPreviewToolbar',
 

@@ -1,4 +1,4 @@
-Ext.define( 'Cms.controller.account.GroupWizardController', {
+Ext.define( 'Admin.controller.account.GroupWizardController', {
     extend: 'Ext.app.Controller',
 
     stores: [],

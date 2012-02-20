@@ -1,4 +1,4 @@
-Ext.define('Cms.model.account.CountryModel', {
+Ext.define('Admin.model.account.CountryModel', {
     extend: 'Ext.data.Model',
 
     idField: 'code',

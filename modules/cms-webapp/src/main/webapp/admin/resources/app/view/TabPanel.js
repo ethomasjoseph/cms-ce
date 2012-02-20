@@ -1,4 +1,4 @@
-Ext.define( 'Cms.view.TabPanel', {
+Ext.define( 'Admin.view.TabPanel', {
     extend: 'Ext.tab.Panel',
     alias: 'widget.cmsTabPanel',
     requires: ['Lib.plugins.TabCloseMenu'],

@@ -1,18 +1,18 @@
-Ext.define( 'Cms.controller.account.GridPanelController', {
+Ext.define( 'Admin.controller.account.GridPanelController', {
     extend: 'Ext.app.Controller',
 
-    requires: ['Cms.view.account.AccountKeyMap'],
+    requires: ['Admin.view.account.AccountKeyMap'],
     stores: [
-        'Cms.store.account.AccountStore'
+        'Admin.store.account.AccountStore'
     ],
     models: [
-        'Cms.model.account.AccountModel'
+        'Admin.model.account.AccountModel'
     ],
     views: [
-        'Cms.view.account.BrowseToolbar',
-        'Cms.view.account.FilterPanel',
-        'Cms.view.account.ShowPanel',
-        'Cms.view.account.ContextMenu'
+        'Admin.view.account.BrowseToolbar',
+        'Admin.view.account.FilterPanel',
+        'Admin.view.account.ShowPanel',
+        'Admin.view.account.ContextMenu'
     ],
 
     init: function()
@@ -132,7 +132,7 @@ Ext.define( 'Cms.controller.account.GridPanelController', {
 
     showEditUserForm: function( el, e )
     {
-        var ctrl = this.getController( 'Cms.controller.account.EditUserPanelController' );
+        var ctrl = this.getController( 'Admin.controller.account.EditUserPanelController' );
         if ( ctrl )
         {
             var account = this.getAccountDetailPanel().getCurrentAccount();
@@ -142,7 +142,7 @@ Ext.define( 'Cms.controller.account.GridPanelController', {
 
     showAccountPreviewPanel: function( el, e )
     {
-        var ctrl = this.getController( 'Cms.controller.account.BrowseToolbarController' );
+        var ctrl = this.getController( 'Admin.controller.account.BrowseToolbarController' );
         if ( ctrl )
         {
             ctrl.showAccountPreviewPanel( el, e );
@@ -153,7 +153,7 @@ Ext.define( 'Cms.controller.account.GridPanelController', {
     {
         var me = this;
         var cmsTabPanel = this.getCmsTabPanel();
-        var keyMap = Ext.create( 'Cms.view.account.AccountKeyMap', {
+        var keyMap = Ext.create( 'Admin.view.account.AccountKeyMap', {
                                                      newMegaMenu: function()
                                                      {
                                                          var activeTab = cmsTabPanel.getActiveTab();
@@ -185,7 +185,7 @@ Ext.define( 'Cms.controller.account.GridPanelController', {
                                                          if ( activeTab.isXType( "groupWizardPanel" ) ||
                                                                  activeTab.isXType( "userWizardPanel" ) )
                                                          {
-                                                             me.getController( "Cms.controller.account.UserWizardController" ).saveNewUser();
+                                                             me.getController( "Admin.controller.account.UserWizardController" ).saveNewUser();
                                                          }
                                                      },
                                                      prevStep: function()
@@ -194,7 +194,7 @@ Ext.define( 'Cms.controller.account.GridPanelController', {
                                                          if ( activeTab.isXType( "groupWizardPanel" ) ||
                                                                  activeTab.isXType( "userWizardPanel" ) )
                                                          {
-                                                             me.getController( "Cms.controller.account.UserWizardController" ).wizardPrev();
+                                                             me.getController( "Admin.controller.account.UserWizardController" ).wizardPrev();
                                                          }
                                                      },
                                                      nextStep: function()
@@ -203,7 +203,7 @@ Ext.define( 'Cms.controller.account.GridPanelController', {
                                                          if ( activeTab.isXType( "groupWizardPanel" ) ||
                                                                  activeTab.isXType( "userWizardPanel" ) )
                                                          {
-                                                             me.getController( "Cms.controller.account.UserWizardController" ).wizardNext();
+                                                             me.getController( "Admin.controller.account.UserWizardController" ).wizardNext();
                                                          }
                                                      },
                                                      deleteItem: function(keyCode, event)
@@ -211,7 +211,7 @@ Ext.define( 'Cms.controller.account.GridPanelController', {
                                                          var activeTab = cmsTabPanel.getActiveTab();
                                                          if ( activeTab.getId() == "tab-browse" )
                                                          {
-                                                             me.getController( "Cms.controller.account.BrowseToolbarController" ).showDeleteAccountWindow();
+                                                             me.getController( "Admin.controller.account.BrowseToolbarController" ).showDeleteAccountWindow();
                                                              event.stopEvent();
                                                          }
                                                      }

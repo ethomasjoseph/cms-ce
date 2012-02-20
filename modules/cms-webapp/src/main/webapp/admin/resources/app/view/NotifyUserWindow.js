@@ -1,5 +1,5 @@
-Ext.define( 'Cms.view.NotifyUserWindow', {
-    extend: 'Cms.view.BaseDialogWindow',
+Ext.define( 'Admin.view.NotifyUserWindow', {
+    extend: 'Admin.view.BaseDialogWindow',
     alias: 'widget.notifyUserWindow',
 
     dialogTitle: 'Notify User',

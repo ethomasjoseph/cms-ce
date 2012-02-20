@@ -1,4 +1,4 @@
-Ext.define("Cms.view.account.AddressColumn", {
+Ext.define("Admin.view.account.AddressColumn", {
     extend: "Ext.container.Container",
     alias: "widget.addressColumn",
     layout: {

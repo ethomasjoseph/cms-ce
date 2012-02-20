@@ -1,4 +1,4 @@
-Ext.define( 'Cms.view.account.preview.user.UserPreviewToolbar', {
+Ext.define( 'Admin.view.account.preview.user.UserPreviewToolbar', {
     extend: 'Ext.toolbar.Toolbar',
     alias : 'widget.userPreviewToolbar',
 

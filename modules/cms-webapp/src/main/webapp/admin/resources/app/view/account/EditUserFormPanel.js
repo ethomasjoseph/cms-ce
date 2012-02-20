@@ -1,11 +1,11 @@
-Ext.define( 'Cms.view.account.EditUserFormPanel', {
+Ext.define( 'Admin.view.account.EditUserFormPanel', {
     extend: 'Ext.form.Panel',
     alias: 'widget.editUserFormPanel',
 
     requires: [
-        'Cms.view.account.AddressContainer',
-        'Cms.view.account.AddressPanel',
-        'Cms.view.account.UserFormField'
+        'Admin.view.account.AddressContainer',
+        'Admin.view.account.AddressPanel',
+        'Admin.view.account.UserFormField'
     ],
 
     cls: 'cms-form-panel',
@@ -52,7 +52,7 @@ Ext.define( 'Cms.view.account.EditUserFormPanel', {
     defaultUserStoreName: 'default',
     enableToolbar: true,
 
-    store: 'Cms.store.account.UserstoreConfigStore',
+    store: 'Admin.store.account.UserstoreConfigStore',
 
     initComponent: function()
     {
@@ -262,7 +262,7 @@ Ext.define( 'Cms.view.account.EditUserFormPanel', {
 
     createAutoCompleteField: function ( field )
     {
-        var callingCodeStore = Ext.data.StoreManager.lookup( 'Cms.store.account.CallingCodeStore' );
+        var callingCodeStore = Ext.data.StoreManager.lookup( 'Admin.store.account.CallingCodeStore' );
         var f = {
             xtype: 'userFormField',
             type: 'autocomplete',
@@ -290,7 +290,7 @@ Ext.define( 'Cms.view.account.EditUserFormPanel', {
 
         if ( field.type == 'timezone' )
         {
-            fieldStore = Ext.data.StoreManager.lookup( 'Cms.store.account.TimezoneStore' );
+            fieldStore = Ext.data.StoreManager.lookup( 'Admin.store.account.TimezoneStore' );
             valueField = 'id';
             displayField = 'humanizedIdAndOffset';
             displayConfig = {
@@ -323,22 +323,22 @@ Ext.define( 'Cms.view.account.EditUserFormPanel', {
 
         } else if ( field.type == 'locale' )
         {
-            fieldStore = Ext.data.StoreManager.lookup( 'Cms.store.account.LocaleStore' );
+            fieldStore = Ext.data.StoreManager.lookup( 'Admin.store.account.LocaleStore' );
             valueField = 'id';
             displayField = 'displayName';
         } else if ( field.type == 'country' )
         {
-            fieldStore = Ext.data.StoreManager.lookup( 'Cms.store.account.CountryStore' );
+            fieldStore = Ext.data.StoreManager.lookup( 'Admin.store.account.CountryStore' );
             valueField = 'code';
             displayField = 'englishName';
         } else if ( field.type == 'region' )
         {
-            fieldStore = Ext.create( 'Cms.store.account.RegionStore' );
+            fieldStore = Ext.create( 'Admin.store.account.RegionStore' );
             valueField = 'code';
             displayField = 'englishName';
         } else if ( field.type == 'locale' )
         {
-            fieldStore = Ext.data.StoreManager.lookup( 'Cms.store.account.LanguageStore' );
+            fieldStore = Ext.data.StoreManager.lookup( 'Admin.store.account.LanguageStore' );
             valueField = 'languageCode';
             displayField = 'description';
         } else if ( field.type == 'gender' )
@@ -457,7 +457,7 @@ Ext.define( 'Cms.view.account.EditUserFormPanel', {
 
     generateFieldSet: function( title, fieldSet, storeConfig )
     {
-        var self = Cms.view.account.EditUserFormPanel;
+        var self = Admin.view.account.EditUserFormPanel;
         var me = this;
         var fieldSetItem = {
             defaults: {

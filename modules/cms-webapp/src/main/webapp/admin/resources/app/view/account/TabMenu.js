@@ -1,4 +1,4 @@
-Ext.define( 'Cms.view.account.TabMenu', {
+Ext.define( 'Admin.view.account.TabMenu', {
     extend: 'Ext.menu.Menu',
     alias: 'widget.userTabMenu',
 

@@ -23,7 +23,7 @@
                 'App' : 'app/account/js',
                 'Common' : 'common/js',
                 'Main' : 'app/main/js',
-                'Cms': 'resources/app',
+                'Admin': 'resources/app',
                 'Lib': 'resources/lib'
             },
             disableCaching: false
@@ -34,20 +34,20 @@
             appFolder: 'app/account/js',
 
             controllers: [
-                'Cms.controller.account.GridPanelController',
-                'Cms.controller.account.BrowseToolbarController',
-                'Cms.controller.account.DetailPanelController',
-                'Cms.controller.account.FilterPanelController',
-                'Cms.controller.account.EditUserPanelController',
-                'Cms.controller.account.UserWizardController',
-                'Cms.controller.account.GroupWizardController',
-                'Cms.controller.account.UserPreviewToolbarController',
-                'Cms.controller.account.GroupPreviewToolbarController',
-                'Cms.controller.NotifyUserController'
+                'Admin.controller.account.GridPanelController',
+                'Admin.controller.account.BrowseToolbarController',
+                'Admin.controller.account.DetailPanelController',
+                'Admin.controller.account.FilterPanelController',
+                'Admin.controller.account.EditUserPanelController',
+                'Admin.controller.account.UserWizardController',
+                'Admin.controller.account.GroupWizardController',
+                'Admin.controller.account.UserPreviewToolbarController',
+                'Admin.controller.account.GroupPreviewToolbarController',
+                'Admin.controller.NotifyUserController'
             ],
 
             requires: [
-                'Cms.view.TabPanel'
+                'Admin.view.TabPanel'
             ],
 
             launch: function() {

@@ -1,4 +1,4 @@
-Ext.define( 'Cms.view.account.wizard.user.UserWizardToolbar', {
+Ext.define( 'Admin.view.account.wizard.user.UserWizardToolbar', {
     extend: 'Ext.toolbar.Toolbar',
     alias : 'widget.userWizardToolbar',
 
