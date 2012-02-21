@@ -1,6 +1,7 @@
 Ext.define('App.view.SummaryTreeGrid', {
     extend: 'Ext.tree.Panel',
     alias : 'widget.summaryTreeGrid',
+    layout: 'fit',
     initComponent: function() {
         this.store = Ext.create('Ext.data.TreeStore', {
             proxy: {
@@ -22,9 +23,9 @@ Ext.define('App.view.SummaryTreeGrid', {
                 {name: 'changeType', type: 'string'}
             ]
         });
-
-        this.height = 300;
+        this.bodyCls = 'admin-summary-tree-grid';
         this.border = false;
+        this.height = 400;
         this.useArrows = true;
         this.rootVisible = false;
         this.multiSelect = false;
