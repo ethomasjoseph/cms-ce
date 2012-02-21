@@ -141,7 +141,7 @@ Templates.account = {
 
     ,userPreviewMemberships:
 
-            '<tpl if="(groups == null || groups.length == 0) && (indirectGroups == null || indirectGroups.length == 0)">' +
+            '<tpl if="groups == null || groups.length == 0">' +
                 '<h2 class="nodata">No data</h2>' +
             '</tpl>' +
 
@@ -152,28 +152,30 @@ Templates.account = {
                     '</legend>' +
                     '<table><tbody>' +
                         '<tpl for="groups">' +
-                            '<tr><td>' +
-                                '<li class="x-boxselect-item cms-{type}-item">' +
-                                    '<div class="x-boxselect-item-text">{qualifiedName}</div>' +
-                                '</li>' +
-                            '</td></tr>' +
+                            '<tpl if="direct == \'true\'">' +
+                                '<tr><td>' +
+                                    '<li class="x-boxselect-item cms-{type}-item">' +
+                                        '<div class="x-boxselect-item-text">{qualifiedName}</div>' +
+                                    '</li>' +
+                                '</td></tr>' +
+                            '</tpl>' +
                         '</tpl>' +
                     '</tbody></table>' +
                 '</fieldset>' +
-            '</tpl>' +
 
-            '<tpl if="indirectGroups != null && indirectGroups.length &gt; 0">' +
                 '<fieldset class="x-fieldset x-fieldset-default cms-groups-boxselect">' +
                     '<legend class="x-fieldset-header x-fieldset-header-default">' +
                         '<div class="x-component x-fieldset-header-text x-component-default">Indirect Member Of</div>' +
                     '</legend>' +
                     '<table><tbody>' +
-                        '<tpl for="indirectGroups">' +
-                            '<tr><td>' +
-                                '<li class="x-boxselect-item cms-{type}-item">' +
-                                    '<div class="x-boxselect-item-text">{qualifiedName}</div>' +
-                                '</li>' +
-                            '</td></tr>' +
+                        '<tpl for="groups">' +
+                            '<tpl if="direct == \'false\'">' +
+                                '<tr><td>' +
+                                    '<li class="x-boxselect-item cms-{type}-item">' +
+                                        '<div class="x-boxselect-item-text">{qualifiedName}</div>' +
+                                    '</li>' +
+                                '</td></tr>' +
+                            '</tpl>' +
                         '</tpl>' +
                     '</tbody></table>' +
                 '</fieldset>' +
@@ -228,11 +230,13 @@ Templates.account = {
                     '</thead>' +
                     '<tbody>' +
                         '<tpl for="groups">' +
-                            '<tr><td>' +
-                                '<li class="x-boxselect-item cms-{type}-item">' +
-                                    '<div class="x-boxselect-item-text">{qualifiedName}</div>' +
-                                '</li>' +
-                            '</td></tr>' +
+                            '<tpl if="type == \'role\'">' +
+                                '<tr><td>' +
+                                    '<li class="x-boxselect-item cms-{type}-item">' +
+                                        '<div class="x-boxselect-item-text">{qualifiedName}</div>' +
+                                    '</li>' +
+                                '</td></tr>' +
+                            '</tpl>' +
                         '</tpl>' +
                     '</tbody>' +
                 '</table>' +
