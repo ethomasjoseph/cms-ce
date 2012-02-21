@@ -1,0 +1,67 @@
+<html>
+<head>
+    <title>Enonic CMS Admin</title>
+    <link rel="stylesheet" type="text/css" href="../../resources/lib/ext/resources/css/ext-all.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/main.css">
+    <style type="text/css">
+            /* TODO: Better / more robust selectors? */
+        .x-grid-cell-last {
+            padding-left: 5px;
+        }
+        .added .x-grid-cell-last {
+            background-color: #e0edd4;
+        }
+        .modified .x-grid-cell-last {
+            background-color: #d2e3fe;
+        }
+        .removed .x-grid-cell-last {
+            background-color: #ffdbd9;
+        }
+    </style>
+    <script type="text/javascript" src="../../resources/lib/ext/ext-all-debug.js"></script>
+    <script type="text/javascript" src="ext-treestore-fix.js"></script>
+    <script type="text/javascript">
+
+        Ext.Loader.setConfig({
+            enabled: true,
+            paths: {
+                'App' : 'app'
+            },
+            disableCaching: false
+        });
+
+        Ext.application(
+                {
+                    name: 'App',
+                    appFolder: 'app',
+                    controllers: [
+                        'App.controller.SummaryController'
+                    ],
+
+                    launch: function() {
+                        Ext.create('Ext.container.Viewport', {
+                            layout: 'border',
+                            padding: 5,
+                            items: [
+                                {
+                                    region: 'center',
+                                    xtype: 'panel',
+                                    autoScroll: true,
+                                    items: [
+                                        {
+                                            xtype: 'summaryTreeGrid'
+                                        }
+                                    ]
+                                }
+                            ]
+                        });
+
+                    }
+                });
+    </script>
+
+</head>
+<body>
+
+</body>
+</html>
