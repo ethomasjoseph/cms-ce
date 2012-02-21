@@ -1,15 +1,5 @@
 package com.enonic.cms.admin.account;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.stereotype.Component;
-
 import com.enonic.cms.admin.user.AddressModel;
 import com.enonic.cms.admin.user.UserInfoModel;
 import com.enonic.cms.api.client.model.user.Address;
@@ -17,8 +7,11 @@ import com.enonic.cms.api.client.model.user.UserInfo;
 import com.enonic.cms.core.security.group.GroupEntity;
 import com.enonic.cms.core.security.group.GroupType;
 import com.enonic.cms.core.security.user.UserEntity;
-
 import com.enonic.cms.domain.EntityPageList;
+import org.springframework.stereotype.Component;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Component
 public final class AccountModelTranslator
@@ -42,7 +35,6 @@ public final class AccountModelTranslator
         model.setCreated( "1998-09-13" );
         String qName;
         List<Map<String, String>> groups = new ArrayList<Map<String, String>>();
-        List<Map<String, String>> indirectGroups = new ArrayList<Map<String, String>>();
         for ( GroupEntity group : entity.getAllMemberships() )
         {
             Map<String, String> groupMap = new HashMap<String, String>();
@@ -51,14 +43,31 @@ public final class AccountModelTranslator
             groupMap.put( "qualifiedName", group.getDisplayName() + ( qName != null ? " (" + qName + ")" : "" ) );
             groupMap.put( "type", group.isBuiltIn()? "role" : "group" );
             groupMap.put( "key", group.getGroupKey().toString() );
-            if ( entity.isMemberOf( group, false ) ) {
-                groups.add( groupMap );
-            } else {
-                indirectGroups.add( groupMap );
-            }
+            groupMap.put( "direct", String.valueOf( entity.isMemberOf( group, false ) ) );
+            groups.add( groupMap );
         }
+        Collections.sort( groups, new Comparator<Map<String, String>>() {
+            @Override
+            public int compare(Map<String, String> group1, Map<String, String> group2) {
+                int result = 0;
+                if ( group1 == null && group2 != null )
+                    result = 1;
+                else if ( group1 != null && group2 == null )
+                    result = -1;
+                else if ( group1 != null && group2 != null ) {
+                    String name1 = group1.get("name"),
+                            name2 = group2.get("name");
+                    if ( name1 == null && name2 != null )
+                        result = 1;
+                    else if ( name1 != null && name2 == null )
+                        result = -1;
+                    else if ( name1 != null && name2 != null )
+                        result = name1.compareTo( name2 );
+                }
+                return result;
+            }
+        });
         model.setGroups( groups );
-        model.setIndirectGroups( indirectGroups );
 
         if ( entity.getUserStore() != null )
         {
