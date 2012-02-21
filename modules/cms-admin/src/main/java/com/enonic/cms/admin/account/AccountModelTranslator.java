@@ -169,6 +169,22 @@ public final class AccountModelTranslator
         {
             model.setUserStore( "system" );
         }
+        List<AccountModel> members = new ArrayList<AccountModel>();
+        for ( GroupEntity member : entity.getMembers( false ) )
+        {
+            AccountModel accountModel = null;
+            if ( member.getType().equals( GroupType.USER ) )
+            {
+                accountModel = toAModel( member.getUser() );
+            }
+            else
+            {
+                accountModel = toAModel( member );
+            }
+            members.add( accountModel );
+        }
+        Collections.sort( members );
+        model.setMembers( members );
 
         return model;
     }

@@ -102,8 +102,11 @@ Ext.define( 'Admin.view.account.preview.group.GroupPreviewPanel', {
             var previewPhoto = this.down( '#previewPhoto' );
             previewPhoto.update( data );
 
-            var previewInfo = this.down( '#membershipsTab' );
+            var previewInfo = this.down( '#previewInfo' );
             previewInfo.update( data );
+
+            var membershipsTab = this.down( '#membershipsTab' );
+            membershipsTab.update( data );
         }
     },
 
