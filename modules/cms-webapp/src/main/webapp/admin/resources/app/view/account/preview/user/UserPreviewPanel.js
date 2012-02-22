@@ -108,10 +108,6 @@ Ext.define( 'Admin.view.account.preview.user.UserPreviewPanel', {
                                         itemId: 'membershipsTab',
                                         tpl: Templates.account.userPreviewMemberships,
                                         data: this.data
-                                    },
-                                    {
-                                        title: "Advanced",
-                                        html: 'Advanced'
                                     }
                                 ]
                             }
