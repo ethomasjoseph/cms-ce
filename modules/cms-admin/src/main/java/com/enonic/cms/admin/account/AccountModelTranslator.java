@@ -17,6 +17,7 @@ import java.util.*;
 public final class AccountModelTranslator
 {
     private SimpleDateFormat dateFormatter = new SimpleDateFormat( "yyyy-MM-dd" );
+    private final int MAX_MEMBERS = 10;
 
     AccountModel toAModel( final UserEntity entity )
     {
@@ -46,28 +47,28 @@ public final class AccountModelTranslator
             groupMap.put( "direct", String.valueOf( entity.isMemberOf( group, false ) ) );
             groups.add( groupMap );
         }
-        Collections.sort( groups, new Comparator<Map<String, String>>() {
+        Collections.sort(groups, new Comparator<Map<String, String>>() {
             @Override
             public int compare(Map<String, String> group1, Map<String, String> group2) {
                 int result = 0;
-                if ( group1 == null && group2 != null )
+                if (group1 == null && group2 != null)
                     result = 1;
-                else if ( group1 != null && group2 == null )
+                else if (group1 != null && group2 == null)
                     result = -1;
-                else if ( group1 != null && group2 != null ) {
+                else if (group1 != null && group2 != null) {
                     String name1 = group1.get("name"),
                             name2 = group2.get("name");
-                    if ( name1 == null && name2 != null )
+                    if (name1 == null && name2 != null)
                         result = 1;
-                    else if ( name1 != null && name2 == null )
+                    else if (name1 != null && name2 == null)
                         result = -1;
-                    else if ( name1 != null && name2 != null )
-                        result = name1.compareTo( name2 );
+                    else if (name1 != null && name2 != null)
+                        result = name1.compareTo(name2);
                 }
                 return result;
             }
         });
-        model.setGroups( groups );
+        model.setGroups(groups);
 
         if ( entity.getUserStore() != null )
         {
@@ -170,8 +171,9 @@ public final class AccountModelTranslator
             model.setUserStore( "system" );
         }
         List<AccountModel> members = new ArrayList<AccountModel>();
-        for ( GroupEntity member : entity.getMembers( false ) )
-        {
+        Set<GroupEntity> entityMembers = entity.getMembers( false );
+        int count = 0;
+        for ( GroupEntity member : entityMembers ) {
             AccountModel accountModel = null;
             if ( member.getType().equals( GroupType.USER ) )
             {
@@ -182,9 +184,13 @@ public final class AccountModelTranslator
                 accountModel = toAModel( member );
             }
             members.add( accountModel );
+            // stop after reaching max members
+            if ( ++count == MAX_MEMBERS)
+                break;
         }
         Collections.sort( members );
         model.setMembers( members );
+        model.setMembersCount( entityMembers.size() );
 
         return model;
     }

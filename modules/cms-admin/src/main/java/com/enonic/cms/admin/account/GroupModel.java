@@ -28,6 +28,8 @@ public class GroupModel
     private String lastLogged;
 
     private List<AccountModel> members;
+    
+    private int membersCount;
 
     private boolean builtIn;
 
@@ -134,6 +136,14 @@ public class GroupModel
     public void setMembers( List<AccountModel> members )
     {
         this.members = members;
+    }
+
+    public int getMembersCount() {
+        return membersCount;
+    }
+
+    public void setMembersCount(int membersCount) {
+        this.membersCount = membersCount;
     }
 
     public void setBuiltIn( boolean builtIn )

@@ -282,7 +282,7 @@ Templates.account = {
             '</table></div></tpl>' +
             '<div class="container"><table><thead>' +
                 '<tr><th colspan="2">Statistics</th></tr></thead><tbody><tr>' +
-                '<td class="label">Member count:</td><td>{members.length}</td></tr><tr>' +
+                '<td class="label">Member count:</td><td>{membersCount}</td></tr><tr>' +
                 '<td class="label">Last updated:</td><td>{lastModified}</td></tr></tbody>' +
             '</table></div>'
 
