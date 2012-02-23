@@ -22,17 +22,17 @@ Ext.define( 'Admin.controller.account.UserPreviewToolbarController', {
 
     deleteAccount: function( el, e )
     {
-        var ctrl = this.getController( 'Admin.controller.account.BrowseToolbarController' );
-        if ( ctrl ) {
-            ctrl.showDeleteAccountWindow();
+        var previewPanel = el.up( 'userPreviewPanel' );
+        if ( previewPanel && previewPanel.data ) {
+            this.getDeleteAccountWindow().doShow( [{data: previewPanel.data}] );
         }
     },
 
     changePassword: function( el, e )
     {
-        var ctrl = this.getController( 'Admin.controller.account.BrowseToolbarController' );
-        if ( ctrl ) {
-            ctrl.showChangePasswordWindow();
+        var previewPanel = el.up( 'userPreviewPanel' );
+        if ( previewPanel && previewPanel.data ) {
+            this.getUserChangePasswordWindow().doShow( {data: previewPanel.data} );
         }
     },
 
@@ -69,6 +69,26 @@ Ext.define( 'Admin.controller.account.UserPreviewToolbarController', {
     getAccountDetailPanel: function()
     {
         return Ext.ComponentQuery.query( 'accountDetail' )[0];
+    },
+
+    getDeleteAccountWindow: function()
+    {
+        var win = Ext.ComponentQuery.query( 'deleteAccountWindow' )[0];
+        if ( !win )
+        {
+            win = Ext.create( 'widget.deleteAccountWindow' );
+        }
+        return win;
+    },
+
+    getUserChangePasswordWindow: function()
+    {
+        var win = Ext.ComponentQuery.query( 'userChangePasswordWindow' )[0];
+        if ( !win )
+        {
+            win = Ext.create( 'widget.userChangePasswordWindow' );
+        }
+        return win;
     }
 
 } );
