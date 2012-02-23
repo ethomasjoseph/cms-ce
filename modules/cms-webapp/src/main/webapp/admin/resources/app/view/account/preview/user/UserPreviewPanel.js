@@ -82,6 +82,7 @@ Ext.define( 'Admin.view.account.preview.user.UserPreviewPanel', {
                             },
                             {
                                 flex: 1,
+                                itemId: 'previewTabs',
                                 xtype: 'tabpanel',
                                 defaults: {
                                     border: false
@@ -157,9 +158,25 @@ Ext.define( 'Admin.view.account.preview.user.UserPreviewPanel', {
         return profileData;
     },
 
+    isFieldsEnabled: function( fieldNames, userstoreName ) {
+        var userstores = Ext.data.StoreManager.lookup( 'Admin.store.account.UserstoreConfigStore' );
+        var userstore = userstores.findRecord( 'name', userstoreName );
+        if ( userstore && userstore.raw.userFields ) {
+            var fieldTypes = [].concat( fieldNames );
+            for ( var i = 0; i < userstore.raw.userFields.length; i++ ) {
+                for ( var j = 0; j < fieldTypes.length; j++ ) {
+                    if ( userstore.raw.userFields[ i ].type == fieldTypes[ j ] ) return true;
+                }
+            }
+        }
+        return false;
+    },
+
     setData: function( data ) {
         if ( data ) {
             this.data = data;
+
+            var tabs = this.down( '#previewTabs' );
 
             var previewHeader = this.down( '#previewHeader' );
             previewHeader.update( data );
@@ -171,13 +188,36 @@ Ext.define( 'Admin.view.account.preview.user.UserPreviewPanel', {
             previewInfo.update( data );
 
             var profileTab = this.down( '#profileTab' );
-            profileTab.update( this.generateProfileData( data ) );
+            var profileFields = [];
+            for ( var i = 0; i < this.fieldSets.length; i++ ) {
+                profileFields = profileFields.concat( this.fieldSets[ i ].fields );
+            }
+            if ( this.isFieldsEnabled( profileFields, data.userStore ) ) {
+                profileTab.update( this.generateProfileData( data ) );
+                this.setTabVisible( tabs, profileTab, true );
+            } else {
+                this.setTabVisible( tabs, profileTab, false );
+            }
 
             var membershipsTab = this.down( '#membershipsTab' );
             membershipsTab.update( data );
 
             var placesTab = this.down( '#placesTab' );
-            placesTab.update( data );
+            if ( this.isFieldsEnabled( 'address', data.userStore ) ) {
+                placesTab.update( data );
+                this.setTabVisible( tabs, placesTab, true );
+            } else {
+                this.setTabVisible( tabs, placesTab, false );
+            }
+        }
+    },
+
+    setTabVisible: function( tabPanel, tabItem, visible ) {
+        tabItem.tab.setVisible( visible );
+        // activate first tab if the item being hidden is active
+        var tabLayout = tabPanel.getLayout();
+        if( !visible && tabLayout.getActiveItem() == tabItem ) {
+            tabLayout.setActiveItem( 0 );
         }
     }
 

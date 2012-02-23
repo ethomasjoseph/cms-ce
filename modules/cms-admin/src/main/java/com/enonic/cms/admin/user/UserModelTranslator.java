@@ -4,12 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.BooleanUtils;
@@ -63,7 +58,6 @@ public final class UserModelTranslator
         model.setCreated( "13-09-1998" );
         String qName;
         List<Map<String, String>> groups = new ArrayList<Map<String, String>>();
-        List<Map<String, String>> indirectGroups = new ArrayList<Map<String, String>>();
         for ( GroupEntity group : entity.getAllMemberships() )
         {
             Map<String, String> groupMap = new HashMap<String, String>();
@@ -72,14 +66,31 @@ public final class UserModelTranslator
             groupMap.put( "qualifiedName", group.getDisplayName() + ( qName != null ? " (" + qName + ")" : "" ) );
             groupMap.put( "type", group.isBuiltIn()? "role" : "group" );
             groupMap.put( "key", group.getGroupKey().toString() );
-            if ( entity.isMemberOf( group, false ) ) {
-                groups.add( groupMap );
-            } else {
-                indirectGroups.add( groupMap );
-            }
+            groupMap.put( "direct", String.valueOf( entity.isMemberOf( group, false ) ) );
+            groups.add( groupMap );
         }
+        Collections.sort( groups, new Comparator<Map<String, String>>() {
+            @Override
+            public int compare(Map<String, String> group1, Map<String, String> group2) {
+                int result = 0;
+                if (group1 == null && group2 != null)
+                    result = 1;
+                else if (group1 != null && group2 == null)
+                    result = -1;
+                else if (group1 != null && group2 != null) {
+                    String name1 = group1.get("name"),
+                            name2 = group2.get("name");
+                    if (name1 == null && name2 != null)
+                        result = 1;
+                    else if (name1 != null && name2 == null)
+                        result = -1;
+                    else if (name1 != null && name2 != null)
+                        result = name1.compareTo(name2);
+                }
+                return result;
+            }
+        });
         model.setGroups( groups );
-        model.setIndirectGroups( indirectGroups );
         if ( entity.getUserStore() != null )
         {
             model.setUserStore( entity.getUserStore().getName() );
